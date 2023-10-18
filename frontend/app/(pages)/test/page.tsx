@@ -5,7 +5,7 @@ export default function Test() {
     <div className="flex-none">
       <h1 className="underline decoration-sky-500">테스트 페이지임.</h1>
       <div>
-        <TestButton />
+        <TestButton size="small" />
       </div>
     </div>
   );

@@ -1,4 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {};
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+module.exports = {
+  webpack(config, options) {
+    const { dev, isServer } = options;
 
-module.exports = nextConfig
+    // Do not run type checking twice:
+    if (dev && isServer) {
+      config.plugins.push(new ForkTsCheckerWebpackPlugin());
+    }
+
+    return config;
+  },
+};

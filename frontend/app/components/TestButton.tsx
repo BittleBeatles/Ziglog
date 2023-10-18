@@ -1,11 +1,12 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { ButtonHTMLAttributes } from 'react';
 
-interface Props extends HTMLButtonElement {
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   size: 'small' | 'big';
 }
 
-export default function TestButton({ size }: Props) {
+export default function TestButton({ size, ...rest }: Props) {
   const router = useRouter();
   return (
     <div className="flex-none">
