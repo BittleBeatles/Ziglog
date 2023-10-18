@@ -11,6 +11,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "files.autoSave": "onFocusChange",
   "editor.formatOnSave": true,
   "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
   "css.lint.unknownAtRules": "ignore"
