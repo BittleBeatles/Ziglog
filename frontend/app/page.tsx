@@ -1,3 +1,4 @@
+import SvgIcons from '@components/common/SvgIcon';
 import Link from 'next/link';
 
 export default function Home() {
