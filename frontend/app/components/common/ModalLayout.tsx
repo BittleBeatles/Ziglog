@@ -3,7 +3,7 @@ interface ModalProps {
   children: ReactNode;
   size: 'small' | 'large';
 }
-export default function Modal({ children, size }: ModalProps) {
+export default function ModalLayout({ children, size }: ModalProps) {
   return (
     <div className={`${SIZE_VARIANTS[size]} bg-modal shadow-md`}>
       {children}
