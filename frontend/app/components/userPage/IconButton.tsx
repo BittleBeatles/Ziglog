@@ -7,7 +7,7 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 export default function IconButton({ name }: IconButtonProps) {
   return (
-    <div className=" bg-white w-fit h-fit p-1 rounded-lg border-2 border-border-grey">
+    <div className=" bg-white w-fit h-fit p-1 rounded-lg border border-border-grey">
       <SvgIcon name={name} />
     </div>
   );
