@@ -6,7 +6,7 @@ export default function UserPage() {
   return (
     <div>
       <h1>
-        {decodeURIComponent(params.userName as string)}의 개인페이지입니다.
+        {decodeURIComponent(params.userNickname as string)}의 개인페이지입니다.
       </h1>
     </div>
   );

@@ -8,19 +8,13 @@ export default function Home() {
         <Link href={'/main'}>메인페이지 가기</Link>
       </div>
       <div>
-        <Link href={`/user-page/${encodeURIComponent('성용')}`}>
-          그래프페이지가기
-        </Link>
+        <Link href={'/user-page/성용'}>그래프페이지가기</Link>
       </div>
       <div>
-        <Link href={`/user-page/${encodeURIComponent('성용')}/edit-note/1`}>
-          글 수정 페이지가기
-        </Link>
+        <Link href={'/user-page/성용}/edit-note/1'}>글 수정 페이지가기</Link>
       </div>
       <div>
-        <Link href={`/user-page/${encodeURIComponent('성용')}/read-note/1`}>
-          글 읽기 페이지가기
-        </Link>
+        <Link href={'/user-page/성용}/read-note/1'}>글 읽기 페이지가기</Link>
       </div>
     </div>
   );
