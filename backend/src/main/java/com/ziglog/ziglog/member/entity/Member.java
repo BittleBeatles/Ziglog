@@ -1,6 +1,10 @@
 package com.ziglog.ziglog.member.entity;
 
+import com.ziglog.ziglog.note.entity.Note;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+
+import java.util.List;
 
 @Entity
 public class Member {
@@ -25,5 +29,9 @@ public class Member {
 
     @Column
     private String profileUrl;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
+    private List<Note> notes;
+
 
 }
