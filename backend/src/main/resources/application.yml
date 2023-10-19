@@ -1,0 +1,51 @@
+spring:
+  h2: #H2 Configuration
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    url: jdbc:h2:~/test;
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa: #JPA Configuration
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        ddl-auto: create
+  security: #OAuth2 Configuration
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 574121728411-si5ub2jih5ua9h8jtt0jatf72qsrt00p.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - profile
+              - email
+            redirect-uri: http://localhost:8080/api/login/oauth2/code/google
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace;
+
+#JWTtoken configurations
+jwt:
+  secretKey: asd19i23hj909sfua9s0fdusd90fua9023fjnh
+  access:
+    expiration: 3600000
+    header: Authorization
+  refresh:
+    expiration: 1209600000
+    header: Set-Cookie
+
+# Server Port Configuration
+server:
+  port: 8080
+
