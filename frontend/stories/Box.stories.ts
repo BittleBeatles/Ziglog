@@ -1,16 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import WhiteBox from '@components/common/WhiteBox';
+import Box from '@components/common/Box';
 
-const meta: Meta<typeof WhiteBox> = {
-  component: WhiteBox,
-} satisfies Meta<typeof WhiteBox>;
+const meta: Meta<typeof Box> = {
+  component: Box,
+} satisfies Meta<typeof Box>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const WhiteBoxExample = {
+export const BoxExample = {
   args: {
     children: '안녕하세요 화이트박스입니다',
+    theme: 'light',
   },
 } satisfies Story;
