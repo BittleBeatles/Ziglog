@@ -15,10 +15,17 @@ export default function SocialLoginButton({
 }: SocialLoginButtonProps) {
   const imageSrc = name === 'google' ? GoogleImage : KaKaoImage;
   const altText = name === 'google' ? 'Google 로그인' : '카카오 로그인';
+  const imageWidth = 200;
+  const imageHeight = 300;
   return (
     <div>
       <button onClick={onClick}>
-        <Image src={imageSrc} alt={altText} />
+        <Image
+          src={imageSrc}
+          alt={altText}
+          width={imageWidth}
+          height={imageHeight}
+        />
       </button>
     </div>
   );
