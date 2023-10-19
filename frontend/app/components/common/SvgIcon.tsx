@@ -5,14 +5,10 @@ import Image from 'next/image';
 interface IconProps {
   name: keyof typeof Icons;
   size?: number;
-  width?: number;
-  height?: number;
 }
 
-function SvgIcons({ name, size, width, height, ...props }: IconProps) {
+export default function SvgIcon({ name, size = 24 }: IconProps) {
   const iconSrc = Icons[name];
 
-  return <Image src={iconSrc} alt={'icons'} width={width} height={height} />;
+  return <Image src={iconSrc} alt={'icons'} width={size} height={size} />;
 }
-
-export default SvgIcons;
