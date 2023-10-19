@@ -1,5 +1,6 @@
 package com.ziglog.ziglog.member.entity;
 
+import com.ziglog.ziglog.bookmark.Entity.Bookmark;
 import com.ziglog.ziglog.note.entity.Note;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
@@ -33,5 +34,7 @@ public class Member {
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Note> notes;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Bookmark> bookmarks;
 
 }

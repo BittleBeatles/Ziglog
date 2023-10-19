@@ -1,12 +1,16 @@
 package com.ziglog.ziglog.note.entity;
 
+import com.ziglog.ziglog.bookmark.Entity.Bookmark;
 import com.ziglog.ziglog.member.entity.Member;
+import com.ziglog.ziglog.quotation.entity.Quotation;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.CurrentTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Note {
@@ -37,11 +41,12 @@ public class Note {
     @Column
     private LocalDateTime updateTime;
 
-    //이 글을 참조하고 있는 글 목록
+    @OneToMany(mappedBy = "note", cascade = CascadeType.REMOVE)
+    private List<Bookmark> bookmarks = new ArrayList<>();
 
-    //이 글이 참조하고 있는 글 목록
+    @OneToMany(mappedBy = "quoted", cascade = CascadeType.REMOVE)
+    private List<Quotation> quotedList = new ArrayList<>();
 
-    //이 글을 북마크 한 사람들
-
-
+    @OneToMany(mappedBy = "quoting", cascade = CascadeType.REMOVE)
+    private List<Quotation> quotingList = new ArrayList<>();
 }
