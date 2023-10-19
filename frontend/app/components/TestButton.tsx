@@ -13,7 +13,7 @@ export default function TestButton({ size, ...rest }: Props) {
       <button
         className={`bg-blue-500 hover:bg-blue-700 text-white rounded ${SIZE_VARIANTS[size]}`}
         type="button"
-        onClick={() => router.push('/')}
+        onClick={() => console.log('테스트버튼 클릭')}
       >
         테스트 버튼입니다.(클라이언트 컴포넌트)
       </button>
