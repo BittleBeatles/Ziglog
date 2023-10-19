@@ -1,0 +1,12 @@
+export { default as addFolder } from '../../../public/icons/addFolder.svg';
+export { default as addNote } from '../../../public/icons/addNote.svg';
+export { default as arowUp } from '../../../public/icons/arowUp.svg';
+export { default as arrowDown } from '../../../public/icons/arrowDown.svg';
+export { default as bookMarkFill } from '../../../public/icons/bookMarkFill.svg';
+export { default as camera } from '../../../public/icons/camera.svg';
+export { default as darkMode } from '../../../public/icons/darkMode.svg';
+export { default as globalSearch } from '../../../public/icons/globalSearch.svg';
+export { default as graphView } from '../../../public/icons/graphView.svg';
+export { default as lightMode } from '../../../public/icons/lightMode.svg';
+export { default as myPage } from '../../../public/icons/myPage.svg';
+export { default as search } from '../../../public/icons/search.svg';
