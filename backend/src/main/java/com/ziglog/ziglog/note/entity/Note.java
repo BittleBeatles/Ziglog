@@ -9,7 +9,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Note {
@@ -43,9 +45,10 @@ public class Note {
     @OneToMany(mappedBy = "note", cascade = CascadeType.REMOVE)
     private List<Bookmark> bookmarks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "quoted", cascade = CascadeType.REMOVE)
-    private List<Quotation> quotedList = new ArrayList<>();
+    @OneToMany(mappedBy = "fromNote")
+    private Set<Quotation> quoted = new HashSet<>();
 
-    @OneToMany(mappedBy = "quoting", cascade = CascadeType.REMOVE)
-    private List<Quotation> quotingList = new ArrayList<>();
+    @OneToMany(mappedBy = "toNote")
+    private Set<Quotation> quoting = new HashSet<>();
+
 }
