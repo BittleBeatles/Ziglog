@@ -1,9 +1,12 @@
+import { ReactNode } from 'react';
+
 interface TextProps {
   type?: 'h1' | 'h2' | 'h3' | 'p' | 'b';
-  children: React.ReactNode;
+  children: ReactNode;
+  className?: string;
 }
 
-export default function Text({ type = 'p', children }: TextProps) {
+export default function Text({ type = 'p', children, className }: TextProps) {
   const Tag =
     type === 'h1'
       ? 'h1'
@@ -15,7 +18,11 @@ export default function Text({ type = 'p', children }: TextProps) {
       ? 'b'
       : 'p';
 
-  return <Tag className={TYPE_VARIANTS[type]}>{children}</Tag>;
+  return (
+    <Tag className={`${TYPE_VARIANTS[type]} ${className}`.trim()}>
+      {children}
+    </Tag>
+  );
 }
 const TYPE_VARIANTS = {
   h1: 'text-4xl font-bold leading-tight',
