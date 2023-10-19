@@ -1,5 +1,6 @@
 package com.ziglog.ziglog.note.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ziglog.ziglog.bookmark.Entity.Bookmark;
 import com.ziglog.ziglog.member.entity.Member;
 import jakarta.persistence.*;
@@ -31,13 +32,13 @@ public class Note {
     @Column
     private boolean isPublic;
 
-    @CreationTimestamp
     @Column
-    private LocalDateTime writeTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime postDateTime;
 
-    @UpdateTimestamp
     @Column
-    private LocalDateTime updateTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime saveDateTime;
 
     @OneToMany(mappedBy = "note", cascade = CascadeType.REMOVE)
     private List<Bookmark> bookmarks = new ArrayList<>();
