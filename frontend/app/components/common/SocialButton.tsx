@@ -1,7 +1,7 @@
 'use client';
 import React, { ReactNode } from 'react';
-import GoogleImage from '../../public/socialImg/web_light_sq_SI@3x.png';
-import KaKaoImage from '../../public/socialImg/kakao_login_large_narrow.png';
+import GoogleImage from '../../../public/socialImg/web_light_sq_SI@3x.png';
+import KaKaoImage from '../../../public/socialImg/kakao_login_large_narrow.png';
 import Image from 'next/image';
 
 interface SocialLoginButtonProps {
