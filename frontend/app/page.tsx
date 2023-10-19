@@ -1,3 +1,4 @@
+import WhiteBox from '@components/common/WhiteBox';
 import Link from 'next/link';
 
 export default function Home() {
