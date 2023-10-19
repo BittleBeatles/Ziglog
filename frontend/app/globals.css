@@ -1,25 +1,3 @@
 @tailwind base;
-
-@layer base {
-  h1 {
-    @apply text-2xl;
-  }
-  h2 {
-    @apply text-xl;
-  }
-  h3 {
-    @apply text-lg;
-  }
-  /* p {
-    @apply text-red-600;
-  }
-  ul {
-    @apply list-inside list-disc marker:text-sky-500;
-  }
-  a {
-    @apply text-sky-500 hover:text-sky-600;
-  } */
-}
-
 @tailwind components;
 @tailwind utilities;

@@ -9,18 +9,23 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      colors: {
+        warn: '#E14B32',
+        'main-100': '#3D4EFE',
+        'main-75': ' #6774FF',
+        'main-50': '#96A0FF',
+        'main-25': '#CDD1FF',
+        'light-background-layout': '#F8F9FA',
+        // border용
+        'border-grey': '#E5E5E5',
+        // text용
+        grey: '#888888',
+        // 버튼
+        charcol: '#4B4B4B',
+        white: '#FFFFFF',
+        'dark-background-layout': ' #000000',
+        'dark-background-page': '#3A3A3C',
       },
-    },
-    screens: {
-      mob: '375px',
-      tablet: '768px',
-      laptop: '1024px',
-      laptopl: '1440px',
-      desktop: '1280px',
     },
   },
   plugins: [],
