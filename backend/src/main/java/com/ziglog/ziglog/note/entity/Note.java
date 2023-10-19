@@ -2,10 +2,8 @@ package com.ziglog.ziglog.note.entity;
 
 import com.ziglog.ziglog.bookmark.Entity.Bookmark;
 import com.ziglog.ziglog.member.entity.Member;
-import com.ziglog.ziglog.quotation.entity.Quotation;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.CurrentTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;

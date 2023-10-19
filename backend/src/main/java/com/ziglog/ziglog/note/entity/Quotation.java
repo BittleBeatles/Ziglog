@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.quotation.entity;
+package com.ziglog.ziglog.note.entity;
 
 import com.ziglog.ziglog.member.entity.Member;
 import com.ziglog.ziglog.note.entity.Note;
