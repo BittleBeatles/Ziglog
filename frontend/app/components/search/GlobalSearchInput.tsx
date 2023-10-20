@@ -1,3 +1,4 @@
+import SvgIcon from '@components/common/SvgIcon';
 import { InputHTMLAttributes } from 'react';
 
 interface GlobalSearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -9,11 +10,14 @@ export default function GlobalSearchInput({
   ...rest
 }: GlobalSearchInputProps) {
   return (
-    <input
-      {...rest}
-      type="text"
-      className={`${THEME_VARIANTS[theme]}  w-full h-16 p-2 text-lg rounded `}
-    />
+    <div>
+      <SvgIcon name="search" />
+      <input
+        {...rest}
+        type="text"
+        className={`${THEME_VARIANTS[theme]}  w-full h-16 p-2 text-lg rounded `}
+      />
+    </div>
   );
 }
 
