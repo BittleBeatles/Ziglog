@@ -17,15 +17,13 @@ export default function SocialLoginButton({
   const imageWidth = 200;
   const imageHeight = 300;
   return (
-    <div>
-      <button onClick={onClick}>
-        <Image
-          src={imageSrc}
-          alt={altText}
-          width={imageWidth}
-          height={imageHeight}
-        />
-      </button>
-    </div>
+    <button onClick={onClick}>
+      <Image
+        src={imageSrc}
+        alt={altText}
+        width={imageWidth}
+        height={imageHeight}
+      />
+    </button>
   );
 }
