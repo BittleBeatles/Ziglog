@@ -4,16 +4,16 @@ import Text from '@components/common/Text';
 
 interface PublicPrivateToggleProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
-  type: 'public' | 'private';
+  scope: 'public' | 'private';
 }
 
 export default function PublicPrivateToggle({
-  type,
+  scope,
 }: PublicPrivateToggleProps) {
   return (
     <button className="flex flex-row gap-3 bg-light-background-layout border border-border-grey rounded-lg w-fit p-3 font-bold">
-      <SvgIcon name={type} />
-      <Text type="span">{type === 'public' ? '전체공개' : '비공개'}</Text>
+      <SvgIcon name={scope} />
+      <Text type="span">{scope === 'public' ? '전체공개' : '비공개'}</Text>
     </button>
   );
 }
