@@ -9,7 +9,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const ButtonExample = {
+export const SocialLoginButtonExample = {
   args: {
     name: 'google',
   },
