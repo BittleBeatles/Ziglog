@@ -5,12 +5,11 @@ import Image from 'next/image';
 interface SocialLoginButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   name: string;
-  onClick: () => void;
 }
 
 export default function SocialLoginButton({
   name,
-  onClick,
+  ...rest
 }: SocialLoginButtonProps) {
   const imageSrc = `${process.env.PUBLIC_URL}/images/${
     name === 'google'
@@ -21,7 +20,7 @@ export default function SocialLoginButton({
   const imageWidth = 200;
   const imageHeight = 300;
   return (
-    <button onClick={onClick}>
+    <button {...rest}>
       <Image
         src={imageSrc}
         alt={altText}
