@@ -34,6 +34,10 @@ public class Note {
     @Column
     private boolean isPublic;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "directory_id")
+    private Directory directory;
+
     @Column
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime postDateTime;
