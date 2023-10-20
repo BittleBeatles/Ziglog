@@ -1,5 +1,6 @@
 package com.ziglog.ziglog.note.entity;
 
+import com.ziglog.ziglog.member.entity.Member;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.Fetch;
 
@@ -25,4 +26,7 @@ public class Directory {
 
     @OneToMany(mappedBy = "directory", fetch = FetchType.LAZY)
     private List<Note> notes = new ArrayList<>();
+
+    @OneToOne(mappedBy = "rootDirectory", fetch = FetchType.LAZY)
+    private Member owner;
 }
