@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 interface TextProps {
-  type?: 'h1' | 'h2' | 'h3' | 'p' | 'b';
+  type?: 'h1' | 'h2' | 'h3' | 'p' | 'b' | 'span';
   children: ReactNode;
   className?: string;
 }
@@ -16,6 +16,8 @@ export default function Text({ type = 'p', children, className }: TextProps) {
       ? 'h3'
       : type === 'b'
       ? 'b'
+      : type === 'span'
+      ? 'span'
       : 'p';
 
   return (
@@ -30,4 +32,5 @@ const TYPE_VARIANTS = {
   h3: 'text-2xl font-medium',
   p: 'text-base',
   b: 'text-base font-bold',
+  span: 'text-base',
 };

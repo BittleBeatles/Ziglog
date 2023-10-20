@@ -10,3 +10,5 @@ export { default as graphView } from '../../../public/icons/graphView.svg';
 export { default as lightMode } from '../../../public/icons/lightMode.svg';
 export { default as myPage } from '../../../public/icons/myPage.svg';
 export { default as search } from '../../../public/icons/search.svg';
+export { default as private } from '../../../public/icons/private.svg';
+export { default as public } from '../../../public/icons/public.svg';
