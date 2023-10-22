@@ -19,9 +19,20 @@ export default function NavBar({
       {...rest}
       className={`${THEME_VARIANTS[theme]} w-full h-full shadow-md p-5`}
     >
-      <IconButton name={type === 'lightMode' ? 'lightMode' : 'darkMode'} />
-      <IconButton name="search" />
-      <Button label="로그인" color="charcol" />
+      {login ? (
+        <>
+          <IconButton name={type === 'lightMode' ? 'lightMode' : 'darkMode'} />
+          <IconButton name="myPage" />
+          <IconButton name="search" />
+          <Button label="로그아웃" color="charcol" />
+        </>
+      ) : (
+        <>
+          <IconButton name={type === 'lightMode' ? 'lightMode' : 'darkMode'} />
+          <IconButton name="search" />
+          <Button label="로그인" color="charcol" />
+        </>
+      )}
     </div>
   );
 }
