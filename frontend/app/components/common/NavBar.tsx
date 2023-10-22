@@ -1,6 +1,7 @@
 import { HTMLAttributes } from 'react';
 import IconButton from '@components/userPage/IconButton';
 import Button from '@components/common/Button';
+import Text from '@components/common/Text';
 
 interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
   login: boolean;
@@ -19,6 +20,9 @@ export default function NavBar({
       {...rest}
       className={`${THEME_VARIANTS[theme]} w-full h-full shadow-md p-5 flex items-center justify-between`}
     >
+      <Text type="span" className="ml-4">
+        {'ZigLog'}
+      </Text>
       <div className="flex ml-auto space-x-2 items-center">
         {login ? (
           <>
