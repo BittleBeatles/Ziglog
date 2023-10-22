@@ -17,22 +17,28 @@ export default function NavBar({
   return (
     <div
       {...rest}
-      className={`${THEME_VARIANTS[theme]} w-full h-full shadow-md p-5`}
+      className={`${THEME_VARIANTS[theme]} w-full h-full shadow-md p-5 flex items-center justify-between`}
     >
-      {login ? (
-        <>
-          <IconButton name={type === 'lightMode' ? 'lightMode' : 'darkMode'} />
-          <IconButton name="myPage" />
-          <IconButton name="search" />
-          <Button label="로그아웃" color="charcol" />
-        </>
-      ) : (
-        <>
-          <IconButton name={type === 'lightMode' ? 'lightMode' : 'darkMode'} />
-          <IconButton name="search" />
-          <Button label="로그인" color="charcol" />
-        </>
-      )}
+      <div className="flex ml-auto space-x-2">
+        {login ? (
+          <>
+            <IconButton
+              name={type === 'lightMode' ? 'lightMode' : 'darkMode'}
+            />
+            <IconButton name="myPage" />
+            <IconButton name="search" />
+            <Button label="로그아웃" color="charcol" />
+          </>
+        ) : (
+          <>
+            <IconButton
+              name={type === 'lightMode' ? 'lightMode' : 'darkMode'}
+            />
+            <IconButton name="search" />
+            <Button label="로그인" color="charcol" />
+          </>
+        )}
+      </div>
     </div>
   );
 }
