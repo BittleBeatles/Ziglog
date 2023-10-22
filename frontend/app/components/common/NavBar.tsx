@@ -5,7 +5,7 @@ import Button from '@components/common/Button';
 interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
   login: boolean;
   theme?: 'light' | 'dark';
-  type: 'lightMode' | 'darkMode';
+  type?: 'lightMode' | 'darkMode';
 }
 
 export default function NavBar({
