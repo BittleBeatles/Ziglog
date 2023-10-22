@@ -19,7 +19,7 @@ export default function NavBar({
       {...rest}
       className={`${THEME_VARIANTS[theme]} w-full h-full shadow-md p-5 flex items-center justify-between`}
     >
-      <div className="flex ml-auto space-x-2">
+      <div className="flex ml-auto space-x-2 items-center">
         {login ? (
           <>
             <IconButton
