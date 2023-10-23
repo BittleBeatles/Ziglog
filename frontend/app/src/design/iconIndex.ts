@@ -1,6 +1,6 @@
 import AddFolder from '@public/icons/addFolder.svg';
 import AddNote from '@public/icons/addNote.svg';
-import ArowUp from '@public/icons/arowUp.svg';
+import ArrowUp from '@public/icons/arrowUp.svg';
 import ArrowDown from '@public/icons/arrowDown.svg';
 import BookMarkFill from '@public/icons/bookMarkFill.svg';
 import Camera from '@public/icons/camera.svg';
@@ -18,7 +18,7 @@ import Note from '@public/icons/note.svg';
 export {
   AddFolder,
   AddNote,
-  ArowUp,
+  ArrowUp,
   ArrowDown,
   BookMarkFill,
   Camera,
