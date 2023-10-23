@@ -1,6 +1,6 @@
-package com.ziglog.ziglog.member.service;
+package com.ziglog.ziglog.domain.member.service;
 
-import com.ziglog.ziglog.member.entity.Member;
+import com.ziglog.ziglog.domain.member.entity.Member;
 
 import java.util.Optional;
 

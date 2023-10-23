@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.note.entity;
+package com.ziglog.ziglog.domain.note.entity;
 
 import jakarta.persistence.*;
 

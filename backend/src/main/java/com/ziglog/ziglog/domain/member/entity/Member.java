@@ -1,10 +1,9 @@
-package com.ziglog.ziglog.member.entity;
+package com.ziglog.ziglog.domain.member.entity;
 
-import com.ziglog.ziglog.bookmark.Entity.Bookmark;
-import com.ziglog.ziglog.note.entity.Directory;
-import com.ziglog.ziglog.note.entity.Note;
+import com.ziglog.ziglog.domain.bookmark.Entity.Bookmark;
+import com.ziglog.ziglog.domain.note.entity.Directory;
+import com.ziglog.ziglog.domain.note.entity.Note;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package com.ziglog.ziglog.bookmark.Entity;
+package com.ziglog.ziglog.domain.bookmark.Entity;
 
-import com.ziglog.ziglog.member.entity.Member;
-import com.ziglog.ziglog.note.entity.Note;
+import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.note.entity.Note;
 import jakarta.persistence.*;
 
 @Entity
