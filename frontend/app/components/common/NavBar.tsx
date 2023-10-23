@@ -22,7 +22,7 @@ export default function NavBar({
   return (
     <div
       {...rest}
-      className={`${THEME_VARIANTS[theme]} w-full h-full shadow-md p-5 flex items-center justify-between`}
+      className={`${THEME_VARIANTS[theme]} w-full h-full border-b border-black p-5 flex items-center justify-between`}
     >
       <Text type="span" className="ml-4">
         {'ZigLog'}
