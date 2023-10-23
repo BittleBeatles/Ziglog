@@ -1,7 +1,5 @@
 package com.ziglog.ziglog.note.entity;
 
-import com.ziglog.ziglog.member.entity.Member;
-import com.ziglog.ziglog.note.entity.Note;
 import jakarta.persistence.*;
 
 @Entity

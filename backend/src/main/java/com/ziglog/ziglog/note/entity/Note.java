@@ -38,6 +38,7 @@ public class Note {
     @JoinColumn(name = "directory_id")
     private Directory directory;
 
+    //공개하면 저장이 게시가 되고, 비공개 선택하면 그냥 저장
     @Column
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime postDateTime;

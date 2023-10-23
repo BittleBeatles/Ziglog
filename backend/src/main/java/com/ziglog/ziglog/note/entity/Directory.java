@@ -22,11 +22,11 @@ public class Directory {
     private Directory parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-    private List<Directory> subDirectories = new ArrayList<>();
+    private List<Directory> children = new ArrayList<>();
 
     @OneToMany(mappedBy = "directory", fetch = FetchType.LAZY)
     private List<Note> notes = new ArrayList<>();
 
-    @OneToOne(mappedBy = "rootDirectory", fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member owner;
 }
