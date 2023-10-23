@@ -14,6 +14,11 @@ const ICON_COLOR = {
   light: 'black',
 };
 
+const TEXT_COLOR = {
+  dark: 'text-white',
+  light: 'text-black',
+};
+
 export default function QuotationListBox({ theme }: QuotationListBoxProps) {
   const [showList, setShowList] = useState(false);
   const quotationList = [
@@ -39,31 +44,31 @@ export default function QuotationListBox({ theme }: QuotationListBoxProps) {
       {/* 제목 */}
       <Text type="h3">이 글을 참조한 글 목록</Text>
       {/* 목록 보기 */}
-      <div className="flex flex-row gap-3">
-        {!showList ? (
-          <span onClick={() => setShowList(!showList)}>
-            <SvgIcon name="ArrowDown" color={ICON_COLOR[theme]} />
-          </span>
-        ) : (
-          <span onClick={() => setShowList(!showList)}>
-            <SvgIcon name="ArrowUp" color={ICON_COLOR[theme]} />
-          </span>
-        )}
+      <div className="flex flex-row gap-1 items-center">
+        <span onClick={() => setShowList(!showList)}>
+          <SvgIcon
+            size={40}
+            name={showList ? 'ArrowDown' : 'ArrowUp'}
+            color={ICON_COLOR[theme]}
+          />
+        </span>
         <Text>목록 보기</Text>
       </div>
       {/* 목록 - 추후에 onClick 이벤트 추가하기*/}
-      <div className="flex flex-col gap-1">
-        {quotationList?.map((item) => {
-          console.log(item);
-          return (
-            <div className="text-white" key={item.noteId}>
-              <Text type="p">
-                {item.userNickname} : {item.noteTitle}
-              </Text>
-            </div>
-          );
-        })}
-      </div>
+      {showList && (
+        <div className="flex flex-col gap-1">
+          {quotationList?.map((item) => {
+            console.log(item);
+            return (
+              <div className={`${TEXT_COLOR[theme]}`} key={item.noteId}>
+                <Text type="p">
+                  {item.userNickname} : {item.noteTitle}
+                </Text>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
