@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'react';
-import IconButton from '@components/userPage/IconButton';
 import Button from '@components/common/Button';
 import Text from '@components/common/Text';
+import SvgIcon from './SvgIcon';
 
 interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
   login: boolean;
@@ -26,19 +26,15 @@ export default function NavBar({
       <div className="flex ml-auto space-x-4 items-center">
         {login ? (
           <>
-            <IconButton
-              name={type === 'LightMode' ? 'LightMode' : 'DarkMode'}
-            />
-            <IconButton name="MyPage" />
-            <IconButton name="Search" />
+            <SvgIcon name={type === 'LightMode' ? 'LightMode' : 'DarkMode'} />
+            <SvgIcon name="MyPage" />
+            <SvgIcon name="Search" />
             <Button label="로그아웃" color="charcol" />
           </>
         ) : (
           <>
-            <IconButton
-              name={type === 'LightMode' ? 'LightMode' : 'DarkMode'}
-            />
-            <IconButton name="Search" />
+            <SvgIcon name={type === 'LightMode' ? 'LightMode' : 'DarkMode'} />
+            <SvgIcon name="Search" />
             <Button label="로그인" color="charcol" />
           </>
         )}
