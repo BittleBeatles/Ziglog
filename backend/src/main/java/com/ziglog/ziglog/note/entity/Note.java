@@ -55,5 +55,4 @@ public class Note {
 
     @OneToMany(mappedBy = "endNote")
     private Set<Quotation> quoting = new HashSet<>();
-
 }
