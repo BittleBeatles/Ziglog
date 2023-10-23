@@ -6,14 +6,14 @@ import jakarta.persistence.*;
 public class Quotation {
 
     @Id
-    @Column
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FROM_NOTE_ID")
-    private Note fromNote;
+    @JoinColumn(name = "s_note_id")
+    private Note startNote;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TO_NOTE_ID")
-    private Note toNote;
+    @JoinColumn(name = "e_note_id")
+    private Note endNote;
 
 }
