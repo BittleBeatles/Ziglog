@@ -10,6 +10,6 @@ type Story = StoryObj<typeof meta>;
 
 export const PublicPrivateToggleExample = {
   args: {
-    type: 'private',
+    scope: 'private',
   },
 } satisfies Story;

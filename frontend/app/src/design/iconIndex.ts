@@ -1,14 +1,31 @@
-export { default as addFolder } from '../../../public/icons/addFolder.svg';
-export { default as addNote } from '../../../public/icons/addNote.svg';
-export { default as arowUp } from '../../../public/icons/arowUp.svg';
-export { default as arrowDown } from '../../../public/icons/arrowDown.svg';
-export { default as bookMarkFill } from '../../../public/icons/bookMarkFill.svg';
-export { default as camera } from '../../../public/icons/camera.svg';
-export { default as darkMode } from '../../../public/icons/darkMode.svg';
-export { default as globalSearch } from '../../../public/icons/globalSearch.svg';
-export { default as graphView } from '../../../public/icons/graphView.svg';
-export { default as lightMode } from '../../../public/icons/lightMode.svg';
-export { default as myPage } from '../../../public/icons/myPage.svg';
-export { default as search } from '../../../public/icons/search.svg';
-export { default as private } from '../../../public/icons/private.svg';
-export { default as public } from '../../../public/icons/public.svg';
+import AddFolder from '@public/icons/addFolder.svg';
+import AddNote from '@public/icons/addNote.svg';
+import ArowUp from '@public/icons/arowUp.svg';
+import ArrowDown from '@public/icons/arrowDown.svg';
+import BookMarkFill from '@public/icons/bookMarkFill.svg';
+import Camera from '@public/icons/camera.svg';
+import DarkMode from '@public/icons/darkMode.svg';
+import GlobalSearch from '@public/icons/globalSearch.svg';
+import GraphView from '@public/icons/graphView.svg';
+import LightMode from '@public/icons/lightMode.svg';
+import MyPage from '@public/icons/myPage.svg';
+import Search from '@public/icons/search.svg';
+import Private from '@public/icons/private.svg';
+import Public from '@public/icons/public.svg';
+
+export {
+  AddFolder,
+  AddNote,
+  ArowUp,
+  ArrowDown,
+  BookMarkFill,
+  Camera,
+  DarkMode,
+  GlobalSearch,
+  GraphView,
+  LightMode,
+  MyPage,
+  Search,
+  Private,
+  Public,
+};

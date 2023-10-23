@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import GlobalSearchInput from '@components/common/GlobalSearchInput';
+import GlobalSearchInput from '@components/search/GlobalSearchInput';
 
 const meta: Meta<typeof GlobalSearchInput> = {
   component: GlobalSearchInput,
