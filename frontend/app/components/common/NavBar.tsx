@@ -1,5 +1,4 @@
-'use client';
-import { HTMLAttributes, useEffect, useState } from 'react';
+import { HTMLAttributes } from 'react';
 import IconButton from '@components/userPage/IconButton';
 import Button from '@components/common/Button';
 import Text from '@components/common/Text';
@@ -12,14 +11,10 @@ interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
 
 export default function NavBar({
   login,
+  theme = 'light',
   type = 'LightMode',
   ...rest
 }: NavBarProps) {
-  const [theme, setTheme] = useState(type === 'LightMode' ? 'light' : 'dart');
-
-  useEffect(() => {
-    setTheme(type === 'LightMode' ? 'light' : 'dark');
-  }, [type]);
   return (
     <div
       {...rest}
@@ -52,7 +47,7 @@ export default function NavBar({
   );
 }
 
-const THEME_VARIANTS: { [key: string]: string } = {
+const THEME_VARIANTS = {
   light: 'bg-white text-black shadow-dark-500/50',
   dark: 'bg-dark-background-page text-white shadow-white-500/50',
 };
