@@ -41,7 +41,7 @@ const PersonalSearchInput = forwardRef<
       </div>
       <input
         className={`w-full outline-none ${
-          theme === 'light' ? 'bg-white' : 'bg-dark-background-layout'
+          theme === 'light' ? 'bg-white' : 'bg-dark-background-page'
         }`}
         ref={ref}
         {...rest}
@@ -55,9 +55,9 @@ const PersonalSearchInput = forwardRef<
 
 const THEME_VARIANTS = {
   light: 'bg-white text-black border border-border-grey',
-  dark: 'bg-dark-background-layout text-white border border-black',
+  dark: 'bg-dark-background-page text-white border border-black',
   focusLight: 'bg-white text-black border border-grey',
-  focusDark: 'bg-dark-background-layout text-white border border-white-300',
+  focusDark: 'bg-dark-background-page text-white border border-white-300',
 };
 
 export default PersonalSearchInput;
