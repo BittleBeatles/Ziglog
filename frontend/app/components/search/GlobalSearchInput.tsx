@@ -2,7 +2,6 @@
 import React, { forwardRef, useState } from 'react';
 import SvgIcon from '@components/common/SvgIcon';
 import { InputHTMLAttributes } from 'react';
-import Search from '@public/icons/search.svg';
 import colors from '@src/design/color';
 
 interface GlobalSearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -35,7 +34,7 @@ const GlobalSearchInput = forwardRef<HTMLInputElement, GlobalSearchInputProps>(
           <SvgIcon
             name="Search"
             size={40}
-            color={theme === 'light' ? colors.charcol : colors.white}
+            color={theme === 'light' ? colors.grey : colors.white}
           />
         </div>
         <input
@@ -54,10 +53,10 @@ const GlobalSearchInput = forwardRef<HTMLInputElement, GlobalSearchInputProps>(
 );
 
 const THEME_VARIANTS = {
-  light: 'bg-white text-black border border-gray-300',
-  dark: 'bg-dark-background-layout text-white',
-  focusLight: 'bg-white text-black border border-black',
-  focusDark: 'bg-dark-background-layout text-whiteborder border border-white',
+  light: 'bg-white text-black border border-border-grey',
+  dark: 'bg-dark-background-layout text-white border border-black',
+  focusLight: 'bg-white text-black border border-grey',
+  focusDark: 'bg-dark-background-layout text-white border border-white-300',
 };
 
 export default GlobalSearchInput;
