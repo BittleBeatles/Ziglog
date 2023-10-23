@@ -1,14 +1,23 @@
 import React from 'react';
-import * as Icons from '../../src/design/iconIndex';
-import Image from 'next/image';
+import * as Icons from '@src/design/iconIndex';
 
 interface IconProps {
   name: keyof typeof Icons;
   size?: number;
+  color?: string;
 }
 
-export default function SvgIcon({ name, size = 24 }: IconProps) {
-  const iconSrc = Icons[name];
+export default function SvgIcon({
+  name,
+  size = 24,
+  color = 'black',
+}: IconProps) {
+  const IconComponent = Icons[name];
 
-  return <Image src={iconSrc} alt={'icons'} width={size} height={size} />;
+  if (!IconComponent) {
+    console.warn(`아이콘 이름 중에 "${name}"를 가진 아이콘은 없어요~`);
+    return null;
+  }
+
+  return <IconComponent width={size} height={size} fill={color} />;
 }

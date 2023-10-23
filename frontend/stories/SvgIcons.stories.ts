@@ -9,9 +9,10 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const IconExample = {
+export const SvgIconExample = {
   args: {
-    name: 'arrowDown',
+    name: 'ArrowDown',
     size: 24,
+    color: 'black',
   },
 } satisfies Story;
