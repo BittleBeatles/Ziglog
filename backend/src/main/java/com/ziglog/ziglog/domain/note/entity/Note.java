@@ -1,11 +1,9 @@
-package com.ziglog.ziglog.note.entity;
+package com.ziglog.ziglog.domain.note.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ziglog.ziglog.bookmark.Entity.Bookmark;
-import com.ziglog.ziglog.member.entity.Member;
+import com.ziglog.ziglog.domain.bookmark.Entity.Bookmark;
+import com.ziglog.ziglog.domain.member.entity.Member;
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

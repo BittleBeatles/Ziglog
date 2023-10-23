@@ -1,8 +1,7 @@
-package com.ziglog.ziglog.note.entity;
+package com.ziglog.ziglog.domain.note.entity;
 
-import com.ziglog.ziglog.member.entity.Member;
+import com.ziglog.ziglog.domain.member.entity.Member;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.Fetch;
 
 import java.util.ArrayList;
 import java.util.List;
