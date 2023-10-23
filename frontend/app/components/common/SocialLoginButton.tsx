@@ -1,21 +1,21 @@
 import React from 'react';
 import { ButtonHTMLAttributes } from 'react';
 import Image from 'next/image';
+import GoogleLoginButtonLogo from '@public/images/GoogleLoginButtonLogo_small.png';
+import KakaoLoginButtonLogo from '@public/images/KakaoLoginButtonLogo_small.png';
 
 interface SocialLoginButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
-  name: string;
+  name: 'google' | 'kakao';
 }
 
 export default function SocialLoginButton({
   name,
   ...rest
 }: SocialLoginButtonProps) {
-  const imageSrc = `${process.env.PUBLIC_URL}/images/${
-    name === 'google'
-      ? 'GoogleLoginButtonLogo_small.png'
-      : 'KakaoLoginButtonLogo_small.png'
-  }`;
+  const imageSrc =
+    name === 'google' ? GoogleLoginButtonLogo : KakaoLoginButtonLogo;
+
   const altText = name === 'google' ? 'Google 로그인' : '카카오 로그인';
   const imageWidth = 200;
   const imageHeight = 300;
