@@ -11,11 +11,11 @@ import java.util.List;
 public class Directory {
 
     @Id
-    @Column
+    @Column(name = "id")
     private Long id;
 
-    @Column
-    private String name;
+    @Column(name = "title")
+    private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_ID")
