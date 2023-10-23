@@ -4,11 +4,13 @@ import com.ziglog.ziglog.domain.bookmark.Entity.Bookmark;
 import com.ziglog.ziglog.domain.note.entity.Directory;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "USER")
+@Getter
 public class Member {
 
     @Id

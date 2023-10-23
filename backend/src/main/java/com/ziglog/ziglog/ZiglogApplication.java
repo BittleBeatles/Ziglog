@@ -9,5 +9,4 @@ public class ZiglogApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ZiglogApplication.class, args);
 	}
-
 }
