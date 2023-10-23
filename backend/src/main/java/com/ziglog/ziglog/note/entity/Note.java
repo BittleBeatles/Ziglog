@@ -17,43 +17,42 @@ import java.util.Set;
 public class Note {
 
     @Id
-    @Column
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
+    @Column(name = "title")
     private String title;
 
-    @Column
+    @Column(name = "content")
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private Member author;
 
-    @Column
+    @Column(name = "is_public")
     private boolean isPublic;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "directory_id")
     private Directory directory;
 
-    //공개하면 저장이 게시가 되고, 비공개 선택하면 그냥 저장
-    @Column
+    //공개하면 저장이 게시가 되고, 비공개 선택하면 그냥 저장. 따로 수정 게시 여부나 수정 게시 시간을 표시하지는 않음.
+    @Column(name = "post_datetime")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime postDateTime;
+    private LocalDateTime postDatetime;
 
-    @Column
+    @Column(name = "save_datetime")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime saveDateTime;
+    private LocalDateTime saveDatetime;
 
     @OneToMany(mappedBy = "note", cascade = CascadeType.REMOVE)
     private List<Bookmark> bookmarks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "fromNote")
+    @OneToMany(mappedBy = "startNote")
     private Set<Quotation> quoted = new HashSet<>();
 
-    @OneToMany(mappedBy = "toNote")
+    @OneToMany(mappedBy = "endNote")
     private Set<Quotation> quoting = new HashSet<>();
-
 }

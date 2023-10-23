@@ -13,20 +13,20 @@ import java.util.List;
 public class Member {
 
     @Id
-    @Column
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
+    @Column(name = "EMAIL")
     private String email;
 
-    @Column
+    @Column(name = "PASSWORD")
     private String password;
 
-    @Column
+    @Column(name = "NICKNAME")
     private String nickname;
 
-    @Column (columnDefinition = "varchar(32) default 'GUEST'")
+    @Column (columnDefinition = "varchar(32) default 'GUEST'", name = "ROLE")
     @Enumerated(EnumType.STRING)
     private Role role;
 
