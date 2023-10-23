@@ -1,3 +1,4 @@
+'use client';
 import { HTMLAttributes, useEffect, useState } from 'react';
 import IconButton from '@components/userPage/IconButton';
 import Button from '@components/common/Button';
@@ -6,18 +7,18 @@ import Text from '@components/common/Text';
 interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
   login: boolean;
   theme?: 'light' | 'dark';
-  type?: 'lightMode' | 'darkMode';
+  type?: 'LightMode' | 'DarkMode';
 }
 
 export default function NavBar({
   login,
-  type = 'lightMode',
+  type = 'LightMode',
   ...rest
 }: NavBarProps) {
-  const [theme, setTheme] = useState(type === 'lightMode' ? 'light' : 'dart');
+  const [theme, setTheme] = useState(type === 'LightMode' ? 'light' : 'dart');
 
   useEffect(() => {
-    setTheme(type === 'lightMode' ? 'light' : 'dark');
+    setTheme(type === 'LightMode' ? 'light' : 'dark');
   }, [type]);
   return (
     <div
@@ -31,18 +32,18 @@ export default function NavBar({
         {login ? (
           <>
             <IconButton
-              name={type === 'lightMode' ? 'lightMode' : 'darkMode'}
+              name={type === 'LightMode' ? 'LightMode' : 'DarkMode'}
             />
-            <IconButton name="myPage" />
-            <IconButton name="search" />
+            <IconButton name="MyPage" />
+            <IconButton name="Search" />
             <Button label="로그아웃" color="charcol" />
           </>
         ) : (
           <>
             <IconButton
-              name={type === 'lightMode' ? 'lightMode' : 'darkMode'}
+              name={type === 'LightMode' ? 'LightMode' : 'DarkMode'}
             />
-            <IconButton name="search" />
+            <IconButton name="Search" />
             <Button label="로그인" color="charcol" />
           </>
         )}
