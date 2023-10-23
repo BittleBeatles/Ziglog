@@ -9,6 +9,7 @@ import org.hibernate.annotations.Cascade;
 import java.util.List;
 
 @Entity
+@Table(name = "USER")
 public class Member {
 
     @Id
@@ -17,20 +18,17 @@ public class Member {
     private Long id;
 
     @Column
-    private String nickname;
-
-    @Column
     private String email;
 
     @Column
     private String password;
 
+    @Column
+    private String nickname;
+
     @Column (columnDefinition = "varchar(32) default 'GUEST'")
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @Column
-    private String profileUrl;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Note> notes;
@@ -38,7 +36,6 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Bookmark> bookmarks;
 
-    @OneToOne
-    @JoinColumn(name = "ROOT_DIRECTORY_ID")
-    private Directory rootDirectory;
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
+    private List<Directory> directories;
 }
