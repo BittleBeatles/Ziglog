@@ -23,7 +23,7 @@ const config: Config = {
         // 버튼
         charcol: '#4B4B4B',
         white: '#FFFFFF',
-        'dark-background-layout': ' #000000',
+        'dark-background-layout': ' #121212',
         'dark-background-page': '#3A3A3C',
         modal: '#F6F6F6',
         'modal-border': '#BDBDBD',

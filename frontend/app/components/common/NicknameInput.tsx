@@ -22,5 +22,5 @@ export default function NicknameInput({
 
 const THEME_VARIANTS = {
   light: 'bg-gray-300 text-black border border-gray-300',
-  dark: 'bg-dark-background-layout text-white',
+  dark: 'bg-dark-background-page text-white',
 };
