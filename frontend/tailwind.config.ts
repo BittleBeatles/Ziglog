@@ -20,6 +20,8 @@ const config: Config = {
         'border-grey': '#E5E5E5',
         // text용
         grey: '#888888',
+        // 개인정보 수정 input용
+        'input-grey': '#D9D9D9',
         // 버튼
         charcol: '#4B4B4B',
         white: '#FFFFFF',
