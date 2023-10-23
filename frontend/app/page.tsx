@@ -1,5 +1,6 @@
 'use client';
 import { getTodo } from '@api/test/fetch';
+import SocialLoginButton from '@components/common/SocialLoginButton';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
@@ -9,6 +10,7 @@ export default function Home() {
   }, []);
   return (
     <div>
+      <SocialLoginButton name="kakao" />
       <h1 className="underline decoration-sky-500">지그재그 프로젝트입니다.</h1>
       <div>
         <Link href={'/main'}>메인페이지 가기</Link>

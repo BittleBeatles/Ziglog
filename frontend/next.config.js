@@ -2,6 +2,10 @@
 const nextConfig = {};
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 module.exports = {
+  reactStrictMode: true,
+  env: {
+    BASE_URL: process.env.BASE_URL,
+  },
   webpack(config, options) {
     const { dev, isServer } = options;
 
