@@ -17,15 +17,15 @@ export default function SocialLoginButton({
     name === 'google' ? GoogleLoginButtonLogo : KakaoLoginButtonLogo;
 
   const altText = name === 'google' ? 'Google 로그인' : '카카오 로그인';
-  const imageWidth = 200;
-  const imageHeight = 300;
   return (
     <button {...rest}>
       <Image
         src={imageSrc}
+        width={0}
+        height={0}
         alt={altText}
-        width={imageWidth}
-        height={imageHeight}
+        priority={true}
+        style={{ width: '70%', height: 'auto' }}
       />
     </button>
   );
