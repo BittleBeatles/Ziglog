@@ -1,14 +1,19 @@
 import { ButtonHTMLAttributes } from 'react';
 import SvgIcon from '@components/common/SvgIcon';
 import * as Icons from '../../src/design/iconIndex';
+import colors from '@src/design/color';
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   name: keyof typeof Icons;
+  theme: 'dark' | 'light';
 }
-export default function IconButton({ name }: IconButtonProps) {
+export default function IconButton({ name, theme, ...rest }: IconButtonProps) {
   return (
-    <div className=" bg-white w-fit h-fit p-1 rounded-lg border border-border-grey">
-      <SvgIcon name={name} />
-    </div>
+    <button {...rest}>
+      <SvgIcon
+        name={name}
+        color={theme === 'dark' ? colors.white : colors.black}
+      />
+    </button>
   );
 }
