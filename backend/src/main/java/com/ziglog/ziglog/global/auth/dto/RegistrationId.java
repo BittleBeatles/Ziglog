@@ -1,5 +1,5 @@
 package com.ziglog.ziglog.global.auth.dto;
 
-public enum ClientName {
+public enum RegistrationId {
     google;
 }

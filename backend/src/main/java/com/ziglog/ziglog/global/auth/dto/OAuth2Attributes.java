@@ -1,5 +1,6 @@
 package com.ziglog.ziglog.global.auth.dto;
 
+import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.global.auth.entity.OAuth2GoogleUserInfo;
 import com.ziglog.ziglog.global.auth.entity.OAuth2UserInfo;
 import lombok.Builder;
@@ -19,8 +20,8 @@ public class OAuth2Attributes {
         this.oAuth2UserInfo = oAuth2UserInfo;
     }
 
-    public static OAuth2Attributes of(ClientName clientName, String nameAttributeKey, Map<String, Object> attributes){
-        if (clientName == ClientName.google) return ofGoogle(nameAttributeKey, attributes);
+    public static OAuth2Attributes of(RegistrationId clientName, String nameAttributeKey, Map<String, Object> attributes){
+        if (clientName == RegistrationId.google) return ofGoogle(nameAttributeKey, attributes);
         return null;
     }
 
@@ -30,4 +31,12 @@ public class OAuth2Attributes {
                 .oAuth2UserInfo(new OAuth2GoogleUserInfo(attributes))
                 .build();
     }
+
+    public Member toEntity(){
+        return Member.builder()
+                .email(oAuth2UserInfo.getEmail())
+                .nickname(oAuth2UserInfo.getNickname())
+                .build();
+    }
+
 }
