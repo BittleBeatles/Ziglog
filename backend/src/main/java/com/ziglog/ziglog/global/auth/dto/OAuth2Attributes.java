@@ -11,8 +11,8 @@ import java.util.Map;
 @Getter
 public class OAuth2Attributes {
 
-    private String nameAttributeKey;
-    private OAuth2UserInfo oAuth2UserInfo;
+    private final String nameAttributeKey;
+    private final OAuth2UserInfo oAuth2UserInfo;
 
     @Builder
     public OAuth2Attributes(String nameAttributeKey, OAuth2UserInfo oAuth2UserInfo){

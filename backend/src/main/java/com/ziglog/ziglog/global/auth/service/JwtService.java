@@ -53,9 +53,9 @@ public class JwtService {
     }
 
     public Optional<String> extractAccessToken(HttpServletRequest request){
-        return Optional.ofNullable(request.getHeader("Authorization"))
-                .filter(token -> token.startsWith("Bearer"))
-                .map(token -> token.replace("Bearer", ""));
+        return Optional.ofNullable(request.getHeader(accessTokenHeader))
+                .filter(token -> token.startsWith(BEARER))
+                .map(token -> token.replace(BEARER, ""));
     }
 
     public Optional<String> extractNameFromToken(String token){
@@ -67,7 +67,7 @@ public class JwtService {
     }
 
     public void setAccessTokenHeader(HttpServletResponse response, String accessToken){
-        response.setHeader(accessTokenHeader, "Bearer " + accessToken);
+        response.setHeader(accessTokenHeader, BEARER + accessToken);
     }
 
     public boolean isAccessTokenValid(String refreshToken){
