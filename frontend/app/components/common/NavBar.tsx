@@ -22,21 +22,11 @@ export default function NavBar({
       <Text type="span" className="ml-4">
         {'ZigLog'}
       </Text>
-      <div className="flex ml-auto">
-        {login ? (
-          <div className="flex space-x-4 items-center">
-            <SvgIcon name={theme === 'light' ? 'LightMode' : 'DarkMode'} />
-            <SvgIcon name="MyPage" />
-            <SvgIcon name="Search" />
-            <Button label="로그아웃" color="charcol" />
-          </div>
-        ) : (
-          <div className="flex space-x-4 items-center">
-            <SvgIcon name={theme === 'light' ? 'LightMode' : 'DarkMode'} />
-            <SvgIcon name="Search" />
-            <Button label="로그인" color="charcol" />
-          </div>
-        )}
+      <div className="flex ml-auto space-x-4 items-center">
+        <SvgIcon name={theme === 'light' ? 'LightMode' : 'DarkMode'} />
+        {login && <SvgIcon name="MyPage" />}
+        <SvgIcon name="Search" />
+        <Button label={login ? '로그아웃' : '로그인'} color="charcol" />
       </div>
     </div>
   );
