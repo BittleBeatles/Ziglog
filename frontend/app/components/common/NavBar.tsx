@@ -7,13 +7,11 @@ import SvgIcon from './SvgIcon';
 interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
   login: boolean;
   theme?: 'light' | 'dark';
-  type?: 'LightMode' | 'DarkMode';
 }
 
 export default function NavBar({
   login,
   theme = 'light',
-  type = 'LightMode',
   ...rest
 }: NavBarProps) {
   return (
@@ -27,14 +25,14 @@ export default function NavBar({
       <div className="flex ml-auto">
         {login ? (
           <div className="flex space-x-4 items-center">
-            <SvgIcon name={type === 'LightMode' ? 'LightMode' : 'DarkMode'} />
+            <SvgIcon name={theme === 'light' ? 'LightMode' : 'DarkMode'} />
             <SvgIcon name="MyPage" />
             <SvgIcon name="Search" />
             <Button label="로그아웃" color="charcol" />
           </div>
         ) : (
           <div className="flex space-x-4 items-center">
-            <SvgIcon name={type === 'LightMode' ? 'LightMode' : 'DarkMode'} />
+            <SvgIcon name={theme === 'light' ? 'LightMode' : 'DarkMode'} />
             <SvgIcon name="Search" />
             <Button label="로그인" color="charcol" />
           </div>
