@@ -20,7 +20,7 @@ public class CustomOAuth2User extends DefaultOAuth2User {
 
     @Override
     public String getName() {
-        return member.getNickname();
+        return member.getEmail();
     }
 
     @Override

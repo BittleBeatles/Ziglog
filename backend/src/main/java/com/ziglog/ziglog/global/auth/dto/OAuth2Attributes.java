@@ -36,6 +36,7 @@ public class OAuth2Attributes {
         return Member.builder()
                 .email(oAuth2UserInfo.getEmail())
                 .nickname(oAuth2UserInfo.getNickname())
+                .profileUrl(oAuth2UserInfo.getProfileUrl())
                 .build();
     }
 
