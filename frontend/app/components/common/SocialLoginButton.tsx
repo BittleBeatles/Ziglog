@@ -21,11 +21,10 @@ export default function SocialLoginButton({
     <button {...rest}>
       <Image
         src={imageSrc}
-        width={0}
-        height={0}
+        width={150}
+        height={50}
         alt={altText}
         priority={true}
-        style={{ width: '70%', height: 'auto' }}
       />
     </button>
   );

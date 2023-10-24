@@ -5,8 +5,6 @@ interface ModalProps {
 }
 export default function ModalLayout({ children, classname }: ModalProps) {
   return (
-    <div className={`${classname} w-fit h-fit p-5 bg-modal shadow-md`}>
-      {children}
-    </div>
+    <div className={`${classname} w-fit h-fit p-5 shadow-md`}>{children}</div>
   );
 }

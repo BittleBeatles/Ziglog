@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useRef } from 'react';
 import { AppDispatch } from '@store/store';
 import { useAppSelector } from '@store/store';
+import SocialLoginBox from '@components/common/SocialLoginBox';
 export default function Main() {
   const dispatch = useDispatch<AppDispatch>();
   const username = useAppSelector((state) => state.userReducer.nickname);
@@ -26,6 +27,9 @@ export default function Main() {
         onInput={handleImageInput}
         ref={imageRef}
       />
+      <div className="flex justify-center h-screen">
+        <SocialLoginBox theme="light" />
+      </div>
     </div>
   );
 }
