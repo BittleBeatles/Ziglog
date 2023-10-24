@@ -1,6 +1,4 @@
-package com.ziglog.ziglog.global.auth.entity;
-
-import com.ziglog.ziglog.global.auth.dto.OAuth2Attributes;
+package com.ziglog.ziglog.global.auth.entity.oauth2;
 
 import java.util.Map;
 

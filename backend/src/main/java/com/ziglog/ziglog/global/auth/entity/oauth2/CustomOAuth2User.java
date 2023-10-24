@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.global.auth.entity;
+package com.ziglog.ziglog.global.auth.entity.oauth2;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.entity.Role;

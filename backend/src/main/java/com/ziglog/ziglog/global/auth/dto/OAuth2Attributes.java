@@ -1,8 +1,8 @@
 package com.ziglog.ziglog.global.auth.dto;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
-import com.ziglog.ziglog.global.auth.entity.OAuth2GoogleUserInfo;
-import com.ziglog.ziglog.global.auth.entity.OAuth2UserInfo;
+import com.ziglog.ziglog.global.auth.entity.oauth2.OAuth2GoogleUserInfo;
+import com.ziglog.ziglog.global.auth.entity.oauth2.OAuth2UserInfo;
 import lombok.Builder;
 import lombok.Getter;
 
