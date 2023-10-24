@@ -14035,6 +14035,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tailwind-scrollbar-hide@npm:^1.1.7":
+  version: 1.1.7
+  resolution: "tailwind-scrollbar-hide@npm:1.1.7"
+  checksum: 2434a1db7a92fa91952ce4fbef7f80b83f121fa2fae27453cefc6030c06d368768e3172d3640ae6836fe4f813ed89b40c2f44b1f17756593ab4625259ef22a75
+  languageName: node
+  linkType: hard
+
 "tailwindcss@npm:^3":
   version: 3.3.3
   resolution: "tailwindcss@npm:3.3.3"
@@ -15345,6 +15352,7 @@ __metadata:
     redux-logger: ^3.0.6
     return-fetch: ^0.4.5
     storybook: 7.5.0-alpha.7
+    tailwind-scrollbar-hide: ^1.1.7
     tailwindcss: ^3
     typescript: ^5
     webpack: ^5.89.0

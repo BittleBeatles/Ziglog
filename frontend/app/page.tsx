@@ -1,13 +1,7 @@
-'use client';
-import { getTodo } from '@api/test/fetch';
 import SocialLoginButton from '@components/common/SocialLoginButton';
 import Link from 'next/link';
-import { useEffect } from 'react';
 
 export default function Home() {
-  useEffect(() => {
-    getTodo();
-  }, []);
   return (
     <div>
       <SocialLoginButton name="kakao" />
