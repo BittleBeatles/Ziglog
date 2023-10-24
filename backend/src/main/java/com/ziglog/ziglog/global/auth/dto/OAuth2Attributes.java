@@ -19,12 +19,15 @@ public class OAuth2Attributes {
         this.oAuth2UserInfo = oAuth2UserInfo;
     }
 
-    public static OAuth2Attributes ofGoogle(String nameAttributeKey, Map<String, Object> attributes){
+    public static OAuth2Attributes of(ClientName clientName, String nameAttributeKey, Map<String, Object> attributes){
+        if (clientName == ClientName.google) return ofGoogle(nameAttributeKey, attributes);
+        return null;
+    }
+
+   private static OAuth2Attributes ofGoogle(String nameAttributeKey, Map<String, Object> attributes){
         return OAuth2Attributes.builder()
                 .nameAttributeKey(nameAttributeKey)
                 .oAuth2UserInfo(new OAuth2GoogleUserInfo(attributes))
                 .build();
     }
-
-
 }
