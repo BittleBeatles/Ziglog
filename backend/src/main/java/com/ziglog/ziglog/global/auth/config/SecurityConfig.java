@@ -112,12 +112,4 @@ public class SecurityConfig {
                 );
         return http.build();
     }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        DelegatingPasswordEncoder delegatingPasswordEncoder = (DelegatingPasswordEncoder) PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        delegatingPasswordEncoder.setDefaultPasswordEncoderForMatches(new BCryptPasswordEncoder());
-        return delegatingPasswordEncoder;
-    }
-
 }

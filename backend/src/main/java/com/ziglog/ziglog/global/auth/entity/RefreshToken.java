@@ -1,5 +1,6 @@
 package com.ziglog.ziglog.global.auth.entity;
 
+import com.ziglog.ziglog.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
@@ -12,6 +13,5 @@ public class RefreshToken {
 
     @Id
     private String refreshToken;
-
-    private Long memberId;
+    private Member member;
 }

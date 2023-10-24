@@ -58,7 +58,7 @@ public class JwtService {
                 .map(token -> token.replace(BEARER, ""));
     }
 
-    public Optional<String> extractNameFromToken(String token){
+    public Optional<String> extractEmailFromAccessToken(String token){
         return Optional.ofNullable(JWT.require(Algorithm.HMAC256(secretKey))
                 .build()
                 .verify(token)
@@ -101,9 +101,8 @@ public class JwtService {
                 .build();
         response.setHeader(refreshTokenHeader, cookie.toString());
     }
-    public void saveRefreshToken(String username, String refreshToken) throws UsernameNotFoundException{
-        Member member = memberRepository.findMemberByEmail(username).orElseThrow(() -> new UsernameNotFoundException("리프레시 토큰을 발행할 사용자를 찾을 수 없습니다"));
-        refreshTokenRepository.save(new RefreshToken(refreshToken, member.getId()));
+    public void saveRefreshToken(String refreshToken, Member member) throws UsernameNotFoundException{
+        refreshTokenRepository.save(new RefreshToken(refreshToken, member));
     }
 
     public boolean isRefreshTokenValid (String refreshToken) {
