@@ -10,7 +10,7 @@ export default function SocialLoginBox({
   theme = 'light',
 }: SocialLoginBoxProps) {
   return (
-    <ModalLayout classname={`${THEME_VARIANTS[theme]} px-24`}>
+    <ModalLayout classname={`${THEME_VARIANTS[theme]} px-20`}>
       {
         <div className="flex flex-col items-center justify-center my-4">
           <Text type="b">{'소셜 계정으로 로그인 '}</Text>
