@@ -4,6 +4,7 @@ import SvgIcon from '@components/common/SvgIcon';
 import IconButton from '@components/common/IconButton';
 import { useState } from 'react';
 import colors from '@src/design/color';
+import Link from 'next/link';
 
 interface QuotationListBoxProps {
   theme: 'dark' | 'light';
@@ -51,18 +52,23 @@ export default function QuotationListBox({ theme }: QuotationListBoxProps) {
       </div>
       {/* 목록 - 추후에 onClick 이벤트 추가하기*/}
       {showList && (
-        <div className="flex flex-col gap-1">
+        <ul className="flex flex-col gap-1">
           {quotationList?.map((item) => {
             console.log(item);
             return (
-              <div className={`${TEXT_COLOR[theme]}`} key={item.noteId}>
-                <Text type="p">
-                  {item.userNickname} : {item.noteTitle}
-                </Text>
-              </div>
+              <Link
+                href={`/user-page/${item.userNickname}/read-note/${item.noteId}`}
+                key={item.noteId}
+              >
+                <li className={`${TEXT_COLOR[theme]}`} key={item.noteId}>
+                  <Text type="p">
+                    {item.userNickname} : {item.noteTitle}
+                  </Text>
+                </li>
+              </Link>
             );
           })}
-        </div>
+        </ul>
       )}
     </div>
   );
