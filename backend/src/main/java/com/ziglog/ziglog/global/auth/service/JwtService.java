@@ -25,7 +25,7 @@ import java.util.UUID;
 @Transactional
 public class JwtService {
 
-    @Value("${jwt.secretKey}")
+    @Value("${jwt.secret-key}")
     private String secretKey;
 
     @Value("${jwt.access.expiration}")
