@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Directory {
+public class Folder {
 
     @Id
     @Column(name = "id")
@@ -18,12 +18,12 @@ public class Directory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_ID")
-    private Directory parent;
+    private Folder parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-    private List<Directory> children = new ArrayList<>();
+    private List<Folder> children = new ArrayList<>();
 
-    @OneToMany(mappedBy = "directory", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY)
     private List<Note> notes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
