@@ -1,14 +1,16 @@
 import ModalLayout from '@components/common/ModalLayout';
 import Text from '@components/common/Text';
-import SocialLoginButton from './SocialLoginButton';
+import SocialLoginButton from '@components/common/SocialLoginButton';
 
 interface SocialLoginBoxProps {
   theme?: 'light' | 'dark';
 }
 
-export default function SocialLoginBox({ theme }: SocialLoginBoxProps) {
+export default function SocialLoginBox({
+  theme = 'light',
+}: SocialLoginBoxProps) {
   return (
-    <ModalLayout classname="px-24">
+    <ModalLayout classname={`${THEME_VARIANTS[theme]} px-24`}>
       {
         <div className="flex flex-col items-center justify-center my-4">
           <Text type="b">{'소셜 계정으로 로그인 '}</Text>
@@ -21,3 +23,8 @@ export default function SocialLoginBox({ theme }: SocialLoginBoxProps) {
     </ModalLayout>
   );
 }
+
+const THEME_VARIANTS = {
+  light: 'bg-gray-300 text-black border border-gray-300',
+  dark: 'bg-dark-background-page text-white',
+};
