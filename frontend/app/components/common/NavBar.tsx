@@ -2,7 +2,7 @@
 import { HTMLAttributes } from 'react';
 import Button from '@components/common/Button';
 import Text from '@components/common/Text';
-import IconButton from '@components/userPage/IconButton';
+import IconButton from '@components/common/IconButton';
 
 interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
   login: boolean;
@@ -26,9 +26,10 @@ export default function NavBar({
         <IconButton
           name={theme === 'light' ? 'LightMode' : 'DarkMode'}
           theme={theme}
+          size={24}
         />
-        {login && <IconButton name="MyPage" theme={theme} />}
-        <IconButton name="Search" theme={theme} />
+        {login && <IconButton name="MyPage" theme={theme} size={24} />}
+        <IconButton name="Search" theme={theme} size={24} />
         <Button label={login ? '로그아웃' : '로그인'} color="charcol" />
       </div>
     </div>
