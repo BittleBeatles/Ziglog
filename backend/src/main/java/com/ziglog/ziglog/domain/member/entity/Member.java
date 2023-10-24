@@ -29,7 +29,10 @@ public class Member {
     @Column(name = "NICKNAME")
     private String nickname;
 
-    @Column (columnDefinition = "varchar(32) default 'GUEST'", name = "ROLE")
+    @Column(name = "PROFILE_URL")
+    private String profileUrl;
+
+    @Column (name = "ROLE")
     @Enumerated(EnumType.STRING)
     private Role role;
 
