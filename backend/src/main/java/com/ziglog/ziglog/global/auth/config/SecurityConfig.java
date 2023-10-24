@@ -5,6 +5,7 @@ import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.global.auth.handler.OAuth2LoginFailureHandler;
 import com.ziglog.ziglog.global.auth.handler.OAuth2LoginSuccessHandler;
 import com.ziglog.ziglog.global.auth.service.CustomOAuth2UserService;
+import com.ziglog.ziglog.global.auth.service.JwtService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -45,4 +46,78 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class SecurityConfig {
+
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final JwtService jwtService;
+    private final MemberRepository memberRepository;
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+    @Value("jwt.access.header")
+    private String accessTokenHeader;
+
+    @Value("jwt.refresh.header")
+    private String refreshTokenHeader;
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration corsConfig = new CorsConfiguration();
+
+        //corsConfig.addAllowedOrigin(프론트엔드 주소)
+        corsConfig.setAllowCredentials(true);
+        corsConfig.addAllowedHeader("*");
+        corsConfig.addAllowedMethod("*");
+        corsConfig.addExposedHeader(accessTokenHeader);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+        return source;
+    }
+
+    @Bean
+    public SecurityFilterChain httpFilterChain(HttpSecurity http) throws Exception {
+        http
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .cors(cors ->
+                        cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .sessionManagement(sessionManagement -> sessionManagement
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .requiresChannel(requiresChannel -> requiresChannel
+                        .requestMatchers("/oauth/authorization").requiresSecure()
+                )
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .anyRequest().permitAll()
+                )
+                .oauth2Login((oauth2login) ->
+                        oauth2login
+                                .loginPage("/login")
+                                .successHandler(oAuth2LoginSuccessHandler)
+                                .failureHandler(oAuth2LoginFailureHandler)
+                                .authorizationEndpoint((endpoint) -> endpoint
+                                        .baseUri("/oauth2/authorization"))
+                                .redirectionEndpoint((endpoint) ->
+                                        endpoint.baseUri("/login/oauth2/code/*"))
+                                .userInfoEndpoint((endpoint) ->
+                                        endpoint.userService(customOAuth2UserService))
+                )
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessHandler(((request, response, authentication) -> { return; }))
+                        .invalidateHttpSession(true)
+                        .deleteCookies(refreshTokenHeader)
+                )
+                .exceptionHandling(handling -> handling
+                        .authenticationEntryPoint((((request, response, authException) -> {response.setStatus(401);})))
+                );
+        return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        DelegatingPasswordEncoder delegatingPasswordEncoder = (DelegatingPasswordEncoder) PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        delegatingPasswordEncoder.setDefaultPasswordEncoderForMatches(new BCryptPasswordEncoder());
+        return delegatingPasswordEncoder;
+    }
+
 }
