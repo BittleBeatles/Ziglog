@@ -28,7 +28,6 @@ import java.util.UUID;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -79,7 +78,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         return memberRepository.save(
             Member.builder()
                     .email(member.getEmail())//받아온 이메일
-                    .password(passwordEncoder.encode(UUID.randomUUID().toString()))//임의의 비밀번호
+                    .password(UUID.randomUUID().toString())//임의의 비밀번호
                     .nickname(tempNick)//임의의 닉네임
                     .profileUrl(member.getProfileUrl())//받아온 프로필 경로
                     .role(Role.USER)//회원으로 권한 설정

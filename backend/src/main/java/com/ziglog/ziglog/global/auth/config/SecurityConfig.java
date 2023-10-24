@@ -84,7 +84,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .requiresChannel(requiresChannel -> requiresChannel
-                        .requestMatchers("/oauth/authorization").requiresSecure()
+                        .requestMatchers(new AntPathRequestMatcher("/oauth/authorization")).requiresSecure()
                 )
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .anyRequest().permitAll()
