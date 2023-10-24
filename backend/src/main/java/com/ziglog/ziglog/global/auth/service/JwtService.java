@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
+import com.ziglog.ziglog.global.auth.entity.RefreshToken;
+import com.ziglog.ziglog.global.auth.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,7 @@ public class JwtService {
     private static final String BEARER = "Bearer ";
 
     private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public String issueAccessToken(String username){
         Date now = new Date();
@@ -104,12 +107,12 @@ public class JwtService {
     }
 
     public boolean isRefreshTokenValid (String refreshToken) {
+        //Cookie로 들어온 리프레시 토큰이 Redis에 존재하는지 확인
         return refreshTokenRepository.existsById(refreshToken);
     }
 
     public void sendAccessTokenAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken){
         response.setStatus(HttpServletResponse.SC_OK);
-
         setAccessTokenHeader(response, accessToken);
         setRefreshTokenCookie(response, refreshToken);
     }
