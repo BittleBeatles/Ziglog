@@ -14,6 +14,9 @@ import Private from '@public/icons/private.svg';
 import Public from '@public/icons/public.svg';
 import BookMarks from '@public/icons/bookMarks.svg';
 import Note from '@public/icons/note.svg';
+import NoteFill from '@public/icons/noteFill.svg';
+import Folder from '@public/icons/folder.svg';
+import FolderOpen from '@public/icons/folderOpen.svg';
 
 export {
   AddFolder,
@@ -32,4 +35,7 @@ export {
   Public,
   BookMarks,
   Note,
+  Folder,
+  FolderOpen,
+  NoteFill,
 };
