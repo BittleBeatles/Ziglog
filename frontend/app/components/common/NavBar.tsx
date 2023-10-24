@@ -2,7 +2,7 @@
 import { HTMLAttributes } from 'react';
 import Button from '@components/common/Button';
 import Text from '@components/common/Text';
-import SvgIcon from './SvgIcon';
+import IconButton from '@components/userPage/IconButton';
 
 interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
   login: boolean;
@@ -23,9 +23,12 @@ export default function NavBar({
         {'ZigLog'}
       </Text>
       <div className="flex ml-auto space-x-4 items-center">
-        <SvgIcon name={theme === 'light' ? 'LightMode' : 'DarkMode'} />
-        {login && <SvgIcon name="MyPage" />}
-        <SvgIcon name="Search" />
+        <IconButton
+          name={theme === 'light' ? 'LightMode' : 'DarkMode'}
+          theme={theme}
+        />
+        {login && <IconButton name="MyPage" theme={theme} />}
+        <IconButton name="Search" theme={theme} />
         <Button label={login ? '로그아웃' : '로그인'} color="charcol" />
       </div>
     </div>
