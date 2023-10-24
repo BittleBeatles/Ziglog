@@ -1,25 +1,31 @@
-import { configureStore, ThunkAction } from '@reduxjs/toolkit';
+import {
+  configureStore,
+  ThunkAction,
+  Action,
+  combineReducers,
+} from '@reduxjs/toolkit';
 import { Context, createWrapper } from 'next-redux-wrapper';
-import counterReducer from './modules/counter';
+import counterSlice from './modules/counter';
 import logger from 'redux-logger';
-import { Action } from 'redux';
 
-const makeStore = (context: Context) =>
+const reducer = combineReducers({
+  counter: counterSlice,
+});
+
+const store = (context: Context) =>
   configureStore({
-    reducer: {
-      counter: counterReducer,
-    },
+    reducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
     devTools: true,
   });
 
-export type Appstore = ReturnType<typeof makeStore>;
-export type Appstate = ReturnType<Appstore['getState']>;
+export type Appstore = ReturnType<typeof store>;
+export type Rootstate = ReturnType<Appstore['getState']>;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
-  Appstate,
+  Rootstate,
   unknown,
   Action
 >;
 
-export const wrapper = createWrapper<Appstore>(makeStore);
+export const wrapper = createWrapper<Appstore>(store);
