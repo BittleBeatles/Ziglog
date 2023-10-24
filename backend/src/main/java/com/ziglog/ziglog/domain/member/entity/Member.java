@@ -4,6 +4,7 @@ import com.ziglog.ziglog.domain.bookmark.Entity.Bookmark;
 import com.ziglog.ziglog.domain.note.entity.Directory;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "USER")
 @Getter
+@Builder
 public class Member {
 
     @Id
@@ -39,4 +41,8 @@ public class Member {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<Directory> directories;
+
+    public void setNickname(String nickname){
+        this.nickname = nickname;
+    }
 }
