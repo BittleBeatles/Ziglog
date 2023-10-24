@@ -12,6 +12,8 @@ import MyPage from '@public/icons/myPage.svg';
 import Search from '@public/icons/search.svg';
 import Private from '@public/icons/private.svg';
 import Public from '@public/icons/public.svg';
+import BookMarks from '@public/icons/bookMarks.svg';
+import Note from '@public/icons/note.svg';
 
 export {
   AddFolder,
@@ -28,4 +30,6 @@ export {
   Search,
   Private,
   Public,
+  BookMarks,
+  Note,
 };
