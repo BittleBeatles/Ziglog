@@ -69,17 +69,20 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         //아직 없는 닉네임이 나올 때까지 새로운 닉네임을 만듦
         String tempNick = NicknameGenerator.generateRandomNickname();
+        log.info("OAuth2UserService - saveMember() : 새로운 닉네임을 배정. {}", tempNick);
         while (memberRepository.existsMemberByNickname(tempNick)){
             tempNick = NicknameGenerator.generateRandomNickname();
+            log.info("OAuth2UserService - saveMember() : 새로운 닉네임을 배정. {}", tempNick);
         }
 
         //임의의 닉네임 + 임의의 비밀번호를 배정하고 저장
         return memberRepository.save(
             Member.builder()
-                    .email(member.getEmail())
-                    .nickname(tempNick)
-                    .password(passwordEncoder.encode(UUID.randomUUID().toString()))
-                    .role(Role.USER)
+                    .email(member.getEmail())//받아온 이메일
+                    .password(passwordEncoder.encode(UUID.randomUUID().toString()))//임의의 비밀번호
+                    .nickname(tempNick)//임의의 닉네임
+                    .profileUrl(member.getProfileUrl())//받아온 프로필 경로
+                    .role(Role.USER)//회원으로 권한 설정
                     .build()
         );
     }

@@ -16,6 +16,11 @@ public class OAuth2GoogleUserInfo extends OAuth2UserInfo {
     }
 
     @Override
+    public String getProfileUrl(){
+        return (String) attributes.get("picture");
+    }
+
+    @Override
     public String getNickname() {
         return (String) attributes.get("nickname");
     }
