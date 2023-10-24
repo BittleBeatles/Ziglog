@@ -20,13 +20,14 @@ export default function IconButtonWithBg({
   ...rest
 }: IconButtonWithBgProps) {
   return (
-    <div
+    <button
       className={`${THEME_VARIANTS[theme]} w-fit h-fit p-1 rounded-lg border border-border-grey`}
+      {...rest}
     >
       <SvgIcon
         name={name}
         color={theme === 'dark' ? colors.white : colors.black}
       />
-    </div>
+    </button>
   );
 }
