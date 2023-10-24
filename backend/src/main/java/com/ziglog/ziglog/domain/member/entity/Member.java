@@ -1,20 +1,20 @@
 package com.ziglog.ziglog.domain.member.entity;
 
 import com.ziglog.ziglog.domain.bookmark.Entity.Bookmark;
-import com.ziglog.ziglog.domain.note.entity.Directory;
+import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "USER")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Member {
-
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,7 +40,7 @@ public class Member {
     private List<Bookmark> bookmarks;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
-    private List<Directory> directories;
+    private List<Folder> folders;
 
     public void setNickname(String nickname){
         this.nickname = nickname;
