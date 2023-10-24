@@ -9,6 +9,7 @@ import com.ziglog.ziglog.global.auth.entity.CustomOAuth2User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -17,12 +18,14 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -62,13 +65,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             Member.builder()
                     .email(member.getEmail())
                     .nickname(member.getNickname())
-                    .password("asdasd")
+                    .password(passwordEncoder.encode(UUID.randomUUID().toString()))
                     .role(Role.GUEST)
                     .build()
         );
     }
-
-
-
-
 }
