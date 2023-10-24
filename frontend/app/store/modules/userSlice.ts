@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserInfo } from './type';
-import { Rootstate } from '..';
 
 const initialState = {
   isLogin: false,
@@ -11,8 +10,8 @@ const initialState = {
   theme: 'light',
 };
 
-export const userSlice = createSlice({
-  name: 'userSlice',
+export const user = createSlice({
+  name: 'user',
   initialState,
   reducers: {
     logOut: () => {
@@ -30,5 +29,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const {} = userSlice.actions;
-export default userSlice.reducer;
+export const { logOut, setUserToken } = user.actions;
+export default user.reducer;
