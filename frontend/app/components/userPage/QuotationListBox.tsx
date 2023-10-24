@@ -1,6 +1,7 @@
 'use client';
 import Text from '@components/common/Text';
 import SvgIcon from '@components/common/SvgIcon';
+import IconButton from '@components/common/IconButton';
 import { useState } from 'react';
 import colors from '@src/design/color';
 
@@ -8,11 +9,6 @@ interface QuotationListBoxProps {
   theme: 'dark' | 'light';
   quotationList?: [userNickname: string, noteTitle: string, noteId: number];
 }
-
-const ICON_COLOR = {
-  dark: 'white',
-  light: 'black',
-};
 
 const TEXT_COLOR = {
   dark: 'text-white',
@@ -45,13 +41,12 @@ export default function QuotationListBox({ theme }: QuotationListBoxProps) {
       <Text type="h3">이 글을 참조한 글 목록</Text>
       {/* 목록 보기 */}
       <div className="flex flex-row gap-1 items-center">
-        <span onClick={() => setShowList(!showList)}>
-          <SvgIcon
-            size={40}
-            name={showList ? 'ArrowDown' : 'ArrowUp'}
-            color={ICON_COLOR[theme]}
-          />
-        </span>
+        <IconButton
+          onClick={() => setShowList(!showList)}
+          name={showList ? 'ArrowDown' : 'ArrowUp'}
+          size={40}
+          theme={theme}
+        />
         <Text>목록 보기</Text>
       </div>
       {/* 목록 - 추후에 onClick 이벤트 추가하기*/}
