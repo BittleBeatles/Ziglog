@@ -12,5 +12,6 @@ type Story = StoryObj<typeof meta>;
 export const IconButtonExample = {
   args: {
     name: 'AddFolder',
+    theme: 'dark',
   },
 } satisfies Story;
