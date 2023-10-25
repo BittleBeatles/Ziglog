@@ -1,10 +1,13 @@
 'use client';
 import ModalLayout from '@components/common/ModalLayout';
 import ProfileChangeButton from '@components/common/ProfileChangeButton';
-
+import { useDispatch } from 'react-redux';
 import { useRef } from 'react';
-
+import { AppDispatch } from '@store/store';
+import { useAppSelector } from '@store/store';
 export default function Main() {
+  const dispatch = useDispatch<AppDispatch>();
+  const username = useAppSelector((state) => state.userReducer.nickname);
   const imageRef = useRef<HTMLInputElement>(null);
   const handleProfileImageChangeClick = () => {
     if (imageRef.current) {

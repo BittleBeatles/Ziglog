@@ -3,17 +3,16 @@ import { HTMLAttributes } from 'react';
 import Button from '@components/common/Button';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
+import { useAppSelector, useAppDispatch } from '@store/store';
+import { setMyTheme } from '@store/modules/userSlice';
 
 interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
   login: boolean;
-  theme?: 'light' | 'dark';
 }
 
-export default function NavBar({
-  login,
-  theme = 'light',
-  ...rest
-}: NavBarProps) {
+export default function NavBar({ login, ...rest }: NavBarProps) {
+  const dispatch = useAppDispatch();
+  const theme = useAppSelector((state) => state.userReducer.theme);
   return (
     <div
       {...rest}
@@ -24,6 +23,9 @@ export default function NavBar({
       </Text>
       <div className="flex ml-auto space-x-4 items-center">
         <IconButton
+          onClick={() =>
+            dispatch(setMyTheme(theme === 'light' ? 'dark' : 'light'))
+          }
           name={theme === 'light' ? 'LightMode' : 'DarkMode'}
           theme={theme}
           size={24}
