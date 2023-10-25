@@ -14,9 +14,9 @@ public interface NoteService {
 
     public Boolean deleteNote(Long noteId); //해당 아이디의 노트를 삭제
 
-    public Note getNoteDetails(Long noteId); //해당 ID의 노트의 Detail을 가져 오기
+    public Note getNote(Long noteId); //해당 ID의 노트의 Detail을 가져 오기
 
-    public List<Note> findNotesQuotingThisNote(); //이 노트를 참조하고 있는 노트의 리스트를 반환
+    public List<Note> findNotesQuotingThisNote(Long noteId); //이 노트를 참조하고 있는 노트의 리스트를 반환
 
     // 폴더
     public Folder addFolder(Folder folder);//새로운 폴더를 추가
@@ -24,6 +24,7 @@ public interface NoteService {
     public Folder modifyFolder(Folder folder);//폴더의 이름을 변경
 
     public Boolean deleteFolder(Long folderId); //해당 id의 폴더를 삭제
+
     public List<Folder> listFolder(Long userId); //해당 사용자의 모든 디렉토리를 반환
 
     // 인용
