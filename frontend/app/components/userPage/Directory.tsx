@@ -20,6 +20,7 @@ export default function Directory({
         item.type === 'note' ? (
           <Note
             theme={theme}
+            nickname={item.nickname}
             key={item.noteId}
             noteId={item.noteId}
             title={item.title}
@@ -46,6 +47,7 @@ const directoryList: DirectoryItem[] = [
     notes: [
       {
         type: 'note',
+        nickname: 'seongyong',
         noteId: 1,
         title: 'React 1강 기초',
       },
@@ -56,6 +58,7 @@ const directoryList: DirectoryItem[] = [
         notes: [
           {
             type: 'note',
+            nickname: 'seongyong',
             noteId: 2,
             title: 'React 2강 훅스',
           },
@@ -70,6 +73,7 @@ const directoryList: DirectoryItem[] = [
     notes: [
       {
         type: 'note',
+        nickname: 'seongyong',
         noteId: 3,
         title: 'Vue 1강 기초',
       },

@@ -8,6 +8,7 @@ export interface NoteProps {
   type?: 'note';
   noteId: number;
   title: string;
+  nickname: string;
   theme?: 'light' | 'dark';
 }
 
@@ -15,11 +16,12 @@ export default function Note({
   type,
   title,
   noteId,
+  nickname,
   theme = 'light',
 }: NoteProps) {
   return (
     <Link
-      href={`/user-page/${'user-name'}/read-note/${noteId}`}
+      href={`/user-page/${nickname}/read-note/${noteId}`}
       className="flex items-center pl-5 mt-2 mb-2"
     >
       <SvgIcon

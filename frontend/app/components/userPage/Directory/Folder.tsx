@@ -52,6 +52,7 @@ export default function Folder({
               item.type === 'note' ? (
                 <Note
                   theme={theme}
+                  nickname={item.nickname}
                   key={item.noteId}
                   noteId={item.noteId}
                   title={item.title}

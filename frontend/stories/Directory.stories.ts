@@ -19,6 +19,7 @@ export const DirectoryExample = {
         notes: [
           {
             type: 'note',
+            nickname: 'seongyong',
             noteId: 1,
             title: 'React 1강 기초',
           },
@@ -29,6 +30,7 @@ export const DirectoryExample = {
             notes: [
               {
                 type: 'note',
+                nickname: 'seongyong',
                 noteId: 2,
                 title: 'React 2강 훅스',
               },
@@ -43,6 +45,7 @@ export const DirectoryExample = {
         notes: [
           {
             type: 'note',
+            nickname: 'seongyong',
             noteId: 3,
             title: 'Vue 1강 기초',
           },
