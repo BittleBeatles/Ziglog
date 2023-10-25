@@ -1,5 +1,7 @@
+import React from 'react';
 import type { Preview } from '@storybook/react';
 import '../app/globals.css';
+import { ReduxProvider } from '../app/store/provider';
 
 const preview: Preview = {
   parameters: {
@@ -17,6 +19,13 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <ReduxProvider>
+        <Story />
+      </ReduxProvider>
+    ),
+  ],
 };
 
 export default preview;
