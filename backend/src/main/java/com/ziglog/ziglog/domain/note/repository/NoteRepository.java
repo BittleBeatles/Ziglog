@@ -4,12 +4,13 @@ import com.ziglog.ziglog.domain.note.entity.Note;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface NoteRepository extends JpaRepository<Note, Long> {
 
-    public Note findNoteById(Long noteId);
+    Optional<Note> findNoteById(Long noteId);
 
-    public List<Note> findAllById(Long noteId);
+    List<Note> findAllById(Long noteId);
 
-    public void removeNoteById(Long noteId);
+    void removeNoteById(Long noteId);
 }
