@@ -1,4 +1,3 @@
-'use client';
 import ModalLayout from '@components/common/ModalLayout';
 import Text from '@components/common/Text';
 import SocialLoginButton from '@components/common/SocialLoginButton';
