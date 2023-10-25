@@ -7,13 +7,13 @@ import Link from 'next/link';
 export interface NoteProps {
   type?: 'note';
   noteId: number;
-  name: string;
+  title: string;
   theme?: 'light' | 'dark';
 }
 
 export default function Note({
   type,
-  name,
+  title,
   noteId,
   theme = 'light',
 }: NoteProps) {
@@ -26,12 +26,12 @@ export default function Note({
         name="Note"
         color={theme === 'light' ? colors.black : colors.white}
       />
-      <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>{name}</Text>
+      <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>{title}</Text>
     </Link>
   );
 }
 
 const THEME_VARINTS = {
-  light: 'text-black',
+  light: '',
   dark: 'text-white',
 };

@@ -9,7 +9,7 @@ import colors from '@src/design/color';
 export interface FolderProps {
   type?: 'folder';
   folderId?: number;
-  name: string;
+  title: string;
   notes?: DirectoryItem[];
   depth?: number;
   theme?: 'light' | 'dark';
@@ -18,7 +18,7 @@ export interface FolderProps {
 export default function Folder({
   type,
   folderId,
-  name,
+  title,
   notes,
   depth = 0,
   theme = 'light',
@@ -43,7 +43,7 @@ export default function Folder({
             color={theme === 'light' ? colors.black : colors.white}
           />
         )}
-        <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>{name}</Text>
+        <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>{title}</Text>
       </div>
       {isFolderOpen && (
         <div className={`${BORDER_VARINTS[theme]}`}>
@@ -54,13 +54,13 @@ export default function Folder({
                   theme={theme}
                   key={item.noteId}
                   noteId={item.noteId}
-                  name={item.name}
+                  title={item.title}
                 />
               ) : (
                 <Folder
                   theme={theme}
                   key={item.folderId}
-                  name={item.name}
+                  title={item.title}
                   notes={item.notes}
                   depth={depth + 1}
                 />
@@ -73,7 +73,7 @@ export default function Folder({
 }
 
 const THEME_VARINTS = {
-  light: 'text-black',
+  light: '',
   dark: 'text-white',
 };
 

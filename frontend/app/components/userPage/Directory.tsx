@@ -22,13 +22,13 @@ export default function Directory({
             theme={theme}
             key={item.noteId}
             noteId={item.noteId}
-            name={item.name}
+            title={item.title}
           />
         ) : (
           <Folder
             key={item.folderId}
             theme={theme}
-            name={item.name}
+            title={item.title}
             notes={item.notes}
             depth={0}
           />
@@ -42,22 +42,22 @@ const directoryList: DirectoryItem[] = [
   {
     type: 'folder',
     folderId: 1,
-    name: 'React',
+    title: 'React',
     notes: [
       {
         type: 'note',
         noteId: 1,
-        name: 'React 1강 기초',
+        title: 'React 1강 기초',
       },
       {
         type: 'folder',
         folderId: 2,
-        name: 'components',
+        title: 'components',
         notes: [
           {
             type: 'note',
             noteId: 2,
-            name: 'React 2강 훅스',
+            title: 'React 2강 훅스',
           },
         ],
       },
@@ -66,12 +66,12 @@ const directoryList: DirectoryItem[] = [
   {
     type: 'folder',
     folderId: 3,
-    name: 'Vue',
+    title: 'Vue',
     notes: [
       {
         type: 'note',
         noteId: 3,
-        name: 'Vue 1강 기초',
+        title: 'Vue 1강 기초',
       },
     ],
   },
