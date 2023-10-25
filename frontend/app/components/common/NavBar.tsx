@@ -3,16 +3,15 @@ import { HTMLAttributes } from 'react';
 import Button from '@components/common/Button';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
-import { AppDispatch, useAppSelector } from '@store/store';
+import { useAppSelector, useAppDispatch } from '@store/store';
 import { setMyTheme } from '@store/modules/userSlice';
-import { useDispatch } from 'react-redux';
 
 interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
   login: boolean;
 }
 
 export default function NavBar({ login, ...rest }: NavBarProps) {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.userReducer.theme);
   return (
     <div
