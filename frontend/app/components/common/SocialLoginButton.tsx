@@ -18,7 +18,7 @@ export default function SocialLoginButton({
 
   const altText = name === 'google' ? 'Google 로그인' : '카카오 로그인';
   return (
-    <button {...rest}>
+    <button className="w-fit">
       <Image
         src={imageSrc}
         width={150}
