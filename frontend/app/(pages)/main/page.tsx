@@ -7,7 +7,7 @@ import { AppDispatch } from '@store/store';
 import { useAppSelector } from '@store/store';
 export default function Main() {
   const dispatch = useDispatch<AppDispatch>();
-  const username = useAppSelector((state) => state.userReducer.userNickname);
+  const username = useAppSelector((state) => state.userReducer.nickname);
   const imageRef = useRef<HTMLInputElement>(null);
   const handleProfileImageChangeClick = () => {
     if (imageRef.current) {
