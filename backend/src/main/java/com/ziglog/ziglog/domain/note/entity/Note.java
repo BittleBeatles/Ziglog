@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ziglog.ziglog.domain.bookmark.Entity.Bookmark;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +16,10 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Note {
 
     @Id
@@ -24,6 +32,9 @@ public class Note {
 
     @Column(name = "content")
     private String content;
+
+    @Column(name = "brief")
+    private String brief;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
