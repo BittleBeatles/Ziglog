@@ -1,19 +1,20 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
+import DefaultProfileImg from '@public/images/DefaultProfileImg.jpg';
 
 interface ProfileImageProps {
   size?: number;
-  src?: string;
+  src?: string | StaticImageData;
   alt?: string;
 }
 
 export default function ProfileImage({
   size = 50,
-  src = 'https://i.pinimg.com/474x/34/6e/1d/346e1df0044fd77dfb6f65cc086b2d5e.jpg',
+  src = DefaultProfileImg,
   alt = 'profile image',
 }: ProfileImageProps) {
   return (
-    <div className="absolute w-fit mx-auto rounded-full overflow-hidden">
-      <Image width={size} height={size} src={src} alt={alt} />
+    <div className="w-fit h-fit rounded-full overflow-hidden">
+      <Image width={size} height={size} src={src} alt={alt} priority={true} />
     </div>
   );
 }
