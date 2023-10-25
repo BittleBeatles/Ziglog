@@ -12,6 +12,5 @@ export const NavBarExample = {
   args: {
     login: false,
     theme: 'light',
-    type: 'lightMode',
   },
 } satisfies Story;
