@@ -28,7 +28,7 @@ export default function Main() {
         ref={imageRef}
       />
       <div className="flex justify-center h-screen">
-        <SocialLoginBox theme="light" />
+        <SocialLoginBox theme={'light'} />
       </div>
     </div>
   );

@@ -16,10 +16,6 @@ export default function SocialLoginBox({ theme }: SocialLoginBoxProps) {
         <SocialLoginButton name="google" />
         <SocialLoginButton name="kakao" />
       </div>
-      <SocialLoginButton
-        name="kakao"
-        className="my-4 drop-shadow grid place-items-center"
-      />
     </ModalLayout>
   );
 }
