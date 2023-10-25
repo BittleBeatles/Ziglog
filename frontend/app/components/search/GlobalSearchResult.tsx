@@ -8,7 +8,7 @@ interface GlobalSearchResultProps {
   nickname: string;
   is_public: 1;
   bookmark_count: number;
-  saved_time: Date;
+  saved_time: string;
   theme: 'light' | 'dark';
 }
 
@@ -25,9 +25,9 @@ export default function GlobalSearchResult({
 }: GlobalSearchResultProps) {
   return (
     <div {...rest} className={`${THEME_VARIANTS[theme]}`}>
-      <div>
-        <ProfileImage />
-        <Text>{nickname}</Text>
+      <div className="flex items-center">
+        <ProfileImage size={40} />
+        <Text>{'seongyong2'}</Text>
       </div>
     </div>
   );
