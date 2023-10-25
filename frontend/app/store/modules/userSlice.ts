@@ -3,6 +3,7 @@ import { TokenInfo, UserInfo } from '@api/user/types';
 
 type userSliceInfo = TokenInfo &
   UserInfo & {
+    isLogin: boolean;
     theme: 'dark' | 'light';
   };
 
@@ -11,7 +12,7 @@ const initialState: userSliceInfo = {
   // refreshToken: localStorage.getItem('refreshToken') || '',
   refreshToken: '',
   grantType: '',
-  state: 'default',
+  isLogin: false,
   nickname: '',
   profileImage: '',
   theme: 'light',
@@ -37,6 +38,7 @@ export const user = createSlice({
       const payload = action.payload;
       return {
         ...state,
+        isLogin: true,
         ...payload,
       };
     },

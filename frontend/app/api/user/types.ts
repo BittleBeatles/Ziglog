@@ -5,7 +5,6 @@ export interface TokenInfo {
 }
 
 export interface UserInfo {
-  state: 'default' | 'guest' | 'login';
   nickname: string;
   profileImage: string;
 }
