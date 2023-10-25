@@ -4,20 +4,30 @@ import Note, { NoteProps } from './Directory/Note';
 
 export interface DirectoryProps {
   directoryList: DirectoryItem[];
+  theme?: 'light' | 'dark';
 }
 export type DirectoryItem = (NoteProps | FolderProps) & {
   type: 'note' | 'folder';
 };
 
-export default function Directory({ directoryList }: DirectoryProps) {
+export default function Directory({
+  directoryList,
+  theme = 'light',
+}: DirectoryProps) {
   return (
-    <div>
+    <div className="max-h-48 overflow-y-auto scrollbar-hide">
       {directoryList.map((item) =>
         item.type === 'note' ? (
-          <Note key={item.noteId} noteId={item.noteId} name={item.name} />
+          <Note
+            theme={theme}
+            key={item.noteId}
+            noteId={item.noteId}
+            name={item.name}
+          />
         ) : (
           <Folder
             key={item.folderId}
+            theme={theme}
             name={item.name}
             notes={item.notes}
             depth={0}
@@ -31,22 +41,22 @@ export default function Directory({ directoryList }: DirectoryProps) {
 const directoryList: DirectoryItem[] = [
   {
     type: 'folder',
-    folderId: 'f1',
+    folderId: 1,
     name: 'React',
     notes: [
       {
         type: 'note',
-        noteId: 'n1',
+        noteId: 1,
         name: 'React 1강 기초',
       },
       {
         type: 'folder',
-        folderId: 'f2',
+        folderId: 2,
         name: 'components',
         notes: [
           {
             type: 'note',
-            noteId: 'n2',
+            noteId: 2,
             name: 'React 2강 훅스',
           },
         ],
@@ -55,12 +65,12 @@ const directoryList: DirectoryItem[] = [
   },
   {
     type: 'folder',
-    folderId: 'f3',
+    folderId: 3,
     name: 'Vue',
     notes: [
       {
         type: 'note',
-        noteId: 'n3',
+        noteId: 3,
         name: 'Vue 1강 기초',
       },
     ],

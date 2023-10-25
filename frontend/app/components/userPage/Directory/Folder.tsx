@@ -4,13 +4,15 @@ import { DirectoryItem } from '../Directory';
 import Note from './Note';
 import SvgIcon from '@components/common/SvgIcon';
 import { useState } from 'react';
+import colors from '@src/design/color';
 
 export interface FolderProps {
   type?: 'folder';
-  folderId?: string;
+  folderId?: number;
   name: string;
   notes?: DirectoryItem[];
   depth?: number;
+  theme?: 'light' | 'dark';
 }
 
 export default function Folder({
@@ -19,6 +21,7 @@ export default function Folder({
   name,
   notes,
   depth = 0,
+  theme = 'light',
 }: FolderProps) {
   const paddingLeft = `${depth * 1.25}rem`;
   const [isFolderOpen, setFolderOpen] = useState(false);
@@ -30,20 +33,32 @@ export default function Folder({
         className="flex items-center cursor-pointer"
       >
         {isFolderOpen ? (
-          <SvgIcon name="FolderOpen" />
+          <SvgIcon
+            name="FolderOpen"
+            color={theme === 'light' ? colors.black : colors.white}
+          />
         ) : (
-          <SvgIcon name="Folder" />
+          <SvgIcon
+            name="Folder"
+            color={theme === 'light' ? colors.black : colors.white}
+          />
         )}
-        <Text className="pl-1">{name}</Text>
+        <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>{name}</Text>
       </div>
       {isFolderOpen && (
-        <div className="notes border-l-2">
+        <div className={`${BORDER_VARINTS[theme]}`}>
           {notes &&
             notes.map((item, index) =>
               item.type === 'note' ? (
-                <Note key={item.noteId} noteId={item.noteId} name={item.name} />
+                <Note
+                  theme={theme}
+                  key={item.noteId}
+                  noteId={item.noteId}
+                  name={item.name}
+                />
               ) : (
                 <Folder
+                  theme={theme}
                   key={item.folderId}
                   name={item.name}
                   notes={item.notes}
@@ -56,3 +71,13 @@ export default function Folder({
     </div>
   );
 }
+
+const THEME_VARINTS = {
+  light: 'text-black',
+  dark: 'text-white',
+};
+
+const BORDER_VARINTS = {
+  light: 'border-l-2',
+  dark: 'border-l-2 border-grey',
+};

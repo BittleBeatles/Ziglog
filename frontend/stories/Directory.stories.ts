@@ -14,22 +14,22 @@ export const DirectoryExample = {
     directoryList: [
       {
         type: 'folder',
-        folderId: 'f1',
+        folderId: 1,
         name: 'React',
         notes: [
           {
             type: 'note',
-            noteId: 'n1',
+            noteId: 1,
             name: 'React 1강 기초',
           },
           {
             type: 'folder',
-            folderId: 'f2',
+            folderId: 2,
             name: 'components',
             notes: [
               {
                 type: 'note',
-                noteId: 'n2',
+                noteId: 2,
                 name: 'React 2강 훅스',
               },
             ],
@@ -38,16 +38,17 @@ export const DirectoryExample = {
       },
       {
         type: 'folder',
-        folderId: 'f3',
+        folderId: 3,
         name: 'Vue',
         notes: [
           {
             type: 'note',
-            noteId: 'n3',
+            noteId: 3,
             name: 'Vue 1강 기초',
           },
         ],
       },
     ],
+    theme: 'light',
   },
 } satisfies Story;
