@@ -18,7 +18,7 @@ export default function SocialLoginBox({ theme }: SocialLoginBoxProps) {
       </div>
       <SocialLoginButton
         name="kakao"
-        className="mt-4 drop-shadow grid place-items-center"
+        className="my-4 drop-shadow grid place-items-center"
       />
     </ModalLayout>
   );
