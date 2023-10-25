@@ -1,11 +1,9 @@
-package com.ziglog.ziglog.note.entity;
+package com.ziglog.ziglog.domain.note.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ziglog.ziglog.bookmark.Entity.Bookmark;
-import com.ziglog.ziglog.member.entity.Member;
+import com.ziglog.ziglog.domain.bookmark.Entity.Bookmark;
+import com.ziglog.ziglog.domain.member.entity.Member;
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,8 +33,8 @@ public class Note {
     private boolean isPublic;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "directory_id")
-    private Directory directory;
+    @JoinColumn(name = "folder_id")
+    private Folder folder;
 
     //공개하면 저장이 게시가 되고, 비공개 선택하면 그냥 저장. 따로 수정 게시 여부나 수정 게시 시간을 표시하지는 않음.
     @Column(name = "post_datetime")

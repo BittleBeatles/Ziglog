@@ -1,14 +1,13 @@
-package com.ziglog.ziglog.note.entity;
+package com.ziglog.ziglog.domain.note.entity;
 
-import com.ziglog.ziglog.member.entity.Member;
+import com.ziglog.ziglog.domain.member.entity.Member;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.Fetch;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Directory {
+public class Folder {
 
     @Id
     @Column(name = "id")
@@ -19,12 +18,12 @@ public class Directory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_ID")
-    private Directory parent;
+    private Folder parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-    private List<Directory> children = new ArrayList<>();
+    private List<Folder> children = new ArrayList<>();
 
-    @OneToMany(mappedBy = "directory", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY)
     private List<Note> notes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

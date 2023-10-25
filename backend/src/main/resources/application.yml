@@ -37,7 +37,7 @@ logging:
 
 #JWTtoken configurations
 jwt:
-  secretKey: asd19i23hj909sfua9s0fdusd90fua9023fjnh
+  secret-key: asd19i23hj909sfua9s0fdusd90fua9023fjnh
   access:
     expiration: 3600000
     header: Authorization
@@ -48,4 +48,6 @@ jwt:
 # Server Port Configuration
 server:
   port: 8080
+  servlet:
+    context-path: /api
 
