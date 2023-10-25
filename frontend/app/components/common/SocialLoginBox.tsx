@@ -10,13 +10,11 @@ interface SocialLoginBoxProps {
 
 export default function SocialLoginBox({ theme }: SocialLoginBoxProps) {
   return (
-    <ModalLayout classname={`${THEME_VARIANTS[theme]}`}>
-      <div className="flex flex-col justify-center items-center my-4 mx-14">
+    <ModalLayout classname={`${THEME_VARIANTS[theme]} px-20`}>
+      <div className="flex flex-col justify-center items-center my-4 gap-4">
         <Text type="b">{'소셜 계정으로 로그인 '}</Text>
-        <div className="flex flex-col gap-3 mt-3">
-          <SocialLoginButton name="google" />
-          <SocialLoginButton name="kakao" />
-        </div>
+        <SocialLoginButton name="google" />
+        <SocialLoginButton name="kakao" />
       </div>
     </ModalLayout>
   );
