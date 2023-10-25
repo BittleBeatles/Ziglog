@@ -1,3 +1,5 @@
+'use client';
+import React from 'react';
 import ModalLayout from '@components/common/ModalLayout';
 import Text from '@components/common/Text';
 import SocialLoginButton from '@components/common/SocialLoginButton';
@@ -14,6 +16,10 @@ export default function SocialLoginBox({ theme }: SocialLoginBoxProps) {
         <SocialLoginButton name="google" />
         <SocialLoginButton name="kakao" />
       </div>
+      <SocialLoginButton
+        name="kakao"
+        className="mt-4 drop-shadow grid place-items-center"
+      />
     </ModalLayout>
   );
 }
