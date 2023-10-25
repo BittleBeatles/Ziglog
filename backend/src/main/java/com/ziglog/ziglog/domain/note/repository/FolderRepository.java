@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface FolderRepository extends JpaRepository<Folder, Long> {
 
-    public void deleteById(Long folderId);
+    void deleteById(Long folderId);
 
-    public List<Folder> findAllByOwner(Member owner); //해당 사용자의 모든 디렉토리를 반환
+    List<Folder> findAllByOwner(Member owner); //해당 사용자의 모든 디렉토리를 반환
 }
