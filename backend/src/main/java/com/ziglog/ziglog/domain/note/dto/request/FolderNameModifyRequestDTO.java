@@ -1,7 +1,15 @@
 package com.ziglog.ziglog.domain.note.dto.request;
 
-public class FolderNameModifyRequestDTO {
+import com.ziglog.ziglog.domain.note.entity.Folder;
 
+public class FolderNameModifyRequestDTO {
     private Long folderId;
     private String folderName;
+
+    public Folder toEntity(){
+        return Folder.builder()
+                .id(folderId)
+                .title(folderName)
+                .build();
+    }
 }

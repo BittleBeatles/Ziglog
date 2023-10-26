@@ -17,10 +17,11 @@ public class Quotation {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "s_note_id")
     private Note startNote;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "e_note_id")
-    private Note endNote;
-}
+    private Note endNote; }

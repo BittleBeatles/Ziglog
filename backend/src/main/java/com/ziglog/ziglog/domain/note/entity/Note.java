@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -60,11 +58,14 @@ public class Note {
     private List<Bookmark> bookmarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "startNote")
-    private Set<Quotation> quoted = new HashSet<>();
+    private List<Quotation> quoted = new ArrayList<>();
 
     @OneToMany(mappedBy = "endNote")
-    private Set<Quotation> quoting = new HashSet<>();
+    private List<Quotation> quoting = new ArrayList<>();
 
+    public Note(Long id){
+        this.id = id;
+    }
 
     public void setTitle(String title){
         this.title = title;
