@@ -30,6 +30,11 @@ const config: Config = {
         modal: '#F6F6F6',
         'modal-border': '#BDBDBD',
       },
+      spacing: {
+        '108': '27rem',
+        '120': '30rem',
+        '132': '33rem',
+      },
     },
   },
   plugins: [require('tailwind-scrollbar-hide')],

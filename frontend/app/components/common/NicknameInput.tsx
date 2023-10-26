@@ -15,12 +15,12 @@ export default function NicknameInput({
       {...rest}
       type="text"
       defaultValue={nickname}
-      className={`${THEME_VARIANTS[theme]}  w-72 h-12 p-2 text-base rounded `}
+      className={`${THEME_VARIANTS[theme]}  w-60 h-12 p-2 text-base rounded `}
     />
   );
 }
 
 const THEME_VARIANTS = {
-  light: 'bg-gray-300 text-black border border-gray-300',
-  dark: 'bg-dark-background-page text-white',
+  light: 'bg-input-grey border border-input-grey',
+  dark: 'bg-dark-background-layout border border-dark-background-layout text-white',
 };
