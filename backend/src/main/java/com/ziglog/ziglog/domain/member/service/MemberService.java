@@ -7,10 +7,10 @@ import java.util.Optional;
 
 public interface MemberService {
 
-    Member findUserByEmail(String email);
-    Member findUserByNickname(String nickname);
+    Member findUserByEmail(String email) throws Exception;
+    Member findUserByNickname(String nickname) throws Exception;
 
-    void modifyUserNickname(String nickname);
-    boolean checkNicknameDuplication(String nickname);
-    void signUp(String email, String nickname);
+    void modifyUserNickname(String nickname) throws Exception;
+    Member signUp(String email, String nickname) throws Exception;
+    boolean isValidNickname(String nickname);
 }
