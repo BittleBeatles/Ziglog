@@ -6,16 +6,25 @@ interface ProfileChangeButtonProps
   onClick: () => void;
   onInput: () => void;
   size?: number;
+  color?: 'black' | 'white';
+  theme?: 'light' | 'dark';
 }
 
 const ProfileChangeButton = forwardRef<
   HTMLInputElement,
   ProfileChangeButtonProps
->(({ onClick, onInput, size = 24 }, ref) => {
+>(({ onClick, onInput, size = 24, color = 'black', theme = 'light' }, ref) => {
   return (
     <div>
-      <div className="bg-input-grey w-fit p-2 rounded-full" onClick={onClick}>
-        <SvgIcon name="Camera" size={size} />
+      <div
+        className={`${THEME_VARIANTS[theme]} w-fit p-2 rounded-full`}
+        onClick={onClick}
+      >
+        <SvgIcon
+          name="Camera"
+          size={size}
+          color={theme == 'light' ? 'black' : 'white'}
+        />
       </div>
       <input
         type="file"
@@ -27,5 +36,10 @@ const ProfileChangeButton = forwardRef<
     </div>
   );
 });
+
+const THEME_VARIANTS = {
+  light: 'bg-input-grey',
+  dark: 'bg-dark-background-layout',
+};
 
 export default ProfileChangeButton;
