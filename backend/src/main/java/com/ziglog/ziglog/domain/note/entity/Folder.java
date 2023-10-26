@@ -2,11 +2,19 @@ package com.ziglog.ziglog.domain.note.entity;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Folder {
 
     @Id
@@ -28,4 +36,9 @@ public class Folder {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member owner;
+
+    public void setTitle(String title){
+        this.title = title;
+    }
+
 }

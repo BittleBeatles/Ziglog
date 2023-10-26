@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ziglog.ziglog.domain.bookmark.Entity.Bookmark;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +16,10 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Note {
 
     @Id
@@ -24,6 +32,9 @@ public class Note {
 
     @Column(name = "content")
     private String content;
+
+    @Column(name = "brief")
+    private String brief;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -41,9 +52,9 @@ public class Note {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime postDatetime;
 
-    @Column(name = "save_datetime")
+    @Column(name = "edit_datetime")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime saveDatetime;
+    private LocalDateTime editDatetime;
 
     @OneToMany(mappedBy = "note", cascade = CascadeType.REMOVE)
     private List<Bookmark> bookmarks = new ArrayList<>();
@@ -53,4 +64,27 @@ public class Note {
 
     @OneToMany(mappedBy = "endNote")
     private Set<Quotation> quoting = new HashSet<>();
+
+
+    public void setTitle(String title){
+        this.title = title;
+    }
+    public void setContent(String content){
+        this.content = content;
+    }
+    public void setPublic(Boolean isPublic){
+        this.isPublic = isPublic;
+    }
+
+    public void setBrief(String brief){
+        this.brief = brief;
+    }
+
+    public void setPostDatetime(LocalDateTime datetime){
+        this.postDatetime = datetime;
+    }
+
+    public void setEditDatetime(LocalDateTime datetime){
+        this.editDatetime= datetime;
+    }
 }
