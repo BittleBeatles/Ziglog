@@ -22,11 +22,17 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void modifyUserNickname(String nickname) throws Exception{
+    public void modifyUserNickname(Member member, String nickname) throws Exception{
         if (!isValidNickname(nickname)) throw new Exception();
-        Member member = new Member();//Security Context의 사용자
         member.setNickname(nickname);
     }
+
+    @Override
+    public void modifyUserProfile(Member member, String profileUrl) throws Exception{
+        member.setProfileUrl(profileUrl);
+    }
+
+
 
     @Override
     public boolean isValidNickname(String nickname) {
