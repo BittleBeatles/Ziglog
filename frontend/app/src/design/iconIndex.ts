@@ -20,6 +20,8 @@ import FolderOpen from '@public/icons/folderOpen.svg';
 import ExpandMore from '@public/icons/expandMore.svg';
 import ExpandLess from '@public/icons/expandLess.svg';
 import Setting from '@public/icons/setting.svg';
+import BookMark from '@public/icons/bookMark.svg';
+import Share from '@public/icons/share.svg';
 
 export {
   AddFolder,
@@ -44,4 +46,6 @@ export {
   ExpandMore,
   ExpandLess,
   Setting,
+  BookMark,
+  Share,
 };
