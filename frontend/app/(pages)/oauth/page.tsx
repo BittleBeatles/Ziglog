@@ -7,14 +7,14 @@ export default function OauthPage() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     const oauthLogin = async () => {
-      // [TOKEN]
+      // [TOKEN] 가져오기
       const urlParmas = new URLSearchParams(window.location.search);
       const accessToken = urlParmas.get('at') || '';
       const refreshToken = urlParmas.get('rt') || '';
       dispatch(
         setUserToken({ accessToken, refreshToken, grantType: 'Bearer' })
       );
-      // [USERINFO]
+      // [USERINFO] 가져오기
       const result = await getUserInfo();
       if (result) {
         dispatch(setUserInfo(result));
