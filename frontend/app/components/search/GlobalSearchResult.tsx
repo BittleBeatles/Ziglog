@@ -63,5 +63,5 @@ export default function GlobalSearchResult({
 
 const THEME_VARIANTS = {
   light: '',
-  dark: 'bg-dark-background-layout text-white',
+  dark: 'text-white',
 };
