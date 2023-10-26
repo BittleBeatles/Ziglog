@@ -21,6 +21,7 @@ export default function NicknameSetting({
   const handleImageInput = () => {
     console.log('[이미지 업로드 로직]');
   };
+  const isPossible = true;
   return (
     <div
       className={`${THEME_VARIANTS[theme]} m-auto w-132 shadow-md border text-center rounded-md justify-center p-5`}
@@ -52,8 +53,17 @@ export default function NicknameSetting({
           <div className="mr-12 mt-3 text-lg font-bold">
             <li>닉네임</li>
           </div>
-          <div className="mt-4">
+          <div className="mt-4 flex flex-col">
             <NicknameInput theme={theme} nickname="사용자 닉네임" />
+            {isPossible == true ? (
+              <p className="text-left text-xs text-green-600">
+                사용 가능한 닉네임입니다
+              </p>
+            ) : (
+              <p className="text-left text-xs text-red-500">
+                이미 존재하는 닉네임입니다
+              </p>
+            )}
           </div>
         </div>
       </div>
