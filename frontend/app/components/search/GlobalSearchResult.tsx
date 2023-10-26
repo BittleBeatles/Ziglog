@@ -1,4 +1,3 @@
-import ProfileImage from '@components/common/ProfileImage';
 import Text from '@components/common/Text';
 
 interface GlobalSearchResultProps {
@@ -24,7 +23,7 @@ export default function GlobalSearchResult({
   ...rest
 }: GlobalSearchResultProps) {
   return (
-    <div {...rest} className={`${THEME_VARIANTS[theme]} p-5 w-1/2`}>
+    <div {...rest} className={`${THEME_VARIANTS[theme]} p-5 mt-3`}>
       <div className="flex flex-row items-center">
         <Text className="ml-12">{`${nickname}`}</Text>
       </div>
@@ -32,7 +31,7 @@ export default function GlobalSearchResult({
         <Text type="h3">{`${title}`}</Text>
       </div>
       <div className="mt-2">
-        <Text type="p" className="line-clamp-2">
+        <Text type="p" className="line-clamp-3">
           {`${content}`}
         </Text>
       </div>
