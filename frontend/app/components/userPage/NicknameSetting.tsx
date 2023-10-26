@@ -3,6 +3,7 @@ import NicknameInput from '@components/common/NicknameInput';
 import { InputHTMLAttributes, useRef } from 'react';
 import ProfileChangeButton from '@components/common/ProfileChangeButton';
 import Button from '@components/common/Button';
+import Text from '@components/common/Text';
 
 interface NicknameSettingProps extends InputHTMLAttributes<HTMLInputElement> {
   theme?: 'light' | 'dark';
@@ -22,20 +23,20 @@ export default function NicknameSetting({
   };
   return (
     <div
-      className={`${THEME_VARIANTS[theme]} m-auto w-2/3 shadow-md border text-center rounded-md justify-center p-5`}
+      className={`${THEME_VARIANTS[theme]} m-auto w-132 shadow-md border text-center rounded-md justify-center p-5`}
     >
-      <p className="text-3xl">닉네임 설정</p>
+      <Text type="h2">{'닉네임 설정'}</Text>
       <div className="grid place-items-center">
-        <div className="mt-5 flex flex-row">
-          <div className="mr-16">
-            <li>프로필 사진</li>
+        <div className="mt-7 flex flex-row">
+          <div className="mr-12 text-lg font-bold">
+            <li>프로필</li>
           </div>
-          <div className="mt-1 pl-4 pr-20">
-            <div className="relative w-24 h-28 mx-auto">
+          <div className="mt-1 pr-28">
+            <div className="relative w-32 h-32 mx-auto">
               <div className="absolute">
-                <ProfileImage size={80} />
+                <ProfileImage size={100} />
               </div>
-              <div className="absolute right-0 bottom-0">
+              <div className="absolute right-4 bottom-2 h-14">
                 <ProfileChangeButton
                   onClick={handleProfileImageChangeClick}
                   onInput={handleImageInput}
@@ -48,15 +49,15 @@ export default function NicknameSetting({
       </div>
       <div className="grid place-items-center">
         <div className="flex flex-row justify-center items-center">
-          <div className="mr-3">
+          <div className="mr-12 mt-3 text-lg font-bold">
             <li>닉네임</li>
           </div>
-          <div className="mt-1">
+          <div className="mt-4">
             <NicknameInput theme={theme} nickname="사용자 닉네임" />
           </div>
         </div>
       </div>
-      <div className="mt-5">
+      <div className="mt-7">
         <Button label="저장하기" color={'blue'} />
       </div>
     </div>
