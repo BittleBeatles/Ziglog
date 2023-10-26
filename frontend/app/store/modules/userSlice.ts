@@ -9,8 +9,6 @@ type userSliceInfo = TokenInfo &
 
 const initialState: userSliceInfo = {
   accessToken: '',
-  // refreshToken: localStorage.getItem('refreshToken') || '',
-  refreshToken: '',
   grantType: '',
   isLogin: false,
   nickname: '',
@@ -27,7 +25,6 @@ export const user = createSlice({
     },
     setUserToken: (state, action: PayloadAction<TokenInfo>) => {
       const payload = action.payload;
-      // localStorage.setItem('refreshToken', payload.refreshToken);
 
       return {
         ...state,

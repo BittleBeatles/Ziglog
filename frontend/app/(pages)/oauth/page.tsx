@@ -10,10 +10,7 @@ export default function OauthPage() {
       // [TOKEN] 가져오기
       const urlParmas = new URLSearchParams(window.location.search);
       const accessToken = urlParmas.get('at') || '';
-      const refreshToken = urlParmas.get('rt') || '';
-      dispatch(
-        setUserToken({ accessToken, refreshToken, grantType: 'Bearer' })
-      );
+      dispatch(setUserToken({ accessToken, grantType: 'Bearer' }));
       // [USERINFO] 가져오기
       const result = await getUserInfo();
       if (result) {
