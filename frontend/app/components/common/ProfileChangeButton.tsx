@@ -6,14 +6,13 @@ interface ProfileChangeButtonProps
   onClick: () => void;
   onInput: () => void;
   size?: number;
-  color?: 'black' | 'white';
-  theme?: 'light' | 'dark';
+  theme: 'light' | 'dark';
 }
 
 const ProfileChangeButton = forwardRef<
   HTMLInputElement,
   ProfileChangeButtonProps
->(({ onClick, onInput, size = 24, color = 'black', theme = 'light' }, ref) => {
+>(({ onClick, onInput, size = 24, theme }, ref) => {
   return (
     <div>
       <div
