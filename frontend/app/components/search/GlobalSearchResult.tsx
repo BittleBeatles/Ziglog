@@ -23,6 +23,9 @@ export default function GlobalSearchResult({
   theme,
   ...rest
 }: GlobalSearchResultProps) {
+  if (!is_public) {
+    return null;
+  }
   const postTime: Date = new Date(post_time);
   const year: number = postTime.getFullYear();
   const month: number = postTime.getMonth() + 1;
