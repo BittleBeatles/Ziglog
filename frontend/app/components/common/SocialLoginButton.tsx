@@ -18,7 +18,7 @@ export default function SocialLoginButton({
 
   const altText = name === 'google' ? 'Google 로그인' : '카카오 로그인';
   return (
-    <a className="w-fit" href={`${API_URL}//api/auth/oauth2/${name}`}>
+    <a className="w-fit" href={`${API_URL}/auth/oauth2/${name}`}>
       <Image
         src={imageSrc}
         width={150}
