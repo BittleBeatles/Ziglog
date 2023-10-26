@@ -39,6 +39,7 @@ export default function NicknameSetting({
               </div>
               <div className="absolute right-4 bottom-2 h-14">
                 <ProfileChangeButton
+                  theme={theme}
                   onClick={handleProfileImageChangeClick}
                   onInput={handleImageInput}
                   ref={imageRef}
