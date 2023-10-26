@@ -14,7 +14,7 @@ export default function Search() {
           nickname="markLee"
           is_public={true}
           bookmark_count={82}
-          post_time="2023년 08월 02일"
+          post_time="2023-10-26 12:23"
           theme="light"
         ></GlobalSearchResult>
       </div>
