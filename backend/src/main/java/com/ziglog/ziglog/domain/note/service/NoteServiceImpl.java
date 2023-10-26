@@ -11,8 +11,6 @@ import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -120,7 +118,7 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public List<Folder> listFolder(String nickname) throws Exception {
         Member user = memberRepository.findMemberByNickname(nickname).orElseThrow(() -> new Exception());
-        return folderRepository.findAllByOwner(user);
+        return user.getFolders();
     }
 
     // Quotation
