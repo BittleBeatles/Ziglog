@@ -25,7 +25,7 @@ export default function NicknameSetting({
     <div
       className={`${THEME_VARIANTS[theme]} m-auto w-132 shadow-md border text-center rounded-md justify-center p-5`}
     >
-      <Text type="h2">{'닉네임 설정'}</Text>
+      <Text type="h2">{'개인정보 수정'}</Text>
       <div className="grid place-items-center">
         <div className="mt-7 flex flex-row">
           <div className="mr-12 text-lg font-bold">
