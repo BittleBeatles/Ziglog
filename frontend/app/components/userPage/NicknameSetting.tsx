@@ -56,19 +56,19 @@ export default function NicknameSetting({
           </div>
           <div className="mt-4 flex flex-col">
             <NicknameInput theme={theme} nickname="사용자 닉네임" />
-            {isPossible == true ? (
-              <p className="text-left text-xs text-green-600">
+            {isPossible && true ? (
+              <p className="mt-1 text-left text-xs text-green-600">
                 사용 가능한 닉네임입니다
               </p>
             ) : (
-              <p className="text-left text-xs text-red-500">
+              <p className="mt-1 text-left text-xs text-red-500">
                 이미 존재하는 닉네임입니다
               </p>
             )}
           </div>
         </div>
       </div>
-      <div className="mt-7">
+      <div className="mt-7 mb-2">
         <Button label="저장하기" color={'blue'} />
       </div>
     </div>
@@ -76,6 +76,6 @@ export default function NicknameSetting({
 }
 
 const THEME_VARIANTS = {
-  light: '',
+  light: 'bg-white',
   dark: 'bg-dark-background-page text-white',
 };
