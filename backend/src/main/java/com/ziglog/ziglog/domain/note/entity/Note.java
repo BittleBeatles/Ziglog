@@ -52,9 +52,9 @@ public class Note {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime postDatetime;
 
-    @Column(name = "save_datetime")
+    @Column(name = "edit_datetime")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime saveDatetime;
+    private LocalDateTime editDatetime;
 
     @OneToMany(mappedBy = "note", cascade = CascadeType.REMOVE)
     private List<Bookmark> bookmarks = new ArrayList<>();
@@ -64,4 +64,27 @@ public class Note {
 
     @OneToMany(mappedBy = "endNote")
     private Set<Quotation> quoting = new HashSet<>();
+
+
+    public void setTitle(String title){
+        this.title = title;
+    }
+    public void setContent(String content){
+        this.content = content;
+    }
+    public void setPublic(Boolean isPublic){
+        this.isPublic = isPublic;
+    }
+
+    public void setBrief(String brief){
+        this.brief = brief;
+    }
+
+    public void setPostDatetime(LocalDateTime datetime){
+        this.postDatetime = datetime;
+    }
+
+    public void setEditDatetime(LocalDateTime datetime){
+        this.editDatetime= datetime;
+    }
 }
