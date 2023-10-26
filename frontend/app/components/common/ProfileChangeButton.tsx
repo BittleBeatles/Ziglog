@@ -5,16 +5,17 @@ interface ProfileChangeButtonProps
   extends InputHTMLAttributes<HTMLInputElement> {
   onClick: () => void;
   onInput: () => void;
+  size?: number;
 }
 
 const ProfileChangeButton = forwardRef<
   HTMLInputElement,
   ProfileChangeButtonProps
->(({ onClick, onInput }, ref) => {
+>(({ onClick, onInput, size = 24 }, ref) => {
   return (
     <div>
       <div className="bg-input-grey w-fit p-2 rounded-full" onClick={onClick}>
-        <SvgIcon name="Camera" />
+        <SvgIcon name="Camera" size={size} />
       </div>
       <input
         type="file"
