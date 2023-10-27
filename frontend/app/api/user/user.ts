@@ -1,6 +1,8 @@
 import { privateFetch, publicFetch } from '..';
 import { API_URL } from '@api/constants';
 import { UserInfo } from './types';
+import { useAppDispatch } from '@store/store';
+import { setAccessToken } from '@store/modules/userSlice';
 
 // promise Type 수정해야함
 export function getUserInfo(): Promise<UserInfo> {
@@ -15,18 +17,13 @@ export function getUserInfo(): Promise<UserInfo> {
     });
 }
 
-export const reissueToken = (reissueToken: string) => {
+export async function ReissueToken() {
+  const dispatch = useAppDispatch();
   return privateFetch(`${API_URL}/auth/refresh`, {
     method: 'POST',
   })
     .then((res) => {
-      if (res.body) {
-        const newAccessToken = res.body;
-        let newHeaders = res.headers;
-        newHeaders = {
-          Authorization: `Bearer ${newAccessToken}`,
-        };
-      }
+      dispatch(setAccessToken('newAccessToken'));
       return Promise.resolve(res.body);
     })
     .catch((err) => {
@@ -35,4 +32,4 @@ export const reissueToken = (reissueToken: string) => {
       }
       return Promise.reject(err);
     });
-};
+}
