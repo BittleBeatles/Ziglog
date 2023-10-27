@@ -23,13 +23,14 @@ class MemberServiceImplTest {
         String str = "";
         assertFalse(memberService.isValidNicknameFormat(str));
     }
+
     @DisplayName("닉네임 형식 테스트 : 12자 초과")
     @Test
     public void nicknameFormatTest_StringOver12(){
-
-
-
+        String str = "abcdabcdabcd1";
+        assertFalse(memberService.isValidNicknameFormat(str));
     }
+
     @DisplayName("닉네임 형식 테스트 : 비허용문자")
     @Test
     public void nicknameFormatTest_WithSpecialChar(){
