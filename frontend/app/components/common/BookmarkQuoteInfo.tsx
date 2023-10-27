@@ -8,7 +8,7 @@ interface BookmarkQuoteInfoProps extends InputHTMLAttributes<HTMLInputElement> {
   quoted: number;
 }
 
-export default function ArticleUserInfo({
+export default function BookmarkQuoteInfo({
   theme = 'light',
   bookmarked = 50,
   quoted = 50,
