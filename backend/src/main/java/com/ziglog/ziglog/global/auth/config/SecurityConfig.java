@@ -63,7 +63,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfig = new CorsConfiguration();
 
-        //corsConfig.addAllowedOrigin(프론트엔드 주소)
+        corsConfig.addAllowedOrigin("http://localhost:3000");
         corsConfig.setAllowCredentials(true);
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod("*");
