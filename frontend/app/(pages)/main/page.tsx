@@ -22,11 +22,6 @@ export default function Main() {
     <div>
       <h1>메인페이지입니다.</h1>
       <ModalLayout>모달 예시입니다.</ModalLayout>
-      <ProfileChangeButton
-        onClick={handleProfileImageChangeClick}
-        onInput={handleImageInput}
-        ref={imageRef}
-      />
       <div className="flex justify-center h-screen">
         <SocialLoginBox theme="light" />
       </div>

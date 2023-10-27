@@ -7,6 +7,7 @@ interface IconButtonWithBgProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   name: keyof typeof Icons;
   theme: 'dark' | 'light';
+  size?: number;
 }
 
 const THEME_VARIANTS = {
@@ -17,15 +18,17 @@ const THEME_VARIANTS = {
 export default function IconButtonWithBg({
   name,
   theme,
+  size = 24,
   ...rest
 }: IconButtonWithBgProps) {
   return (
     <button
-      className={`${THEME_VARIANTS[theme]} w-fit h-fit p-1 rounded-lg border border-border-grey`}
+      className={`${THEME_VARIANTS[theme]} w-fit h-fit p-1 rounded-lg border border-border-grey opacity-100 hover:opacity-60 transition-opacity duration-300`}
       {...rest}
     >
       <SvgIcon
         name={name}
+        size={size}
         color={theme === 'dark' ? colors.white : colors.black}
       />
     </button>
