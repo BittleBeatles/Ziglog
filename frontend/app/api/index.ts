@@ -1,8 +1,6 @@
 import { returnFetchJson } from './setting';
 import { store } from '@store/store';
-import { useDispatch } from 'react-redux';
-import { reissueToken } from './user/user';
-import { setAccessToken } from '@store/modules/userSlice';
+import { ReissueToken } from './user/user';
 import { API_URL } from './constants';
 
 export const publicFetch = returnFetchJson({
@@ -20,7 +18,6 @@ export const privateFetch = returnFetchJson({
     'Access-Control-Allow-Origin': 'http://localhost:3000',
     'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, PATCH, OPTIONS',
     'Content-type': 'application/json',
-    'Access-Control-Allow-Credentials': 'true',
   },
   interceptors: {
     request: async (config) => {
@@ -29,21 +26,25 @@ export const privateFetch = returnFetchJson({
       config[1] = {
         headers: { Authorization: `${grantType} ${accessToken}` },
       };
-      console.log(config);
       return config;
     },
-    response: async (response, config) => {
-      console.log('response', config);
+    response: async (response, config, fetch) => {
+      console.log('response', response);
 
-      // if (response.status >= 400) {
-      //   reissueToken()
-      // const newAccessToken = await reissueToken('refreshToken임');
-      // if (newAccessToken) {
-      //   const newConfig = config;
-      //   newConfig[1] = {
-      //     headers: { Authorization: `Bearer ${newAccessToken}` },
-      //   };
-      //   return privateFetch(newConfig);
+      if (response.status === 401) {
+        const newAccessToken = await ReissueToken();
+
+        if (newAccessToken) {
+          // 헤더를 업데이트합니다.
+          config[1] = {
+            headers: { Authorization: `Bearer ${newAccessToken}` },
+          };
+          return fetch(...config); // 수정된 설정으로 요청을 다시 시도합니다.
+        } else {
+          throw new Error('Failed to reissue token');
+        }
+      }
+
       return response;
     },
   },
