@@ -4,28 +4,34 @@ import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
 
     @Override
     public Member findUserByEmail(String email) throws Exception {
-        return memberRepository.findMemberByEmail(email).orElseThrow(() -> new Exception());
+        return memberRepository.findByEmail(email).orElseThrow(() -> new Exception());
     }
 
     @Override
     public Member findUserByNickname(String nickname) throws Exception{
-        return memberRepository.findMemberByNickname(nickname).orElseThrow(() -> new Exception());
+        return memberRepository.findByNickname(nickname).orElseThrow(() -> new Exception());
     }
 
     @Override
-    public void modifyUserNickname(String nickname) throws Exception{
+    public void modifyUserNickname(Member member, String nickname) throws Exception{
         if (!isValidNickname(nickname)) throw new Exception();
-        Member member = new Member();//Security Context의 사용자
         member.setNickname(nickname);
+    }
+
+    @Override
+    public void modifyUserProfile(Member member, String profileUrl) throws Exception{
+        member.setProfileUrl(profileUrl);
     }
 
     @Override
@@ -44,13 +50,12 @@ public class MemberServiceImpl implements MemberService{
         return memberRepository.save(member);
     }
 
-    private boolean isValidNicknameFormat(String nickname){
-        //
-        String regex = "^[a-zA-Z0-9가-힣]{1, 13}$";
+    public boolean isValidNicknameFormat(String nickname){
+        String regex = "^[a-zA-Z0-9가-힣]{1,12}$";
         return nickname.matches(regex);
     }
 
-    private boolean isNotDuplicatedNickname(String nickname){
+    public boolean isNotDuplicatedNickname(String nickname){
         return !memberRepository.existsMemberByNickname(nickname);
     }
 }

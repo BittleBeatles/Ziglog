@@ -2,8 +2,10 @@ package com.ziglog.ziglog.global.auth.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
+import com.ziglog.ziglog.global.auth.filter.JwtAuthenticationFilter;
 import com.ziglog.ziglog.global.auth.handler.OAuth2LoginFailureHandler;
 import com.ziglog.ziglog.global.auth.handler.OAuth2LoginSuccessHandler;
+import com.ziglog.ziglog.global.auth.repository.RefreshTokenRepository;
 import com.ziglog.ziglog.global.auth.service.CustomOAuth2UserService;
 import com.ziglog.ziglog.global.auth.service.JwtService;
 import jakarta.servlet.ServletException;
@@ -52,7 +54,7 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
-    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Value("jwt.access.header")
     private String accessTokenHeader;
@@ -63,7 +65,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfig = new CorsConfiguration();
 
-        //corsConfig.addAllowedOrigin(프론트엔드 주소)
+        corsConfig.addAllowedOrigin("http://localhost:3000");
         corsConfig.setAllowCredentials(true);
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod("*");
@@ -84,7 +86,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .requiresChannel(requiresChannel -> requiresChannel
-                        .requestMatchers(new AntPathRequestMatcher("/oauth/authorization")).requiresSecure()
+                        .requestMatchers(new AntPathRequestMatcher("/auth/oauth2/authorization")).requiresSecure()
                 )
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .anyRequest().permitAll()
@@ -95,7 +97,7 @@ public class SecurityConfig {
                                 .successHandler(oAuth2LoginSuccessHandler)
                                 .failureHandler(oAuth2LoginFailureHandler)
                                 .authorizationEndpoint((endpoint) -> endpoint
-                                        .baseUri("/oauth2/authorization"))
+                                        .baseUri("/auth/oauth2/authorization"))
                                 .redirectionEndpoint((endpoint) ->
                                         endpoint.baseUri("/login/oauth2/code/*"))
                                 .userInfoEndpoint((endpoint) ->
@@ -110,6 +112,13 @@ public class SecurityConfig {
                 .exceptionHandling(handling -> handling
                         .authenticationEntryPoint((((request, response, authException) -> {response.setStatus(401);})))
                 );
+
+        http.addFilterAfter(jwtAuthenticationFilter(), LogoutFilter.class);
         return http.build();
     }
+
+    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception{
+        return new JwtAuthenticationFilter(jwtService, memberRepository, refreshTokenRepository);
+    }
+
 }
