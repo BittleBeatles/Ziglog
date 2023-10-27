@@ -41,9 +41,8 @@ class MemberServiceImplTest {
     @DisplayName("닉네임 형식 테스트 : 성공사례")
     @Test
     public void nicknameFormatTest_Success(){
-
-
-
+        String str = "가힣abcdABCD12";
+        assertTrue(memberService.isValidNicknameFormat(str));
     }
     //닉네임 중복 테스트 1)
 
