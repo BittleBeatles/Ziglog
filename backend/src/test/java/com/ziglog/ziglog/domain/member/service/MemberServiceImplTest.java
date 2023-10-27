@@ -34,9 +34,8 @@ class MemberServiceImplTest {
     @DisplayName("닉네임 형식 테스트 : 비허용문자")
     @Test
     public void nicknameFormatTest_WithSpecialChar(){
-
-
-
+        String str = "abcd_abcdabc";
+        assertFalse(memberService.isValidNicknameFormat(str));
     }
 
     @DisplayName("닉네임 형식 테스트 : 성공사례")
