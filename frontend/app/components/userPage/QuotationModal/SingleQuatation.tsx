@@ -17,7 +17,7 @@ export default function SingleQuotation({
 }: SingleQuotationProps) {
   return (
     <div
-      className={`${THEME_VARIANTS[theme]}  h-12 rounded-md flex flex-row hover:font-bold`}
+      className={`${THEME_VARIANTS[theme]} h-12 rounded-md flex flex-row hover:font-bold`}
     >
       <div className="w-8 h-12 grid place-content-center">
         {isBookMarked ? (
@@ -27,7 +27,7 @@ export default function SingleQuotation({
         )}
       </div>
       <div className="grid place-content-center">
-        <p className="leading-4 hover:font-bold">{title}</p>
+        <p className="leading-4">{title}</p>
         <p className="text-xs leading-4 font-normal">{nickname}</p>
       </div>
     </div>

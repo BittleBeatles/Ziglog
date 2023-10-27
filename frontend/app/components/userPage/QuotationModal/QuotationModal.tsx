@@ -1,4 +1,4 @@
-import SingleQuotation from '@components/common/SingleQuatation';
+import SingleQuotation from '@components/userPage/QuotationModal/SingleQuatation';
 import SvgIcon from '@components/common/SvgIcon';
 import { InputHTMLAttributes } from 'react';
 
