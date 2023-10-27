@@ -33,7 +33,8 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public void modifyUserProfile(Member member, String profileUrl) throws Exception{
-        member.setProfileUrl(profileUrl);
+        memberRepository.findByEmail(member.getEmail())
+                        .ifPresent(mem-> mem.setProfileUrl(profileUrl));
     }
 
     @Override
