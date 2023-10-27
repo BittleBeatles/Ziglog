@@ -111,5 +111,9 @@ class MemberServiceImplTest {
     }
 
     //닉네임을 통한 회원 조회
-
+    @DisplayName("닉네임을 통한 회원 조회 테스트 : 없는 닉네임")
+    @Test
+    public void findMemberByNickname_NoSuchMember() throws Exception {
+        assertThrows(Exception.class, () -> memberService.findUserByNickname("pj0642@naver.com"));
+    }
 }
