@@ -1,6 +1,7 @@
 package com.ziglog.ziglog.domain.member.service;
 
 import com.ziglog.ziglog.ZiglogApplication;
+import com.ziglog.ziglog.domain.member.entity.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,18 +18,12 @@ class MemberServiceImplTest {
     @Autowired
     private MemberServiceImpl memberService;
 
-    //회원가입 테스트
-    @DisplayName("임시 회원 가입")
-    @BeforeEach
+    @DisplayName("임시 가입")
     @Test
-    public void signUP_BeforeEach(){
-
-
-
+    @BeforeEach
+    public void signUp() throws Exception{
+        memberService.signUp("pj0642@gmail.com", "pys");
     }
-
-
-
 
     //닉네임 형식 테스트
     @DisplayName("닉네임 형식 테스트 : 빈 문자열")
@@ -59,41 +54,79 @@ class MemberServiceImplTest {
         assertTrue(memberService.isValidNicknameFormat(str));
     }
 
-
-
-
     //닉네임 중복 테스트 1)
-
-    //중복 가입 테스트 1 - 실패
-
-
+    @DisplayName("닉네임 중복 테스트 : 실패")
+    @Test
+    public void nicknameDuplicationCheckTest_Failure(){
+        String str = "pys";
+        assertFalse(memberService.isNotDuplicatedNickname(str));
+    }
 
     //닉네임 중복 테스트 2
-
-
-
-    //중복 가입 테스트 2 - 성공
-
+    @DisplayName("닉네임 중복 테스트 : 성공")
+    @Test
+    public void nicknameDuplicationCheckTest_Success(){
+        String str = "ppys";
+        assertTrue(memberService.isNotDuplicatedNickname(str));
+    }
 
     //사용자 닉네임 변경 테스트 - 실패
+    @DisplayName("사용자 닉네임 변경 테스트 : 실패")
+    @Test
+    public void nicknameModificationTest_WithExistingNickname() throws Exception {
+        Member memberToSignUp = memberService.signUp("suhyeng@ssafy.io", "lsh");
+        String nickToModify = "pys";
 
-
+        assertThrows(Exception.class, () -> memberService.modifyUserNickname(memberToSignUp, nickToModify));
+    }
 
     //닉네임 변경 테스트 - 성공
+    @DisplayName("사용자 닉네임 변경 테스트 : 성공")
+    @Test
+    public void nicknameModificationTest_Success() throws Exception {
+        Member memberToSignUp = memberService.signUp("suhyeng@ssafy.io", "lsh");
+        String nickToModify = "임수형인데요";
 
-
-
-    //유저 프로필 변경 - 실패
-    //유저가 없는 경우
-
+        assertDoesNotThrow(() -> memberService.modifyUserNickname(memberToSignUp, nickToModify));
+    }
 
     //유저 프로필 변경 - 성공
+    @DisplayName("사용자 프로필 변경 테스트 - 성공")
+    @Test
+    public void profileModificationTest_Success() throws Exception {
+        Member memberToModifyProfileUrl = memberService.findUserByEmail("pj0642@gmail.com");
+        assertDoesNotThrow(() -> memberService.modifyUserProfile(memberToModifyProfileUrl, "asdasd"));
+    }
 
+    @DisplayName("사용자 프로필 변경 테스트 - 존재하지 않는 회원")
+    @Test
+    public void profileModificationTest_NoSuchMember() throws Exception {
+        Member memberToModifyProfileUrl = Member.builder().email("pj0642@naver.com").nickname("ppys").build();
+        assertThrows(Exception.class, () -> memberService.modifyUserProfile(memberToModifyProfileUrl, "asdasd"));
+    }
 
-    //이메일을 통한 회원 조회 => 이건 언제 쓸지? 모름
+    @DisplayName("이메일을 통한 회원 조회 테스트 : 없는 이메일")
+    @Test
+    public void findMemberByEmail_NoSuchMember() throws Exception {
+        assertThrows(Exception.class, () -> memberService.findUserByEmail("pj0642@naver.com"));
+    }
 
-
+    @DisplayName("이메일을 통한 회원 조회 테스트 : 성공")
+    @Test
+    public void findMemberByEmail_Success () throws Exception {
+        assertDoesNotThrow(() -> memberService.findUserByEmail("pj0642@gmail.com"));
+    }
 
     //닉네임을 통한 회원 조회
+    @DisplayName("닉네임을 통한 회원 조회 테스트 : 없는 닉네임")
+    @Test
+    public void findMemberByNickname_NoSuchMember() throws Exception {
+        assertThrows(Exception.class, () -> memberService.findUserByNickname("pj0642@naver.com"));
+    }
 
+    @DisplayName("닉네임을 통한 회원 조회 테스트 : 성공")
+    @Test
+    public void findMemberByNickname_Success() throws Exception {
+        assertDoesNotThrow(() -> memberService.findUserByNickname("pys"));
+    }
 }
