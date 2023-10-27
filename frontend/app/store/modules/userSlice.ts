@@ -48,6 +48,9 @@ export const user = createSlice({
     setMyProfileImage: (state, action: PayloadAction<string>) => {
       state.profileImage = action.payload;
     },
+    setAccessToken: (state, action: PayloadAction<string>) => {
+      state.accessToken = action.payload;
+    },
   },
 });
 
@@ -58,5 +61,6 @@ export const {
   setMyTheme,
   setMyNickname,
   setMyProfileImage,
+  setAccessToken,
 } = user.actions;
 export default user.reducer;
