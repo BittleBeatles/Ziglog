@@ -1,7 +1,9 @@
 import { returnFetchJson } from './setting';
 import { store } from '@store/store';
-
-const API_URL = '';
+import { useDispatch } from 'react-redux';
+import { reissueToken } from './user/user';
+import { setAccessToken } from '@store/modules/userSlice';
+import { API_URL } from './constants';
 
 export const publicFetch = returnFetchJson({
   baseUrl: API_URL,
@@ -29,6 +31,20 @@ export const privateFetch = returnFetchJson({
       };
       console.log(config);
       return config;
+    },
+    response: async (response, config) => {
+      console.log('response', config);
+
+      // if (response.status >= 400) {
+      //   reissueToken()
+      // const newAccessToken = await reissueToken('refreshToken임');
+      // if (newAccessToken) {
+      //   const newConfig = config;
+      //   newConfig[1] = {
+      //     headers: { Authorization: `Bearer ${newAccessToken}` },
+      //   };
+      //   return privateFetch(newConfig);
+      return response;
     },
   },
 });
