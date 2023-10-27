@@ -1,6 +1,7 @@
 package com.ziglog.ziglog.domain.member.service;
 
 import com.ziglog.ziglog.ZiglogApplication;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,19 @@ class MemberServiceImplTest {
 
     @Autowired
     private MemberServiceImpl memberService;
+
+    //회원가입 테스트
+    @DisplayName("임시 회원 가입")
+    @BeforeEach
+    @Test
+    public void signUP_BeforeEach(){
+
+
+
+    }
+
+
+
 
     //닉네임 형식 테스트
     @DisplayName("닉네임 형식 테스트 : 빈 문자열")
@@ -44,12 +58,11 @@ class MemberServiceImplTest {
         String str = "가힣abcdABCD12";
         assertTrue(memberService.isValidNicknameFormat(str));
     }
+
+
+
+
     //닉네임 중복 테스트 1)
-
-
-
-    //회원가입 테스트
-
 
     //중복 가입 테스트 1 - 실패
 
