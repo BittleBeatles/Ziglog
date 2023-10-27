@@ -49,7 +49,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     public boolean isValidNicknameFormat(String nickname){
-        String regex = "^[a-zA-Z0-9가-힣]{1,13}$";
+        String regex = "^[a-zA-Z0-9가-힣]{1,12}$";
         return nickname.matches(regex);
     }
 
