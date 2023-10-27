@@ -1,9 +1,6 @@
 package com.ziglog.ziglog.domain.member.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
-import com.ziglog.ziglog.domain.member.entity.Role;
-
-import java.util.Optional;
 
 public interface MemberService {
 

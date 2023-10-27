@@ -13,5 +13,5 @@ public class RefreshToken {
 
     @Id
     private String refreshToken;
-    private Member member;
+    private String email;
 }
