@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import QuotationModal from '@components/userPage/QuotationModal/QuotationModal';
+import QuotationModal from '@components/userPage/QuotationModal';
 
 const meta: Meta<typeof QuotationModal> = {
   component: QuotationModal,
