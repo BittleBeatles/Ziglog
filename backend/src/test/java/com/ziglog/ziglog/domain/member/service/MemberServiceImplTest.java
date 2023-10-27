@@ -98,12 +98,17 @@ class MemberServiceImplTest {
         assertDoesNotThrow(() -> memberService.modifyUserProfile(memberToModifyProfileUrl, "asdasd"));
     }
 
+    @DisplayName("이메일을 통한 회원 조회 테스트 : 없는 이메일")
+    @Test
+    public void findMemberByEmail_NoSuchMember() throws Exception {
+        assertThrows(Exception.class, () -> memberService.findUserByEmail("pj0642@naver.com"));
+    }
 
-
-
-
-    //이메일을 통한 회원 조회 => 이건 언제 쓸지? 모름
-
+    @DisplayName("이메일을 통한 회원 조회 테스트 : 성공")
+    @Test
+    public void findMemberByEmail_Success () throws Exception {
+        assertDoesNotThrow(() -> memberService.findUserByEmail("pj0642@gmail.com"));
+    }
 
     //닉네임을 통한 회원 조회
 
