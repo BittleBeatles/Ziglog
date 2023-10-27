@@ -17,8 +17,6 @@ import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMap
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -27,12 +25,11 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    private static final String REFRESH_URL = "/api/refresh";
+    private static final String REFRESH_URL = "/refresh";
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     @Override
@@ -43,7 +40,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             checkRefreshTokenAndReissueAccessToken(request, response, filterChain);
             return;
         }
-
         checkAccessTokenAndSaveAuthentication(request, response, filterChain);
     }
 
@@ -54,7 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwtService.extractAccessToken(request)
                 .filter(jwtService::isAccessTokenValid)
                 .ifPresent(accessToken -> jwtService.extractEmailFromAccessToken(accessToken)
-                        .ifPresent(email-> memberRepository.findMemberByEmail(email)
+                        .ifPresent(email-> memberRepository.findByEmail(email)
                                 .ifPresent(this::saveAuthentication)));
         filterChain.doFilter(request, response);
     }
@@ -71,13 +67,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         refreshTokenRepository.findById(refreshToken)
                 .ifPresent(refreshTokenAndMember -> {
-                    Member member = refreshTokenAndMember.getMember();
-                    String reIssuedRefreshToken = jwtService.issueRefreshToken();
-                    jwtService.sendAccessTokenAndRefreshToken(response,
-                            jwtService.issueAccessToken(member.getEmail()),
-                             reIssuedRefreshToken
-                    );
-                    jwtService.saveRefreshToken(reIssuedRefreshToken, member);
+                    String  email= refreshTokenAndMember.getEmail();
+                    memberRepository.findByEmail(email)
+                            .ifPresent(member -> {
+                                String reIssuedRefreshToken = jwtService.issueRefreshToken();
+                                jwtService.sendAccessTokenAndRefreshToken(response, jwtService.issueAccessToken(member.getEmail()), reIssuedRefreshToken);
+                                jwtService.saveRefreshToken(reIssuedRefreshToken, member.getEmail());
+                            });
                 });
     }
 

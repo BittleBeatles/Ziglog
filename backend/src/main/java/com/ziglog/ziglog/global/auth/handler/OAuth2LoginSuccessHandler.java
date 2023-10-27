@@ -37,6 +37,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         try {
             log.info("OAuth2LoginSuccessHandler - onAuthenticationSuccess()");
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+            log.info("OAuth2LoginSuccessHandler - onAuthenticationSuccess(1)");
             loginSuccess(request, response, oAuth2User);
         } catch (Exception e){
             log.info("OAuth2LoginSuccessHandler - onAuthenticationSuccess() fails : {}", e.getMessage());
@@ -56,7 +57,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .build().toUriString();
 
         jwtService.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
-        jwtService.saveRefreshToken(refreshToken, oAuth2User.getMember());
+        jwtService.saveRefreshToken(refreshToken, oAuth2User.getMember().getEmail());
         redirectStrategy.sendRedirect(request, response, redirectUrl);
     }
 }

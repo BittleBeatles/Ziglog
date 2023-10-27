@@ -55,7 +55,6 @@ public class SecurityConfig {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Value("jwt.access.header")
     private String accessTokenHeader;
@@ -119,9 +118,7 @@ public class SecurityConfig {
     }
 
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception{
-        JwtAuthenticationFilter jwtAuthenticationFilter
-                = new JwtAuthenticationFilter(jwtService, memberRepository, refreshTokenRepository);
-        return jwtAuthenticationFilter;
+        return new JwtAuthenticationFilter(jwtService, memberRepository, refreshTokenRepository);
     }
 
 }

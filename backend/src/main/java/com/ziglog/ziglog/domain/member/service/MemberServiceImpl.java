@@ -4,21 +4,23 @@ import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
 
     @Override
     public Member findUserByEmail(String email) throws Exception {
-        return memberRepository.findMemberByEmail(email).orElseThrow(() -> new Exception());
+        return memberRepository.findByEmail(email).orElseThrow(() -> new Exception());
     }
 
     @Override
     public Member findUserByNickname(String nickname) throws Exception{
-        return memberRepository.findMemberByNickname(nickname).orElseThrow(() -> new Exception());
+        return memberRepository.findByNickname(nickname).orElseThrow(() -> new Exception());
     }
 
     @Override

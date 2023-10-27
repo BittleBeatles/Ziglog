@@ -5,6 +5,7 @@ import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.service.MemberService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
@@ -41,7 +43,7 @@ public class MemberController {
     @GetMapping("/{nickname}")
     public ResponseEntity<UserPublicInfoResponseDTO> getUserPublicInfo(@PathVariable String nickname) throws Exception{
         return new ResponseEntity<>(
-                UserPublicInfoResponseDTO.toDTO(memberService.findUserByNickname(nickname)),
+                new UserPublicInfoResponseDTO(memberService.findUserByNickname(nickname)),
                 HttpStatus.OK
         );
     }
@@ -49,8 +51,9 @@ public class MemberController {
     @GetMapping("/info")
     public ResponseEntity<UserPublicInfoResponseDTO> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception{
         Member member = userDetails.member();
+        log.info("getMyInfo : {}", member.getNickname());
         return new ResponseEntity<>(
-                UserPublicInfoResponseDTO.toDTO(memberService.findUserByNickname(member.getNickname())),
+                new UserPublicInfoResponseDTO(memberService.findUserByNickname(member.getNickname())),
                 HttpStatus.OK
         );
     }

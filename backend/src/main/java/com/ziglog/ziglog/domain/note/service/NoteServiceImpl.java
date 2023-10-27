@@ -117,7 +117,7 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public List<Folder> listFolder(String nickname) throws Exception {
-        Member user = memberRepository.findMemberByNickname(nickname).orElseThrow(() -> new Exception());
+        Member user = memberRepository.findByNickname(nickname).orElseThrow(() -> new Exception());
         return user.getFolders();
     }
 
