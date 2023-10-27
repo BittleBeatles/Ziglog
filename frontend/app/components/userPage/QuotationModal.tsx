@@ -1,5 +1,4 @@
-import SingleQuotation from '@components/common/SingleQuatation';
-import SvgIcon from '@components/common/SvgIcon';
+import SingleQuotation from '@components/userPage/QuotationModal/SingleQuatation';
 import { InputHTMLAttributes } from 'react';
 
 interface QuotationModalProps extends InputHTMLAttributes<HTMLInputElement> {
