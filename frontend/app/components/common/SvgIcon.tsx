@@ -9,7 +9,7 @@ interface IconProps {
 
 export default function SvgIcon({
   name,
-  size = 24,
+  size = 26,
   color = 'black',
 }: IconProps) {
   const IconComponent = Icons[name];
