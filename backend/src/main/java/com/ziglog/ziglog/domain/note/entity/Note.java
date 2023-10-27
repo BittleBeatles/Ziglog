@@ -54,12 +54,15 @@ public class Note {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime editDatetime;
 
+    @Builder.Default
     @OneToMany(mappedBy = "note", cascade = CascadeType.REMOVE)
     private List<Bookmark> bookmarks = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "startNote")
     private List<Quotation> quoted = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "endNote")
     private List<Quotation> quoting = new ArrayList<>();
 

@@ -33,7 +33,7 @@ public class MemberController {
         return new ResponseEntity<>("안녕", HttpStatus.OK);
     }
 
-    @PutMapping("/modify/nickname")
+    @PutMapping("/check/nickname")
     public ResponseEntity<Boolean> checkNicknameValidation(String nickname){
         return new ResponseEntity<>(memberService.isValidNickname(nickname), HttpStatus.OK);
     }
