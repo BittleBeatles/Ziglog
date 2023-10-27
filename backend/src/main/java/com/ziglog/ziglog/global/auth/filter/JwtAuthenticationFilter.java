@@ -27,11 +27,12 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String REFRESH_URL = "/api/refresh";
 
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+
+    private static final String REFRESH_URL = "/api/refresh";
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     @Override
@@ -49,6 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     //Access Token 있는지 확인
     public void checkAccessTokenAndSaveAuthentication(HttpServletRequest request, HttpServletResponse response,
                                  FilterChain filterChain) throws ServletException, IOException {
+        log.info("check access token and save auth");
         jwtService.extractAccessToken(request)
                 .filter(jwtService::isAccessTokenValid)
                 .ifPresent(accessToken -> jwtService.extractEmailFromAccessToken(accessToken)
@@ -60,7 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     //Refresh Token 있는지 확인
     public void checkRefreshTokenAndReissueAccessToken(HttpServletRequest request, HttpServletResponse response,
                                                        FilterChain filterChain) throws ServletException, IOException {
-
+        log.info("check refresh token and reissue access token");
         String refreshToken = jwtService.extractRefreshToken(request)
                             .filter(jwtService::isRefreshTokenValid)
                             .orElse(null);
@@ -81,7 +83,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     //Authentication 저장
     public void saveAuthentication(Member member){
-        //OAuth2만 쓸까? 말까? 쓸까? 말까? 샤워하고 올까? 말까? 올까? 말까?
+        log.info("jwt filter - save auth : {}", member.getNickname());
         UserDetails userDetails = new CustomUserDetails(member);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
