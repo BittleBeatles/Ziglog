@@ -15,7 +15,7 @@ export default function Box({
   return (
     <div
       {...rest}
-      className={`${THEME_VARIANTS[theme]} w-full h-full shadow-md p-5 ${className}`}
+      className={`${THEME_VARIANTS[theme]} w-full h-full rounded shadow-md p-5 ${className}`}
     >
       {children}
     </div>

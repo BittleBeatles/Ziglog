@@ -17,6 +17,9 @@ import Note from '@public/icons/note.svg';
 import NoteFill from '@public/icons/noteFill.svg';
 import Folder from '@public/icons/folder.svg';
 import FolderOpen from '@public/icons/folderOpen.svg';
+import ExpandMore from '@public/icons/expandMore.svg';
+import ExpandLess from '@public/icons/expandLess.svg';
+import Setting from '@public/icons/setting.svg';
 
 export {
   AddFolder,
@@ -38,4 +41,7 @@ export {
   Folder,
   FolderOpen,
   NoteFill,
+  ExpandMore,
+  ExpandLess,
+  Setting,
 };

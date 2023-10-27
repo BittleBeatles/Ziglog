@@ -20,16 +20,18 @@ export default function Note({
   theme = 'light',
 }: NoteProps) {
   return (
-    <Link
-      href={`/user-page/${nickname}/read-note/${noteId}`}
-      className="flex items-center pl-5 mt-2 mb-2"
-    >
-      <SvgIcon
-        name="Note"
-        color={theme === 'light' ? colors.black : colors.white}
-      />
-      <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>{title}</Text>
-    </Link>
+    <div>
+      <Link
+        href={`/user-page/${nickname}/read-note/${noteId}`}
+        className="flex items-center pl-5 mt-2 mb-2 hover:opacity-60 transition-opacity duration-300"
+      >
+        <SvgIcon
+          name="Note"
+          color={theme === 'light' ? colors.black : colors.white}
+        />
+        <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>{title}</Text>
+      </Link>
+    </div>
   );
 }
 

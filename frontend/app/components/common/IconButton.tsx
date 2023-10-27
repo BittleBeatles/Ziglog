@@ -6,16 +6,19 @@ import colors from '@src/design/color';
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   name: keyof typeof Icons;
   theme: 'dark' | 'light';
-  size: number;
+  size?: number;
 }
 export default function IconButton({
   name,
   theme,
-  size,
+  size = 24,
   ...rest
 }: IconButtonProps) {
   return (
-    <button {...rest}>
+    <button
+      className="opacity-100 hover:opacity-60 transition-opacity duration-300"
+      {...rest}
+    >
       <SvgIcon
         name={name}
         color={theme === 'dark' ? colors.white : colors.black}

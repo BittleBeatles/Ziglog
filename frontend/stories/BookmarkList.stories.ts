@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import BookmarkList from '@components/userPage/BookmarkList';
+import BookmarkList from '@components/userPage/SideBar/BookmarkList';
 
 const meta: Meta<typeof BookmarkList> = {
   component: BookmarkList,
