@@ -98,6 +98,13 @@ class MemberServiceImplTest {
         assertDoesNotThrow(() -> memberService.modifyUserProfile(memberToModifyProfileUrl, "asdasd"));
     }
 
+    @DisplayName("사용자 프로필 변경 테스트 - 존재하지 않는 회원")
+    @Test
+    public void profileModificationTest_NoSuchMember() throws Exception {
+        Member memberToModifyProfileUrl = Member.builder().email("pj0642@naver.com").nickname("ppys").build();
+        assertThrows(Exception.class, () -> memberService.modifyUserProfile(memberToModifyProfileUrl, "asdasd"));
+    }
+
     @DisplayName("이메일을 통한 회원 조회 테스트 : 없는 이메일")
     @Test
     public void findMemberByEmail_NoSuchMember() throws Exception {
