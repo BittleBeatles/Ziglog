@@ -13,4 +13,6 @@ public interface MemberService {
     void modifyUserProfile(Member member, String profileUrl) throws Exception;
     Member signUp(String email, String nickname) throws Exception;
     boolean isValidNickname(String nickname);
+    boolean isValidNicknameFormat(String nickname);
+    boolean isNotDuplicatedNickname(String nickname);
 }

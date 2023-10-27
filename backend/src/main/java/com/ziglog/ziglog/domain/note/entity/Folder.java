@@ -28,9 +28,11 @@ public class Folder {
     @JoinColumn(name = "PARENT_ID")
     private Folder parent;
 
+    @Builder.Default
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
     private List<Folder> children = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY)
     private List<Note> notes = new ArrayList<>();
 

@@ -32,8 +32,6 @@ public class MemberServiceImpl implements MemberService{
         member.setProfileUrl(profileUrl);
     }
 
-
-
     @Override
     public boolean isValidNickname(String nickname) {
         if (!isValidNicknameFormat(nickname)) return false;
@@ -50,13 +48,12 @@ public class MemberServiceImpl implements MemberService{
         return memberRepository.save(member);
     }
 
-    private boolean isValidNicknameFormat(String nickname){
-        //
-        String regex = "^[a-zA-Z0-9가-힣]{1, 13}$";
+    public boolean isValidNicknameFormat(String nickname){
+        String regex = "^[a-zA-Z0-9가-힣]{1,13}$";
         return nickname.matches(regex);
     }
 
-    private boolean isNotDuplicatedNickname(String nickname){
+    public boolean isNotDuplicatedNickname(String nickname){
         return !memberRepository.existsMemberByNickname(nickname);
     }
 }
