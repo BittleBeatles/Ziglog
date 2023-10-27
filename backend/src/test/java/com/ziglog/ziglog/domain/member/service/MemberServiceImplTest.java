@@ -116,4 +116,10 @@ class MemberServiceImplTest {
     public void findMemberByNickname_NoSuchMember() throws Exception {
         assertThrows(Exception.class, () -> memberService.findUserByNickname("pj0642@naver.com"));
     }
+
+    @DisplayName("닉네임을 통한 회원 조회 테스트 : 성공")
+    @Test
+    public void findMemberByNickname_Success() throws Exception {
+        assertDoesNotThrow(() -> memberService.findUserByNickname("pys"));
+    }
 }
