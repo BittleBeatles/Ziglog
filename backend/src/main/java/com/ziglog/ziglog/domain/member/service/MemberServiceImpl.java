@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -45,6 +47,7 @@ public class MemberServiceImpl implements MemberService{
         Member member = Member.builder()
                 .email(email)
                 .nickname(nickname)
+                .password(UUID.randomUUID().toString())
                 .build();
 
         return memberRepository.save(member);
