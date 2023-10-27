@@ -81,7 +81,6 @@ class MemberServiceImplTest {
     }
 
     //닉네임 변경 테스트 - 성공
-
     @DisplayName("사용자 닉네임 변경 테스트 : 성공")
     @Test
     public void nicknameModificationTest_Success() throws Exception {
@@ -91,13 +90,16 @@ class MemberServiceImplTest {
         assertDoesNotThrow(() -> memberService.modifyUserNickname(memberToSignUp, nickToModify));
     }
 
-    //유저 프로필 변경 - 실패
-
-
-    //유저가 없는 경우
-
-
     //유저 프로필 변경 - 성공
+    @DisplayName("사용자 프로필 변경 테스트 - 성공")
+    @Test
+    public void profileModificationTest_Success() throws Exception {
+        Member memberToModifyProfileUrl = memberService.findUserByEmail("pj0642@gmail.com");
+        assertDoesNotThrow(() -> memberService.modifyUserProfile(memberToModifyProfileUrl, "asdasd"));
+    }
+
+
+
 
 
     //이메일을 통한 회원 조회 => 이건 언제 쓸지? 모름
