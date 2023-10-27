@@ -2,34 +2,36 @@ import ProfileImage from '@components/common/ProfileImage';
 import Text from '@components/common/Text';
 
 interface GlobalSearchResultProps {
-  note_id: number;
+  noteId: number;
   title: string;
-  content: string;
+  preview: string;
   nickname: string;
-  is_public: boolean;
-  bookmark_count: number;
-  post_time: string;
+  isPublic: boolean;
+  bookmarkCount: number;
+  postTime: string;
+  editTime: string | null;
   theme: 'light' | 'dark';
 }
 
 export default function GlobalSearchResult({
-  note_id,
+  noteId,
   title,
-  content,
+  preview,
   nickname,
-  is_public,
-  bookmark_count,
-  post_time,
+  isPublic,
+  bookmarkCount,
+  postTime,
+  editTime,
   theme,
   ...rest
 }: GlobalSearchResultProps) {
-  if (!is_public) {
+  if (!isPublic) {
     return null;
   }
-  const postTime: Date = new Date(post_time);
-  const year: number = postTime.getFullYear();
-  const month: number = postTime.getMonth() + 1;
-  const day: number = postTime.getDate();
+  const PostTime: Date = new Date(editTime || postTime);
+  const year: number = PostTime.getFullYear();
+  const month: number = PostTime.getMonth() + 1;
+  const day: number = PostTime.getDate();
   const formattedDate: string = `${year}년 ${String(month).padStart(
     2,
     '0'
@@ -46,7 +48,7 @@ export default function GlobalSearchResult({
       </div>
       <div className="mt-2">
         <Text type="p" className="line-clamp-3">
-          {`${content}`}
+          {`${preview}`}
         </Text>
       </div>
       <div className="mt-2 flex flex-row">
@@ -54,7 +56,7 @@ export default function GlobalSearchResult({
           {`${formattedDate}`}
         </Text>
         <Text type="p" className="ml-2 text-xs text-grey">
-          {`북마크 ${bookmark_count}`}
+          {`북마크 ${bookmarkCount}`}
         </Text>
       </div>
     </div>

@@ -8,13 +8,14 @@ export default function Search() {
       <div className="w-2/3">
         <GlobalSearchInput />
         <GlobalSearchResult
-          note_id={1}
+          noteId={1}
           title="안녕하세요"
-          content="코드실행 결과리스트 테이블 뷰에서 항목을 선택하면 나오는 뷰를 디자인하였습니다. Table View (제약 조건을 주었습니다) Table View CellImage ViewLableButtonFile->New->Cocoa Touch Class -> Clas 이름 작성을 하여 코드실행 결과리스트 테이블 뷰에서 항목을 선택하면 나오는 뷰를 디자인하였습니다. Table View (제약 조건을 주었습니다) Table View CellImage ViewLableButtonFile->New->Cocoa Touch Class -> Clas 이름 작성을 하여"
+          preview="코드실행 결과리스트 테이블 뷰에서 항목을 선택하면 나오는 뷰를 디자인하였습니다. Table View (제약 조건을 주었습니다) Table View CellImage ViewLableButtonFile->New->Cocoa Touch Class -> Clas 이름 작성을 하여 코드실행 결과리스트 테이블 뷰에서 항목을 선택하면 나오는 뷰를 디자인하였습니다. Table View (제약 조건을 주었습니다) Table View CellImage ViewLableButtonFile->New->Cocoa Touch Class -> Clas 이름 작성을 하여"
           nickname="markLee"
-          is_public={true}
-          bookmark_count={82}
-          post_time="2023-10-26 12:23"
+          isPublic={true}
+          bookmarkCount={82}
+          postTime="2023-10-26 12:23"
+          editTime={null}
           theme="light"
         ></GlobalSearchResult>
       </div>
