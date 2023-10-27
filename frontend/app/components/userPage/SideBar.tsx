@@ -135,7 +135,7 @@ export default function SideBar({ theme }: SideBarProps) {
       <div className="flex justify-between px-8">
         <IconButton
           theme={theme}
-          name={theme === 'light' ? 'DarkMode' : 'LightMode'}
+          name={theme === 'light' ? 'LightMode' : 'DarkMode'}
         />
         {!isLogined && <Button label="로그인하기" color="charcol" />}
 
