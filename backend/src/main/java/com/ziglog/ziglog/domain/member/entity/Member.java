@@ -6,10 +6,11 @@ import com.ziglog.ziglog.domain.note.entity.Note;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "MEMBER")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL", unique = true)
     private String email;
 
     @Column(name = "PASSWORD")
@@ -37,15 +38,22 @@ public class Member {
     private Role role;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
-    private List<Note> notes;
+    @Builder.Default
+    private List<Note> notes = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<Bookmark> bookmarks;
+    @Builder.Default
+    private List<Bookmark> bookmarks = new ArrayList<>();;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
-    private List<Folder> folders;
+    @Builder.Default
+    private List<Folder> folders = new ArrayList<>();
 
     public void setNickname(String nickname){
         this.nickname = nickname;
+    }
+
+    public void setProfileUrl(String profileUrl){
+        this.profileUrl = profileUrl;
     }
 }

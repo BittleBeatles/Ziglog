@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Map;
@@ -24,6 +25,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Service
 @Slf4j
+@Transactional
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
@@ -55,15 +57,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private Member getMember(OAuth2Attributes oAuth2Attributes){
-        log.info("OAuth2UserService - getMember()");
-        Member member = oAuth2Attributes.toEntity();
-
         //첫 로그인인 경우 임의의 닉네임을 배정해서 저장
-        return memberRepository.findMemberByEmail(member.getEmail()).orElse(saveMember(member));
+        Member member= memberRepository.findByEmail(oAuth2Attributes.toEntity().getEmail()).orElse(null);
+        if (member== null) return saveMember(oAuth2Attributes);
+        return member;
     }
 
-    private Member saveMember(Member member) {
-        log.info("OAuth2UserService - saveMember()");
+    private Member saveMember(OAuth2Attributes attributes) {
+        Member member = attributes.toEntity();
+        log.info("OAuth2UserService - saveMember() : user {} does not exist", member.getEmail());
 
         //아직 없는 닉네임이 나올 때까지 새로운 닉네임을 만듦
         String tempNick = NicknameGenerator.generateRandomNickname();
@@ -74,7 +76,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         }
 
         //임의의 닉네임 + 임의의 비밀번호를 배정하고 저장
-        return memberRepository.save(
+        member = memberRepository.save(
             Member.builder()
                     .email(member.getEmail())//받아온 이메일
                     .password(UUID.randomUUID().toString())//임의의 비밀번호
@@ -83,5 +85,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                     .role(Role.USER)//회원으로 권한 설정
                     .build()
         );
+
+        log.info("OAuth2UserService - saveMember() : user {} saved", member.getEmail());
+        return member;
     }
 }
