@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import PersonalSearchInput from '@components/userPage/PersonalSearchInput';
+import PersonalSearchInput from '@components/userPage/SideBar/PersonalSearchInput';
 
 const meta: Meta<typeof PersonalSearchInput> = {
   component: PersonalSearchInput,

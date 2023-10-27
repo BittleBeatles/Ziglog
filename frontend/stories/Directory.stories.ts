@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Directory from '@components/userPage/Directory';
+import Directory from '@components/userPage/SideBar/Directory';
 
 const meta: Meta<typeof Directory> = {
   component: Directory,
