@@ -30,7 +30,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-    private String frontUrl = "localhost:3000";
+    private String frontUrl = "http://localhost:3000";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -52,7 +52,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtService.issueAccessToken(oAuth2User.getName());
         String refreshToken = jwtService.issueRefreshToken();
 
-        String redirectUrl = UriComponentsBuilder.fromUriString(frontUrl+"/oauth2/redirect/" + accessToken)
+        String redirectUrl = UriComponentsBuilder.fromUriString(frontUrl+"/oauth?at=" + accessToken)
                 .build().toUriString();
 
         jwtService.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);

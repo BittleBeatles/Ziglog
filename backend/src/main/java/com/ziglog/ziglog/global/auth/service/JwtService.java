@@ -67,7 +67,7 @@ public class JwtService {
     }
 
     public void setAccessTokenHeader(HttpServletResponse response, String accessToken){
-        response.setHeader(accessTokenHeader, BEARER + accessToken);
+        response.setHeader(accessTokenHeader, accessToken);
     }
 
     public boolean isAccessTokenValid(String refreshToken){
