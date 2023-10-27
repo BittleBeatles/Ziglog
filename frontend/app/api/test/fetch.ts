@@ -1,8 +1,8 @@
-import { publicFetch } from '..';
+import { privateFetch } from '..';
 import { TodoApiResponse } from './type';
 
 export function getTodo() {
-  publicFetch<TodoApiResponse>('todos/1')
+  privateFetch<TodoApiResponse>('todos/1', { method: 'GET' })
     .then((response) => {
       console.log(response.body);
     })

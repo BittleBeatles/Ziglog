@@ -9,8 +9,6 @@ type userSliceInfo = TokenInfo &
 
 const initialState: userSliceInfo = {
   accessToken: '',
-  // refreshToken: localStorage.getItem('refreshToken') || '',
-  refreshToken: '',
   grantType: '',
   isLogin: false,
   nickname: '',
@@ -27,7 +25,6 @@ export const user = createSlice({
     },
     setUserToken: (state, action: PayloadAction<TokenInfo>) => {
       const payload = action.payload;
-      // localStorage.setItem('refreshToken', payload.refreshToken);
 
       return {
         ...state,
@@ -51,6 +48,9 @@ export const user = createSlice({
     setMyProfileImage: (state, action: PayloadAction<string>) => {
       state.profileImage = action.payload;
     },
+    setAccessToken: (state, action: PayloadAction<string>) => {
+      state.accessToken = action.payload;
+    },
   },
 });
 
@@ -61,5 +61,6 @@ export const {
   setMyTheme,
   setMyNickname,
   setMyProfileImage,
+  setAccessToken,
 } = user.actions;
 export default user.reducer;
