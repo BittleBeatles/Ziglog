@@ -1,6 +1,6 @@
 'use client';
 import ProfileImage from '@components/common/ProfileImage';
-import { useEffect, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import DongSuk from '@public/images/DongSuk.jpg';
 import Text from '@components/common/Text';
 import IconButtonWithBg from './IconButtonWithBg';
@@ -18,7 +18,7 @@ interface SideBarProps {
 export default function SideBar({ theme }: SideBarProps) {
   const [isLogined, setLogined] = useState(true);
   const [isMine, setMine] = useState(true);
-  const nickname = 'ancjs369@naver.com';
+  const nickname = '동석 마 좀 치나';
   const router = useRouter();
   const [directory, setDirectory] = useState<DirectoryItem[]>(directoryList);
   const [parentId, setParentId] = useState<number>(-1);
@@ -29,10 +29,13 @@ export default function SideBar({ theme }: SideBarProps) {
 
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
+  // 노트 추가
   const addNote = () => {
     setShowNoteInput(true);
     setShowFolderInput(false);
   };
+
+  // 폴더 추가
   const addFolder = () => {
     setShowFolderInput(true);
     setShowNoteInput(false);
@@ -118,6 +121,8 @@ export default function SideBar({ theme }: SideBarProps) {
               directoryList={directory}
               setFolderName={setFolderName}
               setNoteName={setNoteName}
+              folderName={folderName}
+              noteName={noteName}
             />
           </div>
           <hr />

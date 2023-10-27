@@ -3,7 +3,7 @@ import Text from '@components/common/Text';
 import { DirectoryItem } from '../Directory';
 import Note from './Note';
 import SvgIcon from '@components/common/SvgIcon';
-import { useState } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import colors from '@src/design/color';
 import CreateFile from './CreateFile';
 import { findParentId } from './findParentId';
@@ -17,13 +17,15 @@ export interface FolderProps {
   depth?: number;
   theme?: 'light' | 'dark';
   parentId?: number;
-  setParentId?: React.Dispatch<React.SetStateAction<number>>;
+  setParentId?: Dispatch<SetStateAction<number>>;
   showFolderInput?: boolean;
-  setShowFolderInput?: React.Dispatch<React.SetStateAction<boolean>>;
-  setFolderName?: React.Dispatch<React.SetStateAction<string>>;
+  setShowFolderInput?: Dispatch<SetStateAction<boolean>>;
+  setFolderName?: Dispatch<SetStateAction<string>>;
   showNoteInput?: boolean;
-  setShowNoteInput?: React.Dispatch<React.SetStateAction<boolean>>;
-  setNoteName?: React.Dispatch<React.SetStateAction<string>>;
+  setShowNoteInput?: Dispatch<SetStateAction<boolean>>;
+  setNoteName?: Dispatch<SetStateAction<string>>;
+  folderName?: string;
+  noteName?: string;
 }
 
 export default function Folder({
@@ -42,10 +44,12 @@ export default function Folder({
   setNoteName,
   showNoteInput,
   setShowNoteInput,
+  folderName,
+  noteName,
 }: FolderProps) {
   const paddingLeft = `${depth * 1.25}rem`;
   const [isFolderOpen, setFolderOpen] = useState(false);
-
+  const folderBgClass = isFolderOpen ? 'bg-gray-200 rounded' : '';
   const handleFolder = () => {
     if (!isFolderOpen) {
       // 폴더를 열 때
@@ -74,11 +78,25 @@ export default function Folder({
     }
   };
 
+  const handleKeyDown = (
+    type: 'folder' | 'note',
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === 'Enter') {
+      if (type === 'folder') {
+        console.log(parentId, folderName);
+      } else {
+        console.log(parentId, noteName);
+      }
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className="folder mb-3" style={{ paddingLeft }}>
       <div
         onClick={handleFolder}
-        className="flex items-center cursor-pointer hover:opacity-60 transition-opacity duration-300"
+        className={`flex items-center cursor-pointer hover:opacity-60 transition-opacity duration-300 ${folderBgClass}`}
       >
         {isFolderOpen ? (
           <SvgIcon
@@ -124,6 +142,8 @@ export default function Folder({
                   showNoteInput={showNoteInput}
                   setShowNoteInput={setShowNoteInput}
                   setNoteName={setNoteName}
+                  folderName={folderName}
+                  noteName={noteName}
                 />
               )
             )}
@@ -134,6 +154,7 @@ export default function Folder({
           <CreateFile
             onChange={(e) => setFolderName && setFolderName(e.target.value)}
             placeholder="폴더 생성"
+            onKeyDown={(e) => handleKeyDown('folder', e)}
           />
         </div>
       )}
@@ -143,6 +164,7 @@ export default function Folder({
             type="note"
             onChange={(e) => setNoteName && setNoteName(e.target.value)}
             placeholder="노트 생성"
+            onKeyDown={(e) => handleKeyDown('note', e)}
           />
         </div>
       )}

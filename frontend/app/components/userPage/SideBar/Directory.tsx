@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import React, { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { FormEvent, useState } from 'react';
 import Folder, { FolderProps } from './Directory/Folder';
 import CreateFile from './Directory/CreateFile';
 import Note, { NoteProps } from './Directory/Note';
@@ -8,13 +9,15 @@ export interface DirectoryProps {
   directoryList: DirectoryItem[];
   theme?: 'light' | 'dark';
   parentId?: number;
-  setParentId?: React.Dispatch<React.SetStateAction<number>>;
+  setParentId?: Dispatch<SetStateAction<number>>;
   showFolderInput?: boolean;
-  setShowFolderInput?: React.Dispatch<React.SetStateAction<boolean>>;
-  setFolderName?: React.Dispatch<React.SetStateAction<string>>;
+  setShowFolderInput?: Dispatch<SetStateAction<boolean>>;
+  setFolderName?: Dispatch<SetStateAction<string>>;
   showNoteInput?: boolean;
-  setShowNoteInput?: React.Dispatch<React.SetStateAction<boolean>>;
-  setNoteName?: React.Dispatch<React.SetStateAction<string>>;
+  setShowNoteInput?: Dispatch<SetStateAction<boolean>>;
+  setNoteName?: Dispatch<SetStateAction<string>>;
+  folderName?: string;
+  noteName?: string;
 }
 export type DirectoryItem = (NoteProps | FolderProps) & {
   type: 'note' | 'folder';
@@ -31,7 +34,23 @@ export default function Directory({
   showNoteInput,
   setShowNoteInput,
   setNoteName,
+  folderName,
+  noteName,
 }: DirectoryProps) {
+  const handleKeyDown = (
+    type: 'folder' | 'note',
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === 'Enter') {
+      if (type === 'folder') {
+        console.log(parentId, folderName);
+      } else {
+        console.log(parentId, noteName);
+      }
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className="w-full">
       {directoryList.map((item) =>
@@ -60,6 +79,8 @@ export default function Directory({
             showNoteInput={showNoteInput}
             setShowNoteInput={setShowNoteInput}
             setNoteName={setNoteName}
+            folderName={folderName}
+            noteName={noteName}
           />
         )
       )}
@@ -67,6 +88,7 @@ export default function Directory({
         <CreateFile
           onChange={(e) => setFolderName && setFolderName(e.target.value)}
           placeholder="폴더 생성"
+          onKeyDown={(e) => handleKeyDown('folder', e)}
         />
       )}
       {parentId === -1 && showNoteInput && (
@@ -74,6 +96,7 @@ export default function Directory({
           type="note"
           onChange={(e) => setFolderName && setFolderName(e.target.value)}
           placeholder="노트 생성"
+          onKeyDown={(e) => handleKeyDown('note', e)}
         />
       )}
     </div>

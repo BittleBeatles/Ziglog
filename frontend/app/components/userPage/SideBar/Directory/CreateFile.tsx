@@ -1,3 +1,4 @@
+import React, { useEffect, useRef } from 'react';
 import SvgIcon from '@components/common/SvgIcon';
 import colors from '@src/design/color';
 import { InputHTMLAttributes } from 'react';
@@ -10,6 +11,14 @@ export default function CreateFile({
   type = 'folder',
   ...rest
 }: FolderCreateProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   return (
     <div className="flex mt-2 mb-2">
       {type === 'note' ? (
@@ -18,7 +27,7 @@ export default function CreateFile({
         <SvgIcon name="Folder" color={colors.grey} />
       )}
 
-      <input className="w-full" {...rest} type="text" />
+      <input className="w-full" ref={inputRef} {...rest} type="text" />
     </div>
   );
 }

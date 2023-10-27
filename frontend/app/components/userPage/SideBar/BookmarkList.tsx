@@ -32,7 +32,7 @@ export default function BookmarkList({
             name="BookMarks"
             color={theme === 'light' ? colors.black : colors.white}
           />
-          <Text type="b" className="pl-1 truncate">
+          <Text type="b" className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>
             북마크
           </Text>
         </div>
@@ -76,6 +76,6 @@ export default function BookmarkList({
 }
 
 const THEME_VARINTS = {
-  light: 'text-black',
+  light: '',
   dark: 'text-white',
 };
