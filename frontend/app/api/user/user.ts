@@ -1,4 +1,4 @@
-import { privateFetch, publicFetch } from '..';
+import { privateFetch } from '..';
 import { API_URL } from '@api/constants';
 import { UserInfo } from './types';
 import { useAppDispatch } from '@store/store';
@@ -20,7 +20,7 @@ export function getUserInfo(): Promise<UserInfo> {
 export async function ReissueToken() {
   const dispatch = useAppDispatch();
   return privateFetch(`${API_URL}/auth/refresh`, {
-    method: 'POST',
+    method: 'GET',
   })
     .then((res) => {
       dispatch(setAccessToken('newAccessToken'));
