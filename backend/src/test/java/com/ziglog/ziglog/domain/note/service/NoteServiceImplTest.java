@@ -64,9 +64,36 @@ class NoteServiceImplTest {
 
     @DisplayName("노트 수정 테스트 - 존재하지 않는 노트 변경 시도 테스트")
     @Test
-    void noteModificationTest_() {
+    void noteModificationTest_NoNoteInDB() {
         Note note = Note.builder().build();
         assertThrows(Exception.class, () -> noteService.modifyNote(member1, note));
     }
+
+    @DisplayName("노트 수정 테스트 - 노트 제목 및 내용 변경사항 반영 테스트")
+    @Test
+    void noteModificationTest_TitleAndContentModificationTest(){
+        //노트 생성
+        Note note = noteService.createNote(member1);
+
+        //프론트에서 변경된 노트 정보
+        String title = "title";
+        String content = "content";
+        Note modification = Note.builder()
+                .id(note.getId())
+                .author(note.getAuthor())
+                .title(title)
+                .content(content)
+                .build();
+
+        try {
+            noteService.modifyNote(member1, modification);
+            note = noteService.getNote(note.getId());
+        } catch (Exception e){
+
+        }
+        assertEquals(title, note.getTitle());
+        assertEquals(content, note.getContent());
+    }
+
 
 }
