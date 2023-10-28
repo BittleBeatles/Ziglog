@@ -23,18 +23,27 @@ class NoteServiceImplTest {
     @Autowired
     private NoteServiceImpl noteService;
     private Member member1 = new Member();
+    private Member member2 = new Member();
 
     @DisplayName("임시 가입")
     @BeforeEach
     public void signUp() throws Exception{
         member1 = memberService.signUp("pj0642@gmail.com", "pys");
+        member2 = memberService.signUp("pj0642@naver.com", "박영서");
     }
 
-    @DisplayName("노트 생성 테스트")
+    @DisplayName("노트 생성 테스트 - 노트 작성자 일치 여부 테스트 : 성공")
     @Test
-    void createNote() {
+    void createNoteTest_Success() {
         Note note = noteService.createNote(member1);
-        assertEquals(member1.getNickname(), note.getAuthor().getNickname());
+        assertEquals(member1, note.getAuthor());
+    }
+
+    @DisplayName("노트 생성 테스트 - 노트 작성자 일치 여부 테스트 : 실패")
+    @Test
+    void createNoteTest_Fail() {
+        Note note = noteService.createNote(member1);
+        assertNotEquals(member2, note.getAuthor());
     }
 
     @Test
