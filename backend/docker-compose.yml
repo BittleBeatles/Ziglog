@@ -4,7 +4,10 @@ services:
     build: .
     ports:
       - 8080:8080
+    depends_on:
+      - redis
   redis:
     image: redis
+    container_name: spring-redis
     ports:
       - 6379:6379
