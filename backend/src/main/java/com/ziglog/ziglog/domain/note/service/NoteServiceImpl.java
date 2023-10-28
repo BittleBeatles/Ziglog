@@ -26,10 +26,7 @@ public class NoteServiceImpl implements NoteService{
 
     //Note
     @Override
-    public Note createNote() {
-
-        Member member = new Member();//SecurityContext 내의 사용자로 변할 것
-
+    public Note createNote(Member member) {
         Note note = Note.builder()
                     .author(member)
                     .build();
@@ -37,10 +34,7 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Note saveNoteWithDiff(Note note) throws Exception {
-
-        //글의 저자가 Security Context 내의 유저와 같은지 확인
-
+    public Note saveNoteWithDiff(Member member, Note note) throws Exception {
         //영속성 Context 내의 노트
         Note origin = noteRepository.findNoteById(note.getId()).orElseThrow(() -> new Exception());
         origin.setTitle(note.getTitle());//타이틀
@@ -52,7 +46,7 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Note setPublic(Note note) throws Exception {
+    public Note setPublic(Member member, Note note) throws Exception {
         Note origin = noteRepository.findNoteById(note.getId()).orElseThrow(() -> new Exception());
 
         origin.setPublic(note.isPublic());
@@ -64,7 +58,7 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Boolean deleteNote(Long noteId) {
+    public Boolean deleteNote(Member member, Long noteId) {
 
         //삭제 요청자가 Security Context 내의 사용자 같은지 확인
         try {
@@ -88,12 +82,12 @@ public class NoteServiceImpl implements NoteService{
 
     // Folder
     @Override
-    public Folder addFolder(Folder folder) {
+    public Folder addFolder(Member member, Folder folder) {
         return folderRepository.save(folder);
     }
 
     @Override
-    public Folder modifyFolder(Folder folder) throws Exception {
+    public Folder modifyFolder(Member member, Folder folder) throws Exception {
 
         //JPA 영속성 컨테스트 내
         Folder origin = folderRepository.findById(folder.getId()).orElseThrow(() -> new Exception());
@@ -103,7 +97,7 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Boolean deleteFolder(Long folderId) {
+    public Boolean deleteFolder(Member member, Long folderId) {
 
         try {
             folderRepository.deleteById(folderId);
@@ -111,7 +105,6 @@ public class NoteServiceImpl implements NoteService{
         catch (Exception e) {
             return false;
         }
-
         return true;
     }
 
@@ -123,7 +116,7 @@ public class NoteServiceImpl implements NoteService{
 
     // Quotation
     @Override
-    public Boolean addQuotation(Long fromNote, Long toNote) throws Exception{
+    public Boolean addQuotation(Member member, Long fromNote, Long toNote) throws Exception{
         Note from = noteRepository.findNoteById(fromNote).orElseThrow(() -> new Exception() );
         Note to = noteRepository.findNoteById(toNote).orElseThrow(() -> new Exception());
 
@@ -141,12 +134,22 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Boolean deleteQuotation(Long fromNote, Long toNote) throws Exception {
+    public Boolean deleteQuotation(Member member, Long fromNote, Long toNote) throws Exception {
         Note from = noteRepository.findNoteById(fromNote).orElseThrow(() -> new Exception() );
         Note to = noteRepository.findNoteById(toNote).orElseThrow(() -> new Exception());
 
         Quotation quotation = quotationRepository.findByStartNoteAndEndNote(from, to);
         quotationRepository.deleteQuotationById(quotation.getId());
         return false;
+    }
+
+    @Override
+    public Boolean checkOwner(Member member, Note note){
+        return note.getAuthor() == member;
+    }
+
+    @Override
+    public Boolean checkOwner(Member member, Folder folder){
+        return folder.getOwner() == member;
     }
 }
