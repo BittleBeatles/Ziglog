@@ -1,5 +1,8 @@
 package com.ziglog.ziglog.domain.member.controller;
 
+import com.ziglog.ziglog.domain.member.dto.request.NicknameDto;
+import com.ziglog.ziglog.domain.member.dto.request.ProfileUrlDto;
+import com.ziglog.ziglog.domain.member.dto.response.NicknameValidationResponseDto;
 import com.ziglog.ziglog.domain.member.dto.response.UserPublicInfoResponseDto;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.service.MemberService;
@@ -19,42 +22,43 @@ public class MemberController {
     private final MemberService memberService;
 
     @PutMapping("/modify/nickname")
-    public ResponseDto<Void> modifyNickname(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                              String nickname) throws Exception{
-        //SecurityContext 내 사용자의 닉네임을 변경시켜 줘야 함
-        memberService.modifyUserNickname(userDetails.member(), nickname);
-        return ResponseDto.of(200, "수정됨");
+    public ResponseDto<UserPublicInfoResponseDto> modifyNickname(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                              NicknameDto nickname) throws Exception{
+        Member member = userDetails.member();
+        memberService.modifyUserNickname(member, nickname.getNickname());
+        return ResponseDto.of(200, "success", UserPublicInfoResponseDto.toDto(member));
     }
 
     @PutMapping("/modify/profile")
-    public ResponseDto<Void> modifyProfile(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                String profileUrl) throws Exception{
+    public ResponseDto<UserPublicInfoResponseDto> modifyProfile(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                ProfileUrlDto profileUrl) throws Exception{
         Member member = userDetails.member();
-        memberService.modifyUserProfile(member, profileUrl);
-        return ResponseDto.of(200, "수정됨");
+        memberService.modifyUserProfile(member, profileUrl.getProfileUrl());
+        return ResponseDto.of(200, "success", UserPublicInfoResponseDto.toDto(member));
     }
 
-    @PutMapping("/check/nickname")
-    public ResponseDto<Boolean> checkNicknameValidation(String nickname){
-        return ResponseDto.of(200, "사용 가능한 닉네임입니다", memberService.isValidNickname(nickname));
+    @PostMapping("/check/nickname")
+    public ResponseDto<NicknameValidationResponseDto> checkNicknameValidation(NicknameDto nickname){
+        return ResponseDto.of(200, "success",
+                new NicknameValidationResponseDto(memberService.isValidNickname(nickname.getNickname())));
     }
 
     @GetMapping("/{nickname}")
     public ResponseDto<UserPublicInfoResponseDto> getUserPublicInfo(@PathVariable String nickname) throws Exception{
-        return ResponseDto.of(200, "사용자 공재 정보 조회",
-                new UserPublicInfoResponseDto(memberService.findUserByNickname(nickname)));
+        return ResponseDto.of(200, "success",
+                UserPublicInfoResponseDto.toDto(memberService.findUserByNickname(nickname)));
     }
 
     @GetMapping("/info")
     public ResponseDto<UserPublicInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception{
         Member member = userDetails.member();
         log.info("getMyInfo : {}", member.getNickname());
-        return ResponseDto.of(200, "로그인한 사용자의 공개 정보 조회",
-                new UserPublicInfoResponseDto(memberService.findUserByNickname(member.getNickname())));
+        return ResponseDto.of(200, "success",
+                UserPublicInfoResponseDto.toDto(memberService.findUserByNickname(member.getNickname())));
     }
 
     @GetMapping("/test")
     public ResponseDto<Void> test(){
-        return ResponseDto.of(200, "테스트");
+        return ResponseDto.of(200, "test success");
     }
 }
