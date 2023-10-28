@@ -101,7 +101,6 @@ class NoteServiceImplTest {
         //노트 생성
         Note note = noteService.createNote(member1);
 
-
         //프론트에서 변경된 노트 정보
         String title = "title";
         String content = "content";
@@ -121,5 +120,15 @@ class NoteServiceImplTest {
         }
         assertEquals(true, note.isPublic());
     }
+
+    @DisplayName("노트 삭제 테스트 - 실패")
+    @Test
+    void noteDeleteTest_Fail(){
+        //노트 생성
+        Note note = noteService.createNote(member1);
+
+        assertEquals(true, note.isPublic());
+    }
+
 
 }
