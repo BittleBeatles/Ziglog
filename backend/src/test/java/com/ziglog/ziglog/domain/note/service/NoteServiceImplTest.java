@@ -62,5 +62,11 @@ class NoteServiceImplTest {
         assertDoesNotThrow(() -> noteService.modifyNote(member1, note));
     }
 
+    @DisplayName("노트 수정 테스트 - 존재하지 않는 노트 변경 시도 테스트")
+    @Test
+    void noteModificationTest_() {
+        Note note = Note.builder().build();
+        assertThrows(Exception.class, () -> noteService.modifyNote(member1, note));
+    }
 
 }
