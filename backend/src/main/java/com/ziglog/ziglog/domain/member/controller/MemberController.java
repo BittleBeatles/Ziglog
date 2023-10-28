@@ -1,13 +1,15 @@
 package com.ziglog.ziglog.domain.member.controller;
 
-import com.ziglog.ziglog.domain.member.dto.response.UserPublicInfoResponseDTO;
+import com.ziglog.ziglog.domain.member.dto.request.NicknameDto;
+import com.ziglog.ziglog.domain.member.dto.request.ProfileUrlDto;
+import com.ziglog.ziglog.domain.member.dto.response.NicknameValidationResponseDto;
+import com.ziglog.ziglog.domain.member.dto.response.UserPublicInfoResponseDto;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.service.MemberService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
+import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,46 +22,43 @@ public class MemberController {
     private final MemberService memberService;
 
     @PutMapping("/modify/nickname")
-    public ResponseEntity<String> modifyNickname(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                 String nickname) throws Exception{
-        //SecurityContext 내 사용자의 닉네임을 변경시켜 줘야 함
-        memberService.modifyUserNickname(userDetails.member(), nickname);
-        return new ResponseEntity<>("안녕", HttpStatus.OK);
+    public ResponseDto<UserPublicInfoResponseDto> modifyNickname(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                              NicknameDto nickname) throws Exception{
+        Member member = userDetails.member();
+        memberService.modifyUserNickname(member, nickname.getNickname());
+        return ResponseDto.of(200, "success", UserPublicInfoResponseDto.toDto(member));
     }
 
     @PutMapping("/modify/profile")
-    public ResponseEntity<String> modifyProfile(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                String profileUrl) throws Exception{
+    public ResponseDto<UserPublicInfoResponseDto> modifyProfile(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                ProfileUrlDto profileUrl) throws Exception{
         Member member = userDetails.member();
-        memberService.modifyUserProfile(member, profileUrl);
-        return new ResponseEntity<>("안녕", HttpStatus.OK);
+        memberService.modifyUserProfile(member, profileUrl.getProfileUrl());
+        return ResponseDto.of(200, "success", UserPublicInfoResponseDto.toDto(member));
     }
 
-    @PutMapping("/check/nickname")
-    public ResponseEntity<Boolean> checkNicknameValidation(String nickname){
-        return new ResponseEntity<>(memberService.isValidNickname(nickname), HttpStatus.OK);
+    @PostMapping("/check/nickname")
+    public ResponseDto<NicknameValidationResponseDto> checkNicknameValidation(NicknameDto nickname){
+        return ResponseDto.of(200, "success",
+                new NicknameValidationResponseDto(memberService.isValidNickname(nickname.getNickname())));
     }
 
     @GetMapping("/{nickname}")
-    public ResponseEntity<UserPublicInfoResponseDTO> getUserPublicInfo(@PathVariable String nickname) throws Exception{
-        return new ResponseEntity<>(
-                new UserPublicInfoResponseDTO(memberService.findUserByNickname(nickname)),
-                HttpStatus.OK
-        );
+    public ResponseDto<UserPublicInfoResponseDto> getUserPublicInfo(@PathVariable String nickname) throws Exception{
+        return ResponseDto.of(200, "success",
+                UserPublicInfoResponseDto.toDto(memberService.findUserByNickname(nickname)));
     }
 
     @GetMapping("/info")
-    public ResponseEntity<UserPublicInfoResponseDTO> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception{
+    public ResponseDto<UserPublicInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception{
         Member member = userDetails.member();
         log.info("getMyInfo : {}", member.getNickname());
-        return new ResponseEntity<>(
-                new UserPublicInfoResponseDTO(memberService.findUserByNickname(member.getNickname())),
-                HttpStatus.OK
-        );
+        return ResponseDto.of(200, "success",
+                UserPublicInfoResponseDto.toDto(memberService.findUserByNickname(member.getNickname())));
     }
 
     @GetMapping("/test")
-    public String test(){
-        return "hello";
+    public ResponseDto<Void> test(){
+        return ResponseDto.of(200, "test success");
     }
 }
