@@ -54,4 +54,13 @@ class NoteServiceImplTest {
         Note note = noteService.createNote(member1);
         assertThrows(Exception.class, () -> noteService.modifyNote(member2, note));
     }
+
+    @DisplayName("노트 수정 테스트 - 요청자와 노트 소유자 일치")
+    @Test
+    void noteModificationTest_IdenticalOwner() {
+        Note note = noteService.createNote(member1);
+        assertDoesNotThrow(() -> noteService.modifyNote(member1, note));
+    }
+
+
 }
