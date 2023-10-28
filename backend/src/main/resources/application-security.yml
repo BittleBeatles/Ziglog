@@ -10,7 +10,7 @@ spring:
             scope:
               - profile
               - email
-            redirect-uri: http://localhost:8080/api/login/oauth2/code/google
+            redirect-uri: http://k9a407.p.ssafy.io:8080/api/login/oauth2/code/google
 
 #JWTtoken configurations
 jwt:
