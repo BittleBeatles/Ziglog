@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 
 @AllArgsConstructor
-public class NoteSaveRequestDTO {
+public class NoteSaveRequestDto {
     private Long noteId;
     private String title;
     private Boolean isPublic;
