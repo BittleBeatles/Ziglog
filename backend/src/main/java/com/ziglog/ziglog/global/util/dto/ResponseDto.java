@@ -1,5 +1,8 @@
 package com.ziglog.ziglog.global.util.dto;
 
+import lombok.Getter;
+
+@Getter
 public class ResponseDto<T> {
 
     private Integer statusCode;
