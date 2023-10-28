@@ -15,8 +15,10 @@ public class UserPublicInfoResponseDto {
     private String profileUrl;
     private String nickname;
 
-    public UserPublicInfoResponseDto(Member member){
-        this.profileUrl = member.getProfileUrl();
-        this.nickname = member.getNickname();
+    public static UserPublicInfoResponseDto toDto(Member member){
+        return UserPublicInfoResponseDto.builder()
+                .profileUrl(member.getProfileUrl())
+                .nickname(member.getNickname())
+                .build();
     }
 }
