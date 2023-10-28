@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BriefNoteResponseDTO {
+public class BriefNoteResponseDto {
 
     private Long noteId;
     private String title;
     private String nickname;
     private String brief;
 
-    public static BriefNoteResponseDTO toDTO(Note note){
-        return BriefNoteResponseDTO.builder()
+    public static BriefNoteResponseDto toDTO(Note note){
+        return BriefNoteResponseDto.builder()
                 .noteId(note.getId())
                 .title(note.getTitle())
                 .nickname(note.getAuthor().getNickname())

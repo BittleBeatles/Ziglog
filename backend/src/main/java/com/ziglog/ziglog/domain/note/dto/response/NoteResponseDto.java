@@ -6,24 +6,24 @@ import java.util.List;
 
 
 @Builder
-public class NoteResponseDTO {
+public class NoteResponseDto {
     private Long noteId;
     private String title;
     private String content;
     private String nickname;
     private Boolean isPublic;
     private Integer bookmarkCount;
-    private List<BriefNoteResponseDTO> quotedList;
+    private List<BriefNoteResponseDto> quotedList;
 
 
     //postDateTime이랑 editDateTime도 추가돼야 하는데 어떻게 할지 모르곘네요
 
-    public static NoteResponseDTO toDTO(Note note){
-        List<BriefNoteResponseDTO> quoted = note.getQuoted()
+    public static NoteResponseDto toDTO(Note note){
+        List<BriefNoteResponseDto> quoted = note.getQuoted()
                                                  .stream().map(endNote->
-                        BriefNoteResponseDTO.toDTO(endNote.getEndNote())).toList();
+                        BriefNoteResponseDto.toDTO(endNote.getEndNote())).toList();
 
-        return NoteResponseDTO.builder()
+        return NoteResponseDto.builder()
                 .noteId(note.getId())
                 .title(note.getTitle())
                 .content(note.getContent())
