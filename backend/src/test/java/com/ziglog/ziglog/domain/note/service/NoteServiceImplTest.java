@@ -95,5 +95,31 @@ class NoteServiceImplTest {
         assertEquals(content, note.getContent());
     }
 
+    @DisplayName("노트 공개 여부 변경 테스트")
+    @Test
+    void noteModificationTest_SetPublicTest(){
+        //노트 생성
+        Note note = noteService.createNote(member1);
+
+
+        //프론트에서 변경된 노트 정보
+        String title = "title";
+        String content = "content";
+        Note modification = Note.builder()
+                .id(note.getId())
+                .author(note.getAuthor())
+                .title(title)
+                .content(content)
+                .isPublic(true)
+                .build();
+
+        try {
+            noteService.setPublic(member1, modification);
+            note = noteService.getNote(note.getId());
+        } catch (Exception e){
+
+        }
+        assertEquals(true, note.isPublic());
+    }
 
 }
