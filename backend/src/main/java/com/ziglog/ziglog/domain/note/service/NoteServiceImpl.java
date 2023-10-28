@@ -34,7 +34,7 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Note saveNoteWithDiff(Member member, Note note) throws Exception {
+    public Note modifyNote(Member member, Note note) throws Exception {
         if (!checkOwner(member, note)) throw new Exception();
 
         //영속성 Context 내의 노트

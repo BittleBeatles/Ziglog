@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -46,55 +48,10 @@ class NoteServiceImplTest {
         assertNotEquals(member2, note.getAuthor());
     }
 
+    @DisplayName("노트 수정 테스트 - 요청자와 노트 소유자 확인 실패")
     @Test
-    void saveNoteWithDiff() {
-    }
-
-    @Test
-    void setPublic() {
-    }
-
-    @Test
-    void deleteNote() {
-    }
-
-    @Test
-    void getNote() {
-    }
-
-    @Test
-    void findNotesQuotingThisNote() {
-    }
-
-    @Test
-    void addFolder() {
-    }
-
-    @Test
-    void modifyFolder() {
-    }
-
-    @Test
-    void deleteFolder() {
-    }
-
-    @Test
-    void listFolder() {
-    }
-
-    @Test
-    void addQuotation() {
-    }
-
-    @Test
-    void deleteQuotation() {
-    }
-
-    @Test
-    void checkOwner() {
-    }
-
-    @Test
-    void testCheckOwner() {
+    void noteModificationTest_DifferentOwner() {
+        Note note = noteService.createNote(member1);
+        assertThrows(Exception.class, () -> noteService.modifyNote(member2, note));
     }
 }
