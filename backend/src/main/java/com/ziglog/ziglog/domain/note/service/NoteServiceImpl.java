@@ -35,8 +35,10 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Note saveNoteWithDiff(Member member, Note note) throws Exception {
+        if (!checkOwner(member, note)) throw new Exception();
+
         //영속성 Context 내의 노트
-        Note origin = noteRepository.findNoteById(note.getId()).orElseThrow(() -> new Exception());
+        Note origin = noteRepository.findNoteById(note.getId()).orElseThrow(Exception::new);
         origin.setTitle(note.getTitle());//타이틀
         origin.setContent(note.getContent());//컨텐츠
         origin.setBrief(note.getBrief());//목록 프리뷰
@@ -47,8 +49,9 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Note setPublic(Member member, Note note) throws Exception {
-        Note origin = noteRepository.findNoteById(note.getId()).orElseThrow(() -> new Exception());
+        if (!checkOwner(member, note)) throw new Exception();
 
+        Note origin = noteRepository.findNoteById(note.getId()).orElseThrow(Exception::new);
         origin.setPublic(note.isPublic());
         if (origin.isPublic() && origin.getPostDatetime() == null) {
             origin.setPostDatetime(LocalDateTime.now());
@@ -58,7 +61,9 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Boolean deleteNote(Member member, Long noteId) {
+    public Boolean deleteNote(Member member, Long noteId) throws Exception {
+        Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
+        if (!checkOwner(member, note)) throw new Exception();
 
         //삭제 요청자가 Security Context 내의 사용자 같은지 확인
         try {
@@ -72,32 +77,38 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Note getNote(Long noteId) throws Exception{
-        return noteRepository.findNoteById(noteId).orElseThrow(() -> new Exception());
+        return noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
     }
 
     @Override
-    public List<Note> findNotesQuotingThisNote(Long noteId) {
+    public List<Note> findNotesQuotingThisNote(Long noteId) throws Exception {
+        //TODO
+        Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
         return null;
     }
 
     // Folder
     @Override
     public Folder addFolder(Member member, Folder folder) {
+        //TODO
         return folderRepository.save(folder);
     }
 
     @Override
     public Folder modifyFolder(Member member, Folder folder) throws Exception {
-
         //JPA 영속성 컨테스트 내
-        Folder origin = folderRepository.findById(folder.getId()).orElseThrow(() -> new Exception());
+        if (!checkOwner(member, folder)) throw new Exception();
+
+        Folder origin = folderRepository.findById(folder.getId()).orElseThrow(Exception::new);
         origin.setTitle(folder.getTitle());
 
         return null;
     }
 
     @Override
-    public Boolean deleteFolder(Member member, Long folderId) {
+    public Boolean deleteFolder(Member member, Long folderId) throws Exception {
+        Folder folder= folderRepository.findById(folderId).orElseThrow(Exception::new);
+        if (!checkOwner(member, folder)) throw new Exception();
 
         try {
             folderRepository.deleteById(folderId);
@@ -110,15 +121,15 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public List<Folder> listFolder(String nickname) throws Exception {
-        Member user = memberRepository.findByNickname(nickname).orElseThrow(() -> new Exception());
+        Member user = memberRepository.findByNickname(nickname).orElseThrow(Exception::new);
         return user.getFolders();
     }
 
     // Quotation
     @Override
     public Boolean addQuotation(Member member, Long fromNote, Long toNote) throws Exception{
-        Note from = noteRepository.findNoteById(fromNote).orElseThrow(() -> new Exception() );
-        Note to = noteRepository.findNoteById(toNote).orElseThrow(() -> new Exception());
+        Note from = noteRepository.findNoteById(fromNote).orElseThrow(Exception::new);
+        Note to = noteRepository.findNoteById(toNote).orElseThrow(Exception::new);
 
         Quotation quotation = Quotation.builder()
                                 .startNote(from)
@@ -135,8 +146,8 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Boolean deleteQuotation(Member member, Long fromNote, Long toNote) throws Exception {
-        Note from = noteRepository.findNoteById(fromNote).orElseThrow(() -> new Exception() );
-        Note to = noteRepository.findNoteById(toNote).orElseThrow(() -> new Exception());
+        Note from = noteRepository.findNoteById(fromNote).orElseThrow(Exception::new);
+        Note to = noteRepository.findNoteById(toNote).orElseThrow(Exception::new);
 
         Quotation quotation = quotationRepository.findByStartNoteAndEndNote(from, to);
         quotationRepository.deleteQuotationById(quotation.getId());
