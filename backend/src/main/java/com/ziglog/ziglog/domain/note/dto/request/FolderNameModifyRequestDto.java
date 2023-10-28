@@ -1,20 +1,15 @@
 package com.ziglog.ziglog.domain.note.dto.request;
 
 import com.ziglog.ziglog.domain.note.entity.Folder;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
-public class FolderAddRequestDTO {
-
+public class FolderNameModifyRequestDto {
+    private Long folderId;
     private String folderName;
-    private Long parentId;
 
     public Folder toEntity(){
         return Folder.builder()
-                .id(parentId)
+                .id(folderId)
                 .title(folderName)
                 .build();
     }
-
-
 }

@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class UserPublicInfoResponseDTO {
+public class UserPublicInfoResponseDto {
 
     private String profileUrl;
     private String nickname;
 
-    public UserPublicInfoResponseDTO(Member member){
+    public UserPublicInfoResponseDto(Member member){
         this.profileUrl = member.getProfileUrl();
         this.nickname = member.getNickname();
     }
