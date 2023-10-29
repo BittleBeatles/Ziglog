@@ -28,4 +28,8 @@ public class ResponseDto<T> {
     public static <T> ResponseDto<T> of(Integer statusCode, String message, T data){
         return new ResponseDto<>(statusCode, message, data);
     }
+
+    public static <T> ResponseDto<T> of(T data){
+        return new ResponseDto<>(200, "success", data);
+    }
 }
