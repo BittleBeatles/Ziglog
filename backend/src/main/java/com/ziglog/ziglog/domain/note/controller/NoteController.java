@@ -21,8 +21,7 @@ public class NoteController {
 
     @GetMapping("/ref")
     public ResponseDto<QuotationListResponseDto> getNotesQuoting(@RequestParam("note_id") Long noteId) throws Exception{
-        return ResponseDto.of(200, "success",
-                QuotationListResponseDto.toDto(noteService.getNote(noteId)));
+        return ResponseDto.of(QuotationListResponseDto.toDto(noteService.getNote(noteId)));
     }
 
 }

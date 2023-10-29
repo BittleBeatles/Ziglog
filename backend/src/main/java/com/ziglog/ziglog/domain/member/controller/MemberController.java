@@ -26,7 +26,7 @@ public class MemberController {
                                               NicknameDto nickname) throws Exception{
         Member member = userDetails.member();
         memberService.modifyUserNickname(member, nickname.getNickname());
-        return ResponseDto.of(200, "success", UserPublicInfoResponseDto.toDto(member));
+        return ResponseDto.of(UserPublicInfoResponseDto.toDto(member));
     }
 
     @PutMapping("/modify/profile")
@@ -34,27 +34,24 @@ public class MemberController {
                                                 ProfileUrlDto profileUrl) throws Exception{
         Member member = userDetails.member();
         memberService.modifyUserProfile(member, profileUrl.getProfileUrl());
-        return ResponseDto.of(200, "success", UserPublicInfoResponseDto.toDto(member));
+        return ResponseDto.of(UserPublicInfoResponseDto.toDto(member));
     }
 
     @PostMapping("/check/nickname")
     public ResponseDto<NicknameValidationResponseDto> checkNicknameValidation(NicknameDto nickname){
-        return ResponseDto.of(200, "success",
-                new NicknameValidationResponseDto(memberService.isValidNickname(nickname.getNickname())));
+        return ResponseDto.of(NicknameValidationResponseDto.toDto(memberService.isValidNickname(nickname.getNickname())));
     }
 
     @GetMapping("/{nickname}")
     public ResponseDto<UserPublicInfoResponseDto> getUserPublicInfo(@PathVariable String nickname) throws Exception{
-        return ResponseDto.of(200, "success",
-                UserPublicInfoResponseDto.toDto(memberService.findUserByNickname(nickname)));
+        return ResponseDto.of(UserPublicInfoResponseDto.toDto(memberService.findUserByNickname(nickname)));
     }
 
     @GetMapping("/info")
     public ResponseDto<UserPublicInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception{
         Member member = userDetails.member();
         log.info("getMyInfo : {}", member.getNickname());
-        return ResponseDto.of(200, "success",
-                UserPublicInfoResponseDto.toDto(memberService.findUserByNickname(member.getNickname())));
+        return ResponseDto.of(UserPublicInfoResponseDto.toDto(memberService.findUserByNickname(member.getNickname())));
     }
 
     @GetMapping("/test")
