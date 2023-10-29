@@ -106,12 +106,12 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public Folder modifyFolder(Member member, Folder folder) throws Exception {
         //JPA 영속성 컨테스트 내
-        if (!checkOwner(member, folder)) throw new Exception();
-
         Folder origin = folderRepository.findById(folder.getId()).orElseThrow(Exception::new);
+        if (!checkOwner(member, origin)) throw new Exception();
+
         origin.setTitle(folder.getTitle());
 
-        return null;
+        return origin;
     }
 
     @Override
