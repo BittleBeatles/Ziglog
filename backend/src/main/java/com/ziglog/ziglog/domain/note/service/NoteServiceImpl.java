@@ -134,35 +134,6 @@ public class NoteServiceImpl implements NoteService{
         return user.getFolders();
     }
 
-    // Quotation
-    @Override
-    public Boolean addQuotation(Member member, Long fromNote, Long toNote) throws Exception{
-        Note from = noteRepository.findNoteById(fromNote).orElseThrow(Exception::new);
-        Note to = noteRepository.findNoteById(toNote).orElseThrow(Exception::new);
-
-        Quotation quotation = Quotation.builder()
-                                .startNote(from)
-                                .endNote(to)
-                                .build();
-
-        try {
-            quotationRepository.save(quotation);
-        }catch (Exception e){
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public Boolean deleteQuotation(Member member, Long fromNote, Long toNote) throws Exception {
-        Note from = noteRepository.findNoteById(fromNote).orElseThrow(Exception::new);
-        Note to = noteRepository.findNoteById(toNote).orElseThrow(Exception::new);
-
-        Quotation quotation = quotationRepository.findByStartNoteAndEndNote(from, to);
-        quotationRepository.deleteQuotationById(quotation.getId());
-        return false;
-    }
-
     @Override
     public Boolean checkOwner(Member member, Note note){
         return note.getAuthor() == member;
