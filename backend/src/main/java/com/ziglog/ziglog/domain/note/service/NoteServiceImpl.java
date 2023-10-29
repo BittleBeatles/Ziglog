@@ -79,13 +79,7 @@ public class NoteServiceImpl implements NoteService{
         if (!checkOwner(member, note)) throw new Exception();
 
         //삭제 요청자가 Security Context 내의 사용자 같은지 확인
-        try {
             noteRepository.removeNoteById(noteId);
-        }
-        catch (Exception e){
-            return false;
-        }
-        return true;
     }
 
     @Override
