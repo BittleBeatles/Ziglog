@@ -211,5 +211,20 @@ class NoteServiceImplTest {
         assertThrows(Exception.class, () -> noteService.modifyFolder(member1, folderModified));
     }
 
+    @DisplayName("폴더명 수정 테스트 - 성공 사례")
+    @Test
+    void modifyFolderTest_Success() throws Exception {
+        Folder folder = Folder.builder()
+                .title("folder")
+                .owner(member1)
+                .build();
+        folder = noteService.addFolder(member1, folder);
 
+        Folder folderModified = Folder.builder()
+                .id(folder.getId())
+                .title("folder2")
+                .build();
+
+        assertEquals("folder2", noteService.modifyFolder(member1, folderModified).getTitle());
+    }
 }
