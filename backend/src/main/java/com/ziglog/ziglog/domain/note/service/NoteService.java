@@ -17,7 +17,7 @@ public interface NoteService {
 
     Note setPublic(Member member, Note note) throws Exception;
 
-    Boolean deleteNote(Member member, Long noteId) throws Exception; //해당 아이디의 노트를 삭제
+    Void deleteNote(Member member, Long noteId) throws Exception; //해당 아이디의 노트를 삭제
 
     Note getNote(Long noteId) throws Exception; //해당 ID의 노트의 Detail을 가져 오기
 
