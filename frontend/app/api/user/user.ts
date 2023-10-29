@@ -3,14 +3,16 @@ import { API_URL } from '@api/constants';
 import { UserInfo } from './types';
 import { useAppDispatch } from '@store/store';
 import { setAccessToken } from '@store/modules/userSlice';
+import { ApiSuccessResponse } from '@api/types';
 
-// promise Type 수정해야함
-export function getUserInfo(): Promise<UserInfo> {
-  return privateFetch<UserInfo>(`${API_URL}/user/info`, {
+export type UserApiData = ApiSuccessResponse<UserInfo>;
+export // promise Type 수정해야함
+function getUserInfo(): Promise<UserInfo> {
+  return privateFetch<UserApiData>(`${API_URL}/user/info`, {
     method: 'GET',
   })
-    .then((response) => {
-      return response.body;
+    .then((res) => {
+      return res.body.data;
     })
     .catch((error) => {
       throw error;
@@ -24,7 +26,6 @@ export async function ReissueToken() {
   })
     .then((res) => {
       dispatch(setAccessToken('newAccessToken'));
-      return Promise.resolve(res.body);
     })
     .catch((err) => {
       if (!err.response.body || !err.config) {
