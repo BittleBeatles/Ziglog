@@ -90,16 +90,17 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public List<Note> findNotesQuotingThisNote(Long noteId) throws Exception {
-        //TODO
         Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
-        return null;
+        List<Quotation> quotedList = note.getQuoted();
+        return quotedList.stream().map(Quotation::getEndNote).toList();
     }
 
     // Folder
     @Override
     public Folder addFolder(Member member, Folder folder) {
-        //TODO
-        return folderRepository.save(folder);
+        Folder folderToSave = folderRepository.save(folder);
+        member.getFolders().add(folderToSave);
+        return folderToSave;
     }
 
     @Override
