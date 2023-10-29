@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,7 @@ class NoteServiceImplTest {
                 .title("folder")
                 .build();
 
-        noteService.addFolder(member1, mem1RootFolder);
+        noteService.createFolder(member1, mem1RootFolder);
     }
 
     @DisplayName("노트 생성 테스트 - 노트 작성자 일치 여부 테스트 : 성공")
@@ -187,7 +186,7 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        noteService.addFolder(member1, folder);
+        noteService.createFolder(member1, folder);
         assertEquals(2, member1.getFolders().size());
     }
 
@@ -198,7 +197,7 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        folder = noteService.addFolder(member1, folder);
+        folder = noteService.createFolder(member1, folder);
 
         Folder folderModified = Folder.builder()
                 .id(folder.getId())
@@ -226,7 +225,7 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        folder = noteService.addFolder(member1, folder);
+        folder = noteService.createFolder(member1, folder);
 
         Folder folderModified = Folder.builder()
                 .id(folder.getId())
@@ -243,7 +242,7 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        Folder folderToDelete = noteService.addFolder(member1, folder);
+        Folder folderToDelete = noteService.createFolder(member1, folder);
 
         assertThrows(Exception.class, () -> noteService.deleteFolder(member2, folderToDelete.getId()));
     }
@@ -266,7 +265,7 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        Folder folderToDelete = noteService.addFolder(member1, folder);
+        Folder folderToDelete = noteService.createFolder(member1, folder);
 
         assertDoesNotThrow(() -> noteService.deleteFolder(member1, folderToDelete.getId()));
         assertEquals(1, member1.getFolders().size());
@@ -292,8 +291,8 @@ class NoteServiceImplTest {
                 .title("folder2")
                 .owner(member1)
                 .build();
-        noteService.addFolder(member1, folder);
-        noteService.addFolder(member1, folder2);
+        noteService.createFolder(member1, folder);
+        noteService.createFolder(member1, folder2);
 
         assertDoesNotThrow(() -> noteService.listFolder(member1.getNickname()));
         assertEquals(3, member1.getFolders().size());
@@ -306,14 +305,14 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        folder = noteService.addFolder(member1, folder);
+        folder = noteService.createFolder(member1, folder);
 
         Folder folder2 = Folder.builder()
                 .title("folder2")
                 .owner(member1)
                 .parent(folder)
                 .build();
-        folder2 = noteService.addFolder(member1, folder2);
+        folder2 = noteService.createFolder(member1, folder2);
 
         assertTrue(folder.getChildren().contains(folder2));//폴더1의 자식을 확인
         assertEquals(folder, folder2.getParent());//폴더2의 부모를 확인
@@ -326,7 +325,7 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        folder = noteService.addFolder(member1, folder);
+        folder = noteService.createFolder(member1, folder);
 
         Note note = noteService.createNote(member1, folder.getId());
 
