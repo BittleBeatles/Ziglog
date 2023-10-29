@@ -263,4 +263,15 @@ class NoteServiceImplTest {
         assertDoesNotThrow(() -> noteService.deleteFolder(member1, folderToDelete.getId()));
         assertEquals(0, member1.getFolders().size());
     }
+
+    @DisplayName("폴더 리스트 테스트 - 없는 사용자")
+    @Test
+    void listFolderTest_InvalidUser(){
+        String nickname = "noUser";
+        assertThrows(Exception.class, () -> noteService.listFolder(nickname));
+    }
+
+
+
+
 }
