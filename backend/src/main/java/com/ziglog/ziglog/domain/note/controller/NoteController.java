@@ -55,6 +55,4 @@ public class NoteController {
     public ResponseDto<ReadNoteResponseDto> readNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId) throws Exception {
         return ResponseDto.of(ReadNoteResponseDto.toDTO(noteService.getNote(noteId)));
     }
-
-
 }
