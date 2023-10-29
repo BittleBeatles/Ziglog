@@ -74,12 +74,12 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Void deleteNote(Member member, Long noteId) throws Exception {
+    public void deleteNote(Member member, Long noteId) throws Exception {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
         if (!checkOwner(member, note)) throw new Exception();
 
         //삭제 요청자가 Security Context 내의 사용자 같은지 확인
-            noteRepository.removeNoteById(noteId);
+        noteRepository.removeNoteById(noteId);
     }
 
     @Override
@@ -119,22 +119,16 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Boolean deleteFolder(Member member, Long folderId) throws Exception {
+    public void deleteFolder(Member member, Long folderId) throws Exception {
         Folder folder= folderRepository.findById(folderId).orElseThrow(Exception::new);
         if (!checkOwner(member, folder)) throw new Exception();
-
-        try {
-            member.getFolders().remove(folder);
-            folderRepository.deleteById(folderId);
-        }
-        catch (Exception e) {
-            return false;
-        }
-        return true;
+        member.getFolders().remove(folder);
+        folderRepository.deleteById(folderId);
     }
 
     @Override
     public List<Folder> listFolder(String nickname) throws Exception {
+        //TODO
         Member user = memberRepository.findByNickname(nickname).orElseThrow(Exception::new);
         return user.getFolders();
     }

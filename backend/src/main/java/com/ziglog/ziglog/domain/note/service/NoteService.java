@@ -17,7 +17,7 @@ public interface NoteService {
 
     Note setPublic(Member member, Note note) throws Exception;
 
-    Void deleteNote(Member member, Long noteId) throws Exception; //해당 아이디의 노트를 삭제
+    void deleteNote(Member member, Long noteId) throws Exception; //해당 아이디의 노트를 삭제
 
     Note getNote(Long noteId) throws Exception; //해당 ID의 노트의 Detail을 가져 오기
 
@@ -28,7 +28,7 @@ public interface NoteService {
 
     Folder modifyFolder(Member member, Folder folder) throws Exception;//폴더의 이름을 변경
 
-    Boolean deleteFolder(Member member, Long folderId) throws Exception; //해당 id의 폴더를 삭제
+    void deleteFolder(Member member, Long folderId) throws Exception; //해당 id의 폴더를 삭제
 
     List<Folder> listFolder(String nickname) throws Exception; //해당 사용자의 모든 디렉토리를 반환
 }
