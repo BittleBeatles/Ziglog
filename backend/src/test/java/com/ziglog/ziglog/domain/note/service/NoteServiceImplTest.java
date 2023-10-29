@@ -227,4 +227,40 @@ class NoteServiceImplTest {
 
         assertEquals("folder2", noteService.modifyFolder(member1, folderModified).getTitle());
     }
+
+    @DisplayName("폴더 삭제 테스트 - 잘못된 사용자")
+    @Test
+    void deleteFolderTest_InvalidOwner(){
+        Folder folder = Folder.builder()
+                .title("folder")
+                .owner(member1)
+                .build();
+        Folder folderToDelete = noteService.addFolder(member1, folder);
+
+        assertThrows(Exception.class, () -> noteService.deleteFolder(member2, folderToDelete.getId()));
+    }
+
+    @DisplayName("폴더 삭제 테스트 - 없는 폴더 삭제")
+    @Test
+    void deleteFolderTest_NoFolder(){
+        Folder folder = Folder.builder()
+                .title("folder")
+                .owner(member1)
+                .build();
+
+        assertThrows(Exception.class, () -> noteService.deleteFolder(member2, folder.getId()));
+    }
+
+    @DisplayName("폴더 삭제 테스트 - 성공")
+    @Test
+    void deleteFolderTest_Success(){
+        Folder folder = Folder.builder()
+                .title("folder")
+                .owner(member1)
+                .build();
+        Folder folderToDelete = noteService.addFolder(member1, folder);
+
+        assertDoesNotThrow(() -> noteService.deleteFolder(member1, folderToDelete.getId()));
+        assertEquals(0, member1.getFolders().size());
+    }
 }
