@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import SvgIcon from '@components/common/SvgIcon';
 
 const meta: Meta<typeof SvgIcon> = {
+  title: 'components/common/SvgIcon',
   component: SvgIcon,
 } satisfies Meta<typeof SvgIcon>;
 

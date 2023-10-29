@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Text from '@components/common/Text';
 
 const meta: Meta<typeof Text> = {
+  title: 'components/common/Text',
   component: Text,
 } satisfies Meta<typeof Text>;
 

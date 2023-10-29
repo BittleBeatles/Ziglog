@@ -1,6 +1,6 @@
 import { InputHTMLAttributes } from 'react';
-import SvgIcon from './SvgIcon';
-import Text from './Text';
+import SvgIcon from '../common/SvgIcon';
+import Text from '../common/Text';
 
 interface BookmarkQuoteInfoProps extends InputHTMLAttributes<HTMLInputElement> {
   theme?: 'light' | 'dark';

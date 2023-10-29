@@ -3,7 +3,7 @@ import ProfileImage from '@components/common/ProfileImage';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import DongSuk from '@public/images/DongSuk.jpg';
 import Text from '@components/common/Text';
-import IconButtonWithBg from './IconButtonWithBg';
+import IconButtonWithBg from '../common/IconButtonWithBg';
 import PersonalSearchInput from './SideBar/PersonalSearchInput';
 import Directory, { DirectoryItem } from './SideBar/Directory';
 import BookmarkList from './SideBar/BookmarkList';

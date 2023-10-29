@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
 
 const meta: Meta<typeof PublicPrivateToggle> = {
+  title: 'components/userPage/PublicPrivateToggle',
   component: PublicPrivateToggle,
 } satisfies Meta<typeof PublicPrivateToggle>;
 

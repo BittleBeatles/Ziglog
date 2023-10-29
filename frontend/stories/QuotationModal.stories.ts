@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import QuotationModal from '@components/userPage/QuotationModal';
 
 const meta: Meta<typeof QuotationModal> = {
+  title: 'components/userPage/QuotationModal',
   component: QuotationModal,
 } satisfies Meta<typeof QuotationModal>;
 
