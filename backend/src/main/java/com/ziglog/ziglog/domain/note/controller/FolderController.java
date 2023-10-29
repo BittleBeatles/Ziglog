@@ -1,5 +1,6 @@
 package com.ziglog.ziglog.domain.note.controller;
 
+import com.ziglog.ziglog.domain.note.dto.request.CreateFolderRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.ModifyFolderNameRequestDto;
 import com.ziglog.ziglog.domain.note.service.NoteService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
@@ -16,6 +17,13 @@ import org.springframework.web.bind.annotation.*;
 public class FolderController {
 
     private final NoteService noteService;
+
+    @PostMapping("")
+    public ResponseDto<Void> createFolder(@AuthenticationPrincipal CustomUserDetails userDetails, CreateFolderRequestDto createFolderRequestDto) throws Exception{
+        noteService.createFolder(userDetails.member(), createFolderRequestDto.toEntity());
+        return ResponseDto.of(200, "success");
+    }
+
 
     @PutMapping("")
     public ResponseDto<Void> modifyFolder(@AuthenticationPrincipal CustomUserDetails userDetails, ModifyFolderNameRequestDto modifyFolderNameRequestDto) throws Exception {
