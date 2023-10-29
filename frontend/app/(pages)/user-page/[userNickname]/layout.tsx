@@ -7,11 +7,16 @@ import { ReactNode, useState } from 'react';
 export default function UserLayout({ children }: { children: ReactNode }) {
   const [isSideBarOpen, setSideBarOpen] = useState(true);
   const theme = 'light';
+
+  const sideBarToggle = () => {
+    setSideBarOpen(false);
+  };
+
   return (
     <div className="flex bg-light-background-layout">
       {isSideBarOpen && (
         <div className="w-1/6">
-          <SideBar setSideBarOpen={setSideBarOpen} theme={theme} />
+          <SideBar sideBarToggle={sideBarToggle} theme={theme} />
         </div>
       )}
       {!isSideBarOpen && (

@@ -14,10 +14,10 @@ import NicknameSetting from './NicknameSetting';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
-  setSideBarOpen: Dispatch<SetStateAction<boolean>>;
+  sideBarToggle: () => void;
 }
 
-export default function SideBar({ theme, setSideBarOpen }: SideBarProps) {
+export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const [isLogined, setLogined] = useState(true);
   const [isMine, setMine] = useState(true);
   const nickname = '동석 마 좀 치나';
@@ -45,8 +45,8 @@ export default function SideBar({ theme, setSideBarOpen }: SideBarProps) {
   };
 
   // 세팅모달 열기
-  const openModal = () => {
-    setModalOpen(true);
+  const openModal = (open: boolean) => {
+    setModalOpen(open);
   };
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export default function SideBar({ theme, setSideBarOpen }: SideBarProps) {
           {nickname}
         </Text>
         <IconButton
-          onClick={() => setSideBarOpen(false)}
+          onClick={sideBarToggle}
           theme={theme}
           name="DoubleArrowLeft"
         />
@@ -155,14 +155,18 @@ export default function SideBar({ theme, setSideBarOpen }: SideBarProps) {
           <Button label="마이페이지로 가기" color="charcol" />
         )}
         {isLogined && isMine && (
-          <IconButton onClick={openModal} theme={theme} name="Setting" />
+          <IconButton
+            onClick={() => openModal(true)}
+            theme={theme}
+            name="Setting"
+          />
         )}
       </div>
-      <NicknameSetting
-        theme={theme}
-        isOpen={isModalOpen}
-        setOpen={setModalOpen}
-      />
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <NicknameSetting theme={theme} openModal={openModal} />
+        </div>
+      )}
     </div>
   );
 }
