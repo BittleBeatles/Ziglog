@@ -32,7 +32,10 @@ public class NoteServiceImpl implements NoteService{
                     .author(member)
                     .folder(folderPersist)
                     .build();
-        return noteRepository.save(note);
+        note = noteRepository.save(note);
+        folderPersist.getNotes().add(note);
+
+        return note;
     }
 
     @Override
