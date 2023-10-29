@@ -120,6 +120,7 @@ public class NoteServiceImpl implements NoteService{
         if (!checkOwner(member, folder)) throw new Exception();
 
         try {
+            member.getFolders().remove(folder);
             folderRepository.deleteById(folderId);
         }
         catch (Exception e) {
