@@ -53,28 +53,28 @@ class NoteServiceImplTest {
     @DisplayName("노트 생성 테스트 - 노트 작성자 일치 여부 테스트 : 성공")
     @Test
     void createNoteTest_Success() throws Exception {
-        Note note = noteService.createNote(member1, mem1RootFolder);
+        Note note = noteService.createNote(member1, mem1RootFolder.getId());
         assertEquals(member1, note.getAuthor());
     }
 
     @DisplayName("노트 생성 테스트 - 노트 작성자 일치 여부 테스트 : 실패")
     @Test
     void createNoteTest_Fail() throws Exception {
-        Note note = noteService.createNote(member1, mem1RootFolder);
+        Note note = noteService.createNote(member1, mem1RootFolder.getId());
         assertNotEquals(member2, note.getAuthor());
     }
 
     @DisplayName("노트 수정 테스트 - 요청자와 노트 소유자 확인 실패")
     @Test
     void noteModificationTest_DifferentOwner() throws Exception {
-        Note note = noteService.createNote(member1, mem1RootFolder);
+        Note note = noteService.createNote(member1, mem1RootFolder.getId());
         assertThrows(Exception.class, () -> noteService.modifyNote(member2, note));
     }
 
     @DisplayName("노트 수정 테스트 - 요청자와 노트 소유자 일치")
     @Test
     void noteModificationTest_IdenticalOwner() throws Exception {
-        Note note = noteService.createNote(member1, mem1RootFolder);
+        Note note = noteService.createNote(member1, mem1RootFolder.getId());
         assertDoesNotThrow(() -> noteService.modifyNote(member1, note));
     }
 
@@ -89,7 +89,7 @@ class NoteServiceImplTest {
     @Test
     void noteModificationTest_TitleAndContentModificationTest() throws Exception{
         //노트 생성
-        Note note = noteService.createNote(member1, mem1RootFolder);
+        Note note = noteService.createNote(member1, mem1RootFolder.getId());
 
         //프론트에서 변경된 노트 정보
         String title = "title";
@@ -115,8 +115,8 @@ class NoteServiceImplTest {
     @Test
     void noteModificationTest_QuotingListUpdateTest() throws Exception{
         //노트 생성
-        note1 = noteService.createNote(member1, mem1RootFolder);
-        note2 = noteService.createNote(member1, mem1RootFolder);
+        note1 = noteService.createNote(member1, mem1RootFolder.getId());
+        note2 = noteService.createNote(member1, mem1RootFolder.getId());
 
         List<Quotation> quotings = new ArrayList<>();
         quotings.add(Quotation.builder().startNote(note1).endNote(note2).build());
@@ -137,7 +137,7 @@ class NoteServiceImplTest {
     @Test
     void noteModificationTest_SetPublicTest() throws Exception{
         //노트 생성
-        Note note = noteService.createNote(member1, mem1RootFolder);
+        Note note = noteService.createNote(member1, mem1RootFolder.getId());
 
         //프론트에서 변경된 노트 정보
         String title = "title";
@@ -163,7 +163,7 @@ class NoteServiceImplTest {
     @Test
     void noteDeleteTest_Fail() throws Exception{
         //노트 생성
-        Note note = noteService.createNote(member1, mem1RootFolder);
+        Note note = noteService.createNote(member1, mem1RootFolder.getId());
         assertFalse(note.isPublic());
     }
 
@@ -176,7 +176,7 @@ class NoteServiceImplTest {
     @DisplayName("노트 조회 테스트 - 성공")
     @Test
     void getNoteTest_Success() throws Exception{
-        Note note = noteService.createNote(member1, mem1RootFolder);
+        Note note = noteService.createNote(member1, mem1RootFolder.getId());
         assertDoesNotThrow(() -> noteService.getNote(note.getId()));
     }
 
@@ -328,7 +328,7 @@ class NoteServiceImplTest {
                 .build();
         folder = noteService.addFolder(member1, folder);
 
-        Note note = noteService.createNote(member1, folder);
+        Note note = noteService.createNote(member1, folder.getId());
 
         assertTrue(folder.getNotes().contains(note));//폴더1의 자식을 확인
         assertEquals(folder, note.getFolder());//폴더2의 부모를 확인
