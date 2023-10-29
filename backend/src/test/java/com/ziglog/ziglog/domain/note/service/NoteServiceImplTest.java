@@ -34,39 +34,47 @@ class NoteServiceImplTest {
     private Member member2 = new Member();
     private Note note1 = new Note();
     private Note note2 = new Note();
+    private Folder mem1RootFolder = new Folder();
 
     @DisplayName("임시 가입")
     @BeforeEach
     public void signUp() throws Exception{
         member1 = memberService.signUp("pj0642@gmail.com", "pys");
         member2 = memberService.signUp("pj0642@naver.com", "박영서");
+
+        mem1RootFolder = Folder.builder()
+                .owner(member1)
+                .title("folder")
+                .build();
+
+        noteService.addFolder(member1, mem1RootFolder);
     }
 
     @DisplayName("노트 생성 테스트 - 노트 작성자 일치 여부 테스트 : 성공")
     @Test
-    void createNoteTest_Success() {
-        Note note = noteService.createNote(member1);
+    void createNoteTest_Success() throws Exception {
+        Note note = noteService.createNote(member1, mem1RootFolder);
         assertEquals(member1, note.getAuthor());
     }
 
     @DisplayName("노트 생성 테스트 - 노트 작성자 일치 여부 테스트 : 실패")
     @Test
-    void createNoteTest_Fail() {
-        Note note = noteService.createNote(member1);
+    void createNoteTest_Fail() throws Exception {
+        Note note = noteService.createNote(member1, mem1RootFolder);
         assertNotEquals(member2, note.getAuthor());
     }
 
     @DisplayName("노트 수정 테스트 - 요청자와 노트 소유자 확인 실패")
     @Test
-    void noteModificationTest_DifferentOwner() {
-        Note note = noteService.createNote(member1);
+    void noteModificationTest_DifferentOwner() throws Exception {
+        Note note = noteService.createNote(member1, mem1RootFolder);
         assertThrows(Exception.class, () -> noteService.modifyNote(member2, note));
     }
 
     @DisplayName("노트 수정 테스트 - 요청자와 노트 소유자 일치")
     @Test
-    void noteModificationTest_IdenticalOwner() {
-        Note note = noteService.createNote(member1);
+    void noteModificationTest_IdenticalOwner() throws Exception {
+        Note note = noteService.createNote(member1, mem1RootFolder);
         assertDoesNotThrow(() -> noteService.modifyNote(member1, note));
     }
 
@@ -79,9 +87,9 @@ class NoteServiceImplTest {
 
     @DisplayName("노트 수정 테스트 - 노트 제목 및 내용 변경사항 반영 테스트")
     @Test
-    void noteModificationTest_TitleAndContentModificationTest(){
+    void noteModificationTest_TitleAndContentModificationTest() throws Exception{
         //노트 생성
-        Note note = noteService.createNote(member1);
+        Note note = noteService.createNote(member1, mem1RootFolder);
 
         //프론트에서 변경된 노트 정보
         String title = "title";
@@ -107,8 +115,8 @@ class NoteServiceImplTest {
     @Test
     void noteModificationTest_QuotingListUpdateTest() throws Exception{
         //노트 생성
-        note1 = noteService.createNote(member1);
-        note2 = noteService.createNote(member1);
+        note1 = noteService.createNote(member1, mem1RootFolder);
+        note2 = noteService.createNote(member1, mem1RootFolder);
 
         List<Quotation> quotings = new ArrayList<>();
         quotings.add(Quotation.builder().startNote(note1).endNote(note2).build());
@@ -127,9 +135,9 @@ class NoteServiceImplTest {
 
     @DisplayName("노트 공개 여부 변경 테스트")
     @Test
-    void noteModificationTest_SetPublicTest(){
+    void noteModificationTest_SetPublicTest() throws Exception{
         //노트 생성
-        Note note = noteService.createNote(member1);
+        Note note = noteService.createNote(member1, mem1RootFolder);
 
         //프론트에서 변경된 노트 정보
         String title = "title";
@@ -153,9 +161,9 @@ class NoteServiceImplTest {
 
     @DisplayName("노트 삭제 테스트 - 실패")
     @Test
-    void noteDeleteTest_Fail(){
+    void noteDeleteTest_Fail() throws Exception{
         //노트 생성
-        Note note = noteService.createNote(member1);
+        Note note = noteService.createNote(member1, mem1RootFolder);
         assertFalse(note.isPublic());
     }
 
@@ -167,8 +175,8 @@ class NoteServiceImplTest {
 
     @DisplayName("노트 조회 테스트 - 성공")
     @Test
-    void getNoteTest_Success(){
-        Note note = noteService.createNote(member1);
+    void getNoteTest_Success() throws Exception{
+        Note note = noteService.createNote(member1, mem1RootFolder);
         assertDoesNotThrow(() -> noteService.getNote(note.getId()));
     }
 
@@ -180,7 +188,7 @@ class NoteServiceImplTest {
                 .owner(member1)
                 .build();
         noteService.addFolder(member1, folder);
-        assertEquals(1, member1.getFolders().size());
+        assertEquals(2, member1.getFolders().size());
     }
 
     @DisplayName("폴더명 수정 테스트 - 잘못된 사용자")
@@ -261,7 +269,7 @@ class NoteServiceImplTest {
         Folder folderToDelete = noteService.addFolder(member1, folder);
 
         assertDoesNotThrow(() -> noteService.deleteFolder(member1, folderToDelete.getId()));
-        assertEquals(0, member1.getFolders().size());
+        assertEquals(1, member1.getFolders().size());
     }
 
     @DisplayName("폴더 리스트 테스트 - 없는 사용자")
@@ -288,7 +296,7 @@ class NoteServiceImplTest {
         noteService.addFolder(member1, folder2);
 
         assertDoesNotThrow(() -> noteService.listFolder(member1.getNickname()));
-        assertEquals(2, member1.getFolders().size());
+        assertEquals(3, member1.getFolders().size());
     }
 
     @DisplayName("폴더 사이의 부모 관계 생성이 제대로 되는지 테스트")
@@ -313,17 +321,17 @@ class NoteServiceImplTest {
 
     @DisplayName("노트-폴더 사이의 부모 관계 생성이 제대로 되는지 테스트")
     @Test
-    void checkParentChildRelation_BetweenFolderAndNote(){
+    void checkParentChildRelation_BetweenFolderAndNote() throws Exception{
         Folder folder = Folder.builder()
                 .title("folder")
                 .owner(member1)
                 .build();
         folder = noteService.addFolder(member1, folder);
 
-        Note note = noteService.createNote(member1);
+        Note note = noteService.createNote(member1, folder);
 
-        assertTrue(folder.getChildren().contains(folder2));//폴더1의 자식을 확인
-        assertEquals(folder, folder2.getParent());//폴더2의 부모를 확인
+        assertTrue(folder.getNotes().contains(note));//폴더1의 자식을 확인
+        assertEquals(folder, note.getFolder());//폴더2의 부모를 확인
     }
 
 
