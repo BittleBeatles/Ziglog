@@ -53,8 +53,8 @@ public class NoteServiceImpl implements NoteService{
         List<Quotation> originQuoting = origin.getQuoting();
 
         quotationRepository.deleteQuotationsByIdIn(originQuoting.stream().map(Quotation::getId).toList());
-
         quotationRepository.saveAll(noteQuoting);
+
         origin.setQuoting(noteQuoting);
 
         return origin;

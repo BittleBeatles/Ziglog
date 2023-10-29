@@ -2,6 +2,7 @@ package com.ziglog.ziglog.domain.note.controller;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.note.dto.request.CreateNoteRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.ModifyNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.ListFolderResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.QuotationListResponseDto;
 import com.ziglog.ziglog.domain.note.service.NoteService;
@@ -43,6 +44,10 @@ public class NoteController {
         return ResponseDto.of(201, "success");
     }
 
-
+    @PutMapping("/{noteId}")
+    public ResponseDto<Void> modifyNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId, @RequestBody ModifyNoteRequestDto modifyNoteRequestDto) throws Exception {
+        noteService.modifyNote(userDetails.member(), modifyNoteRequestDto.toEntity(userDetails.member(), noteId));
+        return ResponseDto.of(200, "success");
+    }
 
 }
