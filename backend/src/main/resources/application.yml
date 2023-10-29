@@ -23,6 +23,8 @@ spring:
     include:
       - security
       - redis
+    default:
+      - local
 
 logging:
   level:
