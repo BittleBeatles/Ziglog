@@ -271,6 +271,25 @@ class NoteServiceImplTest {
         assertThrows(Exception.class, () -> noteService.listFolder(nickname));
     }
 
+    @DisplayName("폴더 리스트 테스트 - 성공 사례")
+    @Test
+    void listFolderTest_Success() throws Exception{
+
+        Folder folder = Folder.builder()
+                .title("folder")
+                .owner(member1)
+                .build();
+
+        Folder folder2 = Folder.builder()
+                .title("folder2")
+                .owner(member1)
+                .build();
+        noteService.addFolder(member1, folder);
+        noteService.addFolder(member1, folder2);
+
+        assertDoesNotThrow(() -> noteService.listFolder(member1.getNickname()));
+        assertEquals(2, member1.getFolders().size());
+    }
 
 
 
