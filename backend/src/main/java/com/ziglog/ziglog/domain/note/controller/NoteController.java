@@ -1,6 +1,7 @@
 package com.ziglog.ziglog.domain.note.controller;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.note.dto.response.ListFolderResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.QuotationListResponseDto;
 import com.ziglog.ziglog.domain.note.service.NoteService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
@@ -18,6 +19,11 @@ import org.springframework.web.bind.annotation.*;
 public class NoteController {
 
     private final NoteService noteService;
+
+    @GetMapping("")
+    public ResponseDto<ListFolderResponseDto> listNoteOf(@RequestParam("nickname") String nickname) throws Exception {
+        return ResponseDto.of(ListFolderResponseDto.toDto(noteService.listFolder(nickname)));
+    }
 
     @GetMapping("/ref")
     public ResponseDto<QuotationListResponseDto> getNotesQuoting(@RequestParam("note_id") Long noteId) throws Exception{

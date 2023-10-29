@@ -21,6 +21,7 @@ public class ListFolderResponseDto {
         private Long folderId;
         private String title;
         private List<NoteDto> notes;
+        private ListFolderResponseDto folderList;
     }
 
     @Builder
@@ -31,7 +32,7 @@ public class ListFolderResponseDto {
         private Boolean isPublic;
     }
 
-    public static ListFolderResponseDto toDto(List<Folder> folderList, Member member){
+    public static ListFolderResponseDto toDto(List<Folder> folderList){
         return new ListFolderResponseDto(
                 folderList.stream().map(folder ->
                     FolderDto.builder()
@@ -46,6 +47,7 @@ public class ListFolderResponseDto {
                                         .isPublic(note.isPublic())
                                         .build()).toList()
                             )
+                            .folderList(ListFolderResponseDto.toDto(folder.getChildren()))
                             .build()
                 ).toList()
         );
