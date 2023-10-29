@@ -56,4 +56,5 @@ public class NoteController {
         return ResponseDto.of(ReadNoteResponseDto.toDTO(noteService.getNote(noteId)));
     }
 
+
 }
