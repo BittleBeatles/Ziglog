@@ -18,7 +18,7 @@ public class FolderController {
     private final NoteService noteService;
 
     @PutMapping("")
-    public ResponseDto<Void> createFolder(@AuthenticationPrincipal CustomUserDetails userDetails, ModifyFolderNameRequestDto modifyFolderNameRequestDto) throws Exception {
+    public ResponseDto<Void> modifyFolder(@AuthenticationPrincipal CustomUserDetails userDetails, ModifyFolderNameRequestDto modifyFolderNameRequestDto) throws Exception {
         noteService.modifyFolder(userDetails.member(), modifyFolderNameRequestDto.toEntity());
         return ResponseDto.of(200, "success");
     }
