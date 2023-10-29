@@ -99,6 +99,11 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public Folder addFolder(Member member, Folder folder) {
         Folder folderToSave = folderRepository.save(folder);
+        Folder parent = folder.getParent();
+        if (parent != null) {
+            parent.getChildren().add(folderToSave);
+            folderToSave.setParent(parent);
+        }
         member.getFolders().add(folderToSave);
         return folderToSave;
     }
