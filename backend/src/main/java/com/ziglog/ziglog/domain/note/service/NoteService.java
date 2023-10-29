@@ -31,10 +31,4 @@ public interface NoteService {
     Boolean deleteFolder(Member member, Long folderId) throws Exception; //해당 id의 폴더를 삭제
 
     List<Folder> listFolder(String nickname) throws Exception; //해당 사용자의 모든 디렉토리를 반환
-
-    // 인용
-    Boolean addQuotation(Member member, Long fromNote, Long toNote) throws Exception; //인용 관계를 추가
-
-    //인용 관계 삭제
-    Boolean deleteQuotation(Member member, Long fromNote, Long toNote) throws Exception; //인용 관계를 삭제
 }
