@@ -2,7 +2,9 @@ package com.ziglog.ziglog.domain.member.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
+import com.ziglog.ziglog.domain.note.entity.Folder;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.metamodel.mapping.ForeignKeyDescriptor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +53,6 @@ public class MemberServiceImpl implements MemberService{
                 .nickname(nickname)
                 .password(UUID.randomUUID().toString())
                 .build();
-
         return memberRepository.save(member);
     }
 

@@ -27,7 +27,8 @@ public class Folder {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_ID")
-    private Folder parent;
+    @Builder.Default
+    private Folder parent = null;
 
     @Builder.Default
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
@@ -37,11 +38,14 @@ public class Folder {
     @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY)
     private List<Note> notes = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Member owner;
 
     public void setTitle(String title){
         this.title = title;
+    }
+    public void setParent(Folder parent) {
+        this.parent = parent;
     }
 
 }
