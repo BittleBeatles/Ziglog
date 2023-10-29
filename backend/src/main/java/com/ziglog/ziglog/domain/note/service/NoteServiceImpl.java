@@ -26,11 +26,16 @@ public class NoteServiceImpl implements NoteService{
 
     //Note
     @Override
-    public Note createNote(Member member) {
+    public Note createNote(Member member, Folder folder) throws Exception {
+        Folder folderPersist = folderRepository.findById(folder.getId()).orElseThrow(Exception::new);
         Note note = Note.builder()
                     .author(member)
+                    .folder(folderPersist)
                     .build();
-        return noteRepository.save(note);
+        note = noteRepository.save(note);
+        folderPersist.getNotes().add(note);
+
+        return note;
     }
 
     @Override
@@ -43,6 +48,14 @@ public class NoteServiceImpl implements NoteService{
         origin.setContent(note.getContent());//컨텐츠
         origin.setBrief(note.getBrief());//목록 프리뷰
         origin.setEditDatetime(LocalDateTime.now());//수정일
+
+        List<Quotation> noteQuoting = note.getQuoting(); //새 노트가 인용하고 있는 노트의 리스트
+        List<Quotation> originQuoting = origin.getQuoting();
+
+        quotationRepository.deleteQuotationsByIdIn(originQuoting.stream().map(Quotation::getId).toList());
+
+        quotationRepository.saveAll(noteQuoting);
+        origin.setQuoting(noteQuoting);
 
         return origin;
     }
@@ -82,27 +95,33 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public List<Note> findNotesQuotingThisNote(Long noteId) throws Exception {
-        //TODO
         Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
-        return null;
+        List<Quotation> quotedList = note.getQuoted();
+        return quotedList.stream().map(Quotation::getEndNote).toList();
     }
 
     // Folder
     @Override
     public Folder addFolder(Member member, Folder folder) {
-        //TODO
-        return folderRepository.save(folder);
+        Folder folderToSave = folderRepository.save(folder);
+        Folder parent = folder.getParent();
+        if (parent != null) {
+            parent.getChildren().add(folderToSave);
+            folderToSave.setParent(parent);
+        }
+        member.getFolders().add(folderToSave);
+        return folderToSave;
     }
 
     @Override
     public Folder modifyFolder(Member member, Folder folder) throws Exception {
         //JPA 영속성 컨테스트 내
-        if (!checkOwner(member, folder)) throw new Exception();
-
         Folder origin = folderRepository.findById(folder.getId()).orElseThrow(Exception::new);
+        if (!checkOwner(member, origin)) throw new Exception();
+
         origin.setTitle(folder.getTitle());
 
-        return null;
+        return origin;
     }
 
     @Override
@@ -111,6 +130,7 @@ public class NoteServiceImpl implements NoteService{
         if (!checkOwner(member, folder)) throw new Exception();
 
         try {
+            member.getFolders().remove(folder);
             folderRepository.deleteById(folderId);
         }
         catch (Exception e) {
@@ -125,35 +145,6 @@ public class NoteServiceImpl implements NoteService{
         return user.getFolders();
     }
 
-    // Quotation
-    @Override
-    public Boolean addQuotation(Member member, Long fromNote, Long toNote) throws Exception{
-        Note from = noteRepository.findNoteById(fromNote).orElseThrow(Exception::new);
-        Note to = noteRepository.findNoteById(toNote).orElseThrow(Exception::new);
-
-        Quotation quotation = Quotation.builder()
-                                .startNote(from)
-                                .endNote(to)
-                                .build();
-
-        try {
-            quotationRepository.save(quotation);
-        }catch (Exception e){
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public Boolean deleteQuotation(Member member, Long fromNote, Long toNote) throws Exception {
-        Note from = noteRepository.findNoteById(fromNote).orElseThrow(Exception::new);
-        Note to = noteRepository.findNoteById(toNote).orElseThrow(Exception::new);
-
-        Quotation quotation = quotationRepository.findByStartNoteAndEndNote(from, to);
-        quotationRepository.deleteQuotationById(quotation.getId());
-        return false;
-    }
-
     @Override
     public Boolean checkOwner(Member member, Note note){
         return note.getAuthor() == member;
@@ -163,4 +154,7 @@ public class NoteServiceImpl implements NoteService{
     public Boolean checkOwner(Member member, Folder folder){
         return folder.getOwner() == member;
     }
+
+
+
 }

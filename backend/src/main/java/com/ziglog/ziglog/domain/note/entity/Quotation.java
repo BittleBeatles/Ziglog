@@ -24,4 +24,5 @@ public class Quotation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "e_note_id")
-    private Note endNote; }
+    private Note endNote;
+}
