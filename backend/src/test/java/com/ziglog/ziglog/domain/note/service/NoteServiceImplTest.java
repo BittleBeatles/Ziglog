@@ -118,7 +118,7 @@ class NoteServiceImplTest {
         } catch (Exception e){
 
         }
-        assertEquals(true, note.isPublic());
+        assertTrue(note.isPublic());
     }
 
     @DisplayName("노트 삭제 테스트 - 실패")
@@ -126,9 +126,15 @@ class NoteServiceImplTest {
     void noteDeleteTest_Fail(){
         //노트 생성
         Note note = noteService.createNote(member1);
-
-        assertEquals(true, note.isPublic());
+        assertFalse(note.isPublic());
     }
+
+    @DisplayName("노트 조회 테스트 - 없는 id의 노트 조회")
+    @Test
+    void getNoteTest_NoId(){
+        assertThrows(Exception.class, () -> noteService.getNote(2L));
+    }
+
 
 
 }
