@@ -4,11 +4,20 @@ const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
 
-export default function MarkdownEditor() {
-  const [value, setValue] = useState<string>('Hello World!');
+interface MarkdownEditorProps {
+  theme: 'dark' | 'light';
+}
+
+export default function MarkdownEditor({ theme }: MarkdownEditorProps) {
+  const [value, setValue] = useState<string>();
   return (
     <div>
-      <MDEditor value={value} onChange={(v) => setValue(v || '')}></MDEditor>
+      <MDEditor
+        data-color-mode={theme}
+        height={600}
+        value={value}
+        onChange={(v) => setValue(v || '')}
+      ></MDEditor>
     </div>
   );
 }
