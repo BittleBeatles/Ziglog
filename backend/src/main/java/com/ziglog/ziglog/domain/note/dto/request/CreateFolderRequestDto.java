@@ -4,7 +4,7 @@ import com.ziglog.ziglog.domain.note.entity.Folder;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class FolderAddRequestDto {
+public class CreateFolderRequestDto {
 
     private String folderName;
     private Long parentId;
