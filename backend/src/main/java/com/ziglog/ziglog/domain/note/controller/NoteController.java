@@ -5,6 +5,7 @@ import com.ziglog.ziglog.domain.note.dto.request.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.ModifyNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.ListFolderResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.QuotationListResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.ReadNoteResponseDto;
 import com.ziglog.ziglog.domain.note.service.NoteService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
@@ -48,6 +49,11 @@ public class NoteController {
     public ResponseDto<Void> modifyNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId, @RequestBody ModifyNoteRequestDto modifyNoteRequestDto) throws Exception {
         noteService.modifyNote(userDetails.member(), modifyNoteRequestDto.toEntity(userDetails.member(), noteId));
         return ResponseDto.of(200, "success");
+    }
+
+    @GetMapping("/{noteId")
+    public ResponseDto<ReadNoteResponseDto> readNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId) throws Exception {
+        return ResponseDto.of(ReadNoteResponseDto.toDTO(noteService.getNote(noteId)));
     }
 
 }
