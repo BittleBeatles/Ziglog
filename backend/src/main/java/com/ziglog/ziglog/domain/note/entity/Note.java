@@ -91,4 +91,8 @@ public class Note {
     public void setEditDatetime(LocalDateTime datetime){
         this.editDatetime= datetime;
     }
+
+    public void setQuoting(List<Quotation> quoting){
+        this.quoting = quoting;
+    }
 }

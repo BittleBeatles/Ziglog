@@ -44,6 +44,14 @@ public class NoteServiceImpl implements NoteService{
         origin.setBrief(note.getBrief());//목록 프리뷰
         origin.setEditDatetime(LocalDateTime.now());//수정일
 
+        List<Quotation> noteQuoting = note.getQuoting(); //새 노트가 인용하고 있는 노트의 리스트
+        List<Quotation> originQuoting = origin.getQuoting();
+
+        quotationRepository.deleteQuotationsByIdIn(originQuoting.stream().map(Quotation::getId).toList());
+
+        quotationRepository.saveAll(noteQuoting);
+        origin.setQuoting(noteQuoting);
+
         return origin;
     }
 
@@ -163,4 +171,7 @@ public class NoteServiceImpl implements NoteService{
     public Boolean checkOwner(Member member, Folder folder){
         return folder.getOwner() == member;
     }
+
+
+
 }
