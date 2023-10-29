@@ -26,9 +26,11 @@ public class NoteServiceImpl implements NoteService{
 
     //Note
     @Override
-    public Note createNote(Member member) {
+    public Note createNote(Member member, Folder folder) throws Exception {
+        Folder folderPersist = folderRepository.findById(folder.getId()).orElseThrow(Exception::new);
         Note note = Note.builder()
                     .author(member)
+                    .folder(folderPersist)
                     .build();
         return noteRepository.save(note);
     }

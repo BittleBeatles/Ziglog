@@ -311,4 +311,20 @@ class NoteServiceImplTest {
         assertEquals(folder, folder2.getParent());//폴더2의 부모를 확인
     }
 
+    @DisplayName("노트-폴더 사이의 부모 관계 생성이 제대로 되는지 테스트")
+    @Test
+    void checkParentChildRelation_BetweenFolderAndNote(){
+        Folder folder = Folder.builder()
+                .title("folder")
+                .owner(member1)
+                .build();
+        folder = noteService.addFolder(member1, folder);
+
+        Note note = noteService.createNote(member1);
+
+        assertTrue(folder.getChildren().contains(folder2));//폴더1의 자식을 확인
+        assertEquals(folder, folder2.getParent());//폴더2의 부모를 확인
+    }
+
+
 }
