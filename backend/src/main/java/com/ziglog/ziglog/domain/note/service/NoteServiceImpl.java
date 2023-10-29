@@ -74,7 +74,7 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Boolean deleteNote(Member member, Long noteId) throws Exception {
+    public Void deleteNote(Member member, Long noteId) throws Exception {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
         if (!checkOwner(member, note)) throw new Exception();
 
