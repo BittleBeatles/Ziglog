@@ -183,4 +183,33 @@ class NoteServiceImplTest {
         assertEquals(1, member1.getFolders().size());
     }
 
+    @DisplayName("폴더명 수정 테스트 - 잘못된 사용자")
+    @Test
+    void modifyFolderTest_InvalidOwner(){
+        Folder folder = Folder.builder()
+                .title("folder")
+                .owner(member1)
+                .build();
+        folder = noteService.addFolder(member1, folder);
+
+        Folder folderModified = Folder.builder()
+                .id(folder.getId())
+                .title("folder2")
+                .build();
+
+        assertThrows(Exception.class, () -> noteService.modifyFolder(member2, folderModified));
+    }
+
+    @DisplayName("폴더명 수정 테스트 - 존재하지 않는 폴더")
+    @Test
+    void modifyFolderTest_NoSuchFolder(){
+        Folder folderModified = Folder.builder()
+                .title("folder2")
+                .owner(member1)
+                .build();
+
+        assertThrows(Exception.class, () -> noteService.modifyFolder(member1, folderModified));
+    }
+
+
 }
