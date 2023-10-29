@@ -26,8 +26,8 @@ public class NoteServiceImpl implements NoteService{
 
     //Note
     @Override
-    public Note createNote(Member member, Folder folder) throws Exception {
-        Folder folderPersist = folderRepository.findById(folder.getId()).orElseThrow(Exception::new);
+    public Note createNote(Member member, Long folderId) throws Exception {
+        Folder folderPersist = folderRepository.findById(folderId).orElseThrow(Exception::new);
         Note note = Note.builder()
                     .author(member)
                     .folder(folderPersist)
@@ -128,7 +128,7 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public List<Folder> listFolder(String nickname) throws Exception {
-        //TODO
+        //TODO 루트폴더를 반환하도록 바꿔야 함
         Member user = memberRepository.findByNickname(nickname).orElseThrow(Exception::new);
         return user.getFolders();
     }

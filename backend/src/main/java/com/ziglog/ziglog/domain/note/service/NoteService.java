@@ -11,8 +11,7 @@ public interface NoteService {
     // 노트
     Boolean checkOwner(Member member, Note note);
     Boolean checkOwner(Member member, Folder folder);
-    Note createNote(Member member, Folder folder) throws Exception; //비어있는 새 노트를 생성
-
+    Note createNote(Member member, Long folderId) throws Exception; //비어있는 새 노트를 생성
     Note modifyNote(Member member, Note note) throws Exception; //현재 이 노트의 내용을 저장
 
     Note setPublic(Member member, Note note) throws Exception;

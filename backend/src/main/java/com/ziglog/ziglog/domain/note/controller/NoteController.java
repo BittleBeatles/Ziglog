@@ -1,6 +1,7 @@
 package com.ziglog.ziglog.domain.note.controller;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.note.dto.request.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.ListFolderResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.QuotationListResponseDto;
 import com.ziglog.ziglog.domain.note.service.NoteService;
@@ -32,7 +33,16 @@ public class NoteController {
 
     @DeleteMapping("")
     public ResponseDto<Void> deleteNote(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("note_id") Long noteId) throws Exception {
-        Member member = userDetails.member();
-        return ResponseDto.of(noteService.deleteNote(member, noteId));
+        noteService.deleteNote(userDetails.member(), noteId);
+        return ResponseDto.of(200, "success");
     }
+
+    @PostMapping("")
+    public ResponseDto<Void> createNote(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody CreateNoteRequestDto createNoteRequestDto) throws Exception{
+        noteService.createNote(userDetails.member(), createNoteRequestDto.getFolderId());
+        return ResponseDto.of(201, "success");
+    }
+
+
+
 }
