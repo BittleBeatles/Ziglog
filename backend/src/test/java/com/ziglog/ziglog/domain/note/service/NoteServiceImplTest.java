@@ -3,6 +3,7 @@ package com.ziglog.ziglog.domain.note.service;
 import com.ziglog.ziglog.ZiglogApplication;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.service.MemberServiceImpl;
+import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
 import org.junit.jupiter.api.BeforeEach;
@@ -171,5 +172,15 @@ class NoteServiceImplTest {
         assertDoesNotThrow(() -> noteService.getNote(note.getId()));
     }
 
+    @DisplayName("폴더 생성 테스트")
+    @Test
+    void createFolderTest(){
+        Folder folder = Folder.builder()
+                .title("folder")
+                .owner(member1)
+                .build();
+        noteService.addFolder(member1, folder);
+        assertEquals(1, member1.getFolders().size());
+    }
 
 }
