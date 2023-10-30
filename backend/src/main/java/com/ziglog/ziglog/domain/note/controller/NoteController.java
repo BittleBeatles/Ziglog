@@ -51,7 +51,7 @@ public class NoteController {
         return ResponseDto.of(200, "success");
     }
 
-    @GetMapping("/{noteId")
+    @GetMapping("/{noteId}")
     public ResponseDto<ReadNoteResponseDto> readNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId) throws Exception {
         return ResponseDto.of(ReadNoteResponseDto.toDTO(noteService.getNote(noteId)));
     }

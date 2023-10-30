@@ -16,7 +16,7 @@ public class ListFolderResponseDto {
     }
 
     @Builder
-    private class FolderDto {
+    private static class FolderDto {
         private String type;
         private Long folderId;
         private String title;
@@ -25,7 +25,7 @@ public class ListFolderResponseDto {
     }
 
     @Builder
-    private class NoteDto {
+    private static class NoteDto {
         private String type;
         private Long noteId;
         private String title;
