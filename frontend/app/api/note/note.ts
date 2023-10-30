@@ -1,6 +1,6 @@
 import { privateFetch, publicFetch } from '..';
 import { API_URL } from '@api/constants';
-import { NoteInfo, EditNoteInfo } from './types';
+import { NoteInfo, EditNoteParams } from './types';
 import { ApiSuccessResponse } from '@api/types';
 
 export type NoteApiData = ApiSuccessResponse<NoteInfo>;
@@ -19,11 +19,11 @@ export function getNoteInfo(noteId: number): Promise<NoteInfo> {
 
 export function sendEditNoteInfoRequest(
   noteId: number,
-  params: EditNoteInfo
+  body: EditNoteParams
 ): Promise<string | void> {
   return privateFetch<EditNoteApiResponse>(`${API_URL}/note/${noteId}`, {
     method: 'PUT',
-    body: params,
+    body: body,
   })
     .then((res) => {
       return Promise.resolve('[note edit succeeded]');
