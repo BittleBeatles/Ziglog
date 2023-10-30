@@ -1,30 +1,25 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { API_URL } from '@api/constants';
 import GlobalSearchInput from '@components/search/GlobalSearchInput';
 import GlobalSearchResult from '@components/search/GlobalSearchResult';
-
-export interface Search {
-  noteId: number;
-  title: string;
-  content: string;
-  nickname: string;
-  isPublic: boolean;
-  bookmarkCount: number;
-  postTime: string;
-  editTime: string | null;
-}
+import { SearchInfo } from '@api/search/types';
+import { getSearchInfo } from '@api/search/search';
 
 export default function Search() {
-  const [searchData, setSearchData] = useState<Search[]>([]);
   const [keyword, setKeyword] = useState<string | null>(null);
+  const [searchData, setSearchData] = useState<SearchInfo[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const data = (
-        await fetch(`${API_URL}/api/search?keyword=${keyword}`)
-      ).then((res) => res.json());
-      setSearchData(data.data);
+      setSearchData([]);
+      if (keyword) {
+        try {
+          const data = await getSearchInfo(keyword);
+          setSearchData([data]);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
     }
     fetchData();
   }, [keyword]);
@@ -35,20 +30,21 @@ export default function Search() {
       <div className="w-2/3">
         <GlobalSearchInput onChange={(e) => setKeyword(e.target.value)} />
         <div>
-          {searchData.map((result) => (
-            <GlobalSearchResult
-              key={result.noteId}
-              noteId={result.noteId}
-              title={result.title}
-              preview={result.content}
-              nickname={result.nickname}
-              isPublic={result.isPublic}
-              bookmarkCount={result.bookmarkCount}
-              postTime={result.postTime}
-              editTime={result.editTime}
-              theme="light"
-            />
-          ))}
+          {searchData &&
+            searchData.map((result) => (
+              <GlobalSearchResult
+                key={result.noteId}
+                noteId={result.noteId}
+                title={result.title}
+                preview={result.preview}
+                nickname={result.nickname}
+                isPublic={result.isPublic}
+                bookmarkCount={result.bookmarkCount}
+                postTime={result.postTime}
+                editTime={result.editTime}
+                theme="light"
+              />
+            ))}
         </div>
       </div>
     </div>
