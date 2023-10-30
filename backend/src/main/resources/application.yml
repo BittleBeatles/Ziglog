@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://spring-mysql:3306/zigzagdb 
+    url: jdbc:mysql://mysql:3306/zigzagdb
     username: user
     password: pwd
     driver-class-name: com.mysql.cj.jdbc.Driver
