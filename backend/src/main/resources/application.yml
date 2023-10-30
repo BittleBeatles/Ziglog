@@ -25,7 +25,7 @@ spring:
       - security
       - redis
     default:
-      - dev
+      - local
 
 logging:
   level:
