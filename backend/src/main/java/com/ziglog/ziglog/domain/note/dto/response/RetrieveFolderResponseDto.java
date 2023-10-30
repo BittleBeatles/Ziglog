@@ -20,6 +20,7 @@ public class RetrieveFolderResponseDto {
     }
 
     @Builder
+    @Getter
     private static class FolderDto {
         private String type;
         private Long folderId;
@@ -29,6 +30,7 @@ public class RetrieveFolderResponseDto {
     }
 
     @Builder
+    @Getter
     private static class NoteDto {
         private String type;
         private Long noteId;
