@@ -32,8 +32,6 @@ logging:
           descriptor:
             sql: trace
 
-
-# Server Port Configuration
 server:
   port: 8080
   servlet:
@@ -48,4 +46,3 @@ jwt:
   refresh:
     expiration: 1209600000
     header: Set-Cookie
-
