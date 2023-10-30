@@ -3,8 +3,9 @@ import { useParams } from 'next/navigation';
 import MarkdownEditor from '@components/userPage/MarkdownEditor';
 import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
 import Button from '@components/common/Button';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import NoteTitleInput from '@components/userPage/NoteTitleInput';
+import QuotationModal from '@components/userPage/QuotationModal';
 
 // decodeURIComponent(params.userNickname as string)
 export default function EditNote() {
@@ -12,7 +13,8 @@ export default function EditNote() {
   const params = useParams();
   const [isPublic, setIsPublic] = useState(false);
   const [noteTitle, setNoteTitle] = useState('글 제목');
-
+  const editorRef = useRef<HTMLDivElement>(null);
+  const quotationModalRef = useRef<HTMLDivElement>(null);
   return (
     <div>
       <div className="flex flex-row justify-between items-center mb-3">
@@ -32,7 +34,10 @@ export default function EditNote() {
           <Button label={isPublic ? '게시하기' : '저장하기'} color="charcol" />
         </div>
       </div>
-      <MarkdownEditor theme={theme} />
+      <MarkdownEditor theme={theme} ref={editorRef} />
+      <div ref={quotationModalRef} className="absolute">
+        <QuotationModal />
+      </div>
     </div>
   );
 }
