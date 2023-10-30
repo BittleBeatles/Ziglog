@@ -1,6 +1,5 @@
 package com.ziglog.ziglog.domain.note.controller;
 
-import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.note.dto.request.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.ModifyNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.ListFolderResponseDto;
@@ -9,9 +8,9 @@ import com.ziglog.ziglog.domain.note.dto.response.ReadNoteResponseDto;
 import com.ziglog.ziglog.domain.note.service.NoteService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
