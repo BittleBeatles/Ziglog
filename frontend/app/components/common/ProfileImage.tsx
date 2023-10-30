@@ -13,14 +13,14 @@ export default function ProfileImage({
   alt = 'profile image',
 }: ProfileImageProps) {
   return (
-    <div className="w-12 h-12 rounded-full overflow-hidden">
+    <div className="rounded-full overflow-hidden">
       <Image
         width={0}
         height={0}
         src={src}
         alt={alt}
         priority={true}
-        // style={}
+        style={{ width: size, height: size }}
       />
     </div>
   );

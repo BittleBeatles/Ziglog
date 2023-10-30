@@ -1,21 +1,23 @@
-'use client';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import ProfileImage from '@components/common/ProfileImage';
-import { FormEvent, useEffect, useRef, useState } from 'react';
-import DongSuk from '@public/images/DongSuk.jpg';
 import Text from '@components/common/Text';
-import IconButtonWithBg from '../common/IconButtonWithBg';
+import IconButton from '@components/common/IconButton';
+import Button from '@components/common/Button';
+import DongSuk from '@public/images/DongSuk.jpg';
+import IconButtonWithBg from '@components/common/IconButtonWithBg';
+
 import PersonalSearchInput from './SideBar/PersonalSearchInput';
 import Directory, { DirectoryItem } from './SideBar/Directory';
 import BookmarkList from './SideBar/BookmarkList';
-import IconButton from '@components/common/IconButton';
-import Button from '@components/common/Button';
 import { useRouter } from 'next/navigation';
+import NicknameSetting from './NicknameSetting';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
+  sideBarToggle: () => void;
 }
 
-export default function SideBar({ theme }: SideBarProps) {
+export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const [isLogined, setLogined] = useState(true);
   const [isMine, setMine] = useState(true);
   const nickname = '동석 마 좀 치나';
@@ -26,6 +28,7 @@ export default function SideBar({ theme }: SideBarProps) {
   const [folderName, setFolderName] = useState('');
   const [noteName, setNoteName] = useState('');
   const [showNoteInput, setShowNoteInput] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
@@ -39,6 +42,11 @@ export default function SideBar({ theme }: SideBarProps) {
   const addFolder = () => {
     setShowFolderInput(true);
     setShowNoteInput(false);
+  };
+
+  // 세팅모달 열기
+  const openModal = (open: boolean) => {
+    setModalOpen(open);
   };
 
   useEffect(() => {
@@ -64,14 +72,16 @@ export default function SideBar({ theme }: SideBarProps) {
       className="flex flex-col justify-between py-4 h-screen"
       ref={sidebarRef}
     >
-      <div className="profile flex justify-start items-center px-8">
+      <div className="profile flex justify-between items-center px-8">
         <ProfileImage src={DongSuk} />
-        <Text
-          type="p"
-          className={`pl-3 ${theme === 'dark' ? 'text-white' : ''}`}
-        >
+        <Text type="p" className={`${theme === 'dark' ? 'text-white' : ''}`}>
           {nickname}
         </Text>
+        <IconButton
+          onClick={sideBarToggle}
+          theme={theme}
+          name="DoubleArrowLeft"
+        />
       </div>
       <div className="control flex justify-between mt-5 px-8">
         <IconButtonWithBg
@@ -144,8 +154,19 @@ export default function SideBar({ theme }: SideBarProps) {
         {isLogined && !isMine && (
           <Button label="마이페이지로 가기" color="charcol" />
         )}
-        {isLogined && isMine && <IconButton theme={theme} name="Setting" />}
+        {isLogined && isMine && (
+          <IconButton
+            onClick={() => openModal(true)}
+            theme={theme}
+            name="Setting"
+          />
+        )}
       </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <NicknameSetting theme={theme} openModal={openModal} />
+        </div>
+      )}
     </div>
   );
 }
