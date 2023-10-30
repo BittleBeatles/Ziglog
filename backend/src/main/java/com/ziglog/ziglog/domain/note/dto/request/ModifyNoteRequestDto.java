@@ -3,9 +3,13 @@ package com.ziglog.ziglog.domain.note.dto.request;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
 
+@AllArgsConstructor
+@Getter
 public class ModifyNoteRequestDto {
     private String title;
     private String content;
