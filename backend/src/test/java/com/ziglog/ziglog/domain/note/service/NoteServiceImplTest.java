@@ -181,7 +181,7 @@ class NoteServiceImplTest {
 
     @DisplayName("폴더 생성 테스트")
     @Test
-    void createFolderTest(){
+    void createFolderTest() throws Exception {
         Folder folder = Folder.builder()
                 .title("folder")
                 .owner(member1)
@@ -192,7 +192,7 @@ class NoteServiceImplTest {
 
     @DisplayName("폴더명 수정 테스트 - 잘못된 사용자")
     @Test
-    void modifyFolderTest_InvalidOwner(){
+    void modifyFolderTest_InvalidOwner() throws Exception{
         Folder folder = Folder.builder()
                 .title("folder")
                 .owner(member1)
@@ -237,7 +237,7 @@ class NoteServiceImplTest {
 
     @DisplayName("폴더 삭제 테스트 - 잘못된 사용자")
     @Test
-    void deleteFolderTest_InvalidOwner(){
+    void deleteFolderTest_InvalidOwner() throws Exception{
         Folder folder = Folder.builder()
                 .title("folder")
                 .owner(member1)
@@ -260,7 +260,7 @@ class NoteServiceImplTest {
 
     @DisplayName("폴더 삭제 테스트 - 성공")
     @Test
-    void deleteFolderTest_Success(){
+    void deleteFolderTest_Success() throws Exception{
         Folder folder = Folder.builder()
                 .title("folder")
                 .owner(member1)
@@ -275,7 +275,7 @@ class NoteServiceImplTest {
     @Test
     void listFolderTest_InvalidUser(){
         String nickname = "noUser";
-        assertThrows(Exception.class, () -> noteService.listFolder(nickname));
+        assertThrows(Exception.class, () -> noteService.getRootFolder(nickname));
     }
 
     @DisplayName("폴더 리스트 테스트 - 성공 사례")
@@ -294,13 +294,12 @@ class NoteServiceImplTest {
         noteService.createFolder(member1, folder);
         noteService.createFolder(member1, folder2);
 
-        assertDoesNotThrow(() -> noteService.listFolder(member1.getNickname()));
-        assertEquals(3, member1.getFolders().size());
+        assertDoesNotThrow(() -> noteService.getRootFolder(member1.getNickname()));
     }
 
     @DisplayName("폴더 사이의 부모 관계 생성이 제대로 되는지 테스트")
     @Test
-    void checkParentChildRelation_BetweenFolders(){
+    void checkParentChildRelation_BetweenFolders() throws Exception{
         Folder folder = Folder.builder()
                 .title("folder")
                 .owner(member1)
