@@ -1,17 +1,43 @@
 'use client';
 import { useParams } from 'next/navigation';
+import MarkdownEditor from '@components/userPage/MarkdownEditor';
+import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
+import Button from '@components/common/Button';
+import { useRef, useState } from 'react';
+import NoteTitleInput from '@components/userPage/NoteTitleInput';
+import QuotationModal from '@components/userPage/QuotationModal';
 
+// decodeURIComponent(params.userNickname as string)
 export default function EditNote() {
+  const theme = 'light';
   const params = useParams();
+  const [isPublic, setIsPublic] = useState(false);
+  const [noteTitle, setNoteTitle] = useState('글 제목');
+  const editorRef = useRef<HTMLDivElement>(null);
+  const quotationModalRef = useRef<HTMLDivElement>(null);
   return (
     <div>
-      <h1>{params.userNickname}의</h1>
-      <h1>
-        한글을 그냥 이렇게 쓰면 인코딩이 안되서 이렇게 보여요! 반드시
-        decodeURIComponent(params.userNickname as string) 이렇게 써야합니다
-      </h1>
-      <h1>{params.noteId}번째</h1>
-      <h1>노트 수정페이지입니다.</h1>
+      <div className="flex flex-row justify-between items-center mb-3">
+        <NoteTitleInput
+          theme={theme}
+          noteTitle={noteTitle}
+          onChange={(e) => {
+            setNoteTitle(e.target.value);
+          }}
+        />
+        <div className="flex flex-row items-center gap-3">
+          <PublicPrivateToggle
+            onClick={() => setIsPublic(!isPublic)}
+            scope={isPublic ? 'Public' : 'Private'}
+            theme={theme}
+          />
+          <Button label={isPublic ? '게시하기' : '저장하기'} color="charcol" />
+        </div>
+      </div>
+      <MarkdownEditor theme={theme} ref={editorRef} />
+      <div ref={quotationModalRef} className="absolute">
+        <QuotationModal />
+      </div>
     </div>
   );
 }
