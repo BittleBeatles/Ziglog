@@ -1,7 +1,6 @@
 'use client';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-import QuotationModal from './QuotationModal';
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
@@ -23,25 +22,25 @@ const MarkdownEditor = forwardRef(({ theme }: MarkdownEditorProps, ref) => {
     setValue(updatedValue);
   };
 
-  useEffect(() => {
-    if (editorRef.current && quotationModalRef.current) {
-      const editor = editorRef.current;
-      const quotationModal = quotationModalRef.current;
-      if (value && value.includes('[[bookmark-list]]')) {
-        console.log('value check');
-        const bookMarkListPosition = value?.indexOf('[[bookmark-list]]');
-        const editorRect = editor.getBoundingClientRect();
-        const top = editorRect.top + bookMarkListPosition;
-        quotationModal.style.top = top + 'px';
-        quotationModal.style.position = 'absolute';
-      }
-    }
-  }, [value]);
+  // useEffect(() => {
+  //   if (editorRef.current && quotationModalRef.current) {
+  //     const editor = editorRef.current;
+  //     const quotationModal = quotationModalRef.current;
+  //     if (value && value.includes('[[bookmark-list]]')) {
+  //       console.log('value check');
+  //       const bookMarkListPosition = value?.indexOf('[[bookmark-list]]');
+  //       const editorRect = editor.getBoundingClientRect();
+  //       const top = editorRect.top + bookMarkListPosition;
+  //       quotationModal.style.top = top + 'px';
+  //       quotationModal.style.position = 'absolute';
+  //     }
+  //   }
+  // }, [value]);
 
   return (
     <div>
       <MDEditor
-        ref={editorRef}
+        // ref={editorRef}
         className="relative"
         data-color-mode={theme}
         height={600}
