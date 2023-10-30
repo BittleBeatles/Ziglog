@@ -22,6 +22,9 @@ import ExpandLess from '@public/icons/expandLess.svg';
 import Setting from '@public/icons/setting.svg';
 import BookMark from '@public/icons/bookMark.svg';
 import Share from '@public/icons/share.svg';
+import Close from '@public/icons/close.svg';
+import DoubleArrowLeft from '@public/icons/doubleArrowLeft.svg';
+import DoubleArrowRight from '@public/icons/doubleArrowRight.svg';
 
 export {
   AddFolder,
@@ -48,4 +51,7 @@ export {
   Setting,
   BookMark,
   Share,
+  Close,
+  DoubleArrowLeft,
+  DoubleArrowRight,
 };
