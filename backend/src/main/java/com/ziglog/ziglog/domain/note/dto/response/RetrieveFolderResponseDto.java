@@ -1,18 +1,17 @@
 package com.ziglog.ziglog.domain.note.dto.response;
 
-import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import lombok.Builder;
 
 import java.util.List;
 
 @Builder
-public class ListFolderResponseDto {
+public class RetrieveFolderResponseDto {
 
-    private List<FolderDto> folderList;
+    private FolderDto folder;
 
-    private ListFolderResponseDto(List<FolderDto> folderDtos){
-        this.folderList = folderDtos;
+    private RetrieveFolderResponseDto(FolderDto folderDto){
+        this.folder = folderDto;
     }
 
     @Builder
@@ -21,7 +20,7 @@ public class ListFolderResponseDto {
         private Long folderId;
         private String title;
         private List<NoteDto> notes;
-        private ListFolderResponseDto folderList;
+        private List<RetrieveFolderResponseDto> folderList;
     }
 
     @Builder
@@ -32,9 +31,8 @@ public class ListFolderResponseDto {
         private Boolean isPublic;
     }
 
-    public static ListFolderResponseDto toDto(List<Folder> folderList){
-        return new ListFolderResponseDto(
-                folderList.stream().map(folder ->
+    public static RetrieveFolderResponseDto toDto(Folder folder){
+        return new RetrieveFolderResponseDto(
                     FolderDto.builder()
                             .type("folder")
                             .folderId(folder.getId())
@@ -47,9 +45,8 @@ public class ListFolderResponseDto {
                                         .isPublic(note.isPublic())
                                         .build()).toList()
                             )
-                            .folderList(ListFolderResponseDto.toDto(folder.getChildren()))
+                            .folderList(folder.getChildren().stream().map(RetrieveFolderResponseDto::toDto).toList())
                             .build()
-                ).toList()
-        );
+                );
     }
 }

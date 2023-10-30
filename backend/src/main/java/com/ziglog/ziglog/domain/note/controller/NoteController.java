@@ -2,7 +2,7 @@ package com.ziglog.ziglog.domain.note.controller;
 
 import com.ziglog.ziglog.domain.note.dto.request.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.ModifyNoteRequestDto;
-import com.ziglog.ziglog.domain.note.dto.response.ListFolderResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.RetrieveFolderResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.QuotationListResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.ReadNoteResponseDto;
 import com.ziglog.ziglog.domain.note.service.NoteService;
@@ -28,8 +28,8 @@ public class NoteController {
             description = "닉네임을 통해 해당 사용자의 개인 페이지 좌측 상단에서 볼 수 있는 폴더 + 문서를 조회"
     )
     @GetMapping("")
-    public ResponseDto<ListFolderResponseDto> listNoteOf(@RequestParam("nickname") String nickname) throws Exception {
-        return ResponseDto.of(ListFolderResponseDto.toDto(noteService.listFolder(nickname)));
+    public ResponseDto<RetrieveFolderResponseDto> listNoteOf(@RequestParam("nickname") String nickname) throws Exception {
+        return ResponseDto.of(RetrieveFolderResponseDto.toDto(noteService.getRootFolder(nickname)));
     }
 
     @Operation(summary = "이 글을 인용하고 있는 글들의 목록을 불러 옴",

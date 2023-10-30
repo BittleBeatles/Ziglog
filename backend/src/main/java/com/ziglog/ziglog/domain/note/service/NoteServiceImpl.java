@@ -98,13 +98,18 @@ public class NoteServiceImpl implements NoteService{
 
     // Folder
     @Override
-    public Folder createFolder(Member member, Folder folder) {
-        Folder folderToSave = folderRepository.save(folder);
+    public Folder createFolder(Member member, Folder folder) throws Exception{
+        member = memberRepository.findById(member.getId()).orElseThrow(Exception::new);
+
         Folder parent = folder.getParent();
-        if (parent != null) {
-            parent.getChildren().add(folderToSave);
-            folderToSave.setParent(parent);
+
+        if (parent == null) {
+            parent = folderRepository.findByOwnerAndParent(member, null).orElseThrow(Exception::new);
         }
+
+        Folder folderToSave = folderRepository.save(folder);
+        parent.getChildren().add(folderToSave);
+        folderToSave.setParent(parent);
         member.getFolders().add(folderToSave);
         return folderToSave;
     }
@@ -131,8 +136,7 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public Folder getRootFolder(String nickname) throws Exception {
         Member user = memberRepository.findByNickname(nickname).orElseThrow(Exception::new);
-        Folder root = folderRepository.findByOwnerAndParent(user, null).orElseThrow(Exception::new);
-        return root;
+        return folderRepository.findByOwnerAndParent(user, null).orElseThrow(Exception::new);
     }
 
     @Override
