@@ -49,3 +49,11 @@ jwt:
     expiration: 1209600000
     header: Set-Cookie
 
+---
+spring:
+  profiles:
+    active: local
+---
+spring:
+  profiles:
+    active: dev
