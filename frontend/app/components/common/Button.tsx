@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes } from 'react';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   color: 'charcol' | 'red' | 'blue';
-  size?: string;
+  size: string;
 }
 
 const COLOR_VARIANTS = {
@@ -12,12 +12,7 @@ const COLOR_VARIANTS = {
   blue: 'bg-main-100',
 };
 
-export default function Button({
-  label,
-  color,
-  size = '',
-  ...rest
-}: ButtonProps) {
+export default function Button({ label, color, size, ...rest }: ButtonProps) {
   return (
     <button
       className={`${COLOR_VARIANTS[color]} ${size} font-bold colorClass text-white w-fit h-fit px-3 py-2 rounded-full`}
