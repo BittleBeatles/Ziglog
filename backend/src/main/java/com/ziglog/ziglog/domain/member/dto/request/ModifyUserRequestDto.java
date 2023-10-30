@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class NicknameDto {
+public class ModifyUserRequestDto {
     private String nickname;
-
+    private String profileUrl;
 }
