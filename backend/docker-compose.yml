@@ -1,4 +1,8 @@
 # docker-compose.yml
+networks:
+  net-pub:
+    external: true
+
 services:
   redis:
     image: redis
@@ -7,37 +11,12 @@ services:
       - 6379:6379
     networks:
       - net-pub
-  
-  mysql:
-    image: mysql:8.2.0
-    container_name: spring-mysql
-    ports:
-      - 3306:3306
-    volumes:
-      - data:/var/lib/mysql
-    environment:
-      - MYSQL_DATABASE=zigzagdb
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=pwd
-      - MYSQL_ROOT_HOST='%'
-      - MYSQL_ROOT_PASSWORD=rootpwd
-      - TZ=Asia/Seoul
-    networks:
-      - net-pub
-     
+
   spring:
     build: .
     ports:
       - 8080:8080
     depends_on:
       - redis
-      - mysql
     networks:
       - net-pub
-
-volumes:
-  data:
-
-networks:
-  net-pub:
-    external: true
