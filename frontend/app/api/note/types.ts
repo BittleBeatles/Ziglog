@@ -8,3 +8,9 @@ export interface NoteInfo {
   postTime: Date;
   editTime: Date;
 }
+
+export interface EditNoteParams {
+  title: string;
+  content: string;
+  quotingNotes: number[];
+}
