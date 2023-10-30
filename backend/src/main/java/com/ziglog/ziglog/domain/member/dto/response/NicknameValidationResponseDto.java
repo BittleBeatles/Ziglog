@@ -1,7 +1,9 @@
 package com.ziglog.ziglog.domain.member.dto.response;
 
-public class NicknameValidationResponseDto {
+import lombok.Getter;
 
+@Getter
+public class NicknameValidationResponseDto {
     Boolean isValid;
     private NicknameValidationResponseDto(Boolean isValid){
         this.isValid = isValid;

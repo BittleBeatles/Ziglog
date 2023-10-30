@@ -8,6 +8,7 @@ import lombok.Getter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 public class QuotationListResponseDto {
     private List<QuotingThisNoteDto> quotationList;
     @Getter
