@@ -1,28 +1,39 @@
 spring:
-  h2: #H2 Configuration
-    console:
-      enabled: true
-      path: /h2-console
-
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/test;
-    username: sa
-    password:
-
-  jpa: #JPA Configuration
-    database-platform: org.hibernate.dialect.H2Dialect
+    url: jdbc:mysql://spring-mysql:3306/zigzagdb 
+    username: user
+    password: pwd
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
     hibernate:
       ddl-auto: create
 
-    properties:
-      hibernate:
-        format_sql: true
-        show_sql: true
+  # h2: #H2 Configuration
+  #   console:
+  #     enabled: true
+  #     path: /h2-console
+
+  # datasource:
+  #   driver-class-name: org.h2.Driver
+  #   url: jdbc:h2:~/test;
+  #   username: sa
+  #   password:
+
+  # jpa: #JPA Configuration
+  #   database-platform: org.hibernate.dialect.H2Dialect
+  #   hibernate:
+  #     ddl-auto: create
+    # properties:
+    #   hibernate:
+    #     format_sql: true
+    #     show_sql: true
 
   profiles:
     default:
-      - local
+      - local 
 
 logging:
   level:
