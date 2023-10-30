@@ -3,6 +3,9 @@ package com.ziglog.ziglog.global.auth.service;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.entity.Role;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
+import com.ziglog.ziglog.domain.member.service.MemberService;
+import com.ziglog.ziglog.domain.note.entity.Folder;
+import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.global.auth.dto.RegistrationId;
 import com.ziglog.ziglog.global.auth.dto.OAuth2Attributes;
 import com.ziglog.ziglog.global.auth.entity.oauth2.CustomOAuth2User;
@@ -29,6 +32,7 @@ import java.util.UUID;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
+    private final FolderRepository folderRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -79,12 +83,19 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         member = memberRepository.save(
             Member.builder()
                     .email(member.getEmail())//받아온 이메일
-                    .password(UUID.randomUUID().toString())//임의의 비밀번호
                     .nickname(tempNick)//임의의 닉네임
                     .profileUrl(member.getProfileUrl())//받아온 프로필 경로
                     .role(Role.USER)//회원으로 권한 설정
                     .build()
         );
+
+        Folder folder = Folder.builder()//루트 폴더를 추가
+                        .owner(member)
+                        .title("root")
+                        .build();
+
+        folder = folderRepository.save(folder);
+        member.getFolders().add(folder);
 
         log.info("OAuth2UserService - saveMember() : user {} saved", member.getEmail());
         return member;
