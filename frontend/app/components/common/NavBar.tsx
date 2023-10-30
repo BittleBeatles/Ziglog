@@ -47,5 +47,5 @@ export default function NavBar({ login, ...rest }: NavBarProps) {
 
 const THEME_VARIANTS = {
   light: 'bg-white text-black shadow-dark-500/50',
-  dark: 'bg-dark-background-page text-white shadow-white-500/50',
+  dark: 'bg-dark-background-layout text-white shadow-white-500/50',
 };

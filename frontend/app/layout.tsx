@@ -2,8 +2,12 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ReduxProvider } from '@store/provider';
+import localFont from 'next/font/local';
 
-const inter = Inter({ subsets: ['latin'] });
+const pretendard = localFont({
+  src: './src/fonts/PretendardVariable.woff2',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Ziglog',
@@ -16,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className={pretendard.className}>
+      <body>
         <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
