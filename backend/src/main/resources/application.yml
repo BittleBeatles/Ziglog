@@ -21,9 +21,8 @@ spring:
         show_sql: true
 
   profiles:
-    include:
-      - security
-      - redis
+    default:
+      - local
 
 logging:
   level:
@@ -40,4 +39,13 @@ server:
   servlet:
     context-path: /api
 
+# Jwt Configuration => 분리 필요
+jwt:
+  secret-key: asd19i23hj909sfua9s0fdusd90fua9023fjnh
+  access:
+    expiration: 3600000
+    header: Authorization
+  refresh:
+    expiration: 1209600000
+    header: Set-Cookie
 

@@ -1,6 +1,0 @@
-spring:
-  data:
-    redis:
-      host: redis
-      password:
-      port: 6379

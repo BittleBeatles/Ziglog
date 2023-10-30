@@ -1,5 +1,9 @@
-#OAuth2 Configuration
 spring:
+  config:
+    activate:
+      on-profile: dev
+
+  #OAuth2 Configuration
   security:
     oauth2:
       client:
@@ -12,12 +16,9 @@ spring:
               - email
             redirect-uri: http://k9a407.p.ssafy.io:8080/api/login/oauth2/code/google
 
-#JWTtoken configurations
-jwt:
-  secret-key: asd19i23hj909sfua9s0fdusd90fua9023fjnh
-  access:
-    expiration: 3600000
-    header: Authorization
-  refresh:
-    expiration: 1209600000
-    header: Set-Cookie
+  # Redis Configuration
+  data:
+    redis:
+      host: redis
+      password:
+      port: 6379
