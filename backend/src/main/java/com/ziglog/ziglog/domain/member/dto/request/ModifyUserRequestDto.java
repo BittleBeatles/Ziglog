@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ProfileUrlDto {
+public class ModifyUserRequestDto {
+    private String nickname;
     private String profileUrl;
 }
