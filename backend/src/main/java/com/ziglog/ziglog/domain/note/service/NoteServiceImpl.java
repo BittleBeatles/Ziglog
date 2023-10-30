@@ -76,9 +76,11 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public void deleteNote(Member member, Long noteId) throws Exception {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
+        //삭제 요청자가 Security Context 내의 사용자 같은지 확인
         if (!checkOwner(member, note)) throw new Exception();
 
-        //삭제 요청자가 Security Context 내의 사용자 같은지 확인
+        //노트가 들어간 폴더에서 이 노트를 삭제
+        note.getFolder().getNotes().remove(note);
         noteRepository.removeNoteById(noteId);
     }
 
@@ -142,7 +144,4 @@ public class NoteServiceImpl implements NoteService{
     public Boolean checkOwner(Member member, Folder folder){
         return folder.getOwner() == member;
     }
-
-
-
 }
