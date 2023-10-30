@@ -29,14 +29,6 @@ public class MemberController {
         return ResponseDto.of(UserPublicInfoResponseDto.toDto(member));
     }
 
-    @PutMapping("/modify/profile")
-    public ResponseDto<UserPublicInfoResponseDto> modifyProfile(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                ProfileUrlDto profileUrl) throws Exception{
-        Member member = userDetails.member();
-        memberService.modifyUserProfile(member, profileUrl.getProfileUrl());
-        return ResponseDto.of(UserPublicInfoResponseDto.toDto(member));
-    }
-
     @PostMapping("/check/nickname")
     public ResponseDto<NicknameValidationResponseDto> checkNicknameValidation(NicknameDto nickname){
         return ResponseDto.of(NicknameValidationResponseDto.toDto(memberService.isValidNickname(nickname.getNickname())));
