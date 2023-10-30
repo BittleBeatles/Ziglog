@@ -4341,6 +4341,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/diff@npm:^5":
+  version: 5.0.7
+  resolution: "@types/diff@npm:5.0.7"
+  checksum: 38cad7b1e19789a11bfab2428409476ea204705e92c39dd13a9ba26b604930efcffb553352512296cb179adfb028e2d95e51f9df2b7443bb0a6ba306c8bc84d0
+  languageName: node
+  linkType: hard
+
 "@types/doctrine@npm:^0.0.3":
   version: 0.0.3
   resolution: "@types/doctrine@npm:0.0.3"
@@ -7722,7 +7729,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"diff@npm:^5.0.0":
+"diff@npm:^5.0.0, diff@npm:^5.1.0":
   version: 5.1.0
   resolution: "diff@npm:5.1.0"
   checksum: c7bf0df7c9bfbe1cf8a678fd1b2137c4fb11be117a67bc18a0e03ae75105e8533dbfb1cda6b46beb3586ef5aed22143ef9d70713977d5fb1f9114e21455fba90
@@ -17160,6 +17167,7 @@ __metadata:
     "@storybook/react": 7.5.0-alpha.7
     "@storybook/testing-library": 0.2.2
     "@svgr/webpack": ^8.1.0
+    "@types/diff": ^5
     "@types/node": ^20
     "@types/react": ^18
     "@types/react-dom": ^18
@@ -17170,6 +17178,7 @@ __metadata:
     "@uiw/react-md-editor": ^3.24.1
     autoprefixer: ^10
     cypress: ^13.3.3
+    diff: ^5.1.0
     eslint: ^8
     eslint-config-next: 13.5.4
     eslint-config-prettier: ^9.0.0
