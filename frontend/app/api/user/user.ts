@@ -6,8 +6,7 @@ import { setAccessToken } from '@store/modules/userSlice';
 import { ApiSuccessResponse } from '@api/types';
 
 export type UserApiData = ApiSuccessResponse<UserInfo>;
-export // promise Type 수정해야함
-function getUserInfo(): Promise<UserInfo> {
+export function getUserInfo(): Promise<UserInfo> {
   return privateFetch<UserApiData>(`${API_URL}/user/info`, {
     method: 'GET',
   })
