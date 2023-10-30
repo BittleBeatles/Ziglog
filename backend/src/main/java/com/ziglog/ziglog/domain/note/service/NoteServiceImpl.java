@@ -76,9 +76,11 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public void deleteNote(Member member, Long noteId) throws Exception {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
+        //삭제 요청자가 Security Context 내의 사용자 같은지 확인
         if (!checkOwner(member, note)) throw new Exception();
 
-        //삭제 요청자가 Security Context 내의 사용자 같은지 확인
+        //노트가 들어간 폴더에서 이 노트를 삭제
+        note.getFolder().getNotes().remove(note);
         noteRepository.removeNoteById(noteId);
     }
 
@@ -96,13 +98,18 @@ public class NoteServiceImpl implements NoteService{
 
     // Folder
     @Override
-    public Folder createFolder(Member member, Folder folder) {
-        Folder folderToSave = folderRepository.save(folder);
+    public Folder createFolder(Member member, Folder folder) throws Exception{
+        member = memberRepository.findById(member.getId()).orElseThrow(Exception::new);
+
         Folder parent = folder.getParent();
-        if (parent != null) {
-            parent.getChildren().add(folderToSave);
-            folderToSave.setParent(parent);
+
+        if (parent == null) {
+            parent = folderRepository.findByOwnerAndParent(member, null).orElseThrow(Exception::new);
         }
+
+        Folder folderToSave = folderRepository.save(folder);
+        parent.getChildren().add(folderToSave);
+        folderToSave.setParent(parent);
         member.getFolders().add(folderToSave);
         return folderToSave;
     }
@@ -127,10 +134,9 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public List<Folder> listFolder(String nickname) throws Exception {
-        //TODO 루트폴더를 반환하도록 바꿔야 함
+    public Folder getRootFolder(String nickname) throws Exception {
         Member user = memberRepository.findByNickname(nickname).orElseThrow(Exception::new);
-        return user.getFolders();
+        return folderRepository.findByOwnerAndParent(user, null).orElseThrow(Exception::new);
     }
 
     @Override
@@ -142,7 +148,4 @@ public class NoteServiceImpl implements NoteService{
     public Boolean checkOwner(Member member, Folder folder){
         return folder.getOwner() == member;
     }
-
-
-
 }

@@ -3,6 +3,7 @@ package com.ziglog.ziglog.domain.member.service;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Folder;
+import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.metamodel.mapping.ForeignKeyDescriptor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.UUID;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
+    private final FolderRepository folderRepository;
 
     @Override
     public Member findUserByEmail(String email) throws Exception {
@@ -53,7 +55,17 @@ public class MemberServiceImpl implements MemberService{
                 .nickname(nickname)
                 .password(UUID.randomUUID().toString())
                 .build();
-        return memberRepository.save(member);
+        member = memberRepository.save(member);
+
+        Folder root = Folder.builder()
+                    .title("root")
+                    .owner(member)
+                    .build() ;
+
+        root = folderRepository.save(root);
+        member.getFolders().add(root);
+
+        return member;
     }
 
     public boolean isValidNicknameFormat(String nickname){
