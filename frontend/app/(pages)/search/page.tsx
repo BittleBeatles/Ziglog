@@ -7,18 +7,21 @@ import { getSearchInfo } from '@api/search/search';
 
 export default function Search() {
   const [keyword, setKeyword] = useState<string | null>(null);
-  const [searchData, setSearchData] = useState<SearchInfo[]>([]);
+  const [searchData, setSearchData] = useState<SearchInfo | null>(null);
 
   useEffect(() => {
     async function fetchData() {
-      setSearchData([]);
+      setSearchData(null);
       if (keyword) {
         try {
           const data = await getSearchInfo(keyword);
-          setSearchData([data]);
+          setSearchData(data || null);
         } catch (error) {
           console.error('Error fetching data:', error);
+          setSearchData(null); // Set an empty array on error
         }
+      } else {
+        setSearchData(null); // Set an empty array when keyword is empty
       }
     }
     fetchData();
@@ -31,7 +34,7 @@ export default function Search() {
         <GlobalSearchInput onChange={(e) => setKeyword(e.target.value)} />
         <div>
           {searchData &&
-            searchData.map((result) => (
+            searchData.data.map((result) => (
               <GlobalSearchResult
                 key={result.noteId}
                 noteId={result.noteId}

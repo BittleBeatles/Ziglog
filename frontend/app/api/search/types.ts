@@ -1,4 +1,8 @@
 export interface SearchInfo {
+  data: SearchResult[];
+}
+
+export interface SearchResult {
   noteId: number;
   title: string;
   preview: string;
