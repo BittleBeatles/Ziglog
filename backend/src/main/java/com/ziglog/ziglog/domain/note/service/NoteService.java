@@ -29,5 +29,5 @@ public interface NoteService {
 
     void deleteFolder(Member member, Long folderId) throws Exception; //해당 id의 폴더를 삭제
 
-    List<Folder> listFolder(String nickname) throws Exception; //해당 사용자의 모든 디렉토리를 반환
+    Folder getRootFolder(String nickname) throws Exception; //해당 사용자의 모든 디렉토리를 반환
 }

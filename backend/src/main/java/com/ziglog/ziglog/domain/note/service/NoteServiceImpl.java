@@ -129,10 +129,10 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public List<Folder> listFolder(String nickname) throws Exception {
-        //TODO 루트폴더를 반환하도록 바꿔야 함
+    public Folder getRootFolder(String nickname) throws Exception {
         Member user = memberRepository.findByNickname(nickname).orElseThrow(Exception::new);
-        return user.getFolders();
+        Folder root = folderRepository.findByOwnerAndParent(user, null).orElseThrow(Exception::new);
+        return root;
     }
 
     @Override
