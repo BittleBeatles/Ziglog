@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import BookmarkQuoteInfo from '@components/common/BookmarkQuoteInfo';
+import BookmarkQuoteInfo from '@components/userPage/BookmarkQuoteInfo';
 
 const meta: Meta<typeof BookmarkQuoteInfo> = {
+  title: 'components/userPage/BookmarkQuoteInfo',
   component: BookmarkQuoteInfo,
 } satisfies Meta<typeof BookmarkQuoteInfo>;
 

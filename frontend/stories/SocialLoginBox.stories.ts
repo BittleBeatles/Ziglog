@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import SocialLoginBox from '@components/common/SocialLoginBox';
 
 const meta: Meta<typeof SocialLoginBox> = {
+  title: 'components/common/SocialLoginBox',
   component: SocialLoginBox,
 } satisfies Meta<typeof SocialLoginBox>;
 

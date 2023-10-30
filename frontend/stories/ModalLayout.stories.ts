@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ModalLayout from '@components/common/ModalLayout';
 
 const meta: Meta<typeof ModalLayout> = {
+  title: 'components/common/ModalLayout',
   component: ModalLayout,
 } satisfies Meta<typeof ModalLayout>;
 

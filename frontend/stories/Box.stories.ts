@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Box from '@components/common/Box';
 
 const meta: Meta<typeof Box> = {
+  title: 'components/common/Box',
   component: Box,
 } satisfies Meta<typeof Box>;
 

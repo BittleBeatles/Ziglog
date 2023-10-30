@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import NicknameInput from '@components/common/NicknameInput';
 
 const meta: Meta<typeof NicknameInput> = {
+  title: 'components/common/NicknameInput',
   component: NicknameInput,
 } satisfies Meta<typeof NicknameInput>;
 

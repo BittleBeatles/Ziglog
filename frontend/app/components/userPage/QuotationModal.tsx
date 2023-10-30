@@ -1,4 +1,4 @@
-import SingleQuotation from '@components/userPage/QuotationModal/SingleQuatation';
+import SingleQuotation from '@components/userPage/QuotationModal/SingleQuotation';
 import { InputHTMLAttributes } from 'react';
 
 interface QuotationModalProps extends InputHTMLAttributes<HTMLInputElement> {

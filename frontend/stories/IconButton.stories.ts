@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import IconButton from '@components/common/IconButton';
 
 const meta: Meta<typeof IconButton> = {
+  title: 'components/common/IconButton',
   component: IconButton,
 } satisfies Meta<typeof IconButton>;
 

@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import IconButtonWithBg from '@components/userPage/IconButtonWithBg';
+import IconButtonWithBg from '@components/common/IconButtonWithBg';
 
 const meta: Meta<typeof IconButtonWithBg> = {
+  title: 'components/common/IconButtonWithBg',
   component: IconButtonWithBg,
 } satisfies Meta<typeof IconButtonWithBg>;
 

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import BookmarkList from '@components/userPage/SideBar/BookmarkList';
 
 const meta: Meta<typeof BookmarkList> = {
+  title: 'components/userPage/SideBar/BookmarkList',
   component: BookmarkList,
 } satisfies Meta<typeof BookmarkList>;
 

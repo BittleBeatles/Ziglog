@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import QuotationListBox from '@components/userPage/QuotationListBox';
 
 const meta: Meta<typeof QuotationListBox> = {
+  title: 'components/userPage/QuotationListBox',
   component: QuotationListBox,
 } satisfies Meta<typeof QuotationListBox>;
 
