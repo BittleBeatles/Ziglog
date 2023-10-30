@@ -21,9 +21,10 @@ spring:
         show_sql: true
 
   profiles:
+    default: local
     include:
-      - security
       - redis
+      - security
 
 logging:
   level:
