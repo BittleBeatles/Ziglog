@@ -1,6 +1,7 @@
 package com.ziglog.ziglog.domain.member.controller;
 
 import com.ziglog.ziglog.domain.member.dto.request.ModifyUserRequestDto;
+import com.ziglog.ziglog.domain.member.dto.request.NicknameDto;
 import com.ziglog.ziglog.domain.member.dto.response.NicknameValidationResponseDto;
 import com.ziglog.ziglog.domain.member.dto.response.UserPublicInfoResponseDto;
 import com.ziglog.ziglog.domain.member.entity.Member;
