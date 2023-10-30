@@ -1,7 +1,6 @@
 package com.ziglog.ziglog.domain.member.controller;
 
-import com.ziglog.ziglog.domain.member.dto.request.NicknameDto;
-import com.ziglog.ziglog.domain.member.dto.request.ProfileUrlDto;
+import com.ziglog.ziglog.domain.member.dto.request.ModifyUserRequestDto;
 import com.ziglog.ziglog.domain.member.dto.response.NicknameValidationResponseDto;
 import com.ziglog.ziglog.domain.member.dto.response.UserPublicInfoResponseDto;
 import com.ziglog.ziglog.domain.member.entity.Member;
@@ -21,11 +20,12 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PutMapping("/modify/nickname")
+    @PutMapping("/modify")
     public ResponseDto<UserPublicInfoResponseDto> modifyNickname(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                              NicknameDto nickname) throws Exception{
+                                              ModifyUserRequestDto nickname) throws Exception{
         Member member = userDetails.member();
         memberService.modifyUserNickname(member, nickname.getNickname());
+        memberService.modifyUserProfile(member, nickname.getProfileUrl());
         return ResponseDto.of(UserPublicInfoResponseDto.toDto(member));
     }
 
