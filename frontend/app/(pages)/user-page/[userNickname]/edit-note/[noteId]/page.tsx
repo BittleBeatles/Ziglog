@@ -1,29 +1,42 @@
 'use client';
-import { useParams } from 'next/navigation';
+import { redirect, useParams } from 'next/navigation';
 import MarkdownEditor from '@components/userPage/MarkdownEditor';
 import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
 import Button from '@components/common/Button';
 import { useEffect, useRef, useState } from 'react';
 import NoteTitleInput from '@components/userPage/NoteTitleInput';
 import QuotationModal from '@components/userPage/QuotationModal';
-import { getNoteInfo } from '@api/note/note';
+import { getNoteInfo, sendEditNoteInfoRequest } from '@api/note/note';
+import { EditNoteParams } from '@api/note/types';
+import { diffChars } from 'diff';
+
 // decodeURIComponent(params.userNickname as string)
+interface NoteDetail extends EditNoteParams {
+  isPublic: boolean;
+}
+
 export default function EditNote() {
   const theme = 'light';
   const params = useParams();
   const noteId = params.noteId as string;
-  const [data, setData] = useState({
+  const [oldContent, setOldContent] = useState({ title: '', content: '' });
+  const [data, setData] = useState<NoteDetail>({
     title: '글제목',
     content: '',
     isPublic: false,
+    quotingNotes: [],
   });
   const editorRef = useRef<HTMLDivElement>(null);
   const quotationModalRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId);
       if (result) {
+        setOldContent({
+          ...data,
+          title: result.title,
+          content: result.content,
+        });
         setData({
           ...data,
           title: result.title,
@@ -34,6 +47,32 @@ export default function EditNote() {
     };
     getNoteInfoEditPage(parseInt(noteId));
   }, []);
+
+  const handleNoteEdit = () => {
+    if (
+      diffChars(oldContent.content, data.content).length !== 1 ||
+      diffChars(oldContent.title, data.title).length !== 1
+    ) {
+      const body = {
+        title: data.title,
+        content: data.content,
+        quotingNotes: data.quotingNotes,
+      };
+      const editNote = async (body: EditNoteParams) => {
+        const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
+        if (result) {
+          alert('정보 수정이 성공적으로 일어났습니다.');
+          redirect(
+            `/user-page/${params.userNickname}/read-note/${params.noteId}`
+          );
+        }
+      };
+      editNote(body);
+    } else {
+      alert('수정사항이 없습니다');
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-row justify-between items-center mb-3">
@@ -53,6 +92,7 @@ export default function EditNote() {
           <Button
             label={data.isPublic ? '게시하기' : '저장하기'}
             color="charcol"
+            onClick={() => handleNoteEdit()}
           />
         </div>
       </div>

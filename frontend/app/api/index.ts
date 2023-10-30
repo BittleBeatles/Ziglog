@@ -37,7 +37,9 @@ export const privateFetch = returnFetchJson({
         if (newAccessToken) {
           // 헤더를 업데이트합니다.
           config[1] = {
-            headers: { Authorization: `Bearer ${newAccessToken}` },
+            headers: {
+              Authorization: `${newAccessToken.grantType} ${newAccessToken.accessToken}`,
+            },
           };
           return fetch(...config); // 수정된 설정으로 요청을 다시 시도합니다.
         } else {

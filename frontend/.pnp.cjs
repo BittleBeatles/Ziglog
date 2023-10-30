@@ -38,6 +38,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@storybook/react", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:7.5.0-alpha.7"],\
             ["@storybook/testing-library", "npm:0.2.2"],\
             ["@svgr/webpack", "npm:8.1.0"],\
+            ["@types/diff", "npm:5.0.7"],\
             ["@types/node", "npm:20.8.6"],\
             ["@types/react", "npm:18.2.28"],\
             ["@types/react-dom", "npm:18.2.13"],\
@@ -48,6 +49,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@uiw/react-md-editor", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:3.24.1"],\
             ["autoprefixer", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:10.4.16"],\
             ["cypress", "npm:13.3.3"],\
+            ["diff", "npm:5.1.0"],\
             ["eslint", "npm:8.51.0"],\
             ["eslint-config-next", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:13.5.4"],\
             ["eslint-config-prettier", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:9.0.0"],\
@@ -6536,6 +6538,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-detect-port-npm-1.3.3-6e7844725c-0dadb52028.zip/node_modules/@types/detect-port/",\
           "packageDependencies": [\
             ["@types/detect-port", "npm:1.3.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/diff", [\
+        ["npm:5.0.7", {\
+          "packageLocation": "./.yarn/cache/@types-diff-npm-5.0.7-7d09d5522f-38cad7b1e1.zip/node_modules/@types/diff/",\
+          "packageDependencies": [\
+            ["@types/diff", "npm:5.0.7"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -21747,6 +21758,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@storybook/react", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:7.5.0-alpha.7"],\
             ["@storybook/testing-library", "npm:0.2.2"],\
             ["@svgr/webpack", "npm:8.1.0"],\
+            ["@types/diff", "npm:5.0.7"],\
             ["@types/node", "npm:20.8.6"],\
             ["@types/react", "npm:18.2.28"],\
             ["@types/react-dom", "npm:18.2.13"],\
@@ -21757,6 +21769,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@uiw/react-md-editor", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:3.24.1"],\
             ["autoprefixer", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:10.4.16"],\
             ["cypress", "npm:13.3.3"],\
+            ["diff", "npm:5.1.0"],\
             ["eslint", "npm:8.51.0"],\
             ["eslint-config-next", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:13.5.4"],\
             ["eslint-config-prettier", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:9.0.0"],\

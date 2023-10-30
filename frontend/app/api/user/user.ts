@@ -1,11 +1,12 @@
 import { privateFetch } from '..';
 import { API_URL } from '@api/constants';
-import { UserInfo } from './types';
+import { TokenInfo, UserInfo } from './types';
 import { useAppDispatch } from '@store/store';
-import { setAccessToken } from '@store/modules/userSlice';
+import { setUserToken } from '@store/modules/userSlice';
 import { ApiSuccessResponse } from '@api/types';
 
 export type UserApiData = ApiSuccessResponse<UserInfo>;
+export type ReissueTokenApiData = ApiSuccessResponse<TokenInfo>;
 export function getUserInfo(): Promise<UserInfo> {
   return privateFetch<UserApiData>(`${API_URL}/user/info`, {
     method: 'GET',
@@ -20,11 +21,12 @@ export function getUserInfo(): Promise<UserInfo> {
 
 export async function ReissueToken() {
   const dispatch = useAppDispatch();
-  return privateFetch(`${API_URL}/auth/refresh`, {
+  return privateFetch<ReissueTokenApiData>(`${API_URL}/auth/refresh`, {
     method: 'GET',
   })
     .then((res) => {
-      dispatch(setAccessToken('newAccessToken'));
+      dispatch(setUserToken(res.body.data));
+      return res.body.data;
     })
     .catch((err) => {
       if (!err.response.body || !err.config) {
