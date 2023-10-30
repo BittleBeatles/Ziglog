@@ -2,24 +2,26 @@ package com.ziglog.ziglog.domain.member.service;
 
 import com.ziglog.ziglog.ZiglogApplication;
 import com.ziglog.ziglog.domain.member.entity.Member;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ContextConfiguration(classes = ZiglogApplication.class)
+@Transactional
 class MemberServiceImplTest {
 
     @Autowired
     private MemberServiceImpl memberService;
 
     @DisplayName("임시 가입")
-    @Test
     @BeforeEach
     public void signUp() throws Exception{
         memberService.signUp("pj0642@gmail.com", "pys");

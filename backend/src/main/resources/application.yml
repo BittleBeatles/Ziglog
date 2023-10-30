@@ -19,12 +19,13 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+
   profiles:
     include:
       - security
       - redis
     default:
-      - local
+      - dev
 
 logging:
   level:
