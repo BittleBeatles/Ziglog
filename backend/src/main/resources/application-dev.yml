@@ -3,6 +3,21 @@ spring:
     activate:
       on-profile: dev
 
+  # DB & JPA Configuration
+  datasource:
+    url: jdbc:mysql://mysql:3306/zigzagdb
+    username: root
+    password: rootpwd
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect : org.hibernate.dialect.MySQLDialect
+        show-sql: true
+    hibernate:
+      ddl-auto: none
+
   #OAuth2 Configuration
   security:
     oauth2:
