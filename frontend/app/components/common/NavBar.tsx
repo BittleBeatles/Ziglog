@@ -15,7 +15,7 @@ interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
 
 export default function NavBar({ login, ...rest }: NavBarProps) {
   const dispatch = useAppDispatch();
-  const theme = useAppSelector((state) => state.userReducer.theme);
+  const theme = useAppSelector((state) => state.user.theme);
   return (
     <div
       {...rest}

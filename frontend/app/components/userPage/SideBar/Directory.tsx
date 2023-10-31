@@ -1,9 +1,9 @@
 'use client';
-import React, { Dispatch, KeyboardEvent, SetStateAction } from 'react';
-import { FormEvent, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import Folder, { FolderProps } from './Directory/Folder';
 import CreateFile from './Directory/CreateFile';
 import Note, { NoteProps } from './Directory/Note';
+import { createNote } from '@api/note/note';
 
 export interface DirectoryProps {
   directoryList: DirectoryItem[];
@@ -44,8 +44,14 @@ export default function Directory({
     if (e.key === 'Enter') {
       if (type === 'folder') {
         console.log(parentId, folderName);
+        if (parentId && folderName) {
+          createNote(parentId, folderName);
+        }
       } else {
         console.log(parentId, noteName);
+        if (parentId && noteName) {
+          createNote(parentId, noteName);
+        }
       }
       e.preventDefault();
     }
@@ -94,7 +100,7 @@ export default function Directory({
       {parentId === -1 && showNoteInput && (
         <CreateFile
           type="note"
-          onChange={(e) => setFolderName && setFolderName(e.target.value)}
+          onChange={(e) => setNoteName && setNoteName(e.target.value)}
           placeholder="노트 생성"
           onKeyDown={(e) => handleKeyDown('note', e)}
         />
