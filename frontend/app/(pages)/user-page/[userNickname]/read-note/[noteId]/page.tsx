@@ -8,7 +8,7 @@ import MDEditor from '@uiw/react-md-editor';
 import QuotationListBox from '@components/userPage/QuotationListBox';
 
 export default function ReadNote() {
-  const isMine = true;
+  const isMine = false;
   const params = useParams();
   const theme = 'light';
   const value = `# What is Lorem Ipsum?
@@ -38,7 +38,7 @@ export default function ReadNote() {
           <Text className="mx-3" type="p">
             {'2023.10.30'}
           </Text>
-          <SvgIcon name="Private" size={20}></SvgIcon>
+          {isMine ? <SvgIcon name="Private" size={20}></SvgIcon> : undefined}
           {isMine ? (
             <div className="flex flex-row">
               <div className="ml-3">
