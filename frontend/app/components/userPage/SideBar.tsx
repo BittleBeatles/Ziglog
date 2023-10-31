@@ -12,6 +12,7 @@ import BookmarkList from './SideBar/BookmarkList';
 import { useRouter } from 'next/navigation';
 import NicknameSetting from './NicknameSetting';
 import { Logout } from '@api/user/user';
+import { createNote } from '@api/note/note';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -25,24 +26,28 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const router = useRouter();
   const [directory, setDirectory] = useState<DirectoryItem[]>(directoryList);
   const [parentId, setParentId] = useState<number>(-1);
-  const [showFolderInput, setShowFolderInput] = useState(false);
-  const [folderName, setFolderName] = useState('');
-  const [noteName, setNoteName] = useState('');
-  const [showNoteInput, setShowNoteInput] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [folderName, setFolderName] = useState('');
+
+  //파일 추가 변수
+  const [showInput, setShowInput] = useState<{
+    show: boolean;
+    type: 'note' | 'folder';
+  }>({ show: false, type: 'note' });
 
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   // 노트 추가
   const addNote = () => {
-    setShowNoteInput(true);
-    setShowFolderInput(false);
+    setShowInput({ show: true, type: 'note' });
+
+    // 노트 추가 후 userName, noteId를 반환 받게되면 그 페이지로 이동
+    const res = createNote(parentId);
   };
 
   // 폴더 추가
   const addFolder = () => {
-    setShowFolderInput(true);
-    setShowNoteInput(false);
+    setShowInput({ show: true, type: 'folder' });
   };
 
   // 세팅모달 열기
@@ -53,11 +58,11 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
       if (
+        showInput.type === 'folder' &&
         sidebarRef.current &&
         !sidebarRef.current.contains(event.target as Node)
       ) {
-        setShowFolderInput(false);
-        setShowNoteInput(false);
+        setShowInput((prevState) => ({ ...prevState, show: false }));
       }
     }
     // 클릭 이벤트를 document에 추가
@@ -66,7 +71,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
-  }, []);
+  }, [showInput.type]);
 
   return (
     <div
@@ -124,16 +129,12 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
             <Directory
               parentId={parentId}
               setParentId={setParentId}
-              showFolderInput={showFolderInput}
-              showNoteInput={showNoteInput}
-              setShowFolderInput={setShowFolderInput}
-              setShowNoteInput={setShowNoteInput}
               theme={theme}
               directoryList={directory}
-              setFolderName={setFolderName}
-              setNoteName={setNoteName}
+              showInput={showInput}
+              setShowInput={setShowInput}
               folderName={folderName}
-              noteName={noteName}
+              setFolderName={setFolderName}
             />
           </div>
           <hr />

@@ -1,12 +1,12 @@
 'use client';
 import Text from '@components/common/Text';
 import { DirectoryItem } from '../Directory';
-import Note from './Note';
+import Note, { NoteProps } from './Note';
 import SvgIcon from '@components/common/SvgIcon';
-import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import colors from '@src/design/color';
-import CreateFile from './CreateFile';
 import { findParentId } from './findParentId';
+import CreateFile from './CreateFile';
 import { createNote } from '@api/note/note';
 import { createFolder } from '@api/folder/folder';
 
@@ -20,18 +20,17 @@ export interface FolderProps {
   theme?: 'light' | 'dark';
   parentId?: number;
   setParentId?: Dispatch<SetStateAction<number>>;
-  showFolderInput?: boolean;
-  setShowFolderInput?: Dispatch<SetStateAction<boolean>>;
-  setFolderName?: Dispatch<SetStateAction<string>>;
-  showNoteInput?: boolean;
-  setShowNoteInput?: Dispatch<SetStateAction<boolean>>;
-  setNoteName?: Dispatch<SetStateAction<string>>;
+  showInput?: { show: boolean; type: 'note' | 'folder' };
+  setShowInput?: Dispatch<
+    SetStateAction<{ show: boolean; type: 'note' | 'folder' }>
+  >;
+  currentNoteId?: number;
   folderName?: string;
-  noteName?: string;
+  setFolderName?: Dispatch<SetStateAction<string>>;
+  handleKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export default function Folder({
-  type,
   folderId,
   title,
   notes,
@@ -39,19 +38,22 @@ export default function Folder({
   theme = 'light',
   parentId,
   setParentId,
-  showFolderInput,
-  setShowFolderInput,
-  setFolderName,
-  directoryList,
-  setNoteName,
-  showNoteInput,
-  setShowNoteInput,
+  showInput,
+  setShowInput,
+  currentNoteId,
   folderName,
-  noteName,
+  setFolderName,
+  handleKeyDown,
 }: FolderProps) {
   const paddingLeft = `${depth * 1.25}rem`;
-  const [isFolderOpen, setFolderOpen] = useState(false);
-  const folderBgClass = isFolderOpen ? 'bg-gray-200 rounded' : '';
+  // const [isFolderOpen, setFolderOpen] = useState(false);
+  const [isFolderOpen, setFolderOpen] = useState(
+    notes?.some(
+      (item) =>
+        item.type === 'note' && (item as NoteProps).noteId === currentNoteId
+    )
+  );
+
   const handleFolder = () => {
     if (!isFolderOpen) {
       // 폴더를 열 때
@@ -62,41 +64,10 @@ export default function Folder({
     } else {
       // 폴더를 닫을 때
       setFolderOpen(false);
-      if (setParentId && directoryList) {
-        const parentFolderId = findParentId(
-          directoryList,
-          folderId,
-          'folderId'
-        );
+      if (setParentId && notes) {
+        const parentFolderId = findParentId(notes, folderId, 'folderId');
         setParentId(parentFolderId);
       }
-      if (setShowFolderInput) {
-        setShowFolderInput(false);
-      }
-
-      if (setShowNoteInput) {
-        setShowNoteInput(false);
-      }
-    }
-  };
-
-  const handleKeyDown = (
-    type: 'folder' | 'note',
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (e.key === 'Enter') {
-      if (type === 'folder') {
-        console.log(parentId, folderName);
-        if (parentId && folderName) {
-          createFolder(parentId, folderName);
-        }
-      } else {
-        console.log(parentId, noteName);
-        if (parentId && noteName) {
-          createNote(parentId, noteName);
-        }
-      }
-      e.preventDefault();
     }
   };
 
@@ -104,7 +75,7 @@ export default function Folder({
     <div className="folder mb-3" style={{ paddingLeft }}>
       <div
         onClick={handleFolder}
-        className={`flex items-center cursor-pointer hover:opacity-60 transition-opacity duration-300 ${folderBgClass}`}
+        className={`flex items-center cursor-pointer hover:opacity-60 transition-opacity duration-300`}
       >
         {isFolderOpen ? (
           <SvgIcon
@@ -130,6 +101,7 @@ export default function Folder({
                   key={item.noteId}
                   noteId={item.noteId}
                   title={item.title}
+                  currentNoteId={currentNoteId}
                 />
               ) : (
                 <Folder
@@ -137,45 +109,41 @@ export default function Folder({
                   folderId={item.folderId}
                   key={item.folderId}
                   title={item.title}
-                  directoryList={directoryList}
                   notes={item.notes}
                   depth={depth + 1}
                   parentId={parentId}
                   setParentId={setParentId}
-                  showFolderInput={
-                    parentId && isFolderOpen ? showFolderInput : false
-                  }
-                  setShowFolderInput={setShowFolderInput}
-                  setFolderName={setFolderName}
-                  showNoteInput={showNoteInput}
-                  setShowNoteInput={setShowNoteInput}
-                  setNoteName={setNoteName}
+                  showInput={showInput}
+                  setShowInput={setShowInput}
+                  currentNoteId={currentNoteId}
                   folderName={folderName}
-                  noteName={noteName}
+                  setFolderName={setFolderName}
+                  handleKeyDown={handleKeyDown}
                 />
               )
             )}
         </div>
       )}
-      {showFolderInput && parentId === folderId && (
-        <div style={{ paddingLeft: '1.25rem' }}>
-          <CreateFile
-            onChange={(e) => setFolderName && setFolderName(e.target.value)}
-            placeholder="폴더 생성"
-            onKeyDown={(e) => handleKeyDown('folder', e)}
-          />
-        </div>
-      )}
-      {showNoteInput && parentId === folderId && (
-        <div style={{ paddingLeft: '1.25rem' }}>
-          <CreateFile
-            type="note"
-            onChange={(e) => setNoteName && setNoteName(e.target.value)}
-            placeholder="노트 생성"
-            onKeyDown={(e) => handleKeyDown('note', e)}
-          />
-        </div>
-      )}
+      {parentId === folderId &&
+        showInput &&
+        showInput.show &&
+        showInput.type === 'note' && (
+          <div style={{ paddingLeft: '1.25rem' }}>
+            <CreateFile type="note" />
+          </div>
+        )}
+      {parentId === folderId &&
+        showInput &&
+        showInput.show &&
+        showInput.type === 'folder' && (
+          <div style={{ paddingLeft: '1.25rem' }}>
+            <CreateFile
+              onChange={(e) => setFolderName && setFolderName(e.target.value)}
+              onKeyDown={(e) => handleKeyDown && handleKeyDown(e)}
+              type="folder"
+            />
+          </div>
+        )}
     </div>
   );
 }

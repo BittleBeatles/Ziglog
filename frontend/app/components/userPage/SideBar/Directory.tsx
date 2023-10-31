@@ -1,24 +1,23 @@
 'use client';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import Folder, { FolderProps } from './Directory/Folder';
 import CreateFile from './Directory/CreateFile';
 import Note, { NoteProps } from './Directory/Note';
 import { createNote } from '@api/note/note';
 import { createFolder } from '@api/folder/folder';
+import { useParams } from 'next/navigation';
 
 export interface DirectoryProps {
   directoryList: DirectoryItem[];
   theme?: 'light' | 'dark';
   parentId?: number;
   setParentId?: Dispatch<SetStateAction<number>>;
-  showFolderInput?: boolean;
-  setShowFolderInput?: Dispatch<SetStateAction<boolean>>;
-  setFolderName?: Dispatch<SetStateAction<string>>;
-  showNoteInput?: boolean;
-  setShowNoteInput?: Dispatch<SetStateAction<boolean>>;
-  setNoteName?: Dispatch<SetStateAction<string>>;
+  showInput?: { show: boolean; type: 'note' | 'folder' };
+  setShowInput?: Dispatch<
+    SetStateAction<{ show: boolean; type: 'note' | 'folder' }>
+  >;
   folderName?: string;
-  noteName?: string;
+  setFolderName?: Dispatch<SetStateAction<string>>;
 }
 export type DirectoryItem = (NoteProps | FolderProps) & {
   type: 'note' | 'folder';
@@ -29,29 +28,25 @@ export default function Directory({
   theme = 'light',
   parentId,
   setParentId,
-  showFolderInput,
-  setShowFolderInput,
-  setFolderName,
-  showNoteInput,
-  setShowNoteInput,
-  setNoteName,
+  showInput,
   folderName,
-  noteName,
+  setFolderName,
+  setShowInput,
 }: DirectoryProps) {
-  const handleKeyDown = (
-    type: 'folder' | 'note',
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (e.key === 'Enter') {
-      if (type === 'folder') {
-        if (parentId && folderName) {
-          createFolder(3, folderName);
-        }
-      } else {
-        if (parentId && noteName) {
-          createNote(parentId, noteName);
-        }
-      }
+  const params = useParams();
+  const currentNoteId = Number(params.noteId);
+
+  // 폴더 입력했을 때 렌더링하기 위함
+  const [keyDownCounter, setKeyDownCounter] = useState(0);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && parentId && folderName) {
+      // 3은 parentId가 될 예정
+      console.log(parentId, folderName);
+      createFolder(3, folderName);
+
+      setKeyDownCounter(keyDownCounter + 1);
+
       e.preventDefault();
     }
   };
@@ -62,48 +57,44 @@ export default function Directory({
         item.type === 'note' ? (
           <Note
             theme={theme}
-            nickname={item.nickname}
             key={item.noteId}
+            nickname={item.nickname}
             noteId={item.noteId}
             title={item.title}
           />
         ) : (
           <Folder
+            theme={theme}
             key={item.folderId}
             folderId={item.folderId}
-            theme={theme}
             title={item.title}
-            notes={item.notes}
             depth={0}
-            directoryList={directoryList}
+            notes={item.notes}
             parentId={parentId}
             setParentId={setParentId}
-            showFolderInput={parentId ? showFolderInput : false}
-            setShowFolderInput={setShowFolderInput}
-            setFolderName={setFolderName}
-            showNoteInput={showNoteInput}
-            setShowNoteInput={setShowNoteInput}
-            setNoteName={setNoteName}
+            showInput={showInput}
+            setShowInput={setShowInput}
+            currentNoteId={currentNoteId}
             folderName={folderName}
-            noteName={noteName}
+            setFolderName={setFolderName}
+            handleKeyDown={handleKeyDown}
           />
         )
       )}
-      {parentId === -1 && showFolderInput && (
-        <CreateFile
-          onChange={(e) => setFolderName && setFolderName(e.target.value)}
-          placeholder="폴더 생성"
-          onKeyDown={(e) => handleKeyDown('folder', e)}
-        />
-      )}
-      {parentId === -1 && showNoteInput && (
-        <CreateFile
-          type="note"
-          onChange={(e) => setNoteName && setNoteName(e.target.value)}
-          placeholder="노트 생성"
-          onKeyDown={(e) => handleKeyDown('note', e)}
-        />
-      )}
+      {parentId === -1 &&
+        showInput &&
+        showInput.show &&
+        showInput.type === 'note' && <CreateFile type="note" />}
+      {parentId === -1 &&
+        showInput &&
+        showInput.show &&
+        showInput.type === 'folder' && (
+          <CreateFile
+            onChange={(e) => setFolderName && setFolderName(e.target.value)}
+            onKeyDown={(e) => handleKeyDown(e)}
+            type="folder"
+          />
+        )}
     </div>
   );
 }

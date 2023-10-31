@@ -10,6 +10,7 @@ export interface NoteProps {
   title: string;
   nickname: string;
   theme?: 'light' | 'dark';
+  currentNoteId?: number;
 }
 
 export default function Note({
@@ -18,12 +19,15 @@ export default function Note({
   noteId,
   nickname,
   theme = 'light',
+  currentNoteId,
 }: NoteProps) {
   return (
     <div>
       <Link
         href={`/user-page/${nickname}/read-note/${noteId}`}
-        className="flex items-center pl-5 mt-2 mb-2 hover:opacity-60 transition-opacity duration-300"
+        className={`flex items-center pl-5 mt-2 mb-2 hover:opacity-60 transition-opacity duration-300 ${
+          noteId === currentNoteId ? 'bg-gray-200' : ''
+        }`}
       >
         <SvgIcon
           name="Note"

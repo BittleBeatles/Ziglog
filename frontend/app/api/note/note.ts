@@ -18,10 +18,10 @@ export async function getNoteInfo(noteId: number): Promise<NoteInfo> {
   }
 }
 
-export async function createNote(folderId: number, title: string) {
+export async function createNote(folderId: number) {
   return privateFetch<CreateNoteApiResponse>(`${API_URL}/note`, {
     method: 'POST',
-    body: { folderId, title },
+    body: { folderId },
   })
     .then((res) => {
       return console.log(`${folderId}에 노트가 생성되었습니다.`);
