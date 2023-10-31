@@ -5,6 +5,7 @@ import ProfileChangeButton from '@components/common/ProfileChangeButton';
 import Button from '@components/common/Button';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
+import { modifyUserInfo } from '@api/user/user';
 
 interface NicknameSettingProps extends InputHTMLAttributes<HTMLInputElement> {
   theme?: 'light' | 'dark';
@@ -85,7 +86,14 @@ export default function NicknameSetting({
       </div>
 
       <div className="mt-7 mb-2">
-        <Button label="저장하기" color="blue" />
+        <Button
+          onClick={() => {
+            modifyUserInfo;
+            openModal(false);
+          }}
+          label="저장하기"
+          color="blue"
+        />
       </div>
     </div>
   );
