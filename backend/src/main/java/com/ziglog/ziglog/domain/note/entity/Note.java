@@ -66,6 +66,10 @@ public class Note {
     @OneToMany(mappedBy = "endNote")
     private List<Quotation> quoting = new ArrayList<>();
 
+    @Column(name = "quoted_count")
+    private Integer quotedCount = 0;
+
+
     public Note(Long id){
         this.id = id;
     }
@@ -73,6 +77,7 @@ public class Note {
     public void setTitle(String title){
         this.title = title;
     }
+
     public void setContent(String content){
         this.content = content;
     }

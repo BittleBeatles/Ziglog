@@ -3,8 +3,10 @@ package com.ziglog.ziglog.domain.note.service;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
-import java.rmi.server.ExportException;
 import java.util.List;
 
 public interface NoteService {
@@ -23,7 +25,7 @@ public interface NoteService {
 
     List<Note> findNotesQuotingThisNote(Long noteId) throws Exception; //이 노트를 참조하고 있는 노트의 리스트를 반환
 
-    List<Note> searchPublicNotesByTitle(String keyworkd) throws Exception;
+    Slice<Note> searchPublicNotesByTitle(String keyword, Pageable pageable) throws Exception;
     // 폴더
     Folder createFolder(Member member, Folder folder) throws Exception;//새로운 폴더를 추가
 
