@@ -22,13 +22,11 @@ export async function getUserInfo(): Promise<UserInfo> {
 }
 
 export async function Logout(): Promise<LogoutInfo> {
-  const dispatch = useAppDispatch();
   try {
     const res = await privateFetch<LogoutApiData>(`${API_URL}/logout`, {
       method: 'POST',
     });
-    dispatch(logOut());
-    redirect('/');
+    return 'Logout 성공';
   } catch (err) {
     throw err;
   }

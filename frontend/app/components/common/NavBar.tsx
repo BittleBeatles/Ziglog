@@ -1,9 +1,9 @@
 'use client';
-import { HTMLAttributes, useState } from 'react';
+import { useState } from 'react';
 import Button from '@components/common/Button';
 import IconButton from '@components/common/IconButton';
-import { useAppSelector, useAppDispatch } from '@store/store';
-import { setMyTheme } from '@store/modules/userSlice';
+import { useAppDispatch } from '@store/store';
+import { logOut, setMyTheme } from '@store/modules/userSlice';
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from '@public/images/logo.png';
@@ -50,6 +50,8 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
           <Button
             onClick={() => {
               Logout();
+              dispatch(logOut());
+              window.location.replace('/');
             }}
             label="로그아웃"
             color="charcol"

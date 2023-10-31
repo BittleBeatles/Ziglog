@@ -1,37 +1,21 @@
 import { privateFetch, publicFetch } from '..';
 import { API_URL } from '@api/constants';
-import { NoteInfo, EditNoteParams } from './types';
+import { NoteInfo, NoteRefListInfo } from './types';
 import { ApiSuccessResponse } from '@api/types';
 
 export type NoteApiData = ApiSuccessResponse<NoteInfo>;
-export type EditNoteApiResponse = ApiSuccessResponse<null>;
 export type CreateNoteApiResponse = ApiSuccessResponse<null>;
-export function getNoteInfo(noteId: number): Promise<NoteInfo> {
-  return publicFetch<NoteApiData>(`${API_URL}/note/${noteId}`, {
-    method: 'GET',
-  })
-    .then((res) => {
-      return Promise.resolve(res.body.data);
-    })
-    .catch((err) => {
-      throw err;
-    });
-}
+export type QuotationListApiResponse = ApiSuccessResponse<NoteRefListInfo>;
 
-export function sendEditNoteInfoRequest(
-  noteId: number,
-  body: EditNoteParams
-): Promise<string | void> {
-  return privateFetch<EditNoteApiResponse>(`${API_URL}/note/${noteId}`, {
-    method: 'PUT',
-    body: body,
-  })
-    .then((res) => {
-      return Promise.resolve('[note edit succeeded]');
-    })
-    .catch((err) => {
-      throw err;
+export async function getNoteInfo(noteId: number): Promise<NoteInfo> {
+  try {
+    const res = await publicFetch<NoteApiData>(`${API_URL}/note/${noteId}`, {
+      method: 'GET',
     });
+    return await Promise.resolve(res.body.data);
+  } catch (err) {
+    throw err;
+  }
 }
 
 export async function createNote(folderId: number, title: string) {
@@ -41,6 +25,19 @@ export async function createNote(folderId: number, title: string) {
   })
     .then((res) => {
       return console.log(`${folderId}에 노트가 생성되었습니다.`);
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export async function getReferenceList(noteId: number) {
+  return publicFetch<QuotationListApiResponse>(`${API_URL}/note/ref`, {
+    method: 'GET',
+    body: { noteId },
+  })
+    .then((res) => {
+      return res.body.data;
     })
     .catch((err) => {
       throw err;

@@ -14,3 +14,17 @@ export interface EditNoteParams {
   content: string;
   quotingNotes: number[];
 }
+
+export interface NotePublicStatus {
+  isPublic: boolean;
+}
+
+export interface NoteRefType {
+  noteId: number;
+  title: string;
+  nickname: string;
+}
+
+export interface NoteRefListInfo {
+  quotationList: NoteRefType[];
+}
