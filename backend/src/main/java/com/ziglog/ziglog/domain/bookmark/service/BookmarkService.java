@@ -2,7 +2,6 @@ package com.ziglog.ziglog.domain.bookmark.service;
 
 import com.ziglog.ziglog.domain.bookmark.entity.Bookmark;
 import com.ziglog.ziglog.domain.member.entity.Member;
-import com.ziglog.ziglog.domain.note.entity.Note;
 
 import java.util.List;
 
