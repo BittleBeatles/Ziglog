@@ -1,6 +1,5 @@
 package com.ziglog.ziglog.domain.note.controller;
 
-import com.ziglog.ziglog.domain.note.dto.request.SearchRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.SearchResponseDto;
 import com.ziglog.ziglog.domain.note.service.NoteService;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
@@ -20,9 +19,9 @@ public class SearchController {
 
     private final NoteService noteService;
     @GetMapping("")
-    public ResponseDto<SearchResponseDto> searchAllByTitle(@RequestParam("keyword") String keyword, @RequestBody SearchRequestDto searchRequestDto) throws Exception{
+    public ResponseDto<SearchResponseDto> searchAllByTitle(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("perPage") Integer perPage) throws Exception{
         //최근 글부터 보여줌
-        PageRequest pageRequest = PageRequest.of(searchRequestDto.getPage(), searchRequestDto.getPerPage(), Sort.by("postDatetime").descending());
+        PageRequest pageRequest = PageRequest.of(page, perPage, Sort.by("postDatetime").descending());
         return ResponseDto.of(SearchResponseDto.toDto(noteService.searchPublicNotesByTitle(keyword, pageRequest)));
     }
 }
