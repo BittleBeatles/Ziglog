@@ -1,5 +1,7 @@
 export interface SearchInfo {
-  data: SearchResult[];
+  data: {
+    notes: SearchResult[];
+  };
 }
 
 export interface SearchResult {

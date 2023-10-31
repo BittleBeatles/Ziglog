@@ -34,7 +34,7 @@ export default function Search() {
         <GlobalSearchInput onChange={(e) => setKeyword(e.target.value)} />
         <div>
           {searchData &&
-            searchData.data.map((result) => (
+            searchData.data.notes.map((result) => (
               <GlobalSearchResult
                 key={result.noteId}
                 noteId={result.noteId}
