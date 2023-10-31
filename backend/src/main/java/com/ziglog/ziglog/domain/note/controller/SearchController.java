@@ -21,7 +21,8 @@ public class SearchController {
     private final NoteService noteService;
     @GetMapping("")
     public ResponseDto<SearchResponseDto> searchAllByTitle(@RequestParam("keyword") String keyword, @RequestBody SearchRequestDto searchRequestDto) throws Exception{
-        PageRequest pageRequest = PageRequest.of(searchRequestDto.getPage(), searchRequestDto.getPerPage(),Sort.by("    ").descending());
+        //최근 글부터 보여줌
+        PageRequest pageRequest = PageRequest.of(searchRequestDto.getPage(), searchRequestDto.getPerPage(), Sort.by("postDatetime").descending());
         return ResponseDto.of(SearchResponseDto.toDto(noteService.searchPublicNotesByTitle(keyword, pageRequest)));
     }
 }
