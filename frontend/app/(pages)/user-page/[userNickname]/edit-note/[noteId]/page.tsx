@@ -6,11 +6,11 @@ import Button from '@components/common/Button';
 import { useEffect, useRef, useState } from 'react';
 import NoteTitleInput from '@components/userPage/NoteTitleInput';
 import QuotationModal from '@components/userPage/QuotationModal';
+import { getNoteInfo } from '@api/note/note';
 import {
-  getNoteInfo,
   sendEditNoteInfoRequest,
   changeNotePublicStatusRequest,
-} from '@api/note/note';
+} from '@api/note/editNote';
 import { EditNoteParams } from '@api/note/types';
 import { diffChars } from 'diff';
 
