@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Book;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Service
 @Transactional
@@ -41,24 +42,28 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     public void deleteBookmark(Member member, Long noteId) throws Exception {
+        //persist
         Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
-
-        List<Bookmark> bookmarkList = bookmarkRepository.findAllByMember(member);
-        if (!bookmarkList.contains(note)) return;
-
         Bookmark bookmark = bookmarkRepository.findBookmarkByMemberAndNote(member, note).orElseThrow(Exception::new);
 
-
-
+        member.getBookmarks().remove(bookmark);
+        bookmarkRepository.delete(bookmark);
     }
 
     @Override
     public List<Bookmark> getBookmarks(Member member) {
-        return null;
+        return member.getBookmarks();
     }
 
     @Override
-    public Boolean checkIsBookmarked(Member member, Note noteId) {
-        return null;
+    public Boolean checkIsBookmarked(Member member, Long noteId) {
+        List<Bookmark> bookmarks = member.getBookmarks();
+
+        for (Bookmark bookmark : bookmarks) {
+            if (bookmark.getNote().getId().equals(noteId)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
