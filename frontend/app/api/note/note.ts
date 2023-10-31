@@ -27,7 +27,20 @@ export async function createNote(folderId: number, title: string) {
       return console.log(`${folderId}에 노트가 생성되었습니다.`);
     })
     .catch((err) => {
-      throw err;
+      return console.log(err);
+    });
+}
+
+export async function getReferenceList(noteId: number) {
+  return publicFetch<QuotationListApiResponse>(`${API_URL}/note/ref`, {
+    method: 'GET',
+    body: { noteId },
+  })
+    .then((res) => {
+      return res.body.data;
+    })
+    .catch((err) => {
+      return console.log(err);
     });
 }
 

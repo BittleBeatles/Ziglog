@@ -4,6 +4,7 @@ import Folder, { FolderProps } from './Directory/Folder';
 import CreateFile from './Directory/CreateFile';
 import Note, { NoteProps } from './Directory/Note';
 import { createNote } from '@api/note/note';
+import { createFolder } from '@api/folder/folder';
 
 export interface DirectoryProps {
   directoryList: DirectoryItem[];
@@ -43,12 +44,10 @@ export default function Directory({
   ) => {
     if (e.key === 'Enter') {
       if (type === 'folder') {
-        console.log(parentId, folderName);
         if (parentId && folderName) {
-          createNote(parentId, folderName);
+          createFolder(3, folderName);
         }
       } else {
-        console.log(parentId, noteName);
         if (parentId && noteName) {
           createNote(parentId, noteName);
         }
