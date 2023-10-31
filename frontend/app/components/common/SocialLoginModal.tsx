@@ -3,7 +3,7 @@ import React from 'react';
 import ModalLayout from '@components/common/ModalLayout';
 import Text from '@components/common/Text';
 import SocialLoginButton from '@components/common/SocialLoginButton';
-import IconButton from './IconButton';
+import IconButton from '@components/common/IconButton';
 
 interface SocialLoginModalProps {
   theme: 'light' | 'dark';
