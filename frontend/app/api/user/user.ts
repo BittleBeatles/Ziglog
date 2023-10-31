@@ -2,8 +2,9 @@ import { privateFetch } from '..';
 import { API_URL } from '@api/constants';
 import { TokenInfo, UserInfo, LogoutInfo } from './types';
 import { useAppDispatch } from '@store/store';
-import { setUserToken } from '@store/modules/userSlice';
+import { setUserToken, logOut } from '@store/modules/userSlice';
 import { ApiSuccessResponse } from '@api/types';
+import { redirect } from 'next/navigation';
 
 export type UserApiData = ApiSuccessResponse<UserInfo>;
 export type ReissueTokenApiData = ApiSuccessResponse<TokenInfo>;
@@ -21,12 +22,14 @@ export function getUserInfo(): Promise<UserInfo> {
     });
 }
 
-export function logout(): Promise<LogoutInfo> {
+export function Logout(): Promise<LogoutInfo> {
+  const dispatch = useAppDispatch();
   return privateFetch<LogoutApiData>(`${API_URL}/logout`, {
     method: 'POST',
   })
     .then((res) => {
-      return res.body.message;
+      dispatch(logOut());
+      redirect('/');
     })
     .catch((err) => {
       throw err;
