@@ -10,13 +10,4 @@ public class CreateFolderRequestDto {
 
     private String folderName;
     private Long parentId;
-
-    public Folder toEntity(){
-        return Folder.builder()
-                .id(parentId)
-                .title(folderName)
-                .build();
-    }
-
-
 }

@@ -26,7 +26,7 @@ public class FolderController {
     )
     @PostMapping("")
     public ResponseDto<Void> createFolder(@AuthenticationPrincipal CustomUserDetails userDetails, CreateFolderRequestDto createFolderRequestDto) throws Exception{
-        noteService.createFolder(userDetails.member(), createFolderRequestDto.toEntity());
+        noteService.createFolder(userDetails.member(), createFolderRequestDto.getFolderName(), createFolderRequestDto.getParentId());
         return ResponseDto.of(200, "success");
     }
 
