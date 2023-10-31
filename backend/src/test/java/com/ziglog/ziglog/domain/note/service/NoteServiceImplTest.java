@@ -40,13 +40,7 @@ class NoteServiceImplTest {
     public void signUp() throws Exception{
         member1 = memberService.signUp("pj0642@gmail.com", "pys");
         member2 = memberService.signUp("pj0642@naver.com", "박영서");
-
-        mem1RootFolder = Folder.builder()
-                .owner(member1)
-                .title("folder")
-                .build();
-
-        noteService.createFolder(member1, mem1RootFolder);
+        mem1RootFolder = member1.getFolders().stream().filter(folder -> folder.getParent()==null).findFirst().orElseThrow(Exception::new);
     }
 
     @DisplayName("노트 생성 테스트 - 노트 작성자 일치 여부 테스트 : 성공")
@@ -186,7 +180,7 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        noteService.createFolder(member1, folder);
+        noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
         assertEquals(2, member1.getFolders().size());
     }
 
@@ -197,7 +191,8 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        folder = noteService.createFolder(member1, folder);
+
+        noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
 
         Folder folderModified = Folder.builder()
                 .id(folder.getId())
@@ -221,11 +216,8 @@ class NoteServiceImplTest {
     @DisplayName("폴더명 수정 테스트 - 성공 사례")
     @Test
     void modifyFolderTest_Success() throws Exception {
-        Folder folder = Folder.builder()
-                .title("folder")
-                .owner(member1)
-                .build();
-        folder = noteService.createFolder(member1, folder);
+        String title = "title";
+        Folder folder = noteService.createFolder(member1, title, mem1RootFolder.getId());
 
         Folder folderModified = Folder.builder()
                 .id(folder.getId())
@@ -242,7 +234,7 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        Folder folderToDelete = noteService.createFolder(member1, folder);
+        Folder folderToDelete = noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
 
         assertThrows(Exception.class, () -> noteService.deleteFolder(member2, folderToDelete.getId()));
     }
@@ -265,7 +257,7 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        Folder folderToDelete = noteService.createFolder(member1, folder);
+        Folder folderToDelete = noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
 
         assertDoesNotThrow(() -> noteService.deleteFolder(member1, folderToDelete.getId()));
         assertEquals(1, member1.getFolders().size());
@@ -291,8 +283,8 @@ class NoteServiceImplTest {
                 .title("folder2")
                 .owner(member1)
                 .build();
-        noteService.createFolder(member1, folder);
-        noteService.createFolder(member1, folder2);
+        noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
+        noteService.createFolder(member1, folder2.getTitle(), mem1RootFolder.getId());
 
         assertDoesNotThrow(() -> noteService.getRootFolder(member1.getNickname()));
     }
@@ -304,14 +296,14 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        folder = noteService.createFolder(member1, folder);
+        folder = noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
 
         Folder folder2 = Folder.builder()
                 .title("folder2")
                 .owner(member1)
                 .parent(folder)
                 .build();
-        folder2 = noteService.createFolder(member1, folder2);
+        folder2 = noteService.createFolder(member1, folder2.getTitle(), folder.getId());
 
         assertTrue(folder.getChildren().contains(folder2));//폴더1의 자식을 확인
         assertEquals(folder, folder2.getParent());//폴더2의 부모를 확인
@@ -324,8 +316,7 @@ class NoteServiceImplTest {
                 .title("folder")
                 .owner(member1)
                 .build();
-        folder = noteService.createFolder(member1, folder);
-
+        folder = noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
         Note note = noteService.createNote(member1, folder.getId());
 
         assertTrue(folder.getNotes().contains(note));//폴더1의 자식을 확인
