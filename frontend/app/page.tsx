@@ -14,10 +14,10 @@ import Description from '@components/main/Description';
 import { useAppDispatch, useAppSelector } from '@store/store';
 
 export default function Home() {
-  const theme = useAppSelector((state) => state.userReducer.theme);
+  const { theme, isLogin } = useAppSelector((state) => state.user);
   return (
     <div>
-      <NavBar login={true} />
+      <NavBar login={isLogin} />
       <div className={`px-16 py-4 ${THEME_VARIANTS[theme]}`}>
         <div className="text-center">
           <Text type="h1" className="text-7xl">

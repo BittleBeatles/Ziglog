@@ -19,5 +19,5 @@ export default function OauthPage() {
       window.location.replace('/main');
     };
     oauthLogin();
-  }, []);
+  }, [dispatch]);
 }
