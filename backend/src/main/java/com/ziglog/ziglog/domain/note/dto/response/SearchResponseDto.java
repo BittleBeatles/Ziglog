@@ -1,5 +1,6 @@
 package com.ziglog.ziglog.domain.note.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +27,11 @@ public class SearchResponseDto {
         private String preview;
         private Boolean isPublic;
         private Integer bookmarkCount;
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
         private LocalDateTime postTime;
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
         private LocalDateTime editTIme;
 
         private static BriefNoteDto toDto (Note note){

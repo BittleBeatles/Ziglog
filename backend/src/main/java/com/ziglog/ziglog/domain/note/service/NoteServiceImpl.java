@@ -146,6 +146,6 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Slice<Note> searchPublicNotesByTitle(String keyword, Pageable pageable) throws Exception {
-        return noteRepository.findAllByTitleContainingIgnoreCaseAndPublic(keyword, true, pageable);
+        return noteRepository.findAllByTitleContainingIgnoreCaseAndIsPublic(keyword, true, pageable);
     }
 }
