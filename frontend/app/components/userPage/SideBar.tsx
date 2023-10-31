@@ -167,7 +167,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         )}
       </div>
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
+        <div className="fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <NicknameSetting theme={theme} openModal={openModal} />
         </div>
       )}
