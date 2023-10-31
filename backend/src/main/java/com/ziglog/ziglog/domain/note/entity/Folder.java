@@ -47,6 +47,7 @@ public class Folder {
     public void setParent(Folder parent) {
         this.parent = parent;
     }
-    public void setOwner(Member member) {this.owner = owner; }
-
+    public void setOwner(Member owner) {
+        this.owner = owner;
+    }
 }
