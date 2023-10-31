@@ -27,7 +27,7 @@ export async function createNote(folderId: number, title: string) {
       return console.log(`${folderId}에 노트가 생성되었습니다.`);
     })
     .catch((err) => {
-      throw err;
+      return console.log(err);
     });
 }
 

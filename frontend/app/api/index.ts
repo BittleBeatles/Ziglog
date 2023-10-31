@@ -24,29 +24,31 @@ export const privateFetch = returnFetchJson({
       const accessToken = store.getState().user.accessToken;
       const grantType = store.getState().user.grantType;
       config[1] = {
-        headers: { Authorization: `${grantType} ${accessToken}` },
+        ...config[1],
+        headers: {
+          ...config[1]?.headers,
+          Authorization: `${grantType} ${accessToken}`,
+        },
       };
       return config;
     },
     response: async (response, config, fetch) => {
       console.log('response', response);
-
       if (response.status === 401) {
         const newAccessToken = await ReissueToken();
-
         if (newAccessToken) {
-          // 헤더를 업데이트합니다.
           config[1] = {
+            ...config[1],
             headers: {
+              ...config[1]?.headers,
               Authorization: `${newAccessToken.grantType} ${newAccessToken.accessToken}`,
             },
           };
-          return fetch(...config); // 수정된 설정으로 요청을 다시 시도합니다.
+          return fetch(...config);
         } else {
           throw new Error('Failed to reissue token');
         }
       }
-
       return response;
     },
   },

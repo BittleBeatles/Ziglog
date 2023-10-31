@@ -11,6 +11,7 @@ import Directory, { DirectoryItem } from './SideBar/Directory';
 import BookmarkList from './SideBar/BookmarkList';
 import { useRouter } from 'next/navigation';
 import NicknameSetting from './NicknameSetting';
+import { Logout } from '@api/user/user';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -149,7 +150,9 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         />
         {!isLogined && <Button label="로그인하기" color="charcol" />}
 
-        {isLogined && isMine && <Button label="로그아웃" color="charcol" />}
+        {isLogined && isMine && (
+          <Button onClick={() => Logout()} label="로그아웃" color="charcol" />
+        )}
 
         {isLogined && !isMine && (
           <Button label="마이페이지로 가기" color="charcol" />
@@ -163,7 +166,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         )}
       </div>
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
           <NicknameSetting theme={theme} openModal={openModal} />
         </div>
       )}

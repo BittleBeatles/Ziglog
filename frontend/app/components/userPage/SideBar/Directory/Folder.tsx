@@ -7,6 +7,8 @@ import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import colors from '@src/design/color';
 import CreateFile from './CreateFile';
 import { findParentId } from './findParentId';
+import { createNote } from '@api/note/note';
+import { createFolder } from '@api/folder/folder';
 
 export interface FolderProps {
   type?: 'folder';
@@ -85,8 +87,14 @@ export default function Folder({
     if (e.key === 'Enter') {
       if (type === 'folder') {
         console.log(parentId, folderName);
+        if (parentId && folderName) {
+          createFolder(parentId, folderName);
+        }
       } else {
         console.log(parentId, noteName);
+        if (parentId && noteName) {
+          createNote(parentId, noteName);
+        }
       }
       e.preventDefault();
     }
