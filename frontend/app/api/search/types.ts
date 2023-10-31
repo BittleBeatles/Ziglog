@@ -9,6 +9,6 @@ export interface SearchResult {
   nickname: string;
   isPublic: boolean;
   bookmarkCount: number;
-  postTime: string;
-  editTime: string | null;
+  postTime: Date;
+  editTime: Date | null;
 }
