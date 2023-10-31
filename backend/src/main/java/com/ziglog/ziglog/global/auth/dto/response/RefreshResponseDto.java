@@ -5,9 +5,10 @@ import lombok.Getter;
 @Getter
 public class RefreshResponseDto {
     private String grantType = "Bearer";
-    private String refreshToken;
+    private String accessToken;
 
-    public RefreshResponseDto(String refreshToken) {
-        this.refreshToken = refreshToken;
+    public RefreshResponseDto(String accessToken) {
+        this.accessToken = accessToken;
     }
+
 }
