@@ -6,7 +6,11 @@ import Button from '@components/common/Button';
 import { useEffect, useRef, useState } from 'react';
 import NoteTitleInput from '@components/userPage/NoteTitleInput';
 import QuotationModal from '@components/userPage/QuotationModal';
-import { getNoteInfo, sendEditNoteInfoRequest } from '@api/note/note';
+import {
+  getNoteInfo,
+  sendEditNoteInfoRequest,
+  changeNotePublicStatusRequest,
+} from '@api/note/note';
 import { EditNoteParams } from '@api/note/types';
 import { diffChars } from 'diff';
 
@@ -28,6 +32,7 @@ export default function EditNote() {
   });
   const editorRef = useRef<HTMLDivElement>(null);
   const quotationModalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId);
@@ -47,6 +52,18 @@ export default function EditNote() {
     };
     getNoteInfoEditPage(parseInt(noteId));
   }, []);
+
+  const handlePublicPrivateButton = () => {
+    const changePublicStatus = async (noteId: number, isPublic: boolean) => {
+      const body = { isPublic: !data.isPublic };
+      const result = await changeNotePublicStatusRequest(noteId, body);
+      if (result) {
+        setData({ ...data, isPublic: result.isPublic });
+        alert('공개/비공개 설정이 수정되었습니다.');
+      }
+    };
+    changePublicStatus(parseInt(noteId), data.isPublic);
+  };
 
   const handleNoteEdit = () => {
     if (
@@ -85,7 +102,7 @@ export default function EditNote() {
         />
         <div className="flex flex-row items-center gap-3">
           <PublicPrivateToggle
-            onClick={() => setData({ ...data, isPublic: !data.isPublic })}
+            onClick={() => handlePublicPrivateButton()}
             scope={data.isPublic ? 'Public' : 'Private'}
             theme={theme}
           />
