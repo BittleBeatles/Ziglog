@@ -95,6 +95,8 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public Folder createFolder(Member member, String title, Long parentId) throws Exception{
         Folder parent = folderRepository.findById(parentId).orElseThrow(Exception::new);
+        if (parent.getOwner() != member) throw new Exception();
+
         Folder folder = Folder.builder()
                         .title(title)
                         .parent(parent)
