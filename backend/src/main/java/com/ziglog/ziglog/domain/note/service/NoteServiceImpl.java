@@ -148,4 +148,11 @@ public class NoteServiceImpl implements NoteService{
     public Boolean checkOwner(Member member, Folder folder){
         return folder.getOwner() == member;
     }
+
+    @Override
+    public List<Note> searchPublicNotesByTitle(String keyworkd) throws Exception {
+
+
+    }
+
 }
