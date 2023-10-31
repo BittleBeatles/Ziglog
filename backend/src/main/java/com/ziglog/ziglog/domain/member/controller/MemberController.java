@@ -2,6 +2,7 @@ package com.ziglog.ziglog.domain.member.controller;
 
 import com.ziglog.ziglog.domain.member.dto.request.ModifyUserRequestDto;
 import com.ziglog.ziglog.domain.member.dto.request.NicknameDto;
+import com.ziglog.ziglog.domain.member.dto.response.MyInfoResponseDto;
 import com.ziglog.ziglog.domain.member.dto.response.NicknameValidationResponseDto;
 import com.ziglog.ziglog.domain.member.dto.response.UserPublicInfoResponseDto;
 import com.ziglog.ziglog.domain.member.entity.Member;
@@ -56,10 +57,8 @@ public class MemberController {
             description = "액세스 토큰을 기반으로 현재 로그인한 사용자의 닉네임과 프로필 이미지 주소를 조회"
     )
     @GetMapping("/info")
-    public ResponseDto<UserPublicInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception{
-        Member member = userDetails.member();
-        log.info("getMyInfo : {}", member.getNickname());
-        return ResponseDto.of(UserPublicInfoResponseDto.toDto(memberService.findUserByNickname(member.getNickname())));
+    public ResponseDto<MyInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception{
+        return ResponseDto.of(MyInfoResponseDto.toDto(userDetails.member()));
     }
 
     @GetMapping("/test")
