@@ -45,6 +45,7 @@ public class Member {
     @Builder.Default
     private List<Bookmark> bookmarks = new ArrayList<>();;
 
+    //회원 입장에서는 양방향 쓸 일 없이. 루트 폴더만 알면 됨. 수정 필요
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<Folder> folders = new ArrayList<>();
@@ -52,7 +53,6 @@ public class Member {
     public void setNickname(String nickname){
         this.nickname = nickname;
     }
-
     public void setProfileUrl(String profileUrl){
         this.profileUrl = profileUrl;
     }
