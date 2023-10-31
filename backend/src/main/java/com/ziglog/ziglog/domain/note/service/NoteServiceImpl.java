@@ -102,10 +102,13 @@ public class NoteServiceImpl implements NoteService{
             parent = folderRepository.findByOwnerAndParent(member, null).orElseThrow(Exception::new);
         }
 
+        folder.setOwner(member);
         Folder folderToSave = folderRepository.save(folder);
         parent.getChildren().add(folderToSave);
+
         folderToSave.setParent(parent);
         member.getFolders().add(folderToSave);
+
         return folderToSave;
     }
 
