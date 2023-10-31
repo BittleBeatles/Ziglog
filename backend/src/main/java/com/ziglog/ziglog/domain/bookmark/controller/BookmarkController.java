@@ -2,6 +2,7 @@ package com.ziglog.ziglog.domain.bookmark.controller;
 
 import com.ziglog.ziglog.domain.bookmark.dto.request.AddBookmarkRequestDto;
 import com.ziglog.ziglog.domain.bookmark.dto.response.BookmarkListDto;
+import com.ziglog.ziglog.domain.bookmark.dto.response.IsBookmarkedDto;
 import com.ziglog.ziglog.domain.bookmark.service.BookmarkService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
@@ -35,6 +36,12 @@ public class BookmarkController {
     @GetMapping("")
     public ResponseDto<BookmarkListDto> getLoginUserBookmarks(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
         return ResponseDto.of(BookmarkListDto.toDto(bookmarkService.getBookmarks(userDetails.member())));
+    }
+
+    @GetMapping("/{noteId}")
+    public ResponseDto<IsBookmarkedDto> checkIsBookmarked(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                          @PathVariable("noteId") Long noteId) throws Exception {
+        return ResponseDto.of(new IsBookmarkedDto(bookmarkService.checkIsBookmarked(userDetails.member(), noteId)));
     }
 
 }
