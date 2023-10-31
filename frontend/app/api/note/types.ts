@@ -14,3 +14,7 @@ export interface EditNoteParams {
   content: string;
   quotingNotes: number[];
 }
+
+export interface NotePublicStatus {
+  isPublic: boolean;
+}
