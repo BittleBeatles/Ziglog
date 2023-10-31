@@ -1,8 +1,9 @@
-'use client';
+// 'use client';
 import { ButtonHTMLAttributes } from 'react';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   color: 'charcol' | 'red' | 'blue';
+  onClick?: () => void;
 }
 
 const COLOR_VARIANTS = {
@@ -11,10 +12,16 @@ const COLOR_VARIANTS = {
   blue: 'bg-main-100',
 };
 
-export default function Button({ label, color, ...rest }: ButtonProps) {
+export default function Button({
+  label,
+  color,
+  onClick,
+  ...rest
+}: ButtonProps) {
   return (
     <button
-      className={`${COLOR_VARIANTS[color]} font-bold  colorClass text-white w-fit h-fit px-3 py-2 rounded-full`}
+      onClick={onClick}
+      className={`${COLOR_VARIANTS[color]} font-bold colorClass text-white w-fit h-fit px-3 py-2 rounded-full`}
     >
       {label}
     </button>
