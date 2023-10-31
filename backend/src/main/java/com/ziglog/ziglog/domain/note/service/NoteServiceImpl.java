@@ -98,9 +98,7 @@ public class NoteServiceImpl implements NoteService{
 
         Folder parent = folder.getParent();
 
-        if (parent == null) {
-            parent = folderRepository.findByOwnerAndParent(member, null).orElseThrow(Exception::new);
-        }
+        if (parent == null) throw new Exception();
 
         folder.setOwner(member);
         Folder folderToSave = folderRepository.save(folder);
@@ -119,13 +117,13 @@ public class NoteServiceImpl implements NoteService{
         if (!checkOwner(member, origin)) throw new Exception();
 
         origin.setTitle(folder.getTitle());
-
         return origin;
     }
 
     @Override
     public void deleteFolder(Member member, Long folderId) throws Exception {
         Folder folder= folderRepository.findById(folderId).orElseThrow(Exception::new);
+        if (folder.getParent() == null) throw new Exception();
         if (!checkOwner(member, folder)) throw new Exception();
         member.getFolders().remove(folder);
         folderRepository.deleteById(folderId);
