@@ -18,5 +18,5 @@ public interface BookmarkService {
     List<Bookmark> getBookmarks(Member member);
 
     //이 글이 북마크 된 글인지 확인
-    Boolean checkIsBookmarked(Member member, Note noteId);
+    Boolean checkIsBookmarked(Member member, Long noteId);
 }
