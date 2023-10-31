@@ -53,11 +53,11 @@ export default function ReadNote() {
           )}
         </div>
       </div>
-      <div className="flex flex-row mx-20">
-        <div className="mr-6 absolute">
+      <div className="flex flex-row mx-16">
+        <div className="absolute">
           <BookmarkQuoteInfo bookmarked={50} quoted={50}></BookmarkQuoteInfo>
         </div>
-        <div className="w-full mx-20">
+        <div className="w-full mx-24">
           <MDEditor.Markdown source={value} />
         </div>
       </div>
