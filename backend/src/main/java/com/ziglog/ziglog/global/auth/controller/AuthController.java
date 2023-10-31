@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "인증 관련 요청 처리 컨트롤러")
 public class AuthController {
 
-    @Value("{jwt.accss.header}")
+    @Value("{jwt.access.header}")
     private String accessTokenHeader;
 
     @GetMapping("/refresh")

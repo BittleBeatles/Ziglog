@@ -56,10 +56,10 @@ public class SecurityConfig {
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @Value("jwt.access.header")
+    @Value("${jwt.access.header}")
     private String accessTokenHeader;
 
-    @Value("jwt.refresh.header")
+    @Value("${jwt.refresh.header}")
     private String refreshTokenHeader;
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){

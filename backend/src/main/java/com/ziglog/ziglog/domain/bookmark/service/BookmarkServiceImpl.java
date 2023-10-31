@@ -41,6 +41,14 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     public void deleteBookmark(Member member, Long noteId) throws Exception {
+        Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
+
+        List<Bookmark> bookmarkList = bookmarkRepository.findAllByMember(member);
+        if (!bookmarkList.contains(note)) return;
+
+        Bookmark bookmark = bookmarkRepository.findBookmarkByMemberAndNote(member, note).orElseThrow(Exception::new);
+
+
 
     }
 
