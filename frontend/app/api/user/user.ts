@@ -1,12 +1,14 @@
 import { privateFetch } from '..';
 import { API_URL } from '@api/constants';
-import { TokenInfo, UserInfo } from './types';
+import { TokenInfo, UserInfo, LogoutInfo } from './types';
 import { useAppDispatch } from '@store/store';
 import { setUserToken } from '@store/modules/userSlice';
 import { ApiSuccessResponse } from '@api/types';
 
 export type UserApiData = ApiSuccessResponse<UserInfo>;
 export type ReissueTokenApiData = ApiSuccessResponse<TokenInfo>;
+export type LogoutApiData = ApiSuccessResponse<LogoutInfo>;
+
 export function getUserInfo(): Promise<UserInfo> {
   return privateFetch<UserApiData>(`${API_URL}/user/info`, {
     method: 'GET',
@@ -16,6 +18,18 @@ export function getUserInfo(): Promise<UserInfo> {
     })
     .catch((error) => {
       throw error;
+    });
+}
+
+export function logout(): Promise<LogoutInfo> {
+  return privateFetch<LogoutApiData>(`${API_URL}/logout`, {
+    method: 'POST',
+  })
+    .then((res) => {
+      return res.body.message;
+    })
+    .catch((err) => {
+      throw err;
     });
 }
 
