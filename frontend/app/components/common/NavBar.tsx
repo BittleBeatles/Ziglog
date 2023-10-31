@@ -1,13 +1,13 @@
 'use client';
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, useState } from 'react';
 import Button from '@components/common/Button';
-import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
 import { useAppSelector, useAppDispatch } from '@store/store';
 import { setMyTheme } from '@store/modules/userSlice';
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from '@public/images/logo.png';
+import SocialLoginModal from './SocialLoginModal';
 
 interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
   login: boolean;
@@ -15,7 +15,14 @@ interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
 
 export default function NavBar({ login, ...rest }: NavBarProps) {
   const dispatch = useAppDispatch();
-  const theme = useAppSelector((state) => state.user.theme);
+  const theme = useAppSelector((state) => state.userReducer.theme);
+
+  const [isModalOpen, loginModalOpen] = useState(false);
+
+  const openLoginModal = (open: boolean) => {
+    loginModalOpen(open);
+  };
+
   return (
     <div
       {...rest}
@@ -39,8 +46,21 @@ export default function NavBar({ login, ...rest }: NavBarProps) {
           </Link>
         )}
         <IconButton name="Search" theme={theme} size={24} />
-        <Button label={login ? '로그아웃' : '로그인'} color="charcol" />
+        {login ? (
+          <Button onClick={() => {}} label="로그아웃" color="charcol" />
+        ) : (
+          <Button
+            onClick={() => openLoginModal(true)}
+            label="로그인"
+            color="charcol"
+          />
+        )}
       </div>
+      {isModalOpen ? (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <SocialLoginModal theme={theme} openLoginModal={openLoginModal} />
+        </div>
+      ) : undefined}
     </div>
   );
 }
