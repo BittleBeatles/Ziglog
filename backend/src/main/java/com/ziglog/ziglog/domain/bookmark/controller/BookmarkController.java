@@ -1,16 +1,14 @@
 package com.ziglog.ziglog.domain.bookmark.controller;
 
 import com.ziglog.ziglog.domain.bookmark.dto.request.AddBookmarkRequestDto;
+import com.ziglog.ziglog.domain.bookmark.dto.response.BookmarkListDto;
 import com.ziglog.ziglog.domain.bookmark.service.BookmarkService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +25,16 @@ public class BookmarkController {
         return ResponseDto.of(200, "success");
     }
 
+    @DeleteMapping("/{noteId}")
+    public ResponseDto<Void> deleteBookmark(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                            @PathVariable("noteId") Long noteId) throws Exception {
+        bookmarkService.deleteBookmark(userDetails.member(), noteId);
+        return ResponseDto.of(200, "success");
+    }
 
+    @GetMapping("")
+    public ResponseDto<BookmarkListDto> getLoginUserBookmarks(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
+        return ResponseDto.of(BookmarkListDto.toDto(bookmarkService.getBookmarks(userDetails.member())));
+    }
 
 }
