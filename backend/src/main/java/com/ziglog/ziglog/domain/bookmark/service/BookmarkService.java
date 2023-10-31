@@ -9,10 +9,10 @@ import java.util.List;
 public interface BookmarkService {
 
     //북마크 추가;
-    void addBookmark(Member member, Long noteId);
+    void addBookmark(Member member, Long noteId) throws Exception;
 
     //북마크 삭제
-    void deleteBookmark(Member member, Long noteId);
+    void deleteBookmark(Member member, Long noteId) throws Exception;
 
     //북마크 가져오기
     List<Bookmark> getBookmarks(Member member);
