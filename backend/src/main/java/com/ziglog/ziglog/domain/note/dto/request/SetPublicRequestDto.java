@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CreateNoteRequestDto {
-    private Long folderId;
+public class SetPublicRequestDto {
+    private Boolean isPublic;
 }

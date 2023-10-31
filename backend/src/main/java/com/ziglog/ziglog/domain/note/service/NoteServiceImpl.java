@@ -61,11 +61,11 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Note setPublic(Member member, Long noteId) throws Exception {
+    public Note setPublic(Member member, Long noteId, Boolean isPublic) throws Exception {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
         if (!checkOwner(member, note)) throw new Exception();
 
-        note.setPublic(note.isPublic());
+        note.setPublic(isPublic);
         if (note.isPublic() &&note.getPostDatetime() == null) {
             note.setPostDatetime(LocalDateTime.now());
         }

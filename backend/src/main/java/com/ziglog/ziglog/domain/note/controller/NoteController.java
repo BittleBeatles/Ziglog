@@ -2,6 +2,7 @@ package com.ziglog.ziglog.domain.note.controller;
 
 import com.ziglog.ziglog.domain.note.dto.request.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.ModifyNoteRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.SetPublicRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.IsPublicResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.RetrieveFolderResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.QuotationListResponseDto;
@@ -74,7 +75,8 @@ public class NoteController {
     @Operation(summary = "노트 공개 여부 변경",
             description = "노트의 공개 여부를 지정해 변경함")
     @PutMapping("/{noteId}/public")
-    public ResponseDto<IsPublicResponseDto> setPublic(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId) throws Exception{
-        return ResponseDto.of(IsPublicResponseDto.toDto(noteService.setPublic(userDetails.member(), noteId).isPublic()));
+    public ResponseDto<IsPublicResponseDto> setPublic(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                      @PathVariable("noteId") Long noteId, @RequestBody SetPublicRequestDto setPublicRequestDto) throws Exception{
+        return ResponseDto.of(IsPublicResponseDto.toDto(noteService.setPublic(userDetails.member(), noteId, setPublicRequestDto.getIsPublic()).isPublic()));
     }
 }
