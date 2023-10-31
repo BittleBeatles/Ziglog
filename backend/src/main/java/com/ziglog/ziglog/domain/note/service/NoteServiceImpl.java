@@ -9,6 +9,8 @@ import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -54,7 +56,6 @@ public class NoteServiceImpl implements NoteService{
 
         quotationRepository.deleteQuotationsByIdIn(originQuoting.stream().map(Quotation::getId).toList());
         quotationRepository.saveAll(noteQuoting);
-
         origin.setQuoting(noteQuoting);
 
         return origin;
@@ -150,8 +151,7 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public List<Note> searchPublicNotesByTitle(String keyword) throws Exception {
-        return noteRepository.findAllByTitleContainingIgnoreCaseAndPublic(keyword, true);
+    public Slice<Note> searchPublicNotesByTitle(String keyword, Pageable pageable) throws Exception {
+        return noteRepository.findAllByTitleContainingIgnoreCaseAndPublic(keyword, true, pageable);
     }
-
 }

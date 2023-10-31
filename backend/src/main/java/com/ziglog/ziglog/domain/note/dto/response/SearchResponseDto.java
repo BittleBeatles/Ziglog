@@ -3,15 +3,16 @@ package com.ziglog.ziglog.domain.note.dto.response;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class SearchResponseDto {
-    private Page<BriefNoteDto> notes;
+    private Slice<BriefNoteDto> notes;
 
-    private SearchResponseDto(Page<BriefNoteDto> notes){
+    private SearchResponseDto(Slice<BriefNoteDto> notes){
         this.notes = notes;
     }
 
@@ -38,7 +39,7 @@ public class SearchResponseDto {
         }
     }
 
-    public static SearchResponseDto toDto(Page<Note> notes){
+    public static SearchResponseDto toDto(Slice<Note> notes){
         return new SearchResponseDto(
                 notes.map(BriefNoteDto::new)
         );
