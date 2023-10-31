@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface NoteRepository extends JpaRepository<Note, Long> {
 
     Optional<Note> findNoteById(Long noteId);
-
     List<Note> findAllById(Long noteId);
-
     void removeNoteById(Long noteId);
+    List<Note> findAllByTitleContainingIgnoreCaseAndPublic(String title, Boolean isPublic);
+
 }

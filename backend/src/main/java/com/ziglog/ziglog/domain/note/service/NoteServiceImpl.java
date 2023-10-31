@@ -150,9 +150,8 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public List<Note> searchPublicNotesByTitle(String keyworkd) throws Exception {
-
-
+    public List<Note> searchPublicNotesByTitle(String keyword) throws Exception {
+        return noteRepository.findAllByTitleContainingIgnoreCaseAndPublic(keyword, true);
     }
 
 }
