@@ -14,7 +14,7 @@ public interface NoteService {
     Note createNote(Member member, Long folderId) throws Exception; //비어있는 새 노트를 생성
     Note modifyNote(Member member, Note note) throws Exception; //현재 이 노트의 내용을 저장
 
-    Note setPublic(Member member, Long noteId) throws Exception;
+    Note setPublic(Member member, Long noteId, Boolean isPublic) throws Exception;
 
     void deleteNote(Member member, Long noteId) throws Exception; //해당 아이디의 노트를 삭제
 

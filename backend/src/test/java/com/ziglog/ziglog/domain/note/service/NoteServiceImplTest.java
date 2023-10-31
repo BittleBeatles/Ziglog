@@ -150,7 +150,7 @@ class NoteServiceImplTest {
                 .build();
 
         try {
-            noteService.setPublic(member1, modification.getId());
+            noteService.setPublic(member1, modification.getId(), modification.isPublic());
             note = noteService.getNote(note.getId());
         } catch (Exception e){
 
