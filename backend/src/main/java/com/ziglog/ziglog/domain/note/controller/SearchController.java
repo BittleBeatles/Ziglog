@@ -1,5 +1,6 @@
 package com.ziglog.ziglog.domain.note.controller;
 
+import com.ziglog.ziglog.domain.note.dto.response.SearchResponseDto;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SearchController {
 
     @GetMapping("")
-    public ResponseDto<Void> searchAllByTitle(@RequestParam("keyword") String keyword){
+    public ResponseDto<SearchResponseDto> searchAllByTitle(@RequestParam("keyword") String keyword){
 
 
     }

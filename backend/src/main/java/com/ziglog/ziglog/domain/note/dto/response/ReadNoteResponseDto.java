@@ -18,10 +18,6 @@ public class ReadNoteResponseDto {
     private Integer bookmarkCount;
 
     public static ReadNoteResponseDto toDto(Note note){
-        List<BriefNoteResponseDto> quoted = note.getQuoted()
-                                                 .stream().map(endNote->
-                        BriefNoteResponseDto.toDTO(endNote.getEndNote())).toList();
-
         return ReadNoteResponseDto.builder()
                 .noteId(note.getId())
                 .title(note.getTitle())

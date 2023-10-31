@@ -6,5 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class SearchRequestDto {
+    private Integer page;
+    private Integer perPage;
     private String keyword;
 }
