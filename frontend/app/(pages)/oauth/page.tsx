@@ -15,9 +15,12 @@ export default function OauthPage() {
       const result = await getUserInfo();
       if (result) {
         dispatch(setUserInfo(result));
+        window.location.replace(`/user-page/${result.nickname}`);
+      } else {
+        window.location.replace('/');
+        console.log('[login error]');
       }
-      window.location.replace('/main');
     };
     oauthLogin();
-  }, []);
+  }, [dispatch]);
 }

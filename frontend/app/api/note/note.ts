@@ -5,6 +5,7 @@ import { ApiSuccessResponse } from '@api/types';
 
 export type NoteApiData = ApiSuccessResponse<NoteInfo>;
 export type EditNoteApiResponse = ApiSuccessResponse<null>;
+export type CreateNoteApiResponse = ApiSuccessResponse<null>;
 export function getNoteInfo(noteId: number): Promise<NoteInfo> {
   return publicFetch<NoteApiData>(`${API_URL}/note/${noteId}`, {
     method: 'GET',
@@ -27,6 +28,19 @@ export function sendEditNoteInfoRequest(
   })
     .then((res) => {
       return Promise.resolve('[note edit succeeded]');
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export async function createNote(folderId: number, title: string) {
+  return privateFetch<CreateNoteApiResponse>(`${API_URL}/note`, {
+    method: 'POST',
+    body: { folderId, title },
+  })
+    .then((res) => {
+      return console.log(`${folderId}에 노트가 생성되었습니다.`);
     })
     .catch((err) => {
       throw err;

@@ -1,22 +1,37 @@
 import { privateFetch } from '..';
 import { API_URL } from '@api/constants';
-import { TokenInfo, UserInfo } from './types';
+import { TokenInfo, UserInfo, LogoutInfo } from './types';
 import { useAppDispatch } from '@store/store';
-import { setUserToken } from '@store/modules/userSlice';
+import { setUserToken, logOut } from '@store/modules/userSlice';
 import { ApiSuccessResponse } from '@api/types';
+import { redirect } from 'next/navigation';
 
 export type UserApiData = ApiSuccessResponse<UserInfo>;
 export type ReissueTokenApiData = ApiSuccessResponse<TokenInfo>;
-export function getUserInfo(): Promise<UserInfo> {
-  return privateFetch<UserApiData>(`${API_URL}/user/info`, {
-    method: 'GET',
-  })
-    .then((res) => {
-      return res.body.data;
-    })
-    .catch((error) => {
-      throw error;
+export type LogoutApiData = ApiSuccessResponse<LogoutInfo>;
+
+export async function getUserInfo(): Promise<UserInfo> {
+  try {
+    const res = await privateFetch<UserApiData>(`${API_URL}/user/info`, {
+      method: 'GET',
     });
+    return res.body.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function Logout(): Promise<LogoutInfo> {
+  const dispatch = useAppDispatch();
+  try {
+    const res = await privateFetch<LogoutApiData>(`${API_URL}/logout`, {
+      method: 'POST',
+    });
+    dispatch(logOut());
+    redirect('/');
+  } catch (err) {
+    throw err;
+  }
 }
 
 export async function ReissueToken() {

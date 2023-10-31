@@ -96,7 +96,13 @@ export default function EditNote() {
           />
         </div>
       </div>
-      <MarkdownEditor theme={theme} ref={editorRef} />
+      <MarkdownEditor
+        theme={theme}
+        ref={editorRef}
+        preview="live"
+        hideToolbar={false}
+        height={600}
+      />
       <div ref={quotationModalRef} className="absolute">
         <QuotationModal />
       </div>
