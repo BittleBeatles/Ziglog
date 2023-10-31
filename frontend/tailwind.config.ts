@@ -35,6 +35,16 @@ const config: Config = {
         '120': '30rem',
         '132': '33rem',
       },
+      animation: {
+        'draw-line': 'drawLine 3s forwards infinite',
+      },
+      keyframes: {
+        drawLine: {
+          to: {
+            'stroke-dashoffset': '0',
+          },
+        },
+      },
     },
   },
   plugins: [require('tailwind-scrollbar-hide')],
