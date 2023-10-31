@@ -11,13 +11,13 @@ import searchPage from '@public/images/main/searchPage.png';
 import pointerGirl from '@public/images/main/pointerGirl.png';
 import pointerBoy from '@public/images/main/pointerBoy.png';
 import Description from '@components/main/Description';
-import { useAppDispatch, useAppSelector } from '@store/store';
+import { useAppSelector } from '@store/store';
 
 export default function Home() {
   const { theme, isLogin } = useAppSelector((state) => state.user);
   return (
     <div>
-      <NavBar login={isLogin} />
+      <NavBar theme={theme} isLogin={isLogin} />
       <div className={`px-16 py-4 ${THEME_VARIANTS[theme]}`}>
         <div className="text-center">
           <Text type="h1" className="text-7xl">

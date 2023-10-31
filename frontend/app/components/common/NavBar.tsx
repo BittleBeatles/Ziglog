@@ -8,24 +8,22 @@ import Link from 'next/link';
 import Image from 'next/image';
 import logo from '@public/images/logo.png';
 import SocialLoginModal from './SocialLoginModal';
+import { Logout } from '@api/user/user';
 
-interface NavBarProps extends HTMLAttributes<HTMLDivElement> {
-  login: boolean;
+interface NavBarProps {
+  isLogin: boolean;
+  theme: 'light' | 'dark';
 }
 
-export default function NavBar({ login, ...rest }: NavBarProps) {
+export default function NavBar({ isLogin, theme }: NavBarProps) {
   const dispatch = useAppDispatch();
-  const theme = useAppSelector((state) => state.userReducer.theme);
-
   const [isModalOpen, loginModalOpen] = useState(false);
-
   const openLoginModal = (open: boolean) => {
     loginModalOpen(open);
   };
 
   return (
     <div
-      {...rest}
       className={`${THEME_VARIANTS[theme]} w-full h-full p-5 flex items-center justify-between`}
     >
       <Link href={'/'}>
@@ -40,14 +38,22 @@ export default function NavBar({ login, ...rest }: NavBarProps) {
           theme={theme}
           size={24}
         />
-        {login && (
+        {isLogin && (
           <Link href={`/user-page/${'SeongYong'}`}>
             <IconButton name="MyPage" theme={theme} size={24} />
           </Link>
         )}
-        <IconButton name="Search" theme={theme} size={24} />
-        {login ? (
-          <Button onClick={() => {}} label="로그아웃" color="charcol" />
+        <Link href={`/search`}>
+          <IconButton name="Search" theme={theme} size={24} />
+        </Link>
+        {isLogin ? (
+          <Button
+            onClick={() => {
+              Logout();
+            }}
+            label="로그아웃"
+            color="charcol"
+          />
         ) : (
           <Button
             onClick={() => openLoginModal(true)}

@@ -21,8 +21,8 @@ export const privateFetch = returnFetchJson({
   },
   interceptors: {
     request: async (config) => {
-      const accessToken = store.getState().userReducer.accessToken;
-      const grantType = store.getState().userReducer.grantType;
+      const accessToken = store.getState().user.accessToken;
+      const grantType = store.getState().user.grantType;
       config[1] = {
         headers: { Authorization: `${grantType} ${accessToken}` },
       };

@@ -8,7 +8,7 @@ import { useAppSelector } from '@store/store';
 import SocialLoginBox from '@components/common/SocialLoginBox';
 export default function Main() {
   const dispatch = useDispatch<AppDispatch>();
-  const username = useAppSelector((state) => state.userReducer.nickname);
+  const username = useAppSelector((state) => state.user.nickname);
   const imageRef = useRef<HTMLInputElement>(null);
   const handleProfileImageChangeClick = () => {
     if (imageRef.current) {
