@@ -1,7 +1,7 @@
 import { privateFetch } from '..';
 import { API_URL } from '@api/constants';
 import { TokenInfo, UserInfo, LogoutInfo } from './types';
-import { useAppDispatch } from '@store/store';
+import { store, useAppDispatch } from '@store/store';
 import { setUserToken, logOut } from '@store/modules/userSlice';
 import { ApiSuccessResponse } from '@api/types';
 import { redirect } from 'next/navigation';
@@ -33,12 +33,11 @@ export async function Logout(): Promise<LogoutInfo> {
 }
 
 export async function ReissueToken() {
-  const dispatch = useAppDispatch();
   return privateFetch<ReissueTokenApiData>(`${API_URL}/auth/refresh`, {
     method: 'GET',
   })
     .then((res) => {
-      dispatch(setUserToken(res.body.data));
+      store.dispatch(setUserToken(res.body.data));
       return res.body.data;
     })
     .catch((err) => {
