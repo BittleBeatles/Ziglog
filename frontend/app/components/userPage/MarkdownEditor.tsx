@@ -10,10 +10,11 @@ interface MarkdownEditorProps {
   theme: 'dark' | 'light';
   preview: 'edit' | 'live' | 'preview';
   hideToolbar: boolean;
+  height: number;
 }
 
 const MarkdownEditor = forwardRef(
-  ({ theme, preview, hideToolbar }: MarkdownEditorProps, ref) => {
+  ({ theme, preview, hideToolbar, height }: MarkdownEditorProps, ref) => {
     const [value, setValue] = useState<string>();
     const editorRef = ref;
     const renderValueWithBookmarkList = (text: string) => {
@@ -46,7 +47,7 @@ const MarkdownEditor = forwardRef(
           // ref={editorRef}
           className="relative"
           data-color-mode={theme}
-          height={600}
+          height={height}
           value={value}
           onChange={(v) => handleChange(v || '')}
           preview={preview}
