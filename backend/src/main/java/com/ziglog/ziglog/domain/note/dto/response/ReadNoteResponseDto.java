@@ -17,7 +17,7 @@ public class ReadNoteResponseDto {
     private Boolean isPublic;
     private Integer bookmarkCount;
 
-    public static ReadNoteResponseDto toDTO(Note note){
+    public static ReadNoteResponseDto toDto(Note note){
         List<BriefNoteResponseDto> quoted = note.getQuoted()
                                                  .stream().map(endNote->
                         BriefNoteResponseDto.toDTO(endNote.getEndNote())).toList();

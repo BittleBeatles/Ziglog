@@ -2,6 +2,7 @@ package com.ziglog.ziglog.domain.note.controller;
 
 import com.ziglog.ziglog.domain.note.dto.request.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.ModifyNoteRequestDto;
+import com.ziglog.ziglog.domain.note.dto.response.IsPublicResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.RetrieveFolderResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.QuotationListResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.ReadNoteResponseDto;
@@ -67,6 +68,13 @@ public class NoteController {
     @GetMapping("/{noteId}")
     public ResponseDto<ReadNoteResponseDto> readNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId) throws Exception {
         //TODO 이 사용자가 해당 노트를 읽을 수 있는지 없는지 확인하는 로직이 필요
-        return ResponseDto.of(ReadNoteResponseDto.toDTO(noteService.getNote(noteId)));
+        return ResponseDto.of(ReadNoteResponseDto.toDto(noteService.getNote(noteId)));
+    }
+
+    @Operation(summary = "노트 공개 여부 변경",
+            description = "노트의 공개 여부를 지정해 변경함")
+    @PutMapping("/{noteId}/public")
+    public ResponseDto<IsPublicResponseDto> setPublic(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId) throws Exception{
+        return ResponseDto.of(IsPublicResponseDto.toDto(noteService.setPublic(userDetails.member(), noteId).isPublic()));
     }
 }
