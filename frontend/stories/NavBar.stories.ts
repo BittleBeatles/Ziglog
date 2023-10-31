@@ -11,6 +11,7 @@ type Story = StoryObj<typeof meta>;
 
 export const NavBarExample = {
   args: {
-    login: false,
+    isLogin: false,
+    theme: 'light',
   },
 } satisfies Story;

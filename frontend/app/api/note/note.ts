@@ -40,19 +40,6 @@ export async function getReferenceList(noteId: number) {
       return res.body.data;
     })
     .catch((err) => {
-      return console.log(err);
-    });
-}
-
-export async function getReferenceList(noteId: number) {
-  return publicFetch<QuotationListApiResponse>(`${API_URL}/note/ref`, {
-    method: 'GET',
-    body: { noteId },
-  })
-    .then((res) => {
-      return res.body.data;
-    })
-    .catch((err) => {
       throw err;
     });
 }

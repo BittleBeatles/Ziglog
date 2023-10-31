@@ -50,8 +50,6 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
           <Button
             onClick={() => {
               Logout();
-              dispatch(logOut());
-              window.location.replace('/');
             }}
             label="로그아웃"
             color="charcol"
