@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.domain.bookmark.Entity;
+package com.ziglog.ziglog.domain.bookmark.entity;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.note.entity.Note;
