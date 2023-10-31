@@ -40,11 +40,9 @@ public class Folder {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Member owner;
-
     public void setTitle(String title){
         this.title = title;
     }
-
     public void setParent(Folder parent) {
         this.parent = parent;
     }

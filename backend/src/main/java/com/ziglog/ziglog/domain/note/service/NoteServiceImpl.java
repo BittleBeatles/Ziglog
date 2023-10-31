@@ -93,23 +93,22 @@ public class NoteServiceImpl implements NoteService{
 
     // Folder
     @Override
-    public Folder createFolder(Member member, Folder folder) throws Exception{
-        member = memberRepository.findById(member.getId()).orElseThrow(Exception::new);
+    public Folder createFolder(Member member, String title, Long parentId) throws Exception{
+        Folder parent = folderRepository.findById(parentId).orElseThrow(Exception::new);
+        if (parent.getOwner() != member) throw new Exception();
 
-        Folder parent = folder.getParent();
+        Folder folder = Folder.builder()
+                        .title(title)
+                        .parent(parent)
+                        .owner(member)
+                        .build();
 
-        if (parent == null) {
-            parent = folderRepository.findByOwnerAndParent(member, null).orElseThrow(Exception::new);
-        }
+        folder = folderRepository.save(folder);
 
-        folder.setOwner(member);
-        Folder folderToSave = folderRepository.save(folder);
-        parent.getChildren().add(folderToSave);
+        parent.getChildren().add(folder);
+        member.getFolders().add(folder);
 
-        folderToSave.setParent(parent);
-        member.getFolders().add(folderToSave);
-
-        return folderToSave;
+        return folder;
     }
 
     @Override
@@ -119,13 +118,13 @@ public class NoteServiceImpl implements NoteService{
         if (!checkOwner(member, origin)) throw new Exception();
 
         origin.setTitle(folder.getTitle());
-
         return origin;
     }
 
     @Override
     public void deleteFolder(Member member, Long folderId) throws Exception {
         Folder folder= folderRepository.findById(folderId).orElseThrow(Exception::new);
+        if (folder.getParent() == null) throw new Exception();
         if (!checkOwner(member, folder)) throw new Exception();
         member.getFolders().remove(folder);
         folderRepository.deleteById(folderId);

@@ -22,7 +22,7 @@ public interface NoteService {
     Note getNote(Long noteId) throws Exception; //해당 ID의 노트의 Detail을 가져 오기
     Slice<Note> searchPublicNotesByTitle(String keyword, Pageable pageable) throws Exception;
     // 폴더
-    Folder createFolder(Member member, Folder folder) throws Exception;//새로운 폴더를 추가
+    Folder createFolder(Member member, String title, Long folder) throws Exception;//새로운 폴더를 추가
 
     Folder modifyFolder(Member member, Folder folder) throws Exception;//폴더의 이름을 변경
 
