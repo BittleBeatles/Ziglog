@@ -4,10 +4,12 @@ import Text from '@components/common/Text';
 import SvgIcon from '@components/common/SvgIcon';
 import Button from '@components/common/Button';
 import BookmarkQuoteInfo from '@components/userPage/BookmarkQuoteInfo';
+import MarkdownEditor from '@components/userPage/MarkdownEditor';
 
 export default function ReadNote() {
   const isMine = true;
   const params = useParams();
+  const theme = useAppSelector((state) => state.userReducer.theme);
   return (
     <div>
       <div className="mx-40 my-12">
@@ -37,6 +39,12 @@ export default function ReadNote() {
           <BookmarkQuoteInfo bookmarked={50} quoted={50}></BookmarkQuoteInfo>
         </div>
         <div>
+          <MarkdownEditor
+            theme={theme}
+            preview="preview"
+            hideToolbar={true}
+            height={50}
+          ></MarkdownEditor>
           <Text type="b">{'hey'}</Text>
           <h1>{params.userNickname}의</h1>
           <h1>{params.noteId}번째</h1>
