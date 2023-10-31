@@ -7,3 +7,5 @@ export interface UserInfo {
   nickname: string;
   profileImage: string;
 }
+
+export interface LogoutInfo {}
