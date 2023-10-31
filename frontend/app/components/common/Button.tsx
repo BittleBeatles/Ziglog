@@ -1,4 +1,4 @@
-// 'use client';
+'use client';
 import { ButtonHTMLAttributes } from 'react';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
