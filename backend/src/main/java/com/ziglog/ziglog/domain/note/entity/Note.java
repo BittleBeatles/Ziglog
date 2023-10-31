@@ -73,6 +73,7 @@ public class Note {
     public void setTitle(String title){
         this.title = title;
     }
+
     public void setContent(String content){
         this.content = content;
     }
@@ -95,4 +96,6 @@ public class Note {
     public void setQuoting(List<Quotation> quoting){
         this.quoting = quoting;
     }
+
+
 }

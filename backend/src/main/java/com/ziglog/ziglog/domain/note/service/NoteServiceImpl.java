@@ -9,6 +9,8 @@ import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -54,7 +56,6 @@ public class NoteServiceImpl implements NoteService{
 
         quotationRepository.deleteQuotationsByIdIn(originQuoting.stream().map(Quotation::getId).toList());
         quotationRepository.saveAll(noteQuoting);
-
         origin.setQuoting(noteQuoting);
 
         return origin;
@@ -66,6 +67,7 @@ public class NoteServiceImpl implements NoteService{
         if (!checkOwner(member, note)) throw new Exception();
 
         note.setPublic(isPublic);
+
         if (note.isPublic() &&note.getPostDatetime() == null) {
             note.setPostDatetime(LocalDateTime.now());
         }
@@ -87,13 +89,6 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public Note getNote(Long noteId) throws Exception{
         return noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
-    }
-
-    @Override
-    public List<Note> findNotesQuotingThisNote(Long noteId) throws Exception {
-        Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
-        List<Quotation> quotedList = note.getQuoted();
-        return quotedList.stream().map(Quotation::getEndNote).toList();
     }
 
     // Folder
@@ -147,5 +142,10 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public Boolean checkOwner(Member member, Folder folder){
         return folder.getOwner() == member;
+    }
+
+    @Override
+    public Slice<Note> searchPublicNotesByTitle(String keyword, Pageable pageable) throws Exception {
+        return noteRepository.findAllByTitleContainingIgnoreCaseAndPublic(keyword, true, pageable);
     }
 }
