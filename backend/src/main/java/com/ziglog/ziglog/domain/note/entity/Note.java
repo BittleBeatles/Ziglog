@@ -1,7 +1,7 @@
 package com.ziglog.ziglog.domain.note.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ziglog.ziglog.domain.bookmark.Entity.Bookmark;
+import com.ziglog.ziglog.domain.bookmark.entity.Bookmark;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
