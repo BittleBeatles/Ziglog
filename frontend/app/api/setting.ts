@@ -41,6 +41,7 @@ export const returnFetchJson = (args?: ReturnFetchDefaultOptions) => {
     const response = await fetch(url, {
       ...init,
       body: init?.body && JSON.stringify(init.body),
+      credentials: 'include',
     });
 
     const body = parseJsonSafely(await response.text()) as T;
