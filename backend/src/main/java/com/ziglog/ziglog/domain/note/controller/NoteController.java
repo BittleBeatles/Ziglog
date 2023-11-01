@@ -1,8 +1,8 @@
 package com.ziglog.ziglog.domain.note.controller;
 
-import com.ziglog.ziglog.domain.note.dto.request.CreateNoteRequestDto;
-import com.ziglog.ziglog.domain.note.dto.request.ModifyNoteRequestDto;
-import com.ziglog.ziglog.domain.note.dto.request.SetPublicRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.CreateNoteRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.ModifyNoteRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.SetPublicRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.IsPublicResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.RetrieveFolderResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.QuotationListResponseDto;
