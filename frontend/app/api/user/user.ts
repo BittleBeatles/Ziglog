@@ -1,4 +1,4 @@
-import { privateFetch } from '..';
+import { privateFetch, publicFetch } from '..';
 import { API_URL } from '@api/constants';
 import { TokenInfo, UserInfo, LogoutInfo } from './types';
 import { store, useAppDispatch } from '@store/store';
@@ -28,7 +28,7 @@ export async function Logout(): Promise<LogoutInfo> {
     });
 
     store.dispatch(logOut());
-    window.location.replace('/');
+    // window.location.replace('/');
     return 'Logout 성공';
   } catch (err) {
     throw err;
@@ -36,11 +36,15 @@ export async function Logout(): Promise<LogoutInfo> {
 }
 
 export async function ReissueToken() {
-  return privateFetch<ReissueTokenApiData>(`${API_URL}/auth/refresh`, {
+  return publicFetch<ReissueTokenApiData>(`${API_URL}/auth/refresh`, {
     method: 'GET',
   })
     .then((res) => {
       store.dispatch(setUserToken(res.body.data));
+      console.log(
+        '[received new accessToken from reissue request]',
+        res.body.data
+      );
       return res.body.data;
     })
     .catch((err) => {
