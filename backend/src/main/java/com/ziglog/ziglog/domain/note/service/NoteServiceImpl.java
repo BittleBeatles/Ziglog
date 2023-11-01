@@ -29,11 +29,14 @@ public class NoteServiceImpl implements NoteService{
     //Note
     @Override
     public Note createNote(Member member, Long folderId) throws Exception {
+        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(Exception::new);
         Folder folderPersist = folderRepository.findById(folderId).orElseThrow(Exception::new);
+
         Note note = Note.builder()
-                    .author(member)
+                    .author(memberPersist)
                     .folder(folderPersist)
                     .build();
+
         note = noteRepository.save(note);
         folderPersist.getNotes().add(note);
 
@@ -44,21 +47,20 @@ public class NoteServiceImpl implements NoteService{
     public Note modifyNote(Member member, Note note) throws Exception {
         if (!checkOwner(member, note)) throw new Exception();
 
-        //영속성 Context 내의 노트
-        Note origin = noteRepository.findNoteById(note.getId()).orElseThrow(Exception::new);
-        origin.setTitle(note.getTitle());//타이틀
-        origin.setContent(note.getContent());//컨텐츠
-        origin.setPreview(note.getPreview());//목록 프리뷰
-        origin.setEditDatetime(LocalDateTime.now());//수정일
+        Note notePersist = noteRepository.findNoteById(note.getId()).orElseThrow(Exception::new);
+        notePersist.setTitle(note.getTitle());//타이틀
+        notePersist.setContent(note.getContent());//컨텐츠
+        notePersist.setPreview(note.getPreview());//목록 프리뷰
+        notePersist.setEditDatetime(LocalDateTime.now());//수정일
 
         List<Quotation> noteQuoting = note.getQuoting(); //새 노트가 인용하고 있는 노트의 리스트
-        List<Quotation> originQuoting = origin.getQuoting();
+        List<Quotation> originQuoting = notePersist.getQuoting();
 
         quotationRepository.deleteQuotationsByIdIn(originQuoting.stream().map(Quotation::getId).toList());
         quotationRepository.saveAll(noteQuoting);
-        origin.setQuoting(noteQuoting);
+        notePersist.setQuoting(noteQuoting);
 
-        return origin;
+        return notePersist;
     }
 
     @Override
@@ -126,7 +128,9 @@ public class NoteServiceImpl implements NoteService{
         Folder folder= folderRepository.findById(folderId).orElseThrow(Exception::new);
         if (folder.getParent() == null) throw new Exception();
         if (!checkOwner(member, folder)) throw new Exception();
-        member.getFolders().remove(folder);
+
+        Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(Exception::new);
+        memberPersist.getFolders().remove(folder);
         folderRepository.deleteById(folderId);
     }
 
@@ -138,12 +142,12 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Boolean checkOwner(Member member, Note note){
-        return note.getAuthor() == member;
+        return note.getAuthor().getId().equals(member.getId());
     }
 
     @Override
     public Boolean checkOwner(Member member, Folder folder){
-        return folder.getOwner() == member;
+        return folder.getOwner().getId().equals(member.getId());
     }
 
     @Override
