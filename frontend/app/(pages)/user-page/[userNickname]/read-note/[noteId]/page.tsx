@@ -44,8 +44,6 @@ export default function ReadNote() {
     const getNoteReadPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId);
       if (result) {
-        console.log(result);
-        console.log('success');
         setData({
           ...data,
           noteId: result.noteId,
