@@ -4,11 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class ResponseDto<T> {
-
     private Integer statusCode;
     private String message;
     private T data;
-
     private ResponseDto(Integer statusCode, String message){
         this.statusCode = statusCode;
         this.message = message;
