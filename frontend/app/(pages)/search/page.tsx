@@ -6,6 +6,7 @@ import useDebounce from '@src/hooks/useDebounce';
 import { SearchInfo } from '@api/search/types';
 import { getSearchInfo } from '@api/search/search';
 import Text from '@components/common/Text';
+import Link from 'next/link';
 
 export default function Search() {
   const [keyword, setKeyword] = useState<string>('');
@@ -79,20 +80,27 @@ export default function Search() {
         <div className="h-full " onScroll={handleScroll} ref={containerRef}>
           {searchData && searchData.notes.length > 0 ? (
             <div>
-              <p>총 {searchData.notes.length}개의 검색 결과가 있습니다.</p>
+              {/* <p>총 {searchData.notes.length}개의 검색 결과가 있습니다.</p> */}
               {searchData.notes.map((result) => (
-                <GlobalSearchResult
+                <Link
                   key={result.noteId}
-                  noteId={result.noteId}
-                  title={result.title}
-                  preview={result.preview}
-                  nickname={result.nickname}
-                  isPublic={result.isPublic}
-                  bookmarkCount={result.bookmarkCount}
-                  postTime={result.postTime}
-                  editTime={result.editTime}
-                  theme="light"
-                />
+                  href={`/user-page/${result.nickname}/read-note/${result.noteId}`}
+                >
+                  <div>
+                    <GlobalSearchResult
+                      key={result.noteId}
+                      noteId={result.noteId}
+                      title={result.title}
+                      preview={result.preview !== null ? result.preview : ''}
+                      nickname={result.nickname}
+                      isPublic={result.isPublic}
+                      bookmarkCount={result.bookmarkCount}
+                      postTime={result.postTime}
+                      editTime={result.editTime}
+                      theme="light"
+                    />
+                  </div>
+                </Link>
               ))}
             </div>
           ) : (
