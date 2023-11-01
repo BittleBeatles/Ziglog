@@ -1,15 +1,14 @@
-package com.ziglog.ziglog.global.exception.exceptionHandler;
+package com.ziglog.ziglog.global.auth.exception;
 
-import com.ziglog.ziglog.global.exception.customException.auth.InvalidAccessTokenException;
-import com.ziglog.ziglog.global.exception.customException.auth.InvalidRefreshTokenException;
-import com.ziglog.ziglog.global.exception.exceptionCode.AuthExceptionCode;
+import com.ziglog.ziglog.global.auth.exception.exceptions.InvalidAccessTokenException;
+import com.ziglog.ziglog.global.auth.exception.exceptions.InvalidRefreshTokenException;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RequiredArgsConstructor
-@RestController("com.ziglog.ziglog")
+@RestControllerAdvice("com.ziglog.ziglog")
 public class AuthExceptionController {
 
     @ExceptionHandler(InvalidAccessTokenException.class)

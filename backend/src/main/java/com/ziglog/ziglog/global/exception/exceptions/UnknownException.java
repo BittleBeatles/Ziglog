@@ -1,6 +1,6 @@
-package com.ziglog.ziglog.global.exception.customException.common;
+package com.ziglog.ziglog.global.exception.exceptions;
 
-import com.ziglog.ziglog.global.exception.exceptionCode.CommonExceptionCode;
+import com.ziglog.ziglog.global.exception.CommonExceptionCode;
 
 public class UnknownException extends RuntimeException {
     public UnknownException(){

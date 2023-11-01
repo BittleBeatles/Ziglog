@@ -1,14 +1,13 @@
-package com.ziglog.ziglog.global.exception.exceptionHandler;
+package com.ziglog.ziglog.domain.bookmark.exception;
 
-import com.ziglog.ziglog.global.exception.customException.bookmark.BookmarkNotFoundException;
-import com.ziglog.ziglog.global.exception.exceptionCode.BookmarkExceptionCode;
+import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkNotFoundException;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RequiredArgsConstructor
-@RestController("com.ziglog.ziglog")
+@RestControllerAdvice("com.ziglog.ziglog")
 public class BookmarkExceptionController {
 
     @ExceptionHandler(BookmarkNotFoundException.class)
