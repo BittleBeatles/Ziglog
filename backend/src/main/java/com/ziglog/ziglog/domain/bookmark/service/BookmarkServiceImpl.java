@@ -1,10 +1,13 @@
 package com.ziglog.ziglog.domain.bookmark.service;
 
 import com.ziglog.ziglog.domain.bookmark.entity.Bookmark;
+import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkNotFoundException;
 import com.ziglog.ziglog.domain.bookmark.repository.BookmarkRepository;
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Note;
+import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +27,9 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final BookmarkRepository bookmarkRepository;
 
     @Override
-    public void addBookmark(Member member, Long noteId) throws Exception {
-        Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
-        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(Exception::new);
+    public void addBookmark(Member member, Long noteId) throws UserNotFoundException {
+        Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
+        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
 
         List<Bookmark> bookmarkList = bookmarkRepository.findAllByMember(memberPersist);
         if (bookmarkList.contains(note)) return;
@@ -41,25 +44,25 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public void deleteBookmark(Member member, Long noteId) throws Exception {
+    public void deleteBookmark(Member member, Long noteId) throws NoteNotFoundException, UserNotFoundException, BookmarkNotFoundException{
         //persist
-        Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
-        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(Exception::new);
-        Bookmark bookmark = bookmarkRepository.findBookmarkByMemberAndNote(memberPersist, note).orElseThrow(Exception::new);
+        Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
+        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
+        Bookmark bookmark = bookmarkRepository.findBookmarkByMemberAndNote(memberPersist, note).orElseThrow(BookmarkNotFoundException::new);
 
         memberPersist.getBookmarks().remove(bookmark);
         bookmarkRepository.delete(bookmark);
     }
 
     @Override
-    public List<Bookmark> getBookmarks(Member member) throws Exception {
-        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(Exception::new);
+    public List<Bookmark> getBookmarks(Member member) throws UserNotFoundException {
+        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
         return memberPersist.getBookmarks();
     }
 
     @Override
-    public Boolean checkIsBookmarked(Member member, Long noteId) throws Exception {
-        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(Exception::new);
+    public Boolean checkIsBookmarked(Member member, Long noteId) throws UserNotFoundException {
+        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
         List<Bookmark> bookmarks = memberPersist.getBookmarks();
 
         for (Bookmark bookmark : bookmarks) {
