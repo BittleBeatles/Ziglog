@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum MemberExceptionCode {
-
+    NOT_FOUND_WITH_NICKNAME_EXCEPTION(404, "해당 닉네임의 사용자를 찾을 수 없습니다."),
+    NOT_FOUND_WITH_EMAIL_EXCEPTION(404, "해당 이메일의 사용자를 찾을 수 없습니다.")
     ;
 
     private final Integer errorCode;
