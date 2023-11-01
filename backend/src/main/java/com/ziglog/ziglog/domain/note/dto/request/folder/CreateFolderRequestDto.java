@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.domain.note.dto.request;
+package com.ziglog.ziglog.domain.note.dto.request.folder;
 
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import lombok.AllArgsConstructor;
