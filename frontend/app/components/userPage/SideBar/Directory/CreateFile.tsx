@@ -20,14 +20,15 @@ export default function CreateFile({
   }, []);
 
   return (
-    <div className="flex mt-2 mb-2">
+    <div>
       {type === 'note' ? (
-        <SvgIcon name="Note" color={colors.grey} />
+        <SvgIcon name="Note" />
       ) : (
-        <SvgIcon name="Folder" color={colors.grey} />
+        <div className="flex mt-2 mb-2">
+          <SvgIcon name="Folder" color={colors.grey} />
+          <input className="w-full" ref={inputRef} {...rest} type="text" />
+        </div>
       )}
-
-      <input className="w-full" ref={inputRef} {...rest} type="text" />
     </div>
   );
 }
