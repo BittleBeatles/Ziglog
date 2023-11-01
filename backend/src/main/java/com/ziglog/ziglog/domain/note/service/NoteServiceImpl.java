@@ -9,6 +9,7 @@ import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Service
+@Slf4j
 public class NoteServiceImpl implements NoteService{
 
     private final MemberRepository memberRepository;
@@ -96,19 +98,18 @@ public class NoteServiceImpl implements NoteService{
     // Folder
     @Override
     public Folder createFolder(Member member, String title, Long parentId) throws Exception{
+        log.info("parentId : {}", parentId);
         Folder parent = folderRepository.findById(parentId).orElseThrow(Exception::new);
-        if (parent.getOwner() != member) throw new Exception();
+        if (!checkOwner(member, parent)) throw new Exception();
 
         Folder folder = Folder.builder()
                         .title(title)
-                        .parent(parent)
-                        .owner(member)
-                        .build();
+                        .parent(parent) .owner(member) .build();
 
         folder = folderRepository.save(folder);
 
         parent.getChildren().add(folder);
-        member.getFolders().add(folder);
+        memberRepository.findByEmail(member.getEmail()).orElseThrow(Exception::new).getFolders().add(folder);
 
         return folder;
     }
