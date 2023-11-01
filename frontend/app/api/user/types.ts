@@ -15,3 +15,7 @@ export interface MyInfo {
   profileImage: string;
   rootFolderId: number;
 }
+
+export interface NicknameInfo {
+  // isValid: boolean;
+}

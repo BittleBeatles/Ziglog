@@ -1,6 +1,6 @@
 import { privateFetch, publicFetch } from '..';
 import { API_URL } from '@api/constants';
-import { TokenInfo, MyInfo, UserInfo, LogoutInfo } from './types';
+import { TokenInfo, MyInfo, UserInfo, LogoutInfo, NicknameInfo } from './types';
 import { store } from '@store/store';
 import { setUserToken, logOut } from '@store/modules/userSlice';
 import { ApiSuccessResponse } from '@api/types';
@@ -11,6 +11,7 @@ export type UserApiData = ApiSuccessResponse<UserInfo>;
 export type ReissueTokenApiData = ApiSuccessResponse<TokenInfo>;
 export type LogoutApiData = ApiSuccessResponse<LogoutInfo>;
 export type ModifyUserApiData = ApiSuccessResponse<UserInfo>;
+export type NicknameApiData = ApiSuccessResponse<NicknameInfo>;
 
 export async function getMyInfo(): Promise<MyInfo> {
   try {
@@ -67,18 +68,14 @@ export async function ReissueToken() {
     });
 }
 
-export function modifyUserInfo(
-  nickname: string,
-  profileUrl: string
-): Promise<string | void> {
-  return privateFetch<ModifyUserApiData>(`${API_URL}/user/modify`, {
-    method: 'PUT',
-    body: { nickname, profileUrl },
-  })
-    .then((res) => {
-      return Promise.resolve('[note edit succeeded]');
-    })
-    .catch((err) => {
-      throw err;
-    });
+export async function checkNickname(newNickname: string): Promise<boolean> {
+  return privateFetch<NicknameApiData>(
+    `${API_URL}/user/check/nickname?nickname=${newNickname}`,
+    {
+      method: 'POST',
+    }
+  ).then((res) => {
+    console.log(res);
+    return true;
+  });
 }
