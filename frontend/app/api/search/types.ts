@@ -1,13 +1,11 @@
 export interface SearchInfo {
-  data: {
-    notes: SearchResult[];
-  };
+  notes: SearchResult[];
 }
 
 export interface SearchResult {
   noteId: number;
   title: string;
-  preview: string;
+  preview: string | null;
   nickname: string;
   isPublic: boolean;
   bookmarkCount: number;

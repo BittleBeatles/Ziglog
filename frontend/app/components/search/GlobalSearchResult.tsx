@@ -4,7 +4,7 @@ import Text from '@components/common/Text';
 interface GlobalSearchResultProps {
   noteId: number;
   title: string;
-  preview: string;
+  preview: string | null;
   nickname: string;
   isPublic: boolean;
   bookmarkCount: number;
