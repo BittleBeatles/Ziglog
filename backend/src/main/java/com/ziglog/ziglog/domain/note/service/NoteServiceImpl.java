@@ -138,7 +138,7 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public Folder getRootFolder(String nickname) throws Exception {
         Member user = memberRepository.findByNickname(nickname).orElseThrow(Exception::new);
-        return folderRepository.findByOwnerAndParent(user, null).orElseThrow(Exception::new);
+        return user.getFolders().stream().filter(folder -> folder.getParent() == null).findFirst().orElseThrow(Exception::new);
     }
 
     @Override
