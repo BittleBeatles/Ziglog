@@ -6,10 +6,7 @@ import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
-import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
-import com.ziglog.ziglog.domain.note.exception.exceptions.InconsistentFolderOwnerException;
-import com.ziglog.ziglog.domain.note.exception.exceptions.InconsistentNoteOwnerException;
-import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
+import com.ziglog.ziglog.domain.note.exception.exceptions.*;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
@@ -133,9 +130,9 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public void deleteFolder(Member member, Long folderId) throws FolderNotFoundException, UserNotFoundException,
-                                                                InconsistentFolderOwnerException, Exception{
+                                                                InconsistentFolderOwnerException, CannotRemoveRootFolderException {
         Folder folder= folderRepository.findById(folderId).orElseThrow(FolderNotFoundException::new);
-        if (folder.getParent() == null) throw new Exception();
+        if (folder.getParent() == null) throw new CannotRemoveRootFolderException();
         checkOwner(member, folder);
 
         Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
