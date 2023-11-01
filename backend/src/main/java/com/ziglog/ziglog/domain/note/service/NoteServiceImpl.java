@@ -48,7 +48,7 @@ public class NoteServiceImpl implements NoteService{
         Note origin = noteRepository.findNoteById(note.getId()).orElseThrow(Exception::new);
         origin.setTitle(note.getTitle());//타이틀
         origin.setContent(note.getContent());//컨텐츠
-        origin.setBrief(note.getBrief());//목록 프리뷰
+        origin.setPreview(note.getPreview());//목록 프리뷰
         origin.setEditDatetime(LocalDateTime.now());//수정일
 
         List<Quotation> noteQuoting = note.getQuoting(); //새 노트가 인용하고 있는 노트의 리스트
