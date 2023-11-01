@@ -1,11 +1,20 @@
 import ProfileImage from '@components/common/ProfileImage';
 import NicknameInput from '@components/common/NicknameInput';
-import { Dispatch, InputHTMLAttributes, SetStateAction, useRef } from 'react';
+import {
+  Dispatch,
+  InputHTMLAttributes,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import ProfileChangeButton from '@components/common/ProfileChangeButton';
 import Button from '@components/common/Button';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
 import { modifyUserInfo } from '@api/user/user';
+import useDebounce from '@src/hooks/useDebounce';
+import { checkNickname, getUserInfo } from '@api/user/user';
 
 interface NicknameSettingProps extends InputHTMLAttributes<HTMLInputElement> {
   theme?: 'light' | 'dark';
@@ -16,6 +25,48 @@ export default function NicknameSetting({
   theme = 'light',
   openModal,
 }: NicknameSettingProps) {
+  const [oldUserInfo, setOldUserInfo] = useState({
+    nickname: '',
+    profileImage: '',
+  });
+  const [data, setData] = useState({
+    nickname: '',
+    profileImage: '',
+  });
+  useEffect(() => {
+    const getUserInfoEditPage = async () => {
+      const result = await getUserInfo();
+      if (result) {
+        setOldUserInfo({
+          ...data,
+          nickname: result.nickname,
+          profileImage: result.profileImage,
+        });
+        setData({
+          ...data,
+          nickname: result.nickname,
+          profileImage: result.profileImage,
+        });
+      }
+    };
+    getUserInfoEditPage();
+  }, [data]);
+
+  const [newNickname, setValue] = useState(oldUserInfo.nickname);
+  // const debouncedNickname = useDebounce(newNickname, 500);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    isChangeable();
+  };
+  let isPossible = false;
+  const [isPos, setNickname] = useState(false);
+  const isChangeable = async () => {
+    console.log(newNickname);
+    isPossible = await checkNickname(newNickname);
+    setNickname(isPossible);
+    console.log(isPossible);
+  };
+
   const imageRef = useRef<HTMLInputElement>(null);
   const handleProfileImageChangeClick = () => {
     if (imageRef.current) {
@@ -25,7 +76,6 @@ export default function NicknameSetting({
   const handleImageInput = () => {
     console.log('[이미지 업로드 로직]');
   };
-  const isPossible = true;
   return (
     <div
       className={`${THEME_VARIANTS[theme]} w-132 shadow-md border text-center rounded-md justify-center p-5`}
@@ -71,8 +121,12 @@ export default function NicknameSetting({
             <Text type="h4">닉네임</Text>
           </div>
           <div className="mt-4 flex flex-col">
-            <NicknameInput theme={theme} nickname="사용자 닉네임" />
-            {isPossible === true ? (
+            <NicknameInput
+              theme={theme}
+              nickname={oldUserInfo.nickname}
+              onChange={handleChange}
+            />
+            {isPos ? (
               <Text className="mt-1 text-left text-xs text-green-600">
                 사용 가능한 닉네임입니다
               </Text>
