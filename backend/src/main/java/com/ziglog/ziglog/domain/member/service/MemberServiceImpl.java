@@ -1,6 +1,8 @@
 package com.ziglog.ziglog.domain.member.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.member.exception.exceptions.InvalidUserModificationRequestException;
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
@@ -22,27 +24,27 @@ public class MemberServiceImpl implements MemberService{
     private final FolderRepository folderRepository;
 
     @Override
-    public Member findUserByEmail(String email) throws Exception {
-        return memberRepository.findByEmail(email).orElseThrow(() -> new Exception());
+    public Member findUserByEmail(String email) throws UserNotFoundException {
+        return memberRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public Member findUserByNickname(String nickname) throws Exception{
-        return memberRepository.findByNickname(nickname).orElseThrow(() -> new Exception());
+    public Member findUserByNickname(String nickname) throws UserNotFoundException {
+        return memberRepository.findByNickname(nickname).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public void modifyUserNickname(Member member, String nickname) throws Exception{
-        if (!isValidNickname(nickname)) throw new Exception();
+    public void modifyUserNickname(Member member, String nickname) throws UserNotFoundException, InvalidUserModificationRequestException {
+        if (!isValidNickname(nickname)) throw new InvalidUserModificationRequestException();
         memberRepository.findByEmail(member.getEmail())
-                        .orElseThrow(Exception::new)
+                        .orElseThrow(UserNotFoundException::new)
                         .setNickname(nickname);
     }
 
     @Override
-    public void modifyUserProfile(Member member, String profileUrl) throws Exception{
+    public void modifyUserProfile(Member member, String profileUrl) throws UserNotFoundException{
         memberRepository.findByEmail(member.getEmail())
-                        .orElseThrow(Exception::new)
+                        .orElseThrow(UserNotFoundException::new)
                         .setProfileUrl(profileUrl);
     }
 
