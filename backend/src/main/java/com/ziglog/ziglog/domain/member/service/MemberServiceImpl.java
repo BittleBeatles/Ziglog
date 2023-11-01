@@ -35,14 +35,14 @@ public class MemberServiceImpl implements MemberService{
     public void modifyUserNickname(Member member, String nickname) throws Exception{
         if (!isValidNickname(nickname)) throw new Exception();
         memberRepository.findByEmail(member.getEmail())
-                        .orElseThrow()
+                        .orElseThrow(Exception::new)
                         .setNickname(nickname);
     }
 
     @Override
     public void modifyUserProfile(Member member, String profileUrl) throws Exception{
         memberRepository.findByEmail(member.getEmail())
-                        .orElseThrow(() -> new Exception())
+                        .orElseThrow(Exception::new)
                         .setProfileUrl(profileUrl);
     }
 
