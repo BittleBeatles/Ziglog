@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import colors from '@src/design/color';
 import { useRouter } from 'next/navigation';
-import { useGraph } from '@components/userPage/GrapView/useGraph';
+import { useGraph } from '@src/hooks/useGraph';
 import { GraphData, Link, Node } from './GrapView/types';
 
 const ForceGraph = dynamic(() => import('react-force-graph-2d'), {
