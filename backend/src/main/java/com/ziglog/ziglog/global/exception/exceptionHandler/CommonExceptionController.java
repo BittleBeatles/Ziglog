@@ -7,10 +7,10 @@ import com.ziglog.ziglog.global.exception.exceptionCode.CommonExceptionCode;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RequiredArgsConstructor
-@RestController("com.ziglog.ziglog")
+@RestControllerAdvice("com.ziglog.ziglog")
 public class CommonExceptionController {
 
     @ExceptionHandler(UnknownException.class)
