@@ -44,7 +44,7 @@ public class FolderController {
     )
     @DeleteMapping("/{folderId}")
     public ResponseDto<Void> deleteFolder(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("folderId") Long folderId) throws Exception{
-        noteService.deleteNote(userDetails.member(), folderId);
+        noteService.deleteFolder(userDetails.member(), folderId);
         return ResponseDto.of(200, "success");
     }
 }
