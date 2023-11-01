@@ -1,9 +1,10 @@
 'use client';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import colors from '@src/design/color';
-import { nodePaint } from './GrapView.tsx/NodeImage';
 import { useRouter } from 'next/navigation';
+import { useGraph } from '@src/hooks/useGraph';
+import { GraphData, Link, Node } from './GrapView/types';
 
 const ForceGraph = dynamic(() => import('react-force-graph-2d'), {
   ssr: false,
@@ -16,6 +17,16 @@ interface GraphViewProps {
 export default function GraphView({ theme }: GraphViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
+  const {
+    highlightLinks,
+    handleNodeHover,
+    handleLinkHover,
+    nodePaint,
+    addNeighborsAndLinks,
+  } = useGraph();
+
+  // 노드에서 이웃과 링크 추가해주는 함수
+  addNeighborsAndLinks(data);
 
   const router = useRouter();
   const handleClick = (node: Node) => {
@@ -24,7 +35,7 @@ export default function GraphView({ theme }: GraphViewProps) {
     } else if (node.type === 'link') {
       router.push(`/user-page/${'SeongYong'}/read-note/${node.id}`);
     } else {
-      console.warn('Unknown node type:', node.type);
+      console.warn('존재하지 않는 노드입니다:', node.type);
     }
   };
 
@@ -51,10 +62,16 @@ export default function GraphView({ theme }: GraphViewProps) {
         backgroundColor={
           theme === 'light' ? colors.white : colors['dark-background-layout']
         }
-        nodeCanvasObject={nodePaint}
         onNodeClick={handleClick}
-        linkWidth={3}
         linkColor={colors.black}
+        linkWidth={(link) => (highlightLinks.has(link) ? 5 : 1)}
+        linkDirectionalParticles={3}
+        linkDirectionalParticleWidth={(link) =>
+          highlightLinks.has(link) ? 3 : 0
+        }
+        onNodeHover={handleNodeHover}
+        onLinkHover={handleLinkHover}
+        nodeCanvasObject={nodePaint}
       />
     </div>
   );
@@ -62,16 +79,28 @@ export default function GraphView({ theme }: GraphViewProps) {
 
 const data: GraphData = {
   nodes: [
-    { id: 1, name: 'name1', type: 'folder' },
-    { id: 2, name: 'name2', type: 'note' },
-    { id: 3, name: '동성 마 좀 치나', type: 'root' },
-    { id: 4, name: 'name4', type: 'folder' },
-    { id: 5, name: 'name5', type: 'note' },
-    { id: 6, name: 'name6', type: 'link' },
-    { id: 7, name: 'name7', type: 'folder' },
-    { id: 8, name: 'name8', type: 'note' },
-    { id: 9, name: 'name9', type: 'link' },
-    { id: 10, name: 'name10', type: 'folder' },
+    { id: 1, name: 'name1', type: 'folder', nickname: 'seongyong', realId: 1 },
+    { id: 2, name: 'name2', type: 'note', nickname: 'hanul', realId: 1 },
+    {
+      id: 3,
+      name: '동성 마 좀 치나',
+      type: 'root',
+      nickname: 'hanul',
+      realId: 1,
+    },
+    { id: 4, name: 'name4', type: 'folder', nickname: 'hanul', realId: 2 },
+    { id: 5, name: 'name5', type: 'note', nickname: 'suhyeong', realId: 2 },
+    { id: 6, name: 'name6', type: 'link', nickname: 'suhyeong', realId: 1 },
+    { id: 7, name: 'name7', type: 'folder', nickname: 'jeongmin', realId: 3 },
+    { id: 8, name: 'name8', type: 'note', nickname: 'hyeona', realId: 3 },
+    { id: 9, name: 'name9', type: 'link', nickname: 'yongs', realId: 2 },
+    {
+      id: 10,
+      name: 'name10',
+      type: 'folder',
+      nickname: 'yongs',
+      realId: 4,
+    },
   ],
   links: [
     { source: 1, target: 3 },
@@ -85,25 +114,3 @@ const data: GraphData = {
     { source: 10, target: 3 },
   ],
 };
-
-export interface Node {
-  id?: string | number;
-  name?: string;
-  type?: string;
-  x?: number;
-  y?: number;
-  vx?: number;
-  vy?: number;
-  fx?: number;
-  fy?: number;
-}
-
-interface Link {
-  source: number;
-  target: number;
-}
-
-interface GraphData {
-  nodes: Node[];
-  links: Link[];
-}
