@@ -75,7 +75,8 @@ export default function ReadNote() {
         <div className="flex flex-row place-items-center my-4">
           <Text type="b">{data.nickname}</Text>
           <Text className="mx-3" type="p">
-            {data.postTime.toLocaleString('ko-KR')}
+            {/* {data.postTime.toLocaleString('ko-KR')} */}
+            {new Date('2023-10-31 00:00:00').toLocaleString('ko-KR')}
           </Text>
           {isMine ? (
             data.isPublic ? (
