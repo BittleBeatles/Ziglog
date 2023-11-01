@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.global.exception.exceptionCode;
+package com.ziglog.ziglog.domain.note.exception;
 
 import lombok.Getter;
 

@@ -1,9 +1,8 @@
-package com.ziglog.ziglog.global.exception.exceptionHandler;
+package com.ziglog.ziglog.global.exception;
 
-import com.ziglog.ziglog.global.exception.customException.common.BadRequestException;
-import com.ziglog.ziglog.global.exception.customException.common.MethodNotFoundException;
-import com.ziglog.ziglog.global.exception.customException.common.UnknownException;
-import com.ziglog.ziglog.global.exception.exceptionCode.CommonExceptionCode;
+import com.ziglog.ziglog.global.exception.exceptions.BadRequestException;
+import com.ziglog.ziglog.global.exception.exceptions.MethodNotFoundException;
+import com.ziglog.ziglog.global.exception.exceptions.UnknownException;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ExceptionHandler;

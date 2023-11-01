@@ -1,6 +1,6 @@
-package com.ziglog.ziglog.global.exception.customException.auth;
+package com.ziglog.ziglog.global.auth.exception.exceptions;
 
-import com.ziglog.ziglog.global.exception.exceptionCode.AuthExceptionCode;
+import com.ziglog.ziglog.global.auth.exception.AuthExceptionCode;
 
 public class InvalidRefreshTokenException extends Exception{
     public InvalidRefreshTokenException(){
