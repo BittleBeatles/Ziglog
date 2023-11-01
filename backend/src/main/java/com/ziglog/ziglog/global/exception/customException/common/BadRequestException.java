@@ -1,10 +1,10 @@
 package com.ziglog.ziglog.global.exception.customException.common;
 
-import com.ziglog.ziglog.global.exception.exceptionCode.ExceptionCode;
+import com.ziglog.ziglog.global.exception.exceptionCode.CommonExceptionCode;
 
 public class BadRequestException extends RuntimeException {
     public BadRequestException(){
-        super(ExceptionCode.BAD_REQUEST_EXCEPTION.getErrorMessage());
+        super(CommonExceptionCode.BAD_REQUEST_EXCEPTION.getErrorMessage());
     }
     public BadRequestException(String message){
         super(message);

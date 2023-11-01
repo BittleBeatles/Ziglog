@@ -19,5 +19,4 @@ public class BookmarkExceptionController {
     public static ResponseDto<String> toResponseDto(BookmarkExceptionCode exceptionCode){
         return ResponseDto.of(exceptionCode.getErrorCode(), exceptionCode.getErrorMessage());
     }
-
 }
