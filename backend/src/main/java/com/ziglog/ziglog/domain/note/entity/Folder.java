@@ -19,7 +19,7 @@ public class Folder {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "title")
@@ -39,6 +39,7 @@ public class Folder {
     private List<Note> notes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "MEMBER_ID")
     private Member owner;
     public void setTitle(String title){
         this.title = title;
