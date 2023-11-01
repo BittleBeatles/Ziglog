@@ -11,6 +11,7 @@ import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -58,7 +59,7 @@ public class MemberController {
     )
     @GetMapping("/info")
     public ResponseDto<MyInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception{
-        return ResponseDto.of(MyInfoResponseDto.toDto(userDetails.member()));
+        return ResponseDto.of(MyInfoResponseDto.toDto(memberService.findUserByEmail(userDetails.member().getEmail())));
     }
 
     @GetMapping("/test")

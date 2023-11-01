@@ -18,6 +18,7 @@ public class MyInfoResponseDto {
     private Long rootFolderId;
 
     public static MyInfoResponseDto toDto(Member member) throws Exception {
+
         return MyInfoResponseDto.builder()
                 .profileUrl(member.getProfileUrl())
                 .nickname(member.getNickname())
