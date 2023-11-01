@@ -132,6 +132,7 @@ public class NoteServiceImpl implements NoteService{
 
         Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(Exception::new);
         memberPersist.getFolders().remove(folder);
+        folder.getParent().getChildren().remove(folder);
         folderRepository.deleteById(folderId);
     }
 
