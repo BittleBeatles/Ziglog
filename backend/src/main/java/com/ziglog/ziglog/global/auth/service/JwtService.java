@@ -124,7 +124,7 @@ public class JwtService {
                 .build();
         response.setHeader(refreshTokenHeader, cookie.toString());
     }
-    public void saveRefreshToken(String refreshToken, String email) throws UsernameNotFoundException{
+    public void saveRefreshToken(String refreshToken, String email) {
         log.info("save refresh token");
         refreshTokenRepository.save(new RefreshToken(refreshToken, email));
     }
