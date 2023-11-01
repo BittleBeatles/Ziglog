@@ -17,6 +17,7 @@ import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMap
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -78,6 +79,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     //Authentication 저장
+    @Transactional
     public void saveAuthentication(Member member){
         log.info("jwt filter - save auth : {}", member.getNickname());
         UserDetails userDetails = new CustomUserDetails(member);
@@ -85,5 +87,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
     }
 }

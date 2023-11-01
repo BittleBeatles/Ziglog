@@ -5,12 +5,14 @@ import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.metamodel.mapping.ForeignKeyDescriptor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -32,7 +34,9 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void modifyUserNickname(Member member, String nickname) throws Exception{
         if (!isValidNickname(nickname)) throw new Exception();
-        member.setNickname(nickname);
+        memberRepository.findByEmail(member.getEmail())
+                        .orElseThrow()
+                        .setNickname(nickname);
     }
 
     @Override
@@ -50,21 +54,19 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public Member signUp(String email, String nickname) throws Exception{
-        Member member = Member.builder()
+        Member member = memberRepository.save(
+                Member.builder()
                 .email(email)
                 .nickname(nickname)
                 .password(UUID.randomUUID().toString())
-                .build();
-        member = memberRepository.save(member);
+                .build());
 
-        Folder root = Folder.builder()
+        Folder root = folderRepository.save(Folder.builder()
                     .title("root")
                     .owner(member)
-                    .build() ;
+                    .build());
 
-        root = folderRepository.save(root);
         member.getFolders().add(root);
-
         return member;
     }
 
@@ -75,5 +77,12 @@ public class MemberServiceImpl implements MemberService{
 
     public boolean isNotDuplicatedNickname(String nickname){
         return !memberRepository.existsMemberByNickname(nickname);
+    }
+
+    @Override
+    public void testContext(Member member) throws  Exception{
+        Member mem2 = memberRepository.findByEmail(member.getEmail()).orElseThrow(Exception::new);
+        if (mem2.equals(member)) log.info("same entity in JPA persistence context");
+        else log.info("diff");
     }
 }
