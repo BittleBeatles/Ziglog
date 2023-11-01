@@ -23,20 +23,20 @@ public class MemberServiceImpl implements MemberService{
     private final FolderRepository folderRepository;
 
     @Override
-    public Member findUserByEmail(String email) throws Exception {
+    public Member findUserByEmail(String email) throws UserNotFoundException {
         return memberRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public Member findUserByNickname(String nickname) throws Exception{
+    public Member findUserByNickname(String nickname) throws UserNotFoundException {
         return memberRepository.findByNickname(nickname).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public void modifyUserNickname(Member member, String nickname) throws Exception{
+    public void modifyUserNickname(Member member, String nickname) throws UserNotFoundException {
         if (!isValidNickname(nickname)) throw new Exception();
         memberRepository.findByEmail(member.getEmail())
-                        .orElseThrow(Exception::new)
+                        .orElseThrow(UserNotFoundException::new)
                         .setNickname(nickname);
     }
 
