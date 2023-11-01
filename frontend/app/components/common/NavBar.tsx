@@ -6,7 +6,8 @@ import { useAppDispatch } from '@store/store';
 import { logOut, setMyTheme } from '@store/modules/userSlice';
 import Link from 'next/link';
 import Image from 'next/image';
-import logo from '@public/images/logo.png';
+import logolight from '@public/images/logo-light.png';
+import logodark from '@public/images/logo-dark.png';
 import SocialLoginModal from './SocialLoginModal';
 import { Logout } from '@api/user/user';
 
@@ -21,13 +22,28 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
   const openLoginModal = (open: boolean) => {
     loginModalOpen(open);
   };
-
   return (
     <div
       className={`${THEME_VARIANTS[theme]} w-full h-full p-5 flex items-center justify-between`}
     >
       <Link href={'/'}>
-        <Image src={logo} alt="logo" width={0} height={0} className="w-14" />
+        {theme == 'light' ? (
+          <Image
+            src={logolight}
+            alt="logo"
+            width={0}
+            height={0}
+            className="w-14"
+          />
+        ) : (
+          <Image
+            src={logodark}
+            alt="logo"
+            width={0}
+            height={0}
+            className="w-14"
+          />
+        )}
       </Link>
       <div className="flex ml-auto space-x-4 items-center">
         <IconButton
