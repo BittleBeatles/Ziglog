@@ -1,18 +1,30 @@
 import { privateFetch, publicFetch } from '..';
 import { API_URL } from '@api/constants';
-import { TokenInfo, UserInfo, LogoutInfo } from './types';
+import { TokenInfo, MyInfo, UserInfo, LogoutInfo } from './types';
 import { store } from '@store/store';
 import { setUserToken, logOut } from '@store/modules/userSlice';
 import { ApiSuccessResponse } from '@api/types';
 
+export type MyApiData = ApiSuccessResponse<MyInfo>;
 export type UserApiData = ApiSuccessResponse<UserInfo>;
 export type ReissueTokenApiData = ApiSuccessResponse<TokenInfo>;
 export type LogoutApiData = ApiSuccessResponse<LogoutInfo>;
 export type ModifyUserApiData = ApiSuccessResponse<UserInfo>;
 
-export async function getMyInfo(): Promise<UserInfo> {
+export async function getMyInfo(): Promise<MyInfo> {
   try {
-    const res = await privateFetch<UserApiData>(`${API_URL}/user/info`, {
+    const res = await privateFetch<MyApiData>(`${API_URL}/user/info`, {
+      method: 'GET',
+    });
+    return res.body.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getUserInfo(nickname: string): Promise<UserInfo> {
+  try {
+    const res = await publicFetch<UserApiData>(`${API_URL}/user/${nickname}`, {
       method: 'GET',
     });
     return res.body.data;

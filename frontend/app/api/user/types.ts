@@ -9,3 +9,9 @@ export interface UserInfo {
 }
 
 export interface LogoutInfo {}
+
+export interface MyInfo {
+  nickname: string;
+  profileImage: string;
+  rootFolderId: number;
+}
