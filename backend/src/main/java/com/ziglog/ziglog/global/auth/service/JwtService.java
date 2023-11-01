@@ -61,18 +61,22 @@ public class JwtService {
 
     public Optional<String> extractAccessToken(HttpServletRequest request){
         log.info("extract access token from request header");
-        return Optional.ofNullable(request.getHeader(accessTokenHeader))
+        Optional<String> accessToken = Optional.ofNullable(request.getHeader(accessTokenHeader))
                 .filter(token -> token.startsWith(BEARER))
                 .map(token -> token.replace(BEARER, ""));
+        log.info("accessToken : {}", accessToken.orElse("no access token"));
+        return accessToken;
     }
 
     public Optional<String> extractEmailFromAccessToken(String token){
         log.info("extract email from access token");
-        return Optional.ofNullable(JWT.require(Algorithm.HMAC256(secretKey))
+        Optional<String> email = Optional.ofNullable(JWT.require(Algorithm.HMAC256(secretKey))
                 .build()
                 .verify(token)
                 .getClaim("sub")
                 .asString());
+        log.info("email : {}", email.orElse("cannot get email"));
+        return email;
     }
 
     public void setAccessTokenHeader(HttpServletResponse response, String accessToken){

@@ -20,7 +20,7 @@ server:
 jwt:
   secret-key: asd19i23hj909sfua9s0fdusd90fua9023fjnh
   access:
-    expiration: 30000 #3600000
+    expiration: 3600000
     header: Authorization
   refresh:
     expiration: 1209600000
