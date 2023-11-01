@@ -43,3 +43,18 @@ export async function getReferenceList(noteId: number) {
       throw err;
     });
 }
+
+export async function deleteNote(noteId: number) {
+  return privateFetch<CreateNoteApiResponse>(
+    `${API_URL}/note?noteId=${noteId}`,
+    {
+      method: 'DELETE',
+    }
+  )
+    .then((res) => {
+      return console.log(`${noteId}번 노트가 삭제되었습니다.`);
+    })
+    .catch((err) => {
+      throw err;
+    });
+}

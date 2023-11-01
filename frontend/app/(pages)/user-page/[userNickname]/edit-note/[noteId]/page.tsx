@@ -14,7 +14,6 @@ import {
 import { EditNoteParams } from '@api/note/types';
 import { diffChars } from 'diff';
 
-// decodeURIComponent(params.userNickname as string)
 interface NoteDetail extends EditNoteParams {
   isPublic: boolean;
 }
@@ -51,7 +50,7 @@ export default function EditNote() {
       }
     };
     getNoteInfoEditPage(parseInt(noteId));
-  }, []);
+  }, [data, noteId]);
 
   const handlePublicPrivateButton = () => {
     const changePublicStatus = async (noteId: number, isPublic: boolean) => {

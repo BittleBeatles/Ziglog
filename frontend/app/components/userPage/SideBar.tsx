@@ -13,6 +13,8 @@ import { useRouter } from 'next/navigation';
 import NicknameSetting from './NicknameSetting';
 import { Logout } from '@api/user/user';
 import { createNote } from '@api/note/note';
+import { useAppDispatch } from '@store/store';
+import { setMyTheme } from '@store/modules/userSlice';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -34,6 +36,8 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
     show: boolean;
     type: 'note' | 'folder';
   }>({ show: false, type: 'note' });
+
+  const dispatch = useAppDispatch();
 
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
@@ -146,6 +150,9 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
 
       <div className="flex justify-between px-8">
         <IconButton
+          onClick={() =>
+            dispatch(setMyTheme(theme === 'light' ? 'dark' : 'light'))
+          }
           theme={theme}
           name={theme === 'light' ? 'LightMode' : 'DarkMode'}
         />
@@ -167,7 +174,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         )}
       </div>
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
+        <div className="fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <NicknameSetting theme={theme} openModal={openModal} />
         </div>
       )}

@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation';
 export type UserApiData = ApiSuccessResponse<UserInfo>;
 export type ReissueTokenApiData = ApiSuccessResponse<TokenInfo>;
 export type LogoutApiData = ApiSuccessResponse<LogoutInfo>;
+export type ModifyUserApiData = ApiSuccessResponse<UserInfo>;
 
 export async function getUserInfo(): Promise<UserInfo> {
   try {
@@ -52,5 +53,21 @@ export async function ReissueToken() {
         console.log('[token reissue]:Unknown error');
       }
       return Promise.reject(err);
+    });
+}
+
+export function modifyUserInfo(
+  nickname: string,
+  profileUrl: string
+): Promise<string | void> {
+  return privateFetch<ModifyUserApiData>(`${API_URL}/user/modify`, {
+    method: 'PUT',
+    body: { nickname, profileUrl },
+  })
+    .then((res) => {
+      return Promise.resolve('[note edit succeeded]');
+    })
+    .catch((err) => {
+      throw err;
     });
 }
