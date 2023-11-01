@@ -7,6 +7,7 @@ import { SearchInfo } from '@api/search/types';
 import { getSearchInfo } from '@api/search/search';
 import Text from '@components/common/Text';
 import Link from 'next/link';
+import { useScrollObserver } from '@src/hooks/useScrollObserve';
 
 export default function Search() {
   const [keyword, setKeyword] = useState<string>('');
@@ -19,21 +20,18 @@ export default function Search() {
   const containerRef = useRef<HTMLDivElement | null>(null); // 스크롤 컨테이너 ref
   const perPage = 5;
 
-  const debouncedKeyword = useDebounce(keyword, 500);
+  // 검색 디바운싱
+  const debouncedKeyword = useDebounce(keyword, 400);
 
   // 스크롤 이벤트 핸들러
   const handleScroll = () => {
-    if (
-      containerRef.current &&
-      containerRef.current.scrollHeight - containerRef.current.scrollTop ===
-        containerRef.current.clientHeight
-    ) {
-      if (!loading && hasMore) {
-        setLoading(true);
-        setPage(page + 1);
-      }
+    if (!loading && hasMore) {
+      setLoading(true);
+      setPage(page + 1);
     }
   };
+
+  useScrollObserver(handleScroll);
 
   useEffect(() => {
     async function fetchMoreData(debouncedKeyword: string, page: number) {
@@ -60,16 +58,20 @@ export default function Search() {
     }
 
     if (!debouncedKeyword) {
+      setPage(0);
+      setSearchData({ notes: [] });
       return;
     }
 
-    if (page === 0) {
+    setHasMore(true);
+
+    if (debouncedKeyword !== keyword) {
+      // 검색어가 변경될 때 UI 초기화 및 페이지 초기화
+      setPage(0);
       setSearchData({ notes: [] });
     }
 
-    if (debouncedKeyword) {
-      fetchMoreData(debouncedKeyword, page);
-    }
+    fetchMoreData(debouncedKeyword, page);
   }, [debouncedKeyword, page]);
 
   return (
@@ -77,18 +79,18 @@ export default function Search() {
       <h1>검색페이지입니다.</h1>
       <div className="w-2/3">
         <GlobalSearchInput onChange={(e) => setKeyword(e.target.value)} />
-        <div className="h-full " onScroll={handleScroll} ref={containerRef}>
+        <div className="h-full overflow-y-auto" ref={containerRef}>
           {searchData && searchData.notes.length > 0 ? (
             <div>
               {/* <p>총 {searchData.notes.length}개의 검색 결과가 있습니다.</p> */}
-              {searchData.notes.map((result) => (
+              {searchData.notes.map((result, index) => (
                 <Link
-                  key={result.noteId}
+                  key={index}
                   href={`/user-page/${result.nickname}/read-note/${result.noteId}`}
                 >
                   <div>
                     <GlobalSearchResult
-                      key={result.noteId}
+                      key={result.noteId + index}
                       noteId={result.noteId}
                       title={result.title}
                       preview={result.preview !== null ? result.preview : ''}

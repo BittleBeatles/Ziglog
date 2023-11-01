@@ -12,11 +12,7 @@ export function getSearchInfo(
 ): Promise<SearchInfo> {
   console.log('요청 보냄');
   return publicFetch<SearchApiData>(
-<<<<<<< HEAD
-    `${API_URL}/search?keyword=${debouncedKeyword}`,
-=======
     `${API_URL}/search?keyword=${debouncedKeyword}&page=${page}&perPage=${perPage}`,
->>>>>>> 8ecca5a (feat: 글 검색 결과 무한 스크롤 구현)
     {
       method: 'GET',
     }
