@@ -1,6 +1,7 @@
 package com.ziglog.ziglog.domain.member.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
@@ -23,12 +24,12 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public Member findUserByEmail(String email) throws Exception {
-        return memberRepository.findByEmail(email).orElseThrow(() -> new Exception());
+        return memberRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
     public Member findUserByNickname(String nickname) throws Exception{
-        return memberRepository.findByNickname(nickname).orElseThrow(() -> new Exception());
+        return memberRepository.findByNickname(nickname).orElseThrow(UserNotFoundException::new);
     }
 
     @Override

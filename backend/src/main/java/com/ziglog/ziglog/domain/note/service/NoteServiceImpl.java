@@ -1,10 +1,13 @@
 package com.ziglog.ziglog.domain.note.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
+import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
+import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
@@ -12,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -30,9 +34,9 @@ public class NoteServiceImpl implements NoteService{
 
     //Note
     @Override
-    public Note createNote(Member member, Long folderId) throws Exception {
-        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(Exception::new);
-        Folder folderPersist = folderRepository.findById(folderId).orElseThrow(Exception::new);
+    public Note createNote(Member member, Long folderId) throws UserNotFoundException, FolderNotFoundException {
+        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
+        Folder folderPersist = folderRepository.findById(folderId).orElseThrow(FolderNotFoundException::new);
 
         Note note = Note.builder()
                     .author(memberPersist)
@@ -49,7 +53,7 @@ public class NoteServiceImpl implements NoteService{
     public Note modifyNote(Member member, Note note) throws Exception {
         if (!checkOwner(member, note)) throw new Exception();
 
-        Note notePersist = noteRepository.findNoteById(note.getId()).orElseThrow(Exception::new);
+        Note notePersist = noteRepository.findNoteById(note.getId()).orElseThrow(NoteNotFoundException::new);
         notePersist.setTitle(note.getTitle());//타이틀
         notePersist.setContent(note.getContent());//컨텐츠
         notePersist.setPreview(note.getPreview());//목록 프리뷰
@@ -67,7 +71,7 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Note setPublic(Member member, Long noteId, Boolean isPublic) throws Exception {
-        Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
+        Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         if (!checkOwner(member, note)) throw new Exception();
 
         note.setPublic(isPublic);
@@ -81,7 +85,7 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public void deleteNote(Member member, Long noteId) throws Exception {
-        Note note = noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
+        Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         //삭제 요청자가 Security Context 내의 사용자 같은지 확인
         if (!checkOwner(member, note)) throw new Exception();
 
@@ -92,14 +96,15 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Note getNote(Long noteId) throws Exception{
-        return noteRepository.findNoteById(noteId).orElseThrow(Exception::new);
+        //TODO 인증 여부에 따라 보일지 말지를 결정하는 로직이 필요
+        return noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
     }
 
     // Folder
     @Override
     public Folder createFolder(Member member, String title, Long parentId) throws Exception{
         log.info("parentId : {}", parentId);
-        Folder parent = folderRepository.findById(parentId).orElseThrow(Exception::new);
+        Folder parent = folderRepository.findById(parentId).orElseThrow(FolderNotFoundException::new);
         if (!checkOwner(member, parent)) throw new Exception();
 
         Folder folder = Folder.builder()
@@ -117,7 +122,7 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public Folder modifyFolder(Member member, Folder folder) throws Exception {
         //JPA 영속성 컨테스트 내
-        Folder origin = folderRepository.findById(folder.getId()).orElseThrow(Exception::new);
+        Folder origin = folderRepository.findById(folder.getId()).orElseThrow(FolderNotFoundException::new);
         if (!checkOwner(member, origin)) throw new Exception();
 
         origin.setTitle(folder.getTitle());
@@ -126,11 +131,11 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public void deleteFolder(Member member, Long folderId) throws Exception {
-        Folder folder= folderRepository.findById(folderId).orElseThrow(Exception::new);
+        Folder folder= folderRepository.findById(folderId).orElseThrow(FolderNotFoundException::new);
         if (folder.getParent() == null) throw new Exception();
         if (!checkOwner(member, folder)) throw new Exception();
 
-        Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(Exception::new);
+        Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
         memberPersist.getFolders().remove(folder);
         folder.getParent().getChildren().remove(folder);
         folderRepository.deleteById(folderId);
@@ -138,8 +143,8 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Folder getRootFolder(String nickname) throws Exception {
-        Member user = memberRepository.findByNickname(nickname).orElseThrow(Exception::new);
-        return user.getFolders().stream().filter(folder -> folder.getParent() == null).findFirst().orElseThrow(Exception::new);
+        Member user = memberRepository.findByNickname(nickname).orElseThrow(UserNotFoundException::new);
+        return user.getFolders().stream().filter(folder -> folder.getParent() == null).findFirst().orElseThrow(NoteNotFoundException::new);
     }
 
     @Override
