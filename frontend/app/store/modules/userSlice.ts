@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TokenInfo, UserInfo } from '@api/user/types';
+import { TokenInfo, MyInfo } from '@api/user/types';
 
 type userSliceInfo = TokenInfo &
-  UserInfo & {
+  MyInfo & {
     isLogin: boolean;
     theme: 'dark' | 'light';
+    rootFolderId: number;
   };
 
 const initialState: userSliceInfo = {
@@ -14,6 +15,7 @@ const initialState: userSliceInfo = {
   nickname: '',
   profileImage: '',
   theme: 'light',
+  rootFolderId: 0,
 };
 
 export const user = createSlice({
@@ -31,7 +33,7 @@ export const user = createSlice({
         ...payload,
       };
     },
-    setUserInfo: (state, action: PayloadAction<UserInfo>) => {
+    setMyInfo: (state, action: PayloadAction<MyInfo>) => {
       const payload = action.payload;
       return {
         ...state,
@@ -54,7 +56,7 @@ export const user = createSlice({
 export const {
   logOut,
   setUserToken,
-  setUserInfo,
+  setMyInfo,
   setMyTheme,
   setMyNickname,
   setMyProfileImage,
