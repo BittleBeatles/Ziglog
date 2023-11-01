@@ -1,10 +1,9 @@
-package com.ziglog.ziglog.global.exception.exceptionHandler;
+package com.ziglog.ziglog.domain.note.exception;
 
-import com.ziglog.ziglog.global.exception.customException.note.FolderNotFoundException;
-import com.ziglog.ziglog.global.exception.customException.note.InconsistentFolderOwnerException;
-import com.ziglog.ziglog.global.exception.customException.note.InconsistentNoteOwnerException;
-import com.ziglog.ziglog.global.exception.customException.note.NoteNotFoundException;
-import com.ziglog.ziglog.global.exception.exceptionCode.NoteExceptionCode;
+import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
+import com.ziglog.ziglog.domain.note.exception.exceptions.InconsistentFolderOwnerException;
+import com.ziglog.ziglog.domain.note.exception.exceptions.InconsistentNoteOwnerException;
+import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ExceptionHandler;
