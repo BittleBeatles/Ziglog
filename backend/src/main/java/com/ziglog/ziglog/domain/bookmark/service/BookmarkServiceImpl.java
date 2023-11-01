@@ -31,7 +31,6 @@ public class BookmarkServiceImpl implements BookmarkService {
         List<Bookmark> bookmarkList = bookmarkRepository.findAllByMember(memberPersist);
         if (bookmarkList.contains(note)) return;
 
-
         Bookmark bookmark = Bookmark.builder()
                             .member(memberPersist)
                             .note(note)
