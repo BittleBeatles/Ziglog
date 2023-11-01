@@ -31,4 +31,5 @@ public class AuthController {
     public ResponseDto<RefreshResponseDto> refresh(HttpServletResponse response) throws Exception {
         String accessToken = response.getHeader(accessTokenHeader);
         return ResponseDto.of(new RefreshResponseDto(accessToken));
-    }}
+    }
+}
