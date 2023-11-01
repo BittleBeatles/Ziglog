@@ -6,6 +6,7 @@ import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.global.auth.entity.RefreshToken;
 import com.ziglog.ziglog.global.auth.repository.RefreshTokenRepository;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
@@ -32,6 +34,9 @@ public class JwtService {
 
     @Value("${jwt.access.expiration}")
     private Integer accessTokenExpiration;
+
+    @Value("${jwt.refresh.expiration}")
+    private Integer refreshTokenExpiration;
 
     @Value("${jwt.access.header}")
     private String accessTokenHeader;
@@ -93,16 +98,21 @@ public class JwtService {
 
     public Optional<String> extractRefreshToken(HttpServletRequest request){
         log.info("extract refresh token from cookie");
-        return Optional.ofNullable(request.getCookies())
+
+        Optional<String> tk = Optional.ofNullable(request.getCookies())
                 .flatMap(cookies -> Arrays.stream(cookies)
                         .filter(e -> e.getName().equals(REFRESH_TOKEN_COOKIE_NAME))
                         .findAny())
-                .map(token -> token.getValue());
+                .map(Cookie::getValue);
+
+        log.info("token : {}", tk.orElse("no Refresh"));
+        return tk;
     }
 
     public void setRefreshTokenCookie(HttpServletResponse response, String refreshToken){
         log.info("set refresh token cookie");
         ResponseCookie cookie = ResponseCookie.from(REFRESH_TOKEN_COOKIE_NAME, refreshToken)
+                .maxAge(refreshTokenExpiration)
                 .path("/")
                 .secure(true)
                 .sameSite("None")
@@ -122,7 +132,7 @@ public class JwtService {
     }
 
     public void sendAccessTokenAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken){
-        log.info("send access token and reresh token");
+        log.info("send access token and refresh token");
         response.setStatus(HttpServletResponse.SC_OK);
         setAccessTokenHeader(response, accessToken);
         setRefreshTokenCookie(response, refreshToken);
