@@ -2,7 +2,7 @@
 import { useAppDispatch } from '@store/store';
 import { useEffect } from 'react';
 import { setUserInfo, setUserToken } from '@store/modules/userSlice';
-import { getUserInfo } from '@api/user/user';
+import { getMyInfo } from '@api/user/user';
 export default function OauthPage() {
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -12,7 +12,7 @@ export default function OauthPage() {
       const accessToken = urlParmas.get('at') || '';
       dispatch(setUserToken({ accessToken, grantType: 'Bearer' }));
       // [USERINFO] 가져오기
-      const result = await getUserInfo();
+      const result = await getMyInfo();
       if (result) {
         dispatch(setUserInfo(result));
         window.location.replace(`/user-page/${result.nickname}`);

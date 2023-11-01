@@ -1,17 +1,16 @@
 import { privateFetch, publicFetch } from '..';
 import { API_URL } from '@api/constants';
 import { TokenInfo, UserInfo, LogoutInfo } from './types';
-import { store, useAppDispatch } from '@store/store';
+import { store } from '@store/store';
 import { setUserToken, logOut } from '@store/modules/userSlice';
 import { ApiSuccessResponse } from '@api/types';
-import { redirect } from 'next/navigation';
 
 export type UserApiData = ApiSuccessResponse<UserInfo>;
 export type ReissueTokenApiData = ApiSuccessResponse<TokenInfo>;
 export type LogoutApiData = ApiSuccessResponse<LogoutInfo>;
 export type ModifyUserApiData = ApiSuccessResponse<UserInfo>;
 
-export async function getUserInfo(): Promise<UserInfo> {
+export async function getMyInfo(): Promise<UserInfo> {
   try {
     const res = await privateFetch<UserApiData>(`${API_URL}/user/info`, {
       method: 'GET',
