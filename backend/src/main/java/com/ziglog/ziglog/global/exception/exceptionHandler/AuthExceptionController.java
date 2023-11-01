@@ -21,8 +21,8 @@ public class AuthExceptionController {
     public ResponseDto<String> handleInvalidRefreshTokenException (InvalidRefreshTokenException err){
         return toResponseDto(AuthExceptionCode.INVALID_REFRESH_TOKEN_EXCEPTION);
     }
-    public static ResponseDto<String> toResponseDto(AuthExceptionCode authExceptionCode){
-        return ResponseDto.of(authExceptionCode.getErrorCode(), authExceptionCode.getErrorMessage());
+    public static ResponseDto<String> toResponseDto(AuthExceptionCode exceptionCode){
+        return ResponseDto.of(exceptionCode.getErrorCode(), exceptionCode.getErrorMessage());
     }
 
 }
