@@ -5,12 +5,14 @@ interface IconProps {
   name: keyof typeof Icons;
   size?: number;
   color?: string;
+  onClick?: () => void;
 }
 
 export default function SvgIcon({
   name,
   size = 26,
   color = 'black',
+  onClick,
 }: IconProps) {
   const IconComponent = Icons[name];
 
@@ -19,5 +21,7 @@ export default function SvgIcon({
     return null;
   }
 
-  return <IconComponent width={size} height={size} fill={color} />;
+  return (
+    <IconComponent onClick={onClick} width={size} height={size} fill={color} />
+  );
 }
