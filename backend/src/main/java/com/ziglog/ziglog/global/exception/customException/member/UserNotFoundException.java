@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.global.exception.customException.note;
+package com.ziglog.ziglog.global.exception.customException.member;
 
 import com.ziglog.ziglog.global.exception.exceptionCode.MemberExceptionCode;
 
