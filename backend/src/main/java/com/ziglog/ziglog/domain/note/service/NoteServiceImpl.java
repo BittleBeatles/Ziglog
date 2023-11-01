@@ -7,6 +7,8 @@ import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
 import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
+import com.ziglog.ziglog.domain.note.exception.exceptions.InconsistentFolderOwnerException;
+import com.ziglog.ziglog.domain.note.exception.exceptions.InconsistentNoteOwnerException;
 import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
@@ -50,8 +52,8 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Note modifyNote(Member member, Note note) throws Exception {
-        if (!checkOwner(member, note)) throw new Exception();
+    public Note modifyNote(Member member, Note note) throws NoteNotFoundException, InconsistentFolderOwnerException {
+        checkOwner(member, note);
 
         Note notePersist = noteRepository.findNoteById(note.getId()).orElseThrow(NoteNotFoundException::new);
         notePersist.setTitle(note.getTitle());//타이틀
@@ -70,9 +72,9 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Note setPublic(Member member, Long noteId, Boolean isPublic) throws Exception {
+    public Note setPublic(Member member, Long noteId, Boolean isPublic) throws InconsistentFolderOwnerException, NoteNotFoundException{
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
-        if (!checkOwner(member, note)) throw new Exception();
+        checkOwner(member, note);
 
         note.setPublic(isPublic);
 
@@ -84,10 +86,10 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public void deleteNote(Member member, Long noteId) throws Exception {
+    public void deleteNote(Member member, Long noteId) throws InconsistentNoteOwnerException, NoteNotFoundException {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         //삭제 요청자가 Security Context 내의 사용자 같은지 확인
-        if (!checkOwner(member, note)) throw new Exception();
+        checkOwner(member, note);
 
         //노트가 들어간 폴더에서 이 노트를 삭제
         note.getFolder().getNotes().remove(note);
@@ -102,10 +104,10 @@ public class NoteServiceImpl implements NoteService{
 
     // Folder
     @Override
-    public Folder createFolder(Member member, String title, Long parentId) throws Exception{
+    public Folder createFolder(Member member, String title, Long parentId) throws FolderNotFoundException, InconsistentNoteOwnerException, UserNotFoundException {
         log.info("parentId : {}", parentId);
         Folder parent = folderRepository.findById(parentId).orElseThrow(FolderNotFoundException::new);
-        if (!checkOwner(member, parent)) throw new Exception();
+        checkOwner(member, parent);
 
         Folder folder = Folder.builder()
                         .title(title)
@@ -114,26 +116,27 @@ public class NoteServiceImpl implements NoteService{
         folder = folderRepository.save(folder);
 
         parent.getChildren().add(folder);
-        memberRepository.findByEmail(member.getEmail()).orElseThrow(Exception::new).getFolders().add(folder);
+        memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new).getFolders().add(folder);
 
         return folder;
     }
 
     @Override
-    public Folder modifyFolder(Member member, Folder folder) throws Exception {
+    public Folder modifyFolder(Member member, Folder folder) throws InconsistentFolderOwnerException, FolderNotFoundException {
         //JPA 영속성 컨테스트 내
+        checkOwner(member, folder);
         Folder origin = folderRepository.findById(folder.getId()).orElseThrow(FolderNotFoundException::new);
-        if (!checkOwner(member, origin)) throw new Exception();
 
         origin.setTitle(folder.getTitle());
         return origin;
     }
 
     @Override
-    public void deleteFolder(Member member, Long folderId) throws Exception {
+    public void deleteFolder(Member member, Long folderId) throws FolderNotFoundException, UserNotFoundException,
+                                                                InconsistentFolderOwnerException, Exception{
         Folder folder= folderRepository.findById(folderId).orElseThrow(FolderNotFoundException::new);
         if (folder.getParent() == null) throw new Exception();
-        if (!checkOwner(member, folder)) throw new Exception();
+        checkOwner(member, folder);
 
         Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
         memberPersist.getFolders().remove(folder);
@@ -142,19 +145,19 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Folder getRootFolder(String nickname) throws Exception {
+    public Folder getRootFolder(String nickname) throws UserNotFoundException, NoteNotFoundException {
         Member user = memberRepository.findByNickname(nickname).orElseThrow(UserNotFoundException::new);
         return user.getFolders().stream().filter(folder -> folder.getParent() == null).findFirst().orElseThrow(NoteNotFoundException::new);
     }
 
     @Override
-    public Boolean checkOwner(Member member, Note note){
-        return note.getAuthor().getId().equals(member.getId());
+    public void checkOwner(Member member, Note note) throws InconsistentNoteOwnerException {
+        if (!note.getAuthor().getId().equals(member.getId())) throw new InconsistentNoteOwnerException();
     }
 
     @Override
-    public Boolean checkOwner(Member member, Folder folder){
-        return folder.getOwner().getId().equals(member.getId());
+    public void checkOwner(Member member, Folder folder) throws InconsistentFolderOwnerException {
+        if (!folder.getOwner().getId().equals(member.getId())) throw new InconsistentFolderOwnerException();
     }
 
     @Override
