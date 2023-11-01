@@ -12,4 +12,6 @@ public interface MemberService {
     boolean isValidNickname(String nickname);
     boolean isValidNicknameFormat(String nickname);
     boolean isNotDuplicatedNickname(String nickname);
+
+    void testContext(Member member) throws Exception;
 }
