@@ -11,7 +11,6 @@ import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,19 +29,19 @@ public class MemberController {
     @Operation(summary = "현재 로그인한 회원 정보를 수정",
                 description = "현재 로그인한 회원의 닉네임과 프로필 사진을 변경 및 저장"
     )
-    public ResponseDto<UserPublicInfoResponseDto> modifyNickname(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                              ModifyUserRequestDto nickname) throws Exception{
+    public ResponseDto<UserPublicInfoResponseDto> modifyUserInfo(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                 @RequestBody ModifyUserRequestDto userRequestDto) throws Exception{
         Member member = userDetails.member();
-        memberService.modifyUserNickname(member, nickname.getNickname());
-        memberService.modifyUserProfile(member, nickname.getProfileUrl());
-        return ResponseDto.of(UserPublicInfoResponseDto.toDto(member));
+        memberService.modifyUserNickname(member, userRequestDto.getNickname());
+        memberService.modifyUserProfile(member, userRequestDto.getProfileUrl());
+        return ResponseDto.of(UserPublicInfoResponseDto.toDto(memberService.findUserByEmail(member.getEmail())));
     }
 
     @Operation(summary = "사용 가능한 닉네임인지 확인",
             description = "닉네임은 1자 이상 12자 이하로, 알파벳 대소문자, 숫자, 갖춘 한글로만 구성되어야 함"
     )
     @PostMapping("/check/nickname")
-    public ResponseDto<NicknameValidationResponseDto> checkNicknameValidation(NicknameDto nickname){
+    public ResponseDto<NicknameValidationResponseDto> checkNicknameValidation(@RequestBody NicknameDto nickname){
         return ResponseDto.of(NicknameValidationResponseDto.toDto(memberService.isValidNickname(nickname.getNickname())));
     }
 
