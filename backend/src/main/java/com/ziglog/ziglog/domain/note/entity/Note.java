@@ -22,7 +22,7 @@ public class Note {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "title")
@@ -32,7 +32,7 @@ public class Note {
     private String content;
 
     @Column(name = "brief")
-    private String brief;
+    private String preview;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -81,8 +81,8 @@ public class Note {
         this.isPublic = isPublic;
     }
 
-    public void setBrief(String brief){
-        this.brief = brief;
+    public void setPreview(String brief){
+        this.preview = brief;
     }
 
     public void setPostDatetime(LocalDateTime datetime){
