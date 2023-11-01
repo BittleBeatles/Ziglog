@@ -81,7 +81,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void saveAuthentication(Member member){
         log.info("jwt filter - save auth : {}", member.getNickname());
         UserDetails userDetails = new CustomUserDetails(member);
-
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
                 authoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
 
