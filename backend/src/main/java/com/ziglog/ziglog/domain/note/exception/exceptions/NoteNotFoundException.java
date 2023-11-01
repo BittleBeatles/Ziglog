@@ -1,7 +1,7 @@
-package com.ziglog.ziglog.global.exception.customException.note;
+package com.ziglog.ziglog.domain.note.exception.exceptions;
 
 
-import com.ziglog.ziglog.global.exception.exceptionCode.NoteExceptionCode;
+import com.ziglog.ziglog.domain.note.exception.NoteExceptionCode;
 
 public class NoteNotFoundException extends RuntimeException{
     public NoteNotFoundException(){

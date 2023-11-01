@@ -1,6 +1,6 @@
-package com.ziglog.ziglog.global.exception.customException.bookmark;
+package com.ziglog.ziglog.domain.bookmark.exception.exceptions;
 
-import com.ziglog.ziglog.global.exception.exceptionCode.BookmarkExceptionCode;
+import com.ziglog.ziglog.domain.bookmark.exception.BookmarkExceptionCode;
 
 public class BookmarkNotFoundException extends RuntimeException {
     public BookmarkNotFoundException(){

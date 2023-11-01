@@ -1,14 +1,13 @@
-package com.ziglog.ziglog.global.exception.exceptionHandler;
+package com.ziglog.ziglog.domain.member.exception;
 
-import com.ziglog.ziglog.global.exception.customException.member.UserNotFoundException;
-import com.ziglog.ziglog.global.exception.exceptionCode.MemberExceptionCode;
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RequiredArgsConstructor
-@RestController("com.ziglog.ziglog")
+@RestControllerAdvice("com.ziglog.ziglog")
 public class MebmerExceptionController {
 
     @ExceptionHandler(UserNotFoundException.class)

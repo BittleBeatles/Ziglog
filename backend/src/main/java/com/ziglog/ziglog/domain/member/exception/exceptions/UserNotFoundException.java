@@ -1,6 +1,6 @@
-package com.ziglog.ziglog.global.exception.customException.member;
+package com.ziglog.ziglog.domain.member.exception.exceptions;
 
-import com.ziglog.ziglog.global.exception.exceptionCode.MemberExceptionCode;
+import com.ziglog.ziglog.domain.member.exception.MemberExceptionCode;
 
 public class UserNotFoundException extends RuntimeException{
     public UserNotFoundException(){
