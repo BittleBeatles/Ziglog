@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final RefreshTokenRepository refreshTokenRepository;
 
     private static final String REFRESH_URL = "/api/auth/refresh";
-    private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
+    private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -53,9 +53,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         log.info("check access token and save auth");
         jwtService.extractAccessToken(request)
                 .filter(jwtService::isAccessTokenValid)
-                .ifPresent(accessToken -> jwtService.extractEmailFromAccessToken(accessToken)
-                        .ifPresent(email-> memberRepository.findByEmail(email)
-                                .ifPresent(this::saveAuthentication)));
+                .flatMap(jwtService::extractEmailFromAccessToken)
+                .flatMap(memberRepository::findByEmail)
+                .ifPresent(this::saveAuthentication);
+
         filterChain.doFilter(request, response);
     }
 
