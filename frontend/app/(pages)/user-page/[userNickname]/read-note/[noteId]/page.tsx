@@ -7,14 +7,17 @@ import BookmarkQuoteInfo from '@components/userPage/BookmarkQuoteInfo';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import QuotationListBox from '@components/userPage/QuotationListBox';
 import { NoteInfo } from '@api/note/types';
-import { deleteNote, getNoteInfo } from '@api/note/note';
+import { deleteNote, getNoteInfo, getReferenceList } from '@api/note/note';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@store/store';
+import { NoteRefListInfo } from '@api/note/types';
 import './/page.css';
 
 export default function ReadNote() {
   const { theme, isLogin } = useAppSelector((state) => state.user);
-
+  const [quotationList, setQuotationList] = useState<NoteRefListInfo>({
+    quotationList: [],
+  });
   const params = useParams();
   const noteId = params.noteId as string;
   const [data, setData] = useState<NoteInfo>({
@@ -44,8 +47,15 @@ export default function ReadNote() {
         });
       }
     };
+    const getQuotationList = async (noteId: number) => {
+      const result = await getReferenceList(noteId);
+      if (result) {
+        setQuotationList(result);
+      }
+    };
     getNoteReadPage(parseInt(noteId));
-  }, [data, noteId]);
+    getQuotationList(parseInt(noteId));
+  }, []);
 
   const isMine = true;
   return (
