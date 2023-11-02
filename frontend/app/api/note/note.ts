@@ -23,10 +23,9 @@ export async function getReferenceList(
 ): Promise<NoteRefListInfo> {
   try {
     const res = await publicFetch<QuotationListApiResponse>(
-      `${API_URL}/note/ref`,
+      `${API_URL}/note/ref?noteId=${noteId}`,
       {
         method: 'GET',
-        body: { noteId },
       }
     );
     return await Promise.resolve(res.body.data);
@@ -34,7 +33,6 @@ export async function getReferenceList(
     throw error;
   }
 }
-
 export async function createNote(folderId: number) {
   return privateFetch<CreateNoteApiResponse>(`${API_URL}/note`, {
     method: 'POST',
