@@ -40,7 +40,7 @@ export async function Logout(): Promise<LogoutInfo> {
     });
 
     store.dispatch(logOut());
-    // window.location.replace('/');
+    window.location.replace('/');
     return 'Logout 성공';
   } catch (err) {
     throw err;
