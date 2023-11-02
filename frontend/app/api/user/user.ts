@@ -79,3 +79,21 @@ export async function checkNickname(newNickname: string): Promise<boolean> {
     return true;
   });
 }
+
+export async function modifyUserInfo(
+  nickname: string,
+  profileUrl: string
+): Promise<string | void> {
+  try {
+    const res = privateFetch<NicknameApiData>(
+      `${API_URL}/user/modify?nickname=${nickname}&profileUrl=${profileUrl}`,
+      {
+        method: 'PUT',
+        body: { nickname, profileUrl },
+      }
+    );
+    return await Promise.resolve('[user info modified]');
+  } catch (err) {
+    throw err;
+  }
+}
