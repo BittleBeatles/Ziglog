@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
+    "@uiw/react-markdown-preview": "^4.2.1",
     "@uiw/react-md-editor": "^3.24.1",
     "diff": "^5.1.0",
     "next": "13.5.4",
