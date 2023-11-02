@@ -3,7 +3,6 @@ package com.ziglog.ziglog.domain.note.service;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
@@ -18,7 +17,7 @@ public interface NoteService {
     Note modifyNote(Member member, Note note) throws Exception; //현재 이 노트의 내용을 저장
     Note setPublic(Member member, Long noteId, Boolean isPublic) throws Exception;
     void deleteNote(Member member, Long noteId) throws Exception; //해당 아이디의 노트를 삭제
-    Note getNote(Member member, Long noteId) throws Exception; //해당 ID의 노트의 Detail을 가져 오기
+    Note readNote(Member member, Long noteId) throws Exception; //해당 ID의 노트의 Detail을 가져 오기
     List<Note> getNotesQuotingThis(Long noteId) throws Exception;
     Slice<Note> searchPublicNotesByTitle(String keyword, Pageable pageable) throws Exception;
     // 폴더
