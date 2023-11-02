@@ -12,7 +12,7 @@ import ProfileChangeButton from '@components/common/ProfileChangeButton';
 import Button from '@components/common/Button';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
-import { modifyUserInfo } from '@api/user/user';
+import { getMyInfo, modifyUserInfo } from '@api/user/user';
 import useDebounce from '@src/hooks/useDebounce';
 import { checkNickname, getUserInfo } from '@api/user/user';
 
@@ -26,7 +26,7 @@ export default function NicknameSetting({
   openModal,
 }: NicknameSettingProps) {
   const [oldUserInfo, setOldUserInfo] = useState({
-    nickname: '',
+    nickname: '닉네임',
     profileImage: '',
   });
   const [data, setData] = useState({
@@ -35,7 +35,7 @@ export default function NicknameSetting({
   });
   useEffect(() => {
     const getUserInfoEditPage = async () => {
-      const result = await getUserInfo();
+      const result = await getMyInfo();
       if (result) {
         setOldUserInfo({
           ...data,
