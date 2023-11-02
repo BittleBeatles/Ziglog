@@ -5083,7 +5083,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "@uiw/react-markdown-preview@npm:^4.2.1":
+=======
+"@uiw/react-markdown-preview@npm:^4.2.2":
+>>>>>>> ddb2a57 (fix: 콘솔로그 삭제 및 index.ts 변경)
   version: 4.2.2
   resolution: "@uiw/react-markdown-preview@npm:4.2.2"
   dependencies:
@@ -17207,7 +17211,7 @@ __metadata:
     "@types/three": ^0
     "@typescript-eslint/eslint-plugin": ^6.8.0
     "@typescript-eslint/parser": ^6.7.5
-    "@uiw/react-markdown-preview": ^4.2.1
+    "@uiw/react-markdown-preview": ^4.2.2
     "@uiw/react-md-editor": ^3.24.1
     autoprefixer: ^10
     cypress: ^13.3.3

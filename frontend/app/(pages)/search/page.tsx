@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import GlobalSearchInput from '@components/search/GlobalSearchInput';
 import GlobalSearchResult from '@components/search/GlobalSearchResult';
 import useDebounce from '@src/hooks/useDebounce';
@@ -45,8 +45,6 @@ export default function Search() {
         console.log(debouncedKeyword, page, perPage);
         const response = await getSearchInfo(debouncedKeyword, page, perPage);
         const newData = response;
-        console.log('검색 결과 데이터:', newData);
-        console.log('객체 개수:', newData.notes.length);
 
         if (newData && newData.notes.length > 0) {
           setSearchData((prevData) => ({

@@ -10,7 +10,6 @@ export function getSearchInfo(
   page: number,
   perPage: number
 ): Promise<SearchInfo> {
-  console.log('요청 보냄');
   return publicFetch<SearchApiData>(
     `${API_URL}/search?keyword=${debouncedKeyword}&page=${page}&perPage=${perPage}`,
     {
@@ -18,9 +17,6 @@ export function getSearchInfo(
     }
   )
     .then((res) => {
-      console.log('요청 받음');
-      console.log('API 응답 데이터:', res);
-      console.log('API 응답 데이터:', res.body.data);
       return Promise.resolve(res.body.data);
     })
     .catch((err) => {
