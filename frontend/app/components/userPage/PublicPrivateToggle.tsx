@@ -17,7 +17,7 @@ export default function PublicPrivateToggle({
   return (
     <button
       {...rest}
-      className={`${THEME_VARIANTS[theme]} flex flex-row gap-3 border border-border-grey rounded-lg w-fit p-3 font-bold`}
+      className={`${THEME_VARIANTS[theme]} flex flex-row gap-3  rounded-lg w-fit p-3 font-bold`}
     >
       <SvgIcon
         name={scope}
@@ -29,6 +29,6 @@ export default function PublicPrivateToggle({
 }
 
 const THEME_VARIANTS = {
-  dark: 'bg-dark-background-page text-white',
-  light: 'bg-light-background-layout border-border-grey',
+  dark: 'bg-dark-background-layout text-white',
+  light: 'bg-light-background-layout border-border-grey ',
 };
