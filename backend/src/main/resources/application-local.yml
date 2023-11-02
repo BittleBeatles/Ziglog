@@ -1,3 +1,6 @@
+
+
+
 spring:
   config:
     activate:
@@ -34,7 +37,7 @@ spring:
             scope:
               - profile
               - email
-            redirect-uri: http://localhost:8080/api/login/oauth2/code/google
+            redirect-uri: ${base-url.backend}/api/login/oauth2/code/google
 
   # Redis Configuration
   data:
@@ -42,3 +45,7 @@ spring:
       host: 127.0.0.1
       password:
       port: 6379
+
+base-url:
+  frontend: http://localhost:3000
+  backend: http://localhost:8080

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -30,7 +31,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-    private String frontUrl = "http://localhost:3000";
+
+    @Value("${base-url.frontend}")
+    private String frontUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -53,10 +56,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtService.issueAccessToken(oAuth2User.getName());
         String refreshToken = jwtService.issueRefreshToken();
 
-        String redirectUrl = UriComponentsBuilder.fromUriString(frontUrl+"/oauth?at=" + accessToken)
+        String redirectUrl = UriComponentsBuilder.fromUriString(frontUrl + "/oauth?at=" + accessToken)
                 .build().toUriString();
 
-        jwtService.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
         jwtService.saveRefreshToken(refreshToken, oAuth2User.getMember().getEmail());
         redirectStrategy.sendRedirect(request, response, redirectUrl);
     }

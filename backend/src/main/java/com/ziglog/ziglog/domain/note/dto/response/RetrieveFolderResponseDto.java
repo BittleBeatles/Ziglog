@@ -39,6 +39,7 @@ public class RetrieveFolderResponseDto {
     }
 
     public static RetrieveFolderResponseDto toDto(Folder folder, Member member){
+        //TODO JPA 영속성 컨텍스트 생각하면 사실 여기에서 DB I/O가 일어나지 않을까? 따져보고 바꿔야 함
         return new RetrieveFolderResponseDto(
                     FolderDto.builder()
                             .type("folder")

@@ -50,6 +50,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public boolean isValidNickname(String nickname) {
+        //기존에 사용하던 닉네임과 동일한지 여부를 확인하는 로직이 추가돼야 함
         if (!isValidNicknameFormat(nickname)) return false;
         return isNotDuplicatedNickname(nickname);
     }

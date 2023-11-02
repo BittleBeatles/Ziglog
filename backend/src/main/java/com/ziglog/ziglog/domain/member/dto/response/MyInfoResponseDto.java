@@ -18,7 +18,7 @@ public class MyInfoResponseDto {
     private Long rootFolderId;
 
     public static MyInfoResponseDto toDto(Member member) throws Exception {
-
+        //TODO 루트 폴더 찾는 건 서비스 로직에 들어가야 함 분리하기
         return MyInfoResponseDto.builder()
                 .profileUrl(member.getProfileUrl())
                 .nickname(member.getNickname())
