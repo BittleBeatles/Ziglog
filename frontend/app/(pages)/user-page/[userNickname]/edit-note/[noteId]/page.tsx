@@ -13,6 +13,11 @@ import {
 } from '@api/note/editNote';
 import { EditNoteParams } from '@api/note/types';
 import { diffChars } from 'diff';
+import dynamic from 'next/dynamic';
+
+const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
+  ssr: false,
+});
 
 interface NoteDetail extends EditNoteParams {
   isPublic: boolean;
@@ -35,7 +40,9 @@ export default function EditNote() {
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId);
+      console.log(result.content);
       if (result) {
+        console.log(result);
         setOldContent({
           ...data,
           title: result.title,
@@ -50,7 +57,9 @@ export default function EditNote() {
       }
     };
     getNoteInfoEditPage(parseInt(noteId));
-  }, [data, noteId]);
+  }, []);
+
+  useEffect(() => {}, [data.content]);
 
   const handlePublicPrivateButton = () => {
     const changePublicStatus = async (noteId: number, isPublic: boolean) => {
@@ -112,13 +121,15 @@ export default function EditNote() {
           />
         </div>
       </div>
-      <MarkdownEditor
-        theme={theme}
-        ref={editorRef}
-        preview="live"
-        hideToolbar={false}
+      <MDEditor
+        className="relative"
+        data-color-mode={theme}
         height={600}
-      />
+        value={data.content}
+        onChange={(v) => setData({ ...data, content: v || '' })}
+        preview={'live'}
+        hideToolbar={false}
+      ></MDEditor>
       <div ref={quotationModalRef} className="absolute">
         <QuotationModal />
       </div>
