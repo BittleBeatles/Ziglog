@@ -46,7 +46,7 @@ public class RetrieveFolderResponseDto {
                             .folderId(folder.getId())
                             .title(folder.getTitle())
                             .notes(folder.getNotes().stream().sorted(Comparator.comparing(Note::getTitle))
-                                            .filter(note -> note.isPublic() || note.getAuthor().equals(member))
+                                            .filter(note -> note.isPublic() || note.getAuthor().getId().equals(member.getId()))
                                             .map(note ->
                                                 NoteDto.builder()
                                                         .type("note")
