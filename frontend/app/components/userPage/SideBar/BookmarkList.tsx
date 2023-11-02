@@ -1,16 +1,11 @@
 'use client';
+import { Note } from '@api/bookmark/types';
 import IconButton from '@components/common/IconButton';
 import SvgIcon from '@components/common/SvgIcon';
 import Text from '@components/common/Text';
 import colors from '@src/design/color';
 import Link from 'next/link';
 import { useState } from 'react';
-
-interface Note {
-  noteId: number;
-  userNickname: string;
-  title: string;
-}
 
 export interface BookmarkListProps {
   noteList: Note[];
@@ -55,7 +50,7 @@ export default function BookmarkList({
         {displayedNotes.map((note) => {
           return (
             <Link
-              href={`/user-page/${note.userNickname}/read-note/${note.noteId}`}
+              href={`/user-page/${note.nickname}/read-note/${note.noteId}`}
               key={note.noteId}
             >
               <div className="flex items-center mb-3 opacity-100 hover:opacity-60 transition-opacity duration-300">
