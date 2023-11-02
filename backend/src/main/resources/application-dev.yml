@@ -40,4 +40,4 @@ spring:
 
 base-url:
   frontend: http://localhost:3000
-  backend: http://k9a407.p.ssafy.io:8000
+  backend: http://k9a407.p.ssafy.io:8080
