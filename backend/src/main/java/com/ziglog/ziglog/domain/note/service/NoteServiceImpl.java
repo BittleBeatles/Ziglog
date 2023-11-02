@@ -95,11 +95,11 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Note getNote(Member member, Long noteId) throws Exception{
+    public Note readNote(Member member, Long noteId) throws NoteNotFoundException, NoAuthorizationToReadException {
         //TODO 인증 여부에 따라 보일지 말지를 결정하는 로직이 필요
         Note note =  noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         if (note.isPublic()) return note;
-        if (member == null) return null;
+        if (member == null) throw new NoAuthorizationToReadException();
         if (note.getId().equals(member.getId())) return note;
         return null;
     }
@@ -126,8 +126,8 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public Folder modifyFolder(Member member, Folder folder) throws InconsistentFolderOwnerException, FolderNotFoundException {
         //JPA 영속성 컨테스트 내
-        checkOwner(member, folder);
         Folder origin = folderRepository.findById(folder.getId()).orElseThrow(FolderNotFoundException::new);
+        checkOwner(member,origin);
 
         origin.setTitle(folder.getTitle());
         return origin;
