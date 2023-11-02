@@ -1,65 +1,55 @@
 package com.ziglog.ziglog.domain.note.dto.response;
 
-import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Getter
 public class RetrieveFolderResponseDto {
+    private List<Node> folderList;
 
-    private FolderDto folder;
-
-    private RetrieveFolderResponseDto(FolderDto folderDto){
-        this.folder = folderDto;
+    private RetrieveFolderResponseDto(Folder folder){
+        Node root = new Node(folder);
+        this.folderList = root.getNotes();
     }
 
     @Builder
     @Getter
-    private static class FolderDto {
+    @AllArgsConstructor
+    private static class Node {
         private String type;
-        private Long folderId;
+        private Long id;
         private String title;
-        private List<NoteDto> notes;
-        private List<RetrieveFolderResponseDto> folderList;
-    }
-
-    @Builder
-    @Getter
-    private static class NoteDto {
-        private String type;
-        private Long noteId;
-        private String title;
+        private List<Node> notes;
         private Boolean isPublic;
+
+        Node(Folder folder) {
+            this.type = "folder";
+            this.id = folder.getId();
+            this.title = folder.getTitle();
+            this.isPublic = true;
+            List<Node> children = new ArrayList<>(folder.getChildren().stream().map(Node::new).toList());
+            List<Node> subNotes = new ArrayList<>(folder.getNotes().stream().map(Node::new).toList());
+            children.addAll(subNotes);
+            this.notes = children;
+        }
+
+        Node(Note note) {
+            this.type = "note";
+            this.id = note.getId();
+            this.title = note.getTitle();
+            this.isPublic = note.isPublic();
+            this.notes = new ArrayList<>();
+        }
     }
 
-    public static RetrieveFolderResponseDto toDto(Folder folder, Member member){
-        //TODO JPA 영속성 컨텍스트 생각하면 사실 여기에서 DB I/O가 일어나지 않을까? 따져보고 바꿔야 함
-        return new RetrieveFolderResponseDto(
-                    FolderDto.builder()
-                            .type("folder")
-                            .folderId(folder.getId())
-                            .title(folder.getTitle())
-                            .notes(folder.getNotes().stream().sorted(Comparator.comparing(Note::getTitle))
-                                            .filter(note -> note.isPublic() || note.getAuthor().getId().equals(member.getId()))
-                                            .map(note ->
-                                                NoteDto.builder()
-                                                        .type("note")
-                                                        .noteId(note.getId())
-                                                        .title(note.getTitle())
-                                                        .isPublic(note.isPublic())
-                                                        .build()
-                                            ).toList()
-                            )
-                            .folderList(folder.getChildren().stream().sorted(Comparator.comparing(Folder::getTitle))
-                                    .map((Folder folder1) -> toDto(folder1, member))
-                                    .toList())//이름으로 오름차순 정렬해서 주기
-                            .build()
-                );
+    public static RetrieveFolderResponseDto toDto(Folder folder) {
+        return new RetrieveFolderResponseDto(folder);
     }
 }
+
