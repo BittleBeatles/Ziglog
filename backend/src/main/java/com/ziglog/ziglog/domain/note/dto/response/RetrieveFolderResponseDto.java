@@ -54,7 +54,7 @@ public class RetrieveFolderResponseDto {
                                                         .title(note.getTitle())
                                                         .isPublic(note.isPublic())
                                                         .build()
-                                            ).toList()//이름으로 오름차순 정렬
+                                            ).toList()
                             )
                             .folderList(folder.getChildren().stream().sorted(Comparator.comparing(Folder::getTitle))
                                     .map((Folder folder1) -> toDto(folder1, member))

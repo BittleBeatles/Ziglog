@@ -29,8 +29,7 @@ public class MemberController {
 
     @PutMapping("/modify")
     @Operation(summary = "현재 로그인한 회원 정보를 수정",
-                description = "현재 로그인한 회원의 닉네임과 프로필 사진을 변경 및 저장"
-    )
+                description = "현재 로그인한 회원의 닉네임과 프로필 사진을 변경 및 저장")
     public ResponseDto<UserPublicInfoResponseDto> modifyNickname(@AuthenticationPrincipal CustomUserDetails userDetails,
                                               ModifyUserRequestDto nickname) throws Exception{
         Member member = userDetails.member();//이거 안 돼야하는데 왜 되는 거지???
@@ -40,24 +39,21 @@ public class MemberController {
     }
 
     @Operation(summary = "사용 가능한 닉네임인지 확인",
-            description = "닉네임은 1자 이상 12자 이하로, 알파벳 대소문자, 숫자, 갖춘 한글로만 구성되어야 함"
-    )
+            description = "닉네임은 1자 이상 12자 이하로, 알파벳 대소문자, 숫자, 갖춘 한글로만 구성되어야 함")
     @PostMapping("/check/nickname")
     public ResponseDto<NicknameValidationResponseDto> checkNicknameValidation(@RequestBody NicknameDto nickname){
         return ResponseDto.of(NicknameValidationResponseDto.toDto(memberService.isValidNickname(nickname.getNickname())));
     }
 
     @Operation(summary = "닉네임으로 공개 정보를 조회",
-            description = "닉네임으로 해당 사용자의 닉네임과 프로필 이미지 주소를 조회"
-    )
+            description = "닉네임으로 해당 사용자의 닉네임과 프로필 이미지 주소를 조회")
     @GetMapping("/{nickname}")
     public ResponseDto<UserPublicInfoResponseDto> getUserPublicInfo(@PathVariable String nickname) throws Exception{
         return ResponseDto.of(UserPublicInfoResponseDto.toDto(memberService.findUserByNickname(nickname)));
     }
 
     @Operation(summary = "현재 로그인한 회원의 공개 정보를 조회",
-            description = "액세스 토큰을 기반으로 현재 로그인한 사용자의 닉네임과 프로필 이미지 주소를 조회"
-    )
+            description = "액세스 토큰을 기반으로 현재 로그인한 사용자의 닉네임과 프로필 이미지 주소를 조회")
     @GetMapping("/info")
     public ResponseDto<MyInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception{
         return ResponseDto.of(MyInfoResponseDto.toDto(memberService.findUserByEmail(userDetails.member().getEmail()),
