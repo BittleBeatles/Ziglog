@@ -34,7 +34,7 @@ export const privateFetch = returnFetchJson({
     },
     response: async (response, config, fetch) => {
       console.log('response', response);
-      if (response.status !== 200) {
+      if (response.status === 401) {
         const newAccessToken = await ReissueToken();
         if (newAccessToken) {
           config[1] = {
