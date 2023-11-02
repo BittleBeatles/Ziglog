@@ -323,5 +323,22 @@ class NoteServiceImplTest {
         assertEquals(folder, note.getFolder());//폴더2의 부모를 확인
     }
 
+    @DisplayName("비공개 글을 다른 사람이 조회할 수 있는지 테스트")
+    @Test
+    void readPrivateNote() throws Exception {
+        Note note = noteService.createNote(member1, mem1RootFolder.getId());
+        assertNull(noteService.readNote(member2, note.getId()));
+    }
+
+    @DisplayName("공개 글을 다른 사람이 조회할 수 있는지 테스트")
+    @Test
+    void readPublicNoteByOtherUser() throws Exception {
+        Note note = noteService.createNote(member1, mem1RootFolder.getId());
+        noteService.setPublic(member1, note.getId(), true);
+
+        assertNotNull(noteService.readNote(member2, note.getId()));
+    }
+
+
 
 }
