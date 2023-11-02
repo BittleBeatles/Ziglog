@@ -35,6 +35,11 @@ public class NoteExceptionController {
         return toResponseDto(NoteExceptionCode.CANNOT_REMOVE_ROOT_FOLDER_EXCEPTION);
     }
 
+    @ExceptionHandler(NoAuthorizationToReadException.class)
+    public ResponseDto<String> handleNoAuthorizationToReadException (NoAuthorizationToReadException err){
+        return toResponseDto(NoteExceptionCode.NO_AUTHORIZATION_TO_READ_EXCEPTION);
+    }
+
     public static ResponseDto<String> toResponseDto(NoteExceptionCode exceptionCode){
         return ResponseDto.of(exceptionCode.getErrorCode(), exceptionCode.getErrorMessage());
     }
