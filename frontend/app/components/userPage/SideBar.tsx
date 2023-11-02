@@ -3,6 +3,7 @@ import ProfileImage from '@components/common/ProfileImage';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
 import Button from '@components/common/Button';
+import DongSuk from '@public/images/DongSuk.jpg';
 import IconButtonWithBg from '@components/common/IconButtonWithBg';
 
 import PersonalSearchInput from './SideBar/PersonalSearchInput';
@@ -10,7 +11,7 @@ import Directory, { DirectoryItem } from './SideBar/Directory';
 import BookmarkList from './SideBar/BookmarkList';
 import { useRouter } from 'next/navigation';
 import NicknameSetting from './NicknameSetting';
-import { Logout, getUserInfo } from '@api/user/user';
+import { Logout } from '@api/user/user';
 import { createNote } from '@api/note/note';
 import { useAppDispatch } from '@store/store';
 import { setMyTheme } from '@store/modules/userSlice';
@@ -23,6 +24,7 @@ interface SideBarProps {
 export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const [isLogined, setLogined] = useState(true);
   const [isMine, setMine] = useState(true);
+  const nickname = '동석 마 좀 치나';
   const router = useRouter();
   const [directory, setDirectory] = useState<DirectoryItem[]>(directoryList);
   const [parentId, setParentId] = useState<number>(-1);
@@ -75,35 +77,16 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
     };
   }, [showInput.type]);
 
-  const [userInfo, setUserInfo] = useState({
-    nickname: '',
-    profileImage: '',
-  });
-  useEffect(() => {
-    const getUserInformation = async () => {
-      const result = await getUserInfo();
-      if (result) {
-        setUserInfo({
-          nickname: result.nickname,
-          profileImage: result.profileImage,
-        });
-      }
-    };
-    getUserInformation();
-  }, []);
-
   return (
     <div
       className="flex flex-col justify-between py-4 h-screen"
       ref={sidebarRef}
     >
       <div className="profile flex justify-between items-center px-8">
-        <ProfileImage src={userInfo.profileImage} size={35} />
-        <div className="ml-2 w-28">
-          <Text type="p" className={`${theme === 'dark' ? 'text-white' : ''}`}>
-            {userInfo.nickname}
-          </Text>
-        </div>
+        <ProfileImage src={DongSuk} />
+        <Text type="p" className={`${theme === 'dark' ? 'text-white' : ''}`}>
+          {nickname}
+        </Text>
         <IconButton
           onClick={sideBarToggle}
           theme={theme}
@@ -130,7 +113,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
           name="AddNote"
         />
         <IconButtonWithBg
-          onClick={() => router.push(`/user-page/${userInfo.nickname}`)}
+          onClick={() => router.push(`/user-page/${nickname}`)}
           size={30}
           theme={theme}
           name="GraphView"
