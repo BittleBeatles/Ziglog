@@ -68,7 +68,16 @@ export default function ReadNote() {
           {isMine ? (
             <div className="flex flex-row">
               <div className="ml-3">
-                <Button color="blue" label="수정" size="text-xs"></Button>
+                <Button
+                  onClick={() =>
+                    window.location.replace(
+                      `/user-page/${data.nickname}/edit-note/${noteId}`
+                    )
+                  }
+                  color="blue"
+                  label="수정"
+                  size="text-xs"
+                ></Button>
               </div>
               <div className="ml-3">
                 <Button
