@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class RefreshResponseDto {
+
     private String grantType = "Bearer";
     private String accessToken;
 

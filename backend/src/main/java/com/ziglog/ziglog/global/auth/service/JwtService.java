@@ -47,7 +47,6 @@ public class JwtService {
     private static final String REFRESH_TOKEN_COOKIE_NAME = "refreshToken";
     private static final String BEARER = "Bearer ";
 
-    private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
     public String issueAccessToken(String username){
@@ -115,6 +114,7 @@ public class JwtService {
 
     public void setRefreshTokenCookie(HttpServletResponse response, String refreshToken){
         log.info("set refresh token cookie");
+
         ResponseCookie cookie = ResponseCookie.from(REFRESH_TOKEN_COOKIE_NAME, refreshToken)
                 .maxAge(refreshTokenExpiration)
                 .path("/")
@@ -122,6 +122,7 @@ public class JwtService {
                 .sameSite("None")
                 .httpOnly(true)
                 .build();
+
         response.setHeader(refreshTokenHeader, cookie.toString());
     }
     public void saveRefreshToken(String refreshToken, String email) {
