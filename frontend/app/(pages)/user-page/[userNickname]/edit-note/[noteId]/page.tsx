@@ -13,7 +13,7 @@ import {
 import { EditNoteParams } from '@api/note/types';
 import { diffChars } from 'diff';
 import dynamic from 'next/dynamic';
-import { store } from '@store/store';
+import { store, useAppSelector } from '@store/store';
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
@@ -25,7 +25,7 @@ export interface NoteDetail extends EditNoteParams {
 
 export default function EditNote() {
   const titleRef = useRef<HTMLInputElement>(null);
-  const theme = store.getState().user.theme;
+  const theme = useAppSelector((state) => state.user.theme);
   const params = useParams();
   const noteId = params.noteId as string;
   const [oldContent, setOldContent] = useState({ title: '', content: '' });
