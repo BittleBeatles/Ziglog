@@ -7,6 +7,7 @@ import com.ziglog.ziglog.domain.member.dto.response.NicknameValidationResponseDt
 import com.ziglog.ziglog.domain.member.dto.response.UserPublicInfoResponseDto;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.service.MemberService;
+import com.ziglog.ziglog.domain.note.service.NoteService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final NoteService noteService;
 
     @PutMapping("/modify")
     @Operation(summary = "현재 로그인한 회원 정보를 수정",
@@ -58,7 +60,8 @@ public class MemberController {
     )
     @GetMapping("/info")
     public ResponseDto<MyInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception{
-        return ResponseDto.of(MyInfoResponseDto.toDto(memberService.findUserByEmail(userDetails.member().getEmail())));
+        return ResponseDto.of(MyInfoResponseDto.toDto(memberService.findUserByEmail(userDetails.member().getEmail()),
+                noteService.getRootFolder(userDetails.member().getNickname())));
     }
 
     @GetMapping("/test")
