@@ -41,7 +41,7 @@ public class MemberController {
             description = "닉네임은 1자 이상 12자 이하로, 알파벳 대소문자, 숫자, 갖춘 한글로만 구성되어야 함"
     )
     @PostMapping("/check/nickname")
-    public ResponseDto<NicknameValidationResponseDto> checkNicknameValidation(NicknameDto nickname){
+    public ResponseDto<NicknameValidationResponseDto> checkNicknameValidation(@RequestBody NicknameDto nickname){
         return ResponseDto.of(NicknameValidationResponseDto.toDto(memberService.isValidNickname(nickname.getNickname())));
     }
 
@@ -58,7 +58,7 @@ public class MemberController {
     )
     @GetMapping("/info")
     public ResponseDto<MyInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception{
-        return ResponseDto.of(MyInfoResponseDto.toDto(userDetails.member()));
+        return ResponseDto.of(MyInfoResponseDto.toDto(memberService.findUserByEmail(userDetails.member().getEmail())));
     }
 
     @GetMapping("/test")

@@ -14,8 +14,8 @@ public interface BookmarkService {
     void deleteBookmark(Member member, Long noteId) throws Exception;
 
     //북마크 가져오기
-    List<Bookmark> getBookmarks(Member member);
+    List<Bookmark> getBookmarks(Member member) throws Exception;
 
     //이 글이 북마크 된 글인지 확인
-    Boolean checkIsBookmarked(Member member, Long noteId);
+    Boolean checkIsBookmarked(Member member, Long noteId) throws Exception;
 }

@@ -37,6 +37,7 @@ public class SearchResponseDto {
         private static BriefNoteDto toDto (Note note){
             return BriefNoteDto.builder()
                     .noteId(note.getId())
+                    .title(note.getTitle())
                     .nickname(note.getAuthor().getNickname())
                     .preview(note.getPreview())
                     .isPublic(note.isPublic())

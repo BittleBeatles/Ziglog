@@ -31,11 +31,11 @@ public class Folder {
     private Folder parent = null;
 
     @Builder.Default
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Folder> children = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Note> notes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -43,11 +43,5 @@ public class Folder {
     private Member owner;
     public void setTitle(String title){
         this.title = title;
-    }
-    public void setParent(Folder parent) {
-        this.parent = parent;
-    }
-    public void setOwner(Member owner) {
-        this.owner = owner;
     }
 }

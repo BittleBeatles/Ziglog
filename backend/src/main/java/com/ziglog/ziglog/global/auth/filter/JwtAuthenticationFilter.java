@@ -17,6 +17,7 @@ import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMap
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -29,18 +30,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    private static final String REFRESH_URL = "/refresh";
+    private static final String REFRESH_URL = "/api/auth/refresh";
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        log.info("requestURI: {}", request.getRequestURI());
         if (request.getRequestURI().equals(REFRESH_URL)){
             checkRefreshTokenAndReissueAccessToken(request, response, filterChain);
-            return;
         }
-        checkAccessTokenAndSaveAuthentication(request, response, filterChain);
+        else {
+            checkAccessTokenAndSaveAuthentication(request, response, filterChain);
+        }
+
     }
 
     //Access Token 있는지 확인
@@ -71,20 +75,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     memberRepository.findByEmail(email)
                             .ifPresent(member -> {
                                 String reIssuedRefreshToken = jwtService.issueRefreshToken();
+                                log.info("reissued refresh token : {}", reIssuedRefreshToken);
                                 jwtService.sendAccessTokenAndRefreshToken(response, jwtService.issueAccessToken(member.getEmail()), reIssuedRefreshToken);
                                 jwtService.saveRefreshToken(reIssuedRefreshToken, member.getEmail());
                             });
                 });
+
+        filterChain.doFilter(request, response);
     }
 
     //Authentication 저장
+    @Transactional
     public void saveAuthentication(Member member){
         log.info("jwt filter - save auth : {}", member.getNickname());
         UserDetails userDetails = new CustomUserDetails(member);
-
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
                 authoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
     }
 }

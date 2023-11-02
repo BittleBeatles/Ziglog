@@ -12,8 +12,8 @@ import java.util.List;
 public interface NoteService {
 
     // 노트
-    Boolean checkOwner(Member member, Note note);
-    Boolean checkOwner(Member member, Folder folder);
+    void checkOwner(Member member, Note note);
+    void checkOwner(Member member, Folder folder);
     Note createNote(Member member, Long folderId) throws Exception; //비어있는 새 노트를 생성
     Note modifyNote(Member member, Note note) throws Exception; //현재 이 노트의 내용을 저장
     Note setPublic(Member member, Long noteId, Boolean isPublic) throws Exception;
@@ -22,7 +22,7 @@ public interface NoteService {
     Note getNote(Long noteId) throws Exception; //해당 ID의 노트의 Detail을 가져 오기
     Slice<Note> searchPublicNotesByTitle(String keyword, Pageable pageable) throws Exception;
     // 폴더
-    Folder createFolder(Member member, String title, Long folder) throws Exception;//새로운 폴더를 추가
+    Folder createFolder(Member member, String title, Long folderId) throws Exception;//새로운 폴더를 추가
 
     Folder modifyFolder(Member member, Folder folder) throws Exception;//폴더의 이름을 변경
 

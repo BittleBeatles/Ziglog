@@ -1,16 +1,20 @@
 package com.ziglog.ziglog.domain.member.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.member.exception.exceptions.InvalidUserModificationRequestException;
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.metamodel.mapping.ForeignKeyDescriptor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -20,25 +24,27 @@ public class MemberServiceImpl implements MemberService{
     private final FolderRepository folderRepository;
 
     @Override
-    public Member findUserByEmail(String email) throws Exception {
-        return memberRepository.findByEmail(email).orElseThrow(() -> new Exception());
+    public Member findUserByEmail(String email) throws UserNotFoundException {
+        return memberRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public Member findUserByNickname(String nickname) throws Exception{
-        return memberRepository.findByNickname(nickname).orElseThrow(() -> new Exception());
+    public Member findUserByNickname(String nickname) throws UserNotFoundException {
+        return memberRepository.findByNickname(nickname).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public void modifyUserNickname(Member member, String nickname) throws Exception{
-        if (!isValidNickname(nickname)) throw new Exception();
-        member.setNickname(nickname);
-    }
-
-    @Override
-    public void modifyUserProfile(Member member, String profileUrl) throws Exception{
+    public void modifyUserNickname(Member member, String nickname) throws UserNotFoundException, InvalidUserModificationRequestException {
+        if (!isValidNickname(nickname)) throw new InvalidUserModificationRequestException();
         memberRepository.findByEmail(member.getEmail())
-                        .orElseThrow(() -> new Exception())
+                        .orElseThrow(UserNotFoundException::new)
+                        .setNickname(nickname);
+    }
+
+    @Override
+    public void modifyUserProfile(Member member, String profileUrl) throws UserNotFoundException{
+        memberRepository.findByEmail(member.getEmail())
+                        .orElseThrow(UserNotFoundException::new)
                         .setProfileUrl(profileUrl);
     }
 
@@ -51,21 +57,19 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public Member signUp(String email, String nickname) throws Exception{
-        Member member = Member.builder()
+        Member member = memberRepository.save(
+                Member.builder()
                 .email(email)
                 .nickname(nickname)
                 .password(UUID.randomUUID().toString())
-                .build();
-        member = memberRepository.save(member);
+                .build());
 
-        Folder root = Folder.builder()
+        Folder root = folderRepository.save(Folder.builder()
                     .title("root")
                     .owner(member)
-                    .build() ;
+                    .build());
 
-        root = folderRepository.save(root);
         member.getFolders().add(root);
-
         return member;
     }
 
@@ -76,5 +80,12 @@ public class MemberServiceImpl implements MemberService{
 
     public boolean isNotDuplicatedNickname(String nickname){
         return !memberRepository.existsMemberByNickname(nickname);
+    }
+
+    @Override
+    public void testContext(Member member) throws Exception{
+        Member mem2 = memberRepository.findByEmail(member.getEmail()).orElseThrow(Exception::new);
+        if (mem2.equals(member)) log.info("same entity in JPA persistence context");
+        else log.info("diff");
     }
 }

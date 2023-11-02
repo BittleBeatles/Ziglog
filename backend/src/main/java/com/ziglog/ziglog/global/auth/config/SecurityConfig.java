@@ -59,8 +59,8 @@ public class SecurityConfig {
     @Value("${jwt.access.header}")
     private String accessTokenHeader;
 
-    @Value("${jwt.refresh.header}")
-    private String refreshTokenHeader;
+    private static final String REFRESH_TOKEN_COOKIE_NAME = "refreshToken";
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfig = new CorsConfiguration();
@@ -70,6 +70,7 @@ public class SecurityConfig {
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod("*");
         corsConfig.addExposedHeader(accessTokenHeader);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
@@ -107,7 +108,7 @@ public class SecurityConfig {
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessHandler(((request, response, authentication) -> { return; }))
                         .invalidateHttpSession(true)
-                        .deleteCookies(refreshTokenHeader)
+                        .deleteCookies(REFRESH_TOKEN_COOKIE_NAME)
                 )
                 .exceptionHandling(handling -> handling
                         .authenticationEntryPoint((((request, response, authException) -> {response.setStatus(401);})))
