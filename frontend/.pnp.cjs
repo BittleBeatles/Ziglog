@@ -46,6 +46,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/three", "npm:0.157.2"],\
             ["@typescript-eslint/eslint-plugin", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:6.8.0"],\
             ["@typescript-eslint/parser", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:6.7.5"],\
+            ["@uiw/react-markdown-preview", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:4.2.2"],\
             ["@uiw/react-md-editor", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:3.24.1"],\
             ["autoprefixer", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:10.4.16"],\
             ["cypress", "npm:13.3.3"],\
@@ -7471,6 +7472,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
+        ["npm:4.2.2", {\
+          "packageLocation": "./.yarn/cache/@uiw-react-markdown-preview-npm-4.2.2-a064fb2840-9c74a53787.zip/node_modules/@uiw/react-markdown-preview/",\
+          "packageDependencies": [\
+            ["@uiw/react-markdown-preview", "npm:4.2.2"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
         ["virtual:a4393c8a5929657ed3dcfd2ec15a7518b331c0ee11afaa2ccaa16822ead6f8989f3f42514842c858b227362ecd56b7e2afcd52450df95f583aed16fd0b763243#npm:4.1.16", {\
           "packageLocation": "./.yarn/__virtual__/@uiw-react-markdown-preview-virtual-175de2b15e/0/cache/@uiw-react-markdown-preview-npm-4.1.16-a3b0b51d57-348330674a.zip/node_modules/@uiw/react-markdown-preview/",\
           "packageDependencies": [\
@@ -7481,7 +7489,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@uiw/copy-to-clipboard", "npm:1.0.16"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:18.2.0"],\
-            ["react-markdown", "virtual:175de2b15e2740cba0b13f0b5abf6d5bf2488896a13aafb6ed822d66c9ad5def0906852fa68b52f1c0044f5c2d71c00ef7200f6abdfc80eb794f39a0b66a8bd2#npm:8.0.7"],\
+            ["react-markdown", "virtual:b5528ed2e8bbd83c65661a7d3013c2d774073330cd21fdd867cf628cbaf3677da01a7f90c25faf46a388c85aa9a89e8e6667804cdca0711647663587e8e852df#npm:8.0.7"],\
+            ["rehype-attr", "npm:2.1.4"],\
+            ["rehype-autolink-headings", "npm:6.1.1"],\
+            ["rehype-ignore", "npm:1.0.5"],\
+            ["rehype-prism-plus", "npm:1.6.3"],\
+            ["rehype-raw", "npm:6.1.1"],\
+            ["rehype-rewrite", "npm:3.0.6"],\
+            ["rehype-slug", "npm:5.1.0"],\
+            ["remark-gfm", "npm:3.0.1"],\
+            ["unist-util-visit", "npm:4.1.2"]\
+          ],\
+          "packagePeers": [\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:4.2.2", {\
+          "packageLocation": "./.yarn/__virtual__/@uiw-react-markdown-preview-virtual-b5528ed2e8/0/cache/@uiw-react-markdown-preview-npm-4.2.2-a064fb2840-9c74a53787.zip/node_modules/@uiw/react-markdown-preview/",\
+          "packageDependencies": [\
+            ["@uiw/react-markdown-preview", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:4.2.2"],\
+            ["@babel/runtime", "npm:7.23.2"],\
+            ["@types/react", "npm:18.2.28"],\
+            ["@types/react-dom", "npm:18.2.13"],\
+            ["@uiw/copy-to-clipboard", "npm:1.0.16"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:18.2.0"],\
+            ["react-markdown", "virtual:b5528ed2e8bbd83c65661a7d3013c2d774073330cd21fdd867cf628cbaf3677da01a7f90c25faf46a388c85aa9a89e8e6667804cdca0711647663587e8e852df#npm:8.0.7"],\
             ["rehype-attr", "npm:2.1.4"],\
             ["rehype-autolink-headings", "npm:6.1.1"],\
             ["rehype-ignore", "npm:1.0.5"],\
@@ -18099,10 +18136,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:175de2b15e2740cba0b13f0b5abf6d5bf2488896a13aafb6ed822d66c9ad5def0906852fa68b52f1c0044f5c2d71c00ef7200f6abdfc80eb794f39a0b66a8bd2#npm:8.0.7", {\
-          "packageLocation": "./.yarn/__virtual__/react-markdown-virtual-0e0081806f/0/cache/react-markdown-npm-8.0.7-978c454c1c-0f3e570975.zip/node_modules/react-markdown/",\
+        ["virtual:b5528ed2e8bbd83c65661a7d3013c2d774073330cd21fdd867cf628cbaf3677da01a7f90c25faf46a388c85aa9a89e8e6667804cdca0711647663587e8e852df#npm:8.0.7", {\
+          "packageLocation": "./.yarn/__virtual__/react-markdown-virtual-a5d1131532/0/cache/react-markdown-npm-8.0.7-978c454c1c-0f3e570975.zip/node_modules/react-markdown/",\
           "packageDependencies": [\
-            ["react-markdown", "virtual:175de2b15e2740cba0b13f0b5abf6d5bf2488896a13aafb6ed822d66c9ad5def0906852fa68b52f1c0044f5c2d71c00ef7200f6abdfc80eb794f39a0b66a8bd2#npm:8.0.7"],\
+            ["react-markdown", "virtual:b5528ed2e8bbd83c65661a7d3013c2d774073330cd21fdd867cf628cbaf3677da01a7f90c25faf46a388c85aa9a89e8e6667804cdca0711647663587e8e852df#npm:8.0.7"],\
             ["@types/hast", "npm:2.3.7"],\
             ["@types/prop-types", "npm:15.7.9"],\
             ["@types/react", "npm:18.2.28"],\
@@ -21793,6 +21830,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/three", "npm:0.157.2"],\
             ["@typescript-eslint/eslint-plugin", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:6.8.0"],\
             ["@typescript-eslint/parser", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:6.7.5"],\
+            ["@uiw/react-markdown-preview", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:4.2.2"],\
             ["@uiw/react-md-editor", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:3.24.1"],\
             ["autoprefixer", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:10.4.16"],\
             ["cypress", "npm:13.3.3"],\
