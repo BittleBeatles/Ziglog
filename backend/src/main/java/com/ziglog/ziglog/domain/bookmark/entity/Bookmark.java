@@ -10,6 +10,18 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(
+    name="bookmark",
+    uniqueConstraints={
+            @UniqueConstraint(
+                    name= "unique_constraint",
+                    columnNames={
+                        "member_id",
+                        "note_id"
+                    }
+            )
+    }
+)
 public class Bookmark {
 
     @Id
