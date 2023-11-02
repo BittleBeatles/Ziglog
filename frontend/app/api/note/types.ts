@@ -23,6 +23,7 @@ export interface NoteRefType {
   noteId: number;
   title: string;
   nickname: string;
+  isPublic: boolean;
 }
 
 export interface NoteRefListInfo {
