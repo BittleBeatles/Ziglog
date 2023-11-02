@@ -18,6 +18,23 @@ export async function getNoteInfo(noteId: number): Promise<NoteInfo> {
   }
 }
 
+export async function getReferenceList(
+  noteId: number
+): Promise<NoteRefListInfo> {
+  try {
+    const res = await publicFetch<QuotationListApiResponse>(
+      `${API_URL}/note/ref`,
+      {
+        method: 'GET',
+        body: { noteId },
+      }
+    );
+    return await Promise.resolve(res.body.data);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function createNote(folderId: number) {
   return privateFetch<CreateNoteApiResponse>(`${API_URL}/note`, {
     method: 'POST',
@@ -28,19 +45,6 @@ export async function createNote(folderId: number) {
     })
     .catch((err) => {
       return console.log(err);
-    });
-}
-
-export async function getReferenceList(noteId: number) {
-  return publicFetch<QuotationListApiResponse>(`${API_URL}/note/ref`, {
-    method: 'GET',
-    body: { noteId },
-  })
-    .then((res) => {
-      return res.body.data;
-    })
-    .catch((err) => {
-      throw err;
     });
 }
 
