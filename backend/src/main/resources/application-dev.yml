@@ -29,7 +29,7 @@ spring:
             scope:
               - profile
               - email
-            redirect-uri: http://k9a407.p.ssafy.io:8080/api/login/oauth2/code/google
+            redirect-uri: ${base-url.backend}/api/login/oauth2/code/google
 
   # Redis Configuration
   data:
@@ -37,3 +37,7 @@ spring:
       host: redis
       password:
       port: 6379
+
+base-url:
+  frontend: http://localhost:3000
+  backend: http://k9a407.p.ssafy.io:8000

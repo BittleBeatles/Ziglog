@@ -31,7 +31,7 @@ public class MemberController {
     )
     public ResponseDto<UserPublicInfoResponseDto> modifyNickname(@AuthenticationPrincipal CustomUserDetails userDetails,
                                               ModifyUserRequestDto nickname) throws Exception{
-        Member member = userDetails.member();
+        Member member = userDetails.member();//이거 안 돼야하는데 왜 되는 거지???
         memberService.modifyUserNickname(member, nickname.getNickname());
         memberService.modifyUserProfile(member, nickname.getProfileUrl());
         return ResponseDto.of(UserPublicInfoResponseDto.toDto(member));
