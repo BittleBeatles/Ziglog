@@ -23,8 +23,7 @@ public class BookmarkController {
     private final BookmarkService bookmarkService;
 
     @Operation(summary = "해당 글을 내 북마크에 추가",
-            description = "해당 노트를 내 북마크에 추가합니다."
-    )
+            description = "해당 노트를 내 북마크에 추가합니다.")
     @PostMapping("")
     public ResponseDto<Void> addBookmark(@AuthenticationPrincipal CustomUserDetails userDetails,
                                          @RequestBody AddBookmarkRequestDto addBookmarkRequestDto) throws Exception {
@@ -33,8 +32,7 @@ public class BookmarkController {
     }
 
     @Operation(summary = "북마크 삭제",
-            description = "해당 글을 내 북마크 목록에서 삭제합니다"
-    )
+            description = "해당 글을 내 북마크 목록에서 삭제합니다")
     @DeleteMapping("/{noteId}")
     public ResponseDto<Void> deleteBookmark(@AuthenticationPrincipal CustomUserDetails userDetails,
                                             @PathVariable("noteId") Long noteId) throws Exception {
@@ -43,16 +41,14 @@ public class BookmarkController {
     }
 
     @Operation(summary = "북마크 목록 조회",
-            description = "내 북마크 목록을 조회합니다."
-    )
+            description = "내 북마크 목록을 조회합니다.")
     @GetMapping("")
     public ResponseDto<BookmarkListDto> getLoginUserBookmarks(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
         return ResponseDto.of(BookmarkListDto.toDto(bookmarkService.getBookmarks(userDetails.member())));
     }
 
     @Operation(summary = "북마크 확인",
-            description = "해당 글이 내가 북마크한 글인지의 여부를 확인합니다."
-    )
+            description = "해당 글이 내가 북마크한 글인지의 여부를 확인합니다.")
     @GetMapping("/{noteId}")
     public ResponseDto<IsBookmarkedDto> checkIsBookmarked(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                           @PathVariable("noteId") Long noteId) throws Exception {

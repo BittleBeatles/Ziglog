@@ -37,7 +37,7 @@ public class NoteController {
             description = "이 글을 인용하고 있는 글의 저자 닉네임과 글의 제목 목록을 조회")
     @GetMapping("/ref")
     public ResponseDto<QuotationListResponseDto> getNotesQuoting(@RequestParam("noteId") Long noteId) throws Exception{
-        return ResponseDto.of(QuotationListResponseDto.toDto(noteService.getNote(noteId)));
+        return ResponseDto.of(QuotationListResponseDto.toDto(noteService.getNotesQuotingThis(noteId)));
     }
 
     @Operation(summary = "노트 삭제",
@@ -68,8 +68,7 @@ public class NoteController {
             description = "해당 Id의 노트의 상세 정보를 읽어 옴")
     @GetMapping("/{noteId}")
     public ResponseDto<ReadNoteResponseDto> readNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId) throws Exception {
-        //TODO 이 사용자가 해당 노트를 읽을 수 있는지 없는지 확인하는 로직이 필요
-        return ResponseDto.of(ReadNoteResponseDto.toDto(noteService.getNote(noteId)));
+        return ResponseDto.of(ReadNoteResponseDto.toDto(noteService.getNote(userDetails.member(), noteId)));
     }
 
     @Operation(summary = "노트 공개 여부 변경",

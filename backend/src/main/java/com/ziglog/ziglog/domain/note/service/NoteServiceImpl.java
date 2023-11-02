@@ -39,6 +39,7 @@ public class NoteServiceImpl implements NoteService{
 
         Note note = Note.builder()
                     .author(memberPersist)
+                    .title("글 제목")
                     .folder(folderPersist)
                     .build();
 
@@ -94,9 +95,13 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Note getNote(Long noteId) throws Exception{
+    public Note getNote(Member member, Long noteId) throws Exception{
         //TODO 인증 여부에 따라 보일지 말지를 결정하는 로직이 필요
-        return noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
+        Note note =  noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
+        if (note.isPublic()) return note;
+        if (member == null) return null;
+        if (note.getId().equals(member.getId())) return note;
+        return null;
     }
 
     // Folder
@@ -160,5 +165,11 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public Slice<Note> searchPublicNotesByTitle(String keyword, Pageable pageable) throws Exception {
         return noteRepository.findAllByTitleContainingIgnoreCaseAndIsPublic(keyword, true, pageable);
+    }
+
+    @Override
+    public List<Note> getNotesQuotingThis(Long noteId) throws Exception {
+        Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
+        return note.getQuoted().stream().map(Quotation::getEndNote).toList();
     }
 }
