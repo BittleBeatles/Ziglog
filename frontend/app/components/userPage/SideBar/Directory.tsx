@@ -6,6 +6,7 @@ import Note, { NoteProps } from './Directory/Note';
 import { createNote } from '@api/note/note';
 import { createFolder } from '@api/folder/folder';
 import { useParams } from 'next/navigation';
+import { useAppSelector } from '@store/store';
 
 export interface DirectoryProps {
   directoryList: DirectoryItem[];
@@ -35,15 +36,16 @@ export default function Directory({
 }: DirectoryProps) {
   const params = useParams();
   const currentNoteId = Number(params.noteId);
+  const rootId = useAppSelector((state) => state.user.rootFolderId);
 
   // 폴더 입력했을 때 렌더링하기 위함
   const [keyDownCounter, setKeyDownCounter] = useState(0);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(parentId, rootId);
     if (e.key === 'Enter' && parentId && folderName) {
       // 3은 parentId가 될 예정
-      console.log(parentId, folderName);
-      createFolder(3, folderName);
+      createFolder(rootId, folderName);
 
       setKeyDownCounter(keyDownCounter + 1);
 
