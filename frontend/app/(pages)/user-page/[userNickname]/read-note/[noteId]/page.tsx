@@ -15,7 +15,7 @@ import './/page.css';
 
 export default function ReadNote() {
   const { theme, isLogin } = useAppSelector((state) => state.user);
-  const [quotationList, setQuotationList] = useState<NoteRefListInfo>({
+  const [quotationInfo, setQuotationInfo] = useState<NoteRefListInfo>({
     quotationList: [],
   });
   const params = useParams();
@@ -50,7 +50,7 @@ export default function ReadNote() {
     const getQuotationList = async (noteId: number) => {
       const result = await getReferenceList(noteId);
       if (result) {
-        setQuotationList(result);
+        setQuotationInfo(result);
       }
     };
     getNoteReadPage(parseInt(noteId));
@@ -119,7 +119,10 @@ export default function ReadNote() {
         </div>
       </div>
       <div className="mx-40 mt-10 mb-4">
-        <QuotationListBox theme={theme}></QuotationListBox>
+        <QuotationListBox
+          theme={theme}
+          quotationList={quotationInfo.quotationList}
+        ></QuotationListBox>
       </div>
     </div>
   );
