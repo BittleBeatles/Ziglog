@@ -44,7 +44,7 @@ export async function getReferenceList(noteId: number) {
     });
 }
 
-export async function deleteNote(noteId: number) {
+export async function deleteNote(noteId: number, nickname: string) {
   return privateFetch<CreateNoteApiResponse>(
     `${API_URL}/note?noteId=${noteId}`,
     {
@@ -52,6 +52,7 @@ export async function deleteNote(noteId: number) {
     }
   )
     .then((res) => {
+      window.location.replace(`/user-page/${nickname}`);
       return console.log(`${noteId}번 노트가 삭제되었습니다.`);
     })
     .catch((err) => {

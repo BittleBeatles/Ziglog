@@ -82,7 +82,7 @@ export default function ReadNote() {
               <div className="ml-3">
                 <Button
                   color="red"
-                  onClick={() => deleteNote(parseInt(noteId))}
+                  onClick={() => deleteNote(parseInt(noteId), data.nickname)}
                   label="삭제"
                   size="text-xs"
                 ></Button>
