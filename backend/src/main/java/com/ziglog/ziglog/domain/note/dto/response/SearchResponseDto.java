@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 public class SearchResponseDto {
-    private List<BriefNoteDto> notes = new ArrayList<>();
+    private final List<BriefNoteDto> notes;
 
     private SearchResponseDto(Slice<BriefNoteDto> notes){
         this.notes = notes.getContent();

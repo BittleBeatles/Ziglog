@@ -1,16 +1,12 @@
 package com.ziglog.ziglog.domain.note.dto.response;
 
 import com.ziglog.ziglog.domain.note.entity.Note;
-import com.ziglog.ziglog.domain.note.entity.Quotation;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Getter
-public class QuotationListResponseDto {
-    private List<QuotingThisNoteDto> quotationList;
+public record QuotationListResponseDto(List<QuotingThisNoteDto> quotationList) {
     @Getter
     @Builder
     private static class QuotingThisNoteDto {
@@ -19,17 +15,12 @@ public class QuotationListResponseDto {
         private String nickname;
     }
 
-    public QuotationListResponseDto(List<QuotingThisNoteDto> quotationList){
-        this.quotationList = quotationList;
-    }
-
-    public static QuotationListResponseDto toDto(Note note){
-        List<Quotation> quotedBy = note.getQuoted();
-        List<QuotingThisNoteDto> notesQuotingThis = quotedBy.stream().map(quotation ->
+    public static QuotationListResponseDto toDto(List<Note> quotedBy) {
+        List<QuotingThisNoteDto> notesQuotingThis = quotedBy.stream().map(note ->
                 QuotingThisNoteDto.builder()
-                        .noteId(quotation.getEndNote().getId())
-                        .title(quotation.getEndNote().getTitle())
-                        .nickname(quotation.getEndNote().getAuthor().getNickname())
+                        .noteId(note.getId())
+                        .title(note.getTitle())
+                        .nickname(note.getAuthor().getNickname())
                         .build()
         ).toList();
         return new QuotationListResponseDto(notesQuotingThis);

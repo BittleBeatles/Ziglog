@@ -3,7 +3,6 @@ package com.ziglog.ziglog.global.auth.service;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.entity.Role;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
-import com.ziglog.ziglog.domain.member.service.MemberService;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.global.auth.dto.RegistrationId;
@@ -62,9 +61,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private Member getMember(OAuth2Attributes oAuth2Attributes){
         //첫 로그인인 경우 임의의 닉네임을 배정해서 저장
-        Member member= memberRepository.findByEmail(oAuth2Attributes.toEntity().getEmail()).orElse(null);
-        if (member== null) return saveMember(oAuth2Attributes);
-        return member;
+        return memberRepository.findByEmail(oAuth2Attributes.toEntity().getEmail()).orElse(saveMember(oAuth2Attributes));
     }
 
     private Member saveMember(OAuth2Attributes attributes) {
@@ -74,6 +71,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         //아직 없는 닉네임이 나올 때까지 새로운 닉네임을 만듦
         String tempNick = NicknameGenerator.generateRandomNickname();
         log.info("OAuth2UserService - saveMember() : 새로운 닉네임을 배정. {}", tempNick);
+
         while (memberRepository.existsMemberByNickname(tempNick)){
             tempNick = NicknameGenerator.generateRandomNickname();
             log.info("OAuth2UserService - saveMember() : 새로운 닉네임을 배정. {}", tempNick);
