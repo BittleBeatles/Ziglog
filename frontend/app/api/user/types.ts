@@ -17,5 +17,5 @@ export interface MyInfo {
 }
 
 export interface NicknameInfo {
-  // isValid: boolean;
+  isValid: boolean;
 }

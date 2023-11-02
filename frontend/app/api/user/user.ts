@@ -68,15 +68,15 @@ export async function ReissueToken() {
     });
 }
 
-export async function checkNickname(newNickname: string): Promise<boolean> {
-  return privateFetch<NicknameApiData>(
-    `${API_URL}/user/check/nickname?nickname=${newNickname}`,
-    {
-      method: 'POST',
-    }
-  ).then((res) => {
+export async function checkNickname(
+  newNickname: string
+): Promise<NicknameInfo> {
+  return privateFetch<NicknameApiData>(`${API_URL}/user/check/nickname`, {
+    method: 'POST',
+    body: { newNickname },
+  }).then((res) => {
     console.log(res);
-    return true;
+    return res.body.data;
   });
 }
 
@@ -85,7 +85,7 @@ export async function modifyUserInfo(
   profileUrl: string
 ): Promise<string | void> {
   try {
-    const res = privateFetch<NicknameApiData>(
+    const res = privateFetch<UserApiData>(
       `${API_URL}/user/modify?nickname=${nickname}&profileUrl=${profileUrl}`,
       {
         method: 'PUT',

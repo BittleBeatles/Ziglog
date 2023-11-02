@@ -49,16 +49,22 @@ export default function NicknameSetting({
   // 변화가 감지되었을 때 변화된 값을 newNickname에 저장
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
-    isChangeable();
   };
   let isPossible = false;
+  // isPos: 닉네임 중복 검사 결과
   const [isPos, setNickname] = useState(false);
-  const isChangeable = async () => {
-    console.log(newNickname);
-    isPossible = await checkNickname(newNickname);
+  // 닉네임 중복 검사
+  const isChangeable = async (newNickname: string) => {
+    // console.log(newNickname);
+    // 닉네임 중복 검사 값을 isPossible에 저장
+    const res = await checkNickname(newNickname);
+    isPossible = res.isValid;
     setNickname(isPossible);
     console.log(isPossible);
   };
+  useEffect(() => {
+    isChangeable(newNickname);
+  }, [newNickname]);
 
   const imageRef = useRef<HTMLInputElement>(null);
   const handleProfileImageChangeClick = () => {
