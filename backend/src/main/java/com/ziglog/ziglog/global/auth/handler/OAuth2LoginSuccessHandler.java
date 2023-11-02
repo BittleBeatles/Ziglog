@@ -26,11 +26,7 @@ import java.io.IOException;
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private final MemberRepository memberRepository;
-
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Value("${base-url.frontend}")
     private String frontUrl;
@@ -59,6 +55,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String redirectUrl = UriComponentsBuilder.fromUriString(frontUrl + "/oauth?at=" + accessToken)
                 .build().toUriString();
 
+        jwtService.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
         jwtService.saveRefreshToken(refreshToken, oAuth2User.getMember().getEmail());
         redirectStrategy.sendRedirect(request, response, redirectUrl);
     }

@@ -111,7 +111,7 @@ public class SecurityConfig {
                         .deleteCookies(REFRESH_TOKEN_COOKIE_NAME)
                 )
                 .exceptionHandling(handling -> handling
-                        .authenticationEntryPoint((((request, response, authException) -> {response.setStatus(401);})))
+                        .authenticationEntryPoint((request, response, authException) -> {response.setStatus(401);})
                 );
 
         http.addFilterAfter(jwtAuthenticationFilter(), LogoutFilter.class);
