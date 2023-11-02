@@ -15,6 +15,8 @@ import { Logout } from '@api/user/user';
 import { createNote } from '@api/note/note';
 import { useAppDispatch } from '@store/store';
 import { setMyTheme } from '@store/modules/userSlice';
+import { getBookmark } from '@api/bookmark/bookmark';
+import { Note } from '@api/bookmark/types';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -30,6 +32,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const [parentId, setParentId] = useState<number>(-1);
   const [isModalOpen, setModalOpen] = useState(false);
   const [folderName, setFolderName] = useState('');
+  const [bookmarkList, setBookmarkList] = useState<Note[]>([]);
 
   //파일 추가 변수
   const [showInput, setShowInput] = useState<{
@@ -76,6 +79,16 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       document.removeEventListener('click', handleOutsideClick);
     };
   }, [showInput.type]);
+
+  useEffect(() => {
+    const getBookmarkList = async () => {
+      const result = await getBookmark();
+      if (result) {
+        setBookmarkList(result.notes);
+      }
+    };
+    getBookmarkList();
+  }, []);
 
   return (
     <div
@@ -143,7 +156,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
           </div>
           <hr />
           <div className="flex justify-start mt-5">
-            <BookmarkList theme={theme} noteList={noteList} />
+            <BookmarkList theme={theme} noteList={bookmarkList} />
           </div>
         </div>
       </div>
