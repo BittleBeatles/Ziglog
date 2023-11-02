@@ -27,11 +27,9 @@ export const privateFetch = returnFetchJson({
           Authorization: `${grantType} ${accessToken}`,
         },
       };
-      console.log(config);
       return config;
     },
     response: async (response, config, fetch) => {
-      console.log('response', response);
       if (response.status === 401) {
         const newAccessToken = await ReissueToken();
         if (newAccessToken) {
