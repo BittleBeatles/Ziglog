@@ -19,9 +19,7 @@ export const privateFetch = returnFetchJson({
       const accessToken = store.getState().user.accessToken;
       const grantType = store.getState().user.grantType;
       config[1] = {
-        ...config[1],
         headers: {
-          ...config[1]?.headers,
           'Access-Control-Allow-Origin': 'http://localhost:3000',
           'Access-Control-Allow-Methods':
             'GET, PUT, POST, DELETE, PATCH, OPTIONS',
@@ -38,9 +36,11 @@ export const privateFetch = returnFetchJson({
         const newAccessToken = await ReissueToken();
         if (newAccessToken) {
           config[1] = {
-            ...config[1],
             headers: {
-              ...config[1]?.headers,
+              'Access-Control-Allow-Origin': 'http://localhost:3000',
+              'Access-Control-Allow-Methods':
+                'GET, PUT, POST, DELETE, PATCH, OPTIONS',
+              'Content-type': 'application/json',
               Authorization: `${newAccessToken.grantType} ${newAccessToken.accessToken}`,
             },
           };
