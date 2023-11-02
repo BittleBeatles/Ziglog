@@ -13,7 +13,6 @@ import Button from '@components/common/Button';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
 import { getMyInfo, modifyUserInfo } from '@api/user/user';
-import useDebounce from '@src/hooks/useDebounce';
 import { checkNickname, getUserInfo } from '@api/user/user';
 
 interface NicknameSettingProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -45,7 +44,6 @@ export default function NicknameSetting({
 
   // newNickname: 변경할 닉네임, default 값은 변경 전 닉네임
   const [newNickname, setValue] = useState(oldUserInfo.nickname);
-  // const debouncedNickname = useDebounce(newNickname, 500);
   // 변화가 감지되었을 때 변화된 값을 newNickname에 저장
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -55,12 +53,10 @@ export default function NicknameSetting({
   const [isPos, setNickname] = useState(false);
   // 닉네임 중복 검사
   const isChangeable = async (newNickname: string) => {
-    // console.log(newNickname);
     // 닉네임 중복 검사 값을 isPossible에 저장
     const res = await checkNickname(newNickname);
     isPossible = res.isValid;
     setNickname(isPossible);
-    console.log(isPossible);
   };
   useEffect(() => {
     isChangeable(newNickname);

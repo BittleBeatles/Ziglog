@@ -73,9 +73,8 @@ export async function checkNickname(
 ): Promise<NicknameInfo> {
   return privateFetch<NicknameApiData>(`${API_URL}/user/check/nickname`, {
     method: 'POST',
-    body: { newNickname },
+    body: { nickname: newNickname },
   }).then((res) => {
-    console.log(res);
     return res.body.data;
   });
 }
