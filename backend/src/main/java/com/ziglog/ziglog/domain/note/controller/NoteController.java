@@ -30,7 +30,7 @@ public class NoteController {
             description = "닉네임을 통해 해당 사용자의 개인 페이지 좌측 상단에서 볼 수 있는 폴더 + 문서를 조회")
     @GetMapping("")
     public ResponseDto<RetrieveFolderResponseDto> listNoteOf(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("nickname") String nickname) throws Exception {
-        return ResponseDto.of(RetrieveFolderResponseDto.toDto(noteService.getRootFolder(nickname), userDetails.member()));
+        return ResponseDto.of(RetrieveFolderResponseDto.toDto(noteService.getRootFolder(nickname)));
     }
 
     @Operation(summary = "이 글을 인용하고 있는 글들의 목록을 불러 옴",

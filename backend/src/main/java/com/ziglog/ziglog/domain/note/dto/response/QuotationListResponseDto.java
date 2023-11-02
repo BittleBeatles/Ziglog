@@ -6,7 +6,6 @@ import lombok.Getter;
 
 import java.util.List;
 
-@Getter
 public record QuotationListResponseDto(List<QuotingThisNoteDto> quotationList) {
     @Getter
     @Builder
