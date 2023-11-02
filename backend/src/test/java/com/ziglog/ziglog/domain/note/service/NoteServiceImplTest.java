@@ -96,7 +96,7 @@ class NoteServiceImplTest {
 
         try {
             noteService.modifyNote(member1, modification);
-            note = noteService.getNote(note.getId());
+            note = noteService.readNote(member1, note.getId());
         } catch (Exception e){
 
         }
@@ -123,7 +123,7 @@ class NoteServiceImplTest {
                 .build();
 
         noteService.modifyNote(member1, note1Modified);
-        assertEquals(1, noteService.getNote(note1.getId()).getQuoting().size());
+        assertEquals(1, noteService.readNote(member1, note1.getId()).getQuoting().size());
     }
 
     @DisplayName("노트 공개 여부 변경 테스트")
@@ -145,7 +145,7 @@ class NoteServiceImplTest {
 
         try {
             noteService.setPublic(member1, modification.getId(), modification.isPublic());
-            note = noteService.getNote(note.getId());
+            note = noteService.readNote(member1, note.getId());
         } catch (Exception e){
 
         }
@@ -163,14 +163,14 @@ class NoteServiceImplTest {
     @DisplayName("노트 조회 테스트 - 없는 id의 노트 조회")
     @Test
     void getNoteTest_NoId(){
-        assertThrows(Exception.class, () -> noteService.getNote(2L));
+        assertThrows(Exception.class, () -> noteService.readNote(member1, 2L));
     }
 
     @DisplayName("노트 조회 테스트 - 성공")
     @Test
     void getNoteTest_Success() throws Exception{
         Note note = noteService.createNote(member1, mem1RootFolder.getId());
-        assertDoesNotThrow(() -> noteService.getNote(note.getId()));
+        assertDoesNotThrow(() -> noteService.readNote(member1, note.getId()));
     }
 
     @DisplayName("폴더 생성 테스트")
@@ -322,6 +322,23 @@ class NoteServiceImplTest {
         assertTrue(folder.getNotes().contains(note));//폴더1의 자식을 확인
         assertEquals(folder, note.getFolder());//폴더2의 부모를 확인
     }
+
+    @DisplayName("비공개 글을 다른 사람이 조회할 수 있는지 테스트")
+    @Test
+    void readPrivateNote() throws Exception {
+        Note note = noteService.createNote(member1, mem1RootFolder.getId());
+        assertNull(noteService.readNote(member2, note.getId()));
+    }
+
+    @DisplayName("공개 글을 다른 사람이 조회할 수 있는지 테스트")
+    @Test
+    void readPublicNoteByOtherUser() throws Exception {
+        Note note = noteService.createNote(member1, mem1RootFolder.getId());
+        noteService.setPublic(member1, note.getId(), true);
+
+        assertNotNull(noteService.readNote(member2, note.getId()));
+    }
+
 
 
 }

@@ -68,7 +68,8 @@ public class NoteController {
             description = "해당 Id의 노트의 상세 정보를 읽어 옴")
     @GetMapping("/{noteId}")
     public ResponseDto<ReadNoteResponseDto> readNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId) throws Exception {
-        return ResponseDto.of(ReadNoteResponseDto.toDto(noteService.getNote(userDetails.member(), noteId)));
+        if (userDetails == null) return ResponseDto.of(ReadNoteResponseDto.toDto(noteService.readNote(null, noteId)));
+        return ResponseDto.of(ReadNoteResponseDto.toDto(noteService.readNote(userDetails.member(), noteId)));
     }
 
     @Operation(summary = "노트 공개 여부 변경",
