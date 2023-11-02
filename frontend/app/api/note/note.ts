@@ -12,7 +12,10 @@ export async function getNoteInfo(noteId: number): Promise<NoteInfo> {
     const res = await publicFetch<NoteApiData>(`${API_URL}/note/${noteId}`, {
       method: 'GET',
     });
-    return await Promise.resolve(res.body.data);
+    // return await Promise.resolve(res.body.data);
+    const result = await Promise.resolve(res);
+    console.log(result);
+    return result.body.data;
   } catch (err) {
     throw err;
   }

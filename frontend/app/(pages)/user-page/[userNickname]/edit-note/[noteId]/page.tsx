@@ -27,7 +27,7 @@ export default function EditNote() {
   const titleRef = useRef<HTMLInputElement>(null);
   const theme = useAppSelector((state) => state.user.theme);
   const params = useParams();
-  const noteId = params.noteId as string;
+  const noteId = decodeURIComponent(params.noteId as string);
   const [oldContent, setOldContent] = useState({ title: '', content: '' });
   const [title, setTitle] = useState('글제목');
   const [content, setContent] = useState('');
@@ -38,9 +38,10 @@ export default function EditNote() {
 
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
+      console.log(noteId);
       const result = await getNoteInfo(noteId);
-      console.log(result.content);
       if (result) {
+        console.log(result.content);
         setOldContent({
           ...oldContent,
           title: result.title,
@@ -49,6 +50,8 @@ export default function EditNote() {
         setTitle(result.title);
         setContent(result.content);
         setIsPublic(result.isPublic);
+      } else {
+        alert('해당 노트가 존재하지 않습니다');
       }
     };
     getNoteInfoEditPage(parseInt(noteId));
