@@ -25,35 +25,28 @@ export default function NicknameSetting({
   theme = 'light',
   openModal,
 }: NicknameSettingProps) {
+  // oldUserInfo: 변경 전 사용자의 정보
   const [oldUserInfo, setOldUserInfo] = useState({
     nickname: '닉네임',
     profileImage: '',
   });
-  const [data, setData] = useState({
-    nickname: '',
-    profileImage: '',
-  });
   useEffect(() => {
     const getUserInfoEditPage = async () => {
-      const result = await getMyInfo();
+      const result = await getMyInfo(); // 내 정보 받아오기 -> oldUserInfo에 저장
       if (result) {
         setOldUserInfo({
-          ...data,
-          nickname: result.nickname,
-          profileImage: result.profileImage,
-        });
-        setData({
-          ...data,
           nickname: result.nickname,
           profileImage: result.profileImage,
         });
       }
     };
     getUserInfoEditPage();
-  }, [data]);
+  }, []);
 
+  // newNickname: 변경할 닉네임, default 값은 변경 전 닉네임
   const [newNickname, setValue] = useState(oldUserInfo.nickname);
   // const debouncedNickname = useDebounce(newNickname, 500);
+  // 변화가 감지되었을 때 변화된 값을 newNickname에 저장
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     isChangeable();
