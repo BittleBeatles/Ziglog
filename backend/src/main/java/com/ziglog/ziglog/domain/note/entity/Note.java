@@ -28,10 +28,10 @@ public class Note {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "brief")
+    @Column(name = "preview")
     private String preview;
 
     @ManyToOne(fetch = FetchType.LAZY)

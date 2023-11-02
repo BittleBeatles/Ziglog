@@ -29,12 +29,12 @@ public class MemberController {
     @Operation(summary = "현재 로그인한 회원 정보를 수정",
                 description = "현재 로그인한 회원의 닉네임과 프로필 사진을 변경 및 저장"
     )
-    public ResponseDto<UserPublicInfoResponseDto> modifyUserInfo(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                                 @RequestBody ModifyUserRequestDto userRequestDto) throws Exception{
-        Member member = userDetails.member();
-        memberService.modifyUserNickname(member, userRequestDto.getNickname());
-        memberService.modifyUserProfile(member, userRequestDto.getProfileUrl());
-        return ResponseDto.of(UserPublicInfoResponseDto.toDto(memberService.findUserByEmail(member.getEmail())));
+    public ResponseDto<UserPublicInfoResponseDto> modifyNickname(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                              ModifyUserRequestDto nickname) throws Exception{
+        Member member = userDetails.member();//이거 안 돼야하는데 왜 되는 거지???
+        memberService.modifyUserNickname(member, nickname.getNickname());
+        memberService.modifyUserProfile(member, nickname.getProfileUrl());
+        return ResponseDto.of(UserPublicInfoResponseDto.toDto(member));
     }
 
     @Operation(summary = "사용 가능한 닉네임인지 확인",

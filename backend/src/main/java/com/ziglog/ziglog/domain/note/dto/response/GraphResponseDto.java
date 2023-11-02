@@ -16,6 +16,7 @@ public class GraphResponseDto {
     Set<Long> folderSet = new HashSet<>();
     Set<Long> noteSet = new HashSet<>();
 
+    //TODO
     //노드와 간선으로 이루어짐
     //인풋으로는 루트 폴더
     //리턴은 요거 두 개만 나가면 되는데?
