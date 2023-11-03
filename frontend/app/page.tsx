@@ -2,7 +2,6 @@
 import NavBar from '@components/common/NavBar';
 import Text from '@components/common/Text';
 import Image from 'next/image';
-import Link from 'next/link';
 import titleImg from '@public/images/main/titleImg.png';
 import readNotePage from '@public/images/main/readNotePage.png';
 import graphPage from '@public/images/main/graphPage.png';
@@ -12,20 +11,51 @@ import pointerGirl from '@public/images/main/pointerGirl.png';
 import pointerBoy from '@public/images/main/pointerBoy.png';
 import Description from '@components/main/Description';
 import { useAppSelector } from '@store/store';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   const { theme, isLogin } = useAppSelector((state) => state.user);
+  const textList = ['지식을', '문서를', '프로젝트를'];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [fade, setFade] = useState(true);
+
+  useEffect(() => {
+    setFade(true);
+    const intervalId = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % textList.length);
+        setFade(true);
+      }, 1000);
+    }, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
   return (
     <div>
       <NavBar theme={theme} isLogin={isLogin} />
       <div className={`px-16 py-4 ${THEME_VARIANTS[theme]}`}>
         <div className="text-center">
           <Text type="h1" className="text-7xl">
-            내 지식, 문서, 프로젝트
+            쉽고 재미있는
+          </Text>
+          <Text
+            type="h1"
+            className={`text-7xl ${fade ? 'fade-in' : 'fade-out'}`}
+            // Key를 변경하여 React에게 DOM 요소를 다시 생성하도록 함으로써 애니메이션을 재생
+            key={currentIndex}
+          >
+            {textList[currentIndex]}
+          </Text>
+          <Text type="h1" className="text-7xl">
+            위한 공간
           </Text>
           <div className="mt-10">
             <Text type="b" className="text-align text-lg">
-              ZigLog는 지식 그래프로 효율적으로 문서들을 확인하는 <br />
+              ZigLog는 지식 그래프로 효율적으로 문서를 탐색하는
+              <br />
               📘 워크 스페이스입니다
             </Text>
           </div>
