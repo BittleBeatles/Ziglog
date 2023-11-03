@@ -61,7 +61,7 @@ export default function ReadNote() {
       }
     };
     getNoteReadPage(parseInt(paramNoteId));
-  }, []);
+  }, [data, isLogin, nickname, paramNoteId]);
 
   const isMine = true;
   return (
