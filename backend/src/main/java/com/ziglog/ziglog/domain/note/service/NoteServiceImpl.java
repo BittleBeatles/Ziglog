@@ -33,10 +33,11 @@ public class NoteServiceImpl implements NoteService{
 
     //Note
     @Override
-    public Note createNote(Member member, Long folderId) throws UserNotFoundException, FolderNotFoundException {
+    public Note createNote(Member member, Long folderId) throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException{
         Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
         Folder folderPersist = folderRepository.findById(folderId).orElseThrow(FolderNotFoundException::new);
 
+        checkOwner(memberPersist, folderPersist);
         Note note = Note.builder()
                     .author(memberPersist)
                     .title("글 제목")
