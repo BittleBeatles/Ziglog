@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.1.4'
 	id 'io.spring.dependency-management' version '1.1.3'
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	id "org.sonarqube" version "4.2.1.3168"
 }
 
 group = 'com.ziglog'
@@ -78,4 +79,11 @@ task copyDocument(type: Copy) {
 
 build {
 	dependsOn copyDocument
+}
+
+sonar {
+	properties {
+		property "sonar.projectKey", "s09-final_S09P31A407_AYuTJzziJNFRHGwFYwNH"
+		property "sonar.projectName", "S09P31A407"
+	}
 }
