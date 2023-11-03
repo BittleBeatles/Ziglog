@@ -18,7 +18,7 @@ export const GlobalSearchResultExample = {
     nickname: '사용자닉네임',
     isPublic: true,
     bookmarkCount: 100,
-    postTime: '2023-10-28T14:00:00Z',
+    postTime: new Date('2023-10-28T14:00:00Z'),
     editTime: null,
     theme: 'light',
   },
