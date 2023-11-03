@@ -4,12 +4,12 @@ import Text from '@components/common/Text';
 interface GlobalSearchResultProps {
   noteId: number;
   title: string;
-  preview: string;
+  preview: string | null;
   nickname: string;
   isPublic: boolean;
   bookmarkCount: number;
-  postTime: string;
-  editTime: string | null;
+  postTime: Date;
+  editTime: Date | null;
   theme: 'light' | 'dark';
 }
 
@@ -29,13 +29,14 @@ export default function GlobalSearchResult({
     return null;
   }
   const PostTime: Date = new Date(editTime || postTime);
+  PostTime.setUTCHours(PostTime.getUTCHours() + 9);
+
   const year: number = PostTime.getFullYear();
   const month: number = PostTime.getMonth() + 1;
   const day: number = PostTime.getDate();
-  const formattedDate: string = `${year}년 ${String(month).padStart(
-    2,
-    '0'
-  )}월 ${String(day).padStart(2, '0')}일`;
+  const formattedDate = `${year}년 ${String(month).padStart(2, '0')}월 ${String(
+    day
+  ).padStart(2, '0')}일`;
 
   return (
     <div {...rest} className={`${THEME_VARIANTS[theme]} p-5 mt-3`}>
