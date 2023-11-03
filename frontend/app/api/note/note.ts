@@ -18,6 +18,21 @@ export async function getNoteInfo(noteId: number): Promise<NoteInfo> {
   }
 }
 
+export async function getReferenceList(
+  noteId: number
+): Promise<NoteRefListInfo> {
+  try {
+    const res = await publicFetch<QuotationListApiResponse>(
+      `${API_URL}/note/ref?noteId=${noteId}`,
+      {
+        method: 'GET',
+      }
+    );
+    return await Promise.resolve(res.body.data);
+  } catch (error) {
+    throw error;
+  }
+}
 export async function createNote(folderId: number) {
   return privateFetch<CreateNoteApiResponse>(`${API_URL}/note`, {
     method: 'POST',
@@ -31,20 +46,7 @@ export async function createNote(folderId: number) {
     });
 }
 
-export async function getReferenceList(noteId: number) {
-  return publicFetch<QuotationListApiResponse>(`${API_URL}/note/ref`, {
-    method: 'GET',
-    body: { noteId },
-  })
-    .then((res) => {
-      return res.body.data;
-    })
-    .catch((err) => {
-      throw err;
-    });
-}
-
-export async function deleteNote(noteId: number) {
+export async function deleteNote(noteId: number, nickname: string) {
   return privateFetch<CreateNoteApiResponse>(
     `${API_URL}/note?noteId=${noteId}`,
     {
@@ -52,6 +54,7 @@ export async function deleteNote(noteId: number) {
     }
   )
     .then((res) => {
+      window.location.replace(`/user-page/${nickname}`);
       return console.log(`${noteId}번 노트가 삭제되었습니다.`);
     })
     .catch((err) => {

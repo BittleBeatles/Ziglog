@@ -5,8 +5,8 @@ export interface NoteInfo {
   nickname: string;
   isPublic: boolean;
   bookmarkCount: number;
-  postTime: Date;
-  editTime: Date;
+  postTime?: Date;
+  editTime?: Date;
 }
 
 export interface EditNoteParams {
@@ -23,6 +23,7 @@ export interface NoteRefType {
   noteId: number;
   title: string;
   nickname: string;
+  isPublic: boolean;
 }
 
 export interface NoteRefListInfo {

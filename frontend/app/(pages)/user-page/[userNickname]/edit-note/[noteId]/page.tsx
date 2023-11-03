@@ -1,6 +1,5 @@
 'use client';
 import { redirect, useParams } from 'next/navigation';
-import MarkdownEditor from '@components/userPage/MarkdownEditor';
 import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
 import Button from '@components/common/Button';
 import { useEffect, useRef, useState } from 'react';
@@ -14,74 +13,71 @@ import {
 import { EditNoteParams } from '@api/note/types';
 import { diffChars } from 'diff';
 import dynamic from 'next/dynamic';
+import { store, useAppSelector } from '@store/store';
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
 
-interface NoteDetail extends EditNoteParams {
+export interface NoteDetail extends EditNoteParams {
   isPublic: boolean;
 }
 
 export default function EditNote() {
-  const theme = 'light';
+  const titleRef = useRef<HTMLInputElement>(null);
+  const theme = useAppSelector((state) => state.user.theme);
   const params = useParams();
-  const noteId = params.noteId as string;
+  const noteId = decodeURIComponent(params.noteId as string);
   const [oldContent, setOldContent] = useState({ title: '', content: '' });
-  const [data, setData] = useState<NoteDetail>({
-    title: '글제목',
-    content: '',
-    isPublic: false,
-    quotingNotes: [],
-  });
+  const [title, setTitle] = useState('글제목');
+  const [content, setContent] = useState('');
+  const [isPublic, setIsPublic] = useState(false);
+  const [quotingNotes, setQuotingNotes] = useState([]);
   const editorRef = useRef<HTMLDivElement>(null);
   const quotationModalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
+      console.log(noteId);
       const result = await getNoteInfo(noteId);
-      console.log(result.content);
       if (result) {
-        console.log(result);
+        console.log(result.content);
         setOldContent({
-          ...data,
+          ...oldContent,
           title: result.title,
           content: result.content,
         });
-        setData({
-          ...data,
-          title: result.title,
-          content: result.content,
-          isPublic: result.isPublic,
-        });
+        setTitle(result.title);
+        setContent(result.content);
+        setIsPublic(result.isPublic);
+      } else {
+        alert('해당 노트가 존재하지 않습니다');
       }
     };
     getNoteInfoEditPage(parseInt(noteId));
   }, []);
 
-  useEffect(() => {}, [data.content]);
-
   const handlePublicPrivateButton = () => {
     const changePublicStatus = async (noteId: number, isPublic: boolean) => {
-      const body = { isPublic: !data.isPublic };
+      const body = { isPublic: !isPublic };
       const result = await changeNotePublicStatusRequest(noteId, body);
       if (result) {
-        setData({ ...data, isPublic: result.isPublic });
+        setIsPublic(!isPublic);
         alert('공개/비공개 설정이 수정되었습니다.');
       }
     };
-    changePublicStatus(parseInt(noteId), data.isPublic);
+    changePublicStatus(parseInt(noteId), isPublic);
   };
 
   const handleNoteEdit = () => {
     if (
-      diffChars(oldContent.content, data.content).length !== 1 ||
-      diffChars(oldContent.title, data.title).length !== 1
+      diffChars(oldContent.content, content).length !== 1 ||
+      diffChars(oldContent.title, title).length !== 1
     ) {
       const body = {
-        title: data.title,
-        content: data.content,
-        quotingNotes: data.quotingNotes,
+        title: title,
+        content: content,
+        quotingNotes: quotingNotes,
       };
       const editNote = async (body: EditNoteParams) => {
         const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
@@ -102,20 +98,19 @@ export default function EditNote() {
     <div>
       <div className="flex flex-row justify-between items-center mb-3">
         <NoteTitleInput
+          ref={titleRef}
           theme={theme}
-          noteTitle={data.title}
-          onChange={(e) => {
-            setData({ ...data, title: e.target.value });
-          }}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <div className="flex flex-row items-center gap-3">
           <PublicPrivateToggle
             onClick={() => handlePublicPrivateButton()}
-            scope={data.isPublic ? 'Public' : 'Private'}
+            scope={isPublic ? 'Public' : 'Private'}
             theme={theme}
           />
           <Button
-            label={data.isPublic ? '게시하기' : '저장하기'}
+            label={isPublic ? '게시하기' : '저장하기'}
             color="charcol"
             onClick={() => handleNoteEdit()}
           />
@@ -125,8 +120,8 @@ export default function EditNote() {
         className="relative"
         data-color-mode={theme}
         height={600}
-        value={data.content}
-        onChange={(v) => setData({ ...data, content: v || '' })}
+        value={content}
+        onChange={(v) => setContent(v || '')}
         preview={'live'}
         hideToolbar={false}
       ></MDEditor>

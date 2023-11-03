@@ -5,10 +5,10 @@ import IconButton from '@components/common/IconButton';
 import { useState } from 'react';
 import colors from '@src/design/color';
 import Link from 'next/link';
+import { NoteRefListInfo } from '@api/note/types';
 
-interface QuotationListBoxProps {
+interface QuotationListBoxProps extends NoteRefListInfo {
   theme: 'dark' | 'light';
-  quotationList?: [userNickname: string, noteTitle: string, noteId: number];
 }
 
 const TEXT_COLOR = {
@@ -16,20 +16,11 @@ const TEXT_COLOR = {
   light: 'text-black',
 };
 
-export default function QuotationListBox({ theme }: QuotationListBoxProps) {
+export default function QuotationListBox({
+  theme,
+  quotationList,
+}: QuotationListBoxProps) {
   const [showList, setShowList] = useState(false);
-  const quotationList = [
-    {
-      userNickname: 'frog_slayer',
-      noteTitle: '[Spring Security](1) 기본 구성',
-      noteId: 1,
-    },
-    {
-      userNickname: 'frog_slayer',
-      noteTitle: '[Spring Security](2) 인증 구현',
-      noteId: 2,
-    },
-  ];
   return (
     <div
       className={`${THEME_VARIANTS[theme]} relative rounded-md h-72 p-5 flex flex-col gap-5`}
@@ -57,12 +48,12 @@ export default function QuotationListBox({ theme }: QuotationListBoxProps) {
             console.log(item);
             return (
               <Link
-                href={`/user-page/${item.userNickname}/read-note/${item.noteId}`}
+                href={`/user-page/${item.nickname}/read-note/${item.noteId}`}
                 key={item.noteId}
               >
                 <li className={`${TEXT_COLOR[theme]}`} key={item.noteId}>
                   <Text type="p">
-                    {item.userNickname} : {item.noteTitle}
+                    {item.nickname} : {item.noteTitle}
                   </Text>
                 </li>
               </Link>

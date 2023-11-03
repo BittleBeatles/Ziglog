@@ -7,14 +7,17 @@ import BookmarkQuoteInfo from '@components/userPage/BookmarkQuoteInfo';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import QuotationListBox from '@components/userPage/QuotationListBox';
 import { NoteInfo } from '@api/note/types';
-import { deleteNote, getNoteInfo } from '@api/note/note';
+import { deleteNote, getNoteInfo, getReferenceList } from '@api/note/note';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@store/store';
+import { NoteRefListInfo } from '@api/note/types';
 import './/page.css';
 
 export default function ReadNote() {
   const { theme, isLogin } = useAppSelector((state) => state.user);
-
+  const [quotationInfo, setQuotationInfo] = useState<NoteRefListInfo>({
+    quotationList: [],
+  });
   const params = useParams();
   const noteId = params.noteId as string;
   const [data, setData] = useState<NoteInfo>({
@@ -44,8 +47,15 @@ export default function ReadNote() {
         });
       }
     };
+    const getQuotationList = async (noteId: number) => {
+      const result = await getReferenceList(noteId);
+      if (result) {
+        setQuotationInfo(result);
+      }
+    };
     getNoteReadPage(parseInt(noteId));
-  }, [data, noteId]);
+    getQuotationList(parseInt(noteId));
+  }, []);
 
   const isMine = true;
   return (
@@ -68,12 +78,21 @@ export default function ReadNote() {
           {isMine ? (
             <div className="flex flex-row">
               <div className="ml-3">
-                <Button color="blue" label="수정" size="text-xs"></Button>
+                <Button
+                  onClick={() =>
+                    window.location.replace(
+                      `/user-page/${data.nickname}/edit-note/${noteId}`
+                    )
+                  }
+                  color="blue"
+                  label="수정"
+                  size="text-xs"
+                ></Button>
               </div>
               <div className="ml-3">
                 <Button
                   color="red"
-                  onClick={() => deleteNote(parseInt(noteId))}
+                  onClick={() => deleteNote(parseInt(noteId), data.nickname)}
                   label="삭제"
                   size="text-xs"
                 ></Button>
@@ -88,8 +107,8 @@ export default function ReadNote() {
         <div className="absolute">
           <BookmarkQuoteInfo
             theme={theme}
-            bookmarked={50}
-            quoted={50}
+            bookmarked={data.bookmarkCount}
+            quoted={quotationInfo.quotationList.length}
           ></BookmarkQuoteInfo>
         </div>
 
@@ -100,7 +119,10 @@ export default function ReadNote() {
         </div>
       </div>
       <div className="mx-40 mt-10 mb-4">
-        <QuotationListBox theme={theme}></QuotationListBox>
+        <QuotationListBox
+          theme={theme}
+          quotationList={quotationInfo.quotationList}
+        ></QuotationListBox>
       </div>
     </div>
   );
