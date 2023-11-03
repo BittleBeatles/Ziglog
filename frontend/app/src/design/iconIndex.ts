@@ -25,6 +25,10 @@ import Share from '@public/icons/share.svg';
 import Close from '@public/icons/close.svg';
 import DoubleArrowLeft from '@public/icons/doubleArrowLeft.svg';
 import DoubleArrowRight from '@public/icons/doubleArrowRight.svg';
+import Remove from '@public/icons/remove.svg';
+import Edit from '@public/icons/edit.svg';
+import More from '@public/icons/more.svg';
+import Loading from '@public/icons/loading.svg';
 
 export {
   AddFolder,
@@ -54,4 +58,8 @@ export {
   Close,
   DoubleArrowLeft,
   DoubleArrowRight,
+  Remove,
+  Edit,
+  More,
+  Loading,
 };

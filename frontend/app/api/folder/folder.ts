@@ -30,7 +30,6 @@ export async function getFolderList(
         method: 'GET',
       }
     );
-    console.log(res.body.data.folderList);
     return res.body.data.folderList;
   } catch (err) {
     throw err;
@@ -38,12 +37,31 @@ export async function getFolderList(
 }
 
 export async function deleteFolder(folderId: number) {
-  return privateFetch<CreateFolderApiResponse>(`${API_URL}/folder`, {
-    method: 'DELETE',
+  return privateFetch<CreateFolderApiResponse>(
+    `${API_URL}/folder/${folderId}`,
+    {
+      method: 'DELETE',
+    }
+  )
+    .then((res) => {
+      return console.log(`${folderId}번째 폴더가 삭제되었습니다`);
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export async function editFolder(folderId: number, folderName: string) {
+  return privateFetch(`${API_URL}/folder`, {
+    method: 'PUT',
+    body: {
+      folderId,
+      folderName,
+    },
   })
     .then((res) => {
       console.log(res);
-      return console.log(`${folderId}번째 폴더가 삭제되었습니다`);
+      return;
     })
     .catch((err) => {
       throw err;

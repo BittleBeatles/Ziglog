@@ -1,11 +1,20 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  KeyboardEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import Folder from './Directory/Folder';
 import CreateFile from './Directory/CreateFile';
 import Note from './Directory/Note';
-import { createFolder } from '@api/folder/folder';
+import { createFolder, editFolder } from '@api/folder/folder';
 import { useParams } from 'next/navigation';
 import { useAppSelector } from '@store/store';
 import { DirectoryItem } from '@api/folder/types';
+import IconButton from '@components/common/IconButton';
+import Text from '@components/common/Text';
+import EditInput from '@components/common/EditInput';
 
 export interface DirectoryProps {
   sideData: DirectoryItem[];
@@ -35,11 +44,16 @@ export default function Directory({
   const params = useParams();
   const currentNoteId = Number(params.noteId);
   const rootId = useAppSelector((state) => state.user.rootFolderId);
+  const [isModifyDelete, setModifyDelete] = useState(false);
+  const [showFolderEdit, setFolderEdit] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
+  const [editingFolderId, setEditingFolderId] = useState(-1);
+  const [editingTitle, setEditingTitle] = useState('');
 
   // 폴더 입력했을 때 렌더링하기 위함
   const [keyDownCounter, setKeyDownCounter] = useState(0);
 
-  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
     if (
       e.key === 'Enter' &&
       parentId &&
@@ -60,8 +74,42 @@ export default function Directory({
     }
   };
 
+  const onEdit = (folderId: number, title: string) => {
+    setEditingFolderId(folderId);
+    setFolderEdit(!showFolderEdit);
+    setEditingTitle(title);
+  };
+
+  useEffect(() => {
+    if (!showFolderEdit) {
+      setEditingFolderId(-1);
+    }
+  }, [showFolderEdit]);
+
+  const handleEditKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && editingFolderId !== -1 && newFolderName !== '') {
+      e.preventDefault();
+      try {
+        await editFolder(editingFolderId, newFolderName);
+        getSideList();
+        setNewFolderName('');
+        setFolderEdit(false);
+      } catch {
+        console.log('수정에 실패했습니다');
+      }
+    }
+  };
+
   return (
     <div className="w-full">
+      <div className="flex justify-between mb-2">
+        <Text type="b">워크스페이스</Text>
+        <IconButton
+          onClick={() => setModifyDelete(!isModifyDelete)}
+          theme={theme}
+          name="More"
+        />
+      </div>
       {sideData &&
         sideData.map((item) =>
           item.type === 'note' ? (
@@ -72,6 +120,7 @@ export default function Directory({
               depth={0}
               id={item.id}
               title={item.title}
+              isModifyDelete={isModifyDelete}
             />
           ) : (
             <Folder
@@ -90,6 +139,8 @@ export default function Directory({
               folderName={folderName}
               setFolderName={setFolderName}
               getSideList={getSideList}
+              isModifyDelete={isModifyDelete}
+              onEdit={onEdit}
             />
           )
         )}
@@ -107,6 +158,17 @@ export default function Directory({
             type="folder"
           />
         )}
+      {showFolderEdit && (
+        <EditInput
+          type="text"
+          theme={theme}
+          placeholder="폴더명 수정"
+          defaultValue={`${editingTitle}`}
+          setFolderEdit={setFolderEdit}
+          onChange={(e) => setNewFolderName(e.target.value)}
+          onKeyDown={handleEditKeyDown}
+        />
+      )}
     </div>
   );
 }

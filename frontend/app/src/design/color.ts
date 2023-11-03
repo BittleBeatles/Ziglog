@@ -1,7 +1,7 @@
 const colors = {
   warn: '#E14B32',
   'main-100': '#3D4EFE',
-  'main-75': ' #6774FF',
+  'main-75': '#6774FF',
   'main-50': '#96A0FF',
   'main-25': '#CDD1FF',
   'light-background-layout': '#F8F9FA',
