@@ -1,7 +1,7 @@
 import SvgIcon from '@components/common/SvgIcon';
-import { InputHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes } from 'react';
 
-interface SingleQuotationProps extends InputHTMLAttributes<HTMLInputElement> {
+interface SingleQuotationProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   theme: 'light' | 'dark';
   isBookMarked?: boolean;
   title?: string;
@@ -17,6 +17,7 @@ export default function SingleQuotation({
 }: SingleQuotationProps) {
   return (
     <div
+      {...rest}
       className={`${THEME_VARIANTS[theme]} h-12 rounded-md flex flex-row hover:font-bold`}
     >
       <div className="w-8 h-12 grid place-content-center">

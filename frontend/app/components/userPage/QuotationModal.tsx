@@ -1,13 +1,14 @@
 import SingleQuotation from '@components/userPage/QuotationModal/SingleQuotation';
-import { InputHTMLAttributes } from 'react';
 
-interface QuotationModalProps extends InputHTMLAttributes<HTMLInputElement> {
+interface QuotationModalProps {
   theme?: 'light' | 'dark';
+  bookmarks?: [];
+  handle: any;
 }
 
 export default function QuotationModal({
   theme = 'light',
-  ...rest
+  handle,
 }: QuotationModalProps) {
   const bookmarks = [
     {
@@ -22,12 +23,6 @@ export default function QuotationModal({
       nickname: 'hanulkim',
       isBookmarked: true,
     },
-    {
-      noteId: 3,
-      title: 'Javascript',
-      nickname: 'yonseong2',
-      isBookmarked: false,
-    },
   ];
   return (
     <div>
@@ -41,6 +36,7 @@ export default function QuotationModal({
             isBookMarked={bookmark.isBookmarked}
             title={bookmark.title}
             nickname={bookmark.nickname}
+            onClick={() => handle.execute(bookmark.nickname, bookmark.title)}
           ></SingleQuotation>
         ))}
       </div>
