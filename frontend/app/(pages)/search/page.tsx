@@ -42,7 +42,6 @@ export default function Search() {
   useEffect(() => {
     async function fetchMoreData(debouncedKeyword: string, page: number) {
       try {
-        console.log(debouncedKeyword, page, perPage);
         const response = await getSearchInfo(debouncedKeyword, page, perPage);
         const newData = response;
 
