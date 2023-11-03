@@ -1,25 +1,28 @@
-import { DirectoryItem } from '../Directory';
+import { DirectoryItem } from '@api/folder/types';
+import { store } from '@store/store';
+
+const rootid = store.getState().user.rootFolderId;
 
 export const findParentId = (
   list: DirectoryItem[],
   id: number,
   type: 'noteId' | 'folderId',
-  parentId: number = -1
+  parentId: number = rootid
 ): number => {
   for (const item of list) {
-    if (item.type === 'note' && type === 'noteId' && item.noteId === id) {
+    if (item.type === 'note' && type === 'noteId' && item.id === id) {
       return parentId;
     } else if (item.type === 'folder') {
-      if (type === 'folderId' && item.folderId === id) {
+      if (type === 'folderId' && item.id === id) {
         return parentId;
       }
       if (item.notes) {
-        const result = findParentId(item.notes, id, type, item.folderId!);
+        const result = findParentId(item.notes, id, type, item.id!);
         if (result !== undefined) {
           return result;
         }
       }
     }
   }
-  return -1;
+  return rootid;
 };

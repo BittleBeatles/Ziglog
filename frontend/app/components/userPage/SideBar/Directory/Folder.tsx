@@ -1,21 +1,19 @@
-'use client';
 import Text from '@components/common/Text';
-import { DirectoryItem } from '../Directory';
 import Note, { NoteProps } from './Note';
 import SvgIcon from '@components/common/SvgIcon';
 import { Dispatch, SetStateAction, useState } from 'react';
 import colors from '@src/design/color';
 import { findParentId } from './findParentId';
 import CreateFile from './CreateFile';
-import { createNote } from '@api/note/note';
+import { DirectoryItem } from '@api/folder/types';
 import { createFolder } from '@api/folder/folder';
 
 export interface FolderProps {
   type?: 'folder';
-  folderId: number;
+  id: number;
   title: string;
+  isPublic: boolean;
   notes?: DirectoryItem[];
-  directoryList?: DirectoryItem[];
   depth?: number;
   theme?: 'light' | 'dark';
   parentId?: number;
@@ -27,11 +25,11 @@ export interface FolderProps {
   currentNoteId?: number;
   folderName?: string;
   setFolderName?: Dispatch<SetStateAction<string>>;
-  handleKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  getSideList?: () => void;
 }
 
 export default function Folder({
-  folderId,
+  id,
   title,
   notes,
   depth = 0,
@@ -43,14 +41,12 @@ export default function Folder({
   currentNoteId,
   folderName,
   setFolderName,
-  handleKeyDown,
+  getSideList,
 }: FolderProps) {
   const paddingLeft = `${depth * 1.25}rem`;
-  // const [isFolderOpen, setFolderOpen] = useState(false);
   const [isFolderOpen, setFolderOpen] = useState(
     notes?.some(
-      (item) =>
-        item.type === 'note' && (item as NoteProps).noteId === currentNoteId
+      (item) => item.type === 'note' && (item as NoteProps).id === currentNoteId
     )
   );
 
@@ -59,14 +55,36 @@ export default function Folder({
       // 폴더를 열 때
       setFolderOpen(true);
       if (setParentId) {
-        setParentId(folderId);
+        setParentId(id);
       }
     } else {
       // 폴더를 닫을 때
       setFolderOpen(false);
       if (setParentId && notes) {
-        const parentFolderId = findParentId(notes, folderId, 'folderId');
+        const parentFolderId = findParentId(notes, id, 'folderId');
         setParentId(parentFolderId);
+      }
+    }
+  };
+
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (
+      e.key === 'Enter' &&
+      parentId &&
+      folderName &&
+      setFolderName &&
+      setShowInput &&
+      getSideList
+    ) {
+      e.preventDefault();
+      try {
+        console.log(parentId, folderName);
+        await createFolder(parentId, folderName);
+        getSideList();
+        setFolderName('');
+        setShowInput({ show: false, type: 'folder' });
+      } catch {
+        console.log('폴더가 생성안됬어요');
       }
     }
   };
@@ -97,17 +115,19 @@ export default function Folder({
               item.type === 'note' ? (
                 <Note
                   theme={theme}
-                  nickname={item.nickname}
-                  key={item.noteId}
-                  noteId={item.noteId}
+                  isPublic={item.isPublic}
+                  key={item.type + item.id}
+                  depth={depth + 1}
+                  id={item.id}
                   title={item.title}
                   currentNoteId={currentNoteId}
                 />
               ) : (
                 <Folder
                   theme={theme}
-                  folderId={item.folderId}
-                  key={item.folderId}
+                  isPublic={item.isPublic}
+                  id={item.id}
+                  key={item.type + item.id}
                   title={item.title}
                   notes={item.notes}
                   depth={depth + 1}
@@ -118,13 +138,13 @@ export default function Folder({
                   currentNoteId={currentNoteId}
                   folderName={folderName}
                   setFolderName={setFolderName}
-                  handleKeyDown={handleKeyDown}
+                  getSideList={getSideList}
                 />
               )
             )}
         </div>
       )}
-      {parentId === folderId &&
+      {parentId === id &&
         showInput &&
         showInput.show &&
         showInput.type === 'note' && (
@@ -132,7 +152,7 @@ export default function Folder({
             <CreateFile type="note" />
           </div>
         )}
-      {parentId === folderId &&
+      {parentId === id &&
         showInput &&
         showInput.show &&
         showInput.type === 'folder' && (

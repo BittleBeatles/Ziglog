@@ -5,7 +5,7 @@ export interface TokenInfo {
 
 export interface UserInfo {
   nickname: string;
-  profileImage: string;
+  profileUrl: string;
 }
 
 export interface LogoutInfo {}

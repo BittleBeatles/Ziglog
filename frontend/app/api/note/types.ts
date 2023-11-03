@@ -1,3 +1,7 @@
+import { FolderProps } from '@components/userPage/SideBar/Directory/Folder';
+import { NoteProps } from '@components/userPage/SideBar/Directory/Note';
+import Folder from '../../components/userPage/SideBar/Directory/Folder';
+
 export interface NoteInfo {
   noteId: number;
   title: string;
@@ -28,4 +32,23 @@ export interface NoteRefType {
 
 export interface NoteRefListInfo {
   quotationList: NoteRefType[];
+}
+
+export interface FolderNoteList {
+  folder: Folder;
+}
+
+interface Folder {
+  type: string;
+  folderId: number;
+  title: string;
+  notes: Note[];
+  folderList: string[];
+}
+
+interface Note {
+  type: string;
+  noteId: number;
+  title: string;
+  isPublic: boolean;
 }

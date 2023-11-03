@@ -53,7 +53,7 @@ export default function QuotationListBox({
               >
                 <li className={`${TEXT_COLOR[theme]}`} key={item.noteId}>
                   <Text type="p">
-                    {item.nickname} : {item.noteTitle}
+                    {item.nickname} : {item.title}
                   </Text>
                 </li>
               </Link>

@@ -55,7 +55,7 @@ export default function ReadNote() {
     };
     getNoteReadPage(parseInt(noteId));
     getQuotationList(parseInt(noteId));
-  }, []);
+  }, [data, noteId]);
 
   const isMine = true;
   return (

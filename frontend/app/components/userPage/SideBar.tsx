@@ -1,22 +1,23 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import ProfileImage from '@components/common/ProfileImage';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
 import Button from '@components/common/Button';
-import DongSuk from '@public/images/DongSuk.jpg';
 import IconButtonWithBg from '@components/common/IconButtonWithBg';
 
 import PersonalSearchInput from './SideBar/PersonalSearchInput';
-import Directory, { DirectoryItem } from './SideBar/Directory';
+import Directory from './SideBar/Directory';
 import BookmarkList from './SideBar/BookmarkList';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import NicknameSetting from './NicknameSetting';
-import { Logout } from '@api/user/user';
+import { Logout, getUserInfo } from '@api/user/user';
 import { createNote } from '@api/note/note';
-import { useAppDispatch } from '@store/store';
+import { useAppDispatch, useAppSelector } from '@store/store';
 import { setMyTheme } from '@store/modules/userSlice';
 import { getBookmark } from '@api/bookmark/bookmark';
 import { Note } from '@api/bookmark/types';
+import { DirectoryItem } from '@api/folder/types';
+import { getFolderList } from '@api/folder/folder';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -24,12 +25,20 @@ interface SideBarProps {
 }
 
 export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
-  const [isLogined, setLogined] = useState(true);
-  const [isMine, setMine] = useState(true);
-  const nickname = '동석 마 좀 치나';
+  const { isLogin, nickname, rootFolderId } = useAppSelector(
+    (state) => state.user
+  );
+
+  // 주소 기반 닉네임 및 프로필 이미지
+  const params = useParams();
+  const paramsNickname = decodeURIComponent(params.userNickname as string);
+  const [profileUrl, setProfileUrl] = useState('');
+  const [isMine, setMine] = useState(nickname === paramsNickname);
+
   const router = useRouter();
-  const [directory, setDirectory] = useState<DirectoryItem[]>(directoryList);
-  const [parentId, setParentId] = useState<number>(-1);
+  // 폴더 상태
+  const [sideData, setSideData] = useState<DirectoryItem[]>([]);
+  const [parentId, setParentId] = useState<number>(rootFolderId);
   const [isModalOpen, setModalOpen] = useState(false);
   const [folderName, setFolderName] = useState('');
   const [bookmarkList, setBookmarkList] = useState<Note[]>([]);
@@ -43,14 +52,6 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const dispatch = useAppDispatch();
 
   const sidebarRef = useRef<HTMLDivElement | null>(null);
-
-  // 노트 추가
-  const addNote = () => {
-    setShowInput({ show: true, type: 'note' });
-
-    // 노트 추가 후 userName, noteId를 반환 받게되면 그 페이지로 이동
-    const res = createNote(parentId);
-  };
 
   // 폴더 추가
   const addFolder = () => {
@@ -90,15 +91,61 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
     getBookmarkList();
   }, []);
 
+  // 닉네임으로 개인정보를 조회
+  useEffect(() => {
+    const getProfileUrl = async () => {
+      const res = await getUserInfo(paramsNickname);
+      if (res) {
+        setProfileUrl(res.profileUrl);
+      }
+    };
+    getProfileUrl();
+  }, [paramsNickname]);
+
+  const getSideList = useCallback(async () => {
+    try {
+      const res = await getFolderList(nickname);
+      if (res) {
+        setSideData(res);
+      }
+    } catch (error) {
+      console.error('Failed to fetch directory list:', error);
+    }
+  }, [nickname]);
+
+  // 노트 추가
+  const addNote = async () => {
+    try {
+      // 노트 생성 API 호출 및 결과 대기
+      const result = await createNote(parentId);
+      // 성공적으로 노트가 추가되면 sideList를 업데이트
+      console.log(result);
+      if (result === 200) {
+        getSideList();
+      } else {
+        console.error('Failed to add the note:', result);
+      }
+    } catch (error) {
+      console.error('Error adding note:', error);
+    }
+  };
+
+  useEffect(() => {
+    getSideList();
+  }, [getSideList]);
+
   return (
     <div
       className="flex flex-col justify-between py-4 h-screen"
       ref={sidebarRef}
     >
       <div className="profile flex justify-between items-center px-8">
-        <ProfileImage src={DongSuk} />
-        <Text type="p" className={`${theme === 'dark' ? 'text-white' : ''}`}>
-          {nickname}
+        <ProfileImage src={profileUrl} />
+        <Text
+          type="p"
+          className={`${theme === 'dark' ? 'text-white' : ''} ml-2 text-sm`}
+        >
+          {paramsNickname}
         </Text>
         <IconButton
           onClick={sideBarToggle}
@@ -126,7 +173,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
           name="AddNote"
         />
         <IconButtonWithBg
-          onClick={() => router.push(`/user-page/${nickname}`)}
+          onClick={() => router.push(`/user-page/${paramsNickname}`)}
           size={30}
           theme={theme}
           name="GraphView"
@@ -147,7 +194,8 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
               parentId={parentId}
               setParentId={setParentId}
               theme={theme}
-              directoryList={directory}
+              getSideList={getSideList}
+              sideData={sideData}
               showInput={showInput}
               setShowInput={setShowInput}
               folderName={folderName}
@@ -169,16 +217,20 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
           theme={theme}
           name={theme === 'light' ? 'LightMode' : 'DarkMode'}
         />
-        {!isLogined && <Button label="로그인하기" color="charcol" />}
+        {!isLogin && <Button label="로그인하기" color="charcol" />}
 
-        {isLogined && isMine && (
+        {isLogin && isMine && (
           <Button onClick={() => Logout()} label="로그아웃" color="charcol" />
         )}
 
-        {isLogined && !isMine && (
-          <Button label="마이페이지로 가기" color="charcol" />
+        {isLogin && !isMine && (
+          <Button
+            onClick={() => router.push(`/user-page/${nickname}`)}
+            label="마이페이지로 가기"
+            color="charcol"
+          />
         )}
-        {isLogined && isMine && (
+        {isLogin && isMine && (
           <IconButton
             onClick={() => openModal(true)}
             theme={theme}
@@ -195,27 +247,29 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   );
 }
 
-const directoryList: DirectoryItem[] = [
+const folderData: DirectoryItem[] = [
   {
     type: 'folder',
-    folderId: 1,
+    id: 1,
     title: 'React',
+    isPublic: true,
     notes: [
       {
         type: 'note',
-        nickname: 'seongyong',
-        noteId: 1,
+        id: 1,
+        isPublic: true,
         title: 'React 1강 기초',
       },
       {
         type: 'folder',
-        folderId: 2,
+        id: 2,
         title: 'components',
+        isPublic: true,
         notes: [
           {
             type: 'note',
-            nickname: 'seongyong',
-            noteId: 2,
+            id: 2,
+            isPublic: true,
             title: 'React 2강 훅스',
           },
         ],
@@ -224,103 +278,16 @@ const directoryList: DirectoryItem[] = [
   },
   {
     type: 'folder',
-    folderId: 3,
+    id: 3,
     title: 'Vue',
+    isPublic: true,
     notes: [
       {
         type: 'note',
-        nickname: 'seongyong',
-        noteId: 3,
+        id: 3,
+        isPublic: true,
         title: 'Vue 1강 기초',
       },
     ],
-  },
-];
-
-const noteList = [
-  {
-    noteId: 1,
-    userNickname: 'SeongYong',
-    title: 'Study JavaScript Basics',
-  },
-  {
-    noteId: 2,
-    userNickname: 'SeongYong',
-    title: 'Understanding TypeScript',
-  },
-  {
-    noteId: 3,
-    userNickname: 'SeongYong',
-    title: 'Exploring React Hooks',
-  },
-  {
-    noteId: 4,
-    userNickname: 'SeongYong',
-    title: 'Diving into Node.js',
-  },
-  {
-    noteId: 5,
-    userNickname: 'SeongYong',
-    title: 'GraphQL Introduction',
-  },
-  {
-    noteId: 6,
-    userNickname: 'SeongYong',
-    title: 'Understanding TypeScript',
-  },
-  {
-    noteId: 7,
-    userNickname: 'SeongYong',
-    title: 'Exploring React Hooks',
-  },
-  {
-    noteId: 8,
-    userNickname: 'SeongYong',
-    title: 'Diving into Node.js',
-  },
-  {
-    noteId: 9,
-    userNickname: 'SeongYong',
-    title: 'GraphQL Introduction',
-  },
-  {
-    noteId: 10,
-    userNickname: 'SeongYong',
-    title: 'Understanding TypeScript',
-  },
-  {
-    noteId: 11,
-    userNickname: 'SeongYong',
-    title: 'Exploring React Hooks',
-  },
-  {
-    noteId: 12,
-    userNickname: 'SeongYong',
-    title: 'Diving into Node.js',
-  },
-  {
-    noteId: 13,
-    userNickname: 'SeongYong',
-    title: 'GraphQL Introduction',
-  },
-  {
-    noteId: 14,
-    userNickname: 'SeongYong',
-    title: 'Understanding TypeScript',
-  },
-  {
-    noteId: 15,
-    userNickname: 'SeongYong',
-    title: 'Exploring React Hooks',
-  },
-  {
-    noteId: 16,
-    userNickname: 'SeongYong',
-    title: 'Diving into Node.js',
-  },
-  {
-    noteId: 17,
-    userNickname: 'SeongYong',
-    title: 'GraphQL Introduction',
   },
 ];

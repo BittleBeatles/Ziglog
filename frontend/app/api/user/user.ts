@@ -22,6 +22,7 @@ export async function getMyInfo(): Promise<MyInfo> {
   }
 }
 
+// 닉네임으로 공개 정보를 조회
 export async function getUserInfo(nickname: string): Promise<UserInfo> {
   try {
     const res = await publicFetch<UserApiData>(`${API_URL}/user/${nickname}`, {

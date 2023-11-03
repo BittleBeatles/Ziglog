@@ -12,27 +12,29 @@ type Story = StoryObj<typeof meta>;
 
 export const DirectoryExample = {
   args: {
-    directoryList: [
+    sideData: [
       {
         type: 'folder',
-        folderId: 1,
+        id: 1,
         title: 'React',
+        isPublic: true,
         notes: [
           {
             type: 'note',
-            nickname: 'seongyong',
-            noteId: 1,
+            id: 1,
+            isPublic: true,
             title: 'React 1강 기초',
           },
           {
             type: 'folder',
-            folderId: 2,
+            id: 2,
             title: 'components',
+            isPublic: true,
             notes: [
               {
                 type: 'note',
-                nickname: 'seongyong',
-                noteId: 2,
+                id: 2,
+                isPublic: true,
                 title: 'React 2강 훅스',
               },
             ],
@@ -41,18 +43,20 @@ export const DirectoryExample = {
       },
       {
         type: 'folder',
-        folderId: 3,
+        id: 3,
         title: 'Vue',
+        isPublic: true,
         notes: [
           {
             type: 'note',
-            nickname: 'seongyong',
-            noteId: 3,
+            id: 3,
+            isPublic: true,
             title: 'Vue 1강 기초',
           },
         ],
       },
     ],
+
     theme: 'light',
   },
 } satisfies Story;

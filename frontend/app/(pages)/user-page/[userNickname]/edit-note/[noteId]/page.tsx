@@ -55,7 +55,7 @@ export default function EditNote() {
       }
     };
     getNoteInfoEditPage(parseInt(noteId));
-  }, []);
+  }, [noteId, oldContent]);
 
   const handlePublicPrivateButton = () => {
     const changePublicStatus = async (noteId: number, isPublic: boolean) => {

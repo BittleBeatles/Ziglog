@@ -1,14 +1,14 @@
-'use client';
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import Folder, { FolderProps } from './Directory/Folder';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import Folder from './Directory/Folder';
 import CreateFile from './Directory/CreateFile';
-import Note, { NoteProps } from './Directory/Note';
-import { createNote } from '@api/note/note';
+import Note from './Directory/Note';
 import { createFolder } from '@api/folder/folder';
 import { useParams } from 'next/navigation';
+import { useAppSelector } from '@store/store';
+import { DirectoryItem } from '@api/folder/types';
 
 export interface DirectoryProps {
-  directoryList: DirectoryItem[];
+  sideData: DirectoryItem[];
   theme?: 'light' | 'dark';
   parentId?: number;
   setParentId?: Dispatch<SetStateAction<number>>;
@@ -18,13 +18,11 @@ export interface DirectoryProps {
   >;
   folderName?: string;
   setFolderName?: Dispatch<SetStateAction<string>>;
+  getSideList: () => void;
 }
-export type DirectoryItem = (NoteProps | FolderProps) & {
-  type: 'note' | 'folder';
-};
 
 export default function Directory({
-  directoryList,
+  sideData,
   theme = 'light',
   parentId,
   setParentId,
@@ -32,60 +30,74 @@ export default function Directory({
   folderName,
   setFolderName,
   setShowInput,
+  getSideList,
 }: DirectoryProps) {
   const params = useParams();
   const currentNoteId = Number(params.noteId);
+  const rootId = useAppSelector((state) => state.user.rootFolderId);
 
   // 폴더 입력했을 때 렌더링하기 위함
   const [keyDownCounter, setKeyDownCounter] = useState(0);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && parentId && folderName) {
-      // 3은 parentId가 될 예정
-      console.log(parentId, folderName);
-      createFolder(3, folderName);
-
-      setKeyDownCounter(keyDownCounter + 1);
-
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (
+      e.key === 'Enter' &&
+      parentId &&
+      folderName &&
+      setFolderName &&
+      setShowInput
+    ) {
       e.preventDefault();
+      try {
+        await createFolder(rootId, folderName);
+        getSideList();
+        setKeyDownCounter(keyDownCounter + 1);
+        setFolderName('');
+        setShowInput({ show: false, type: 'folder' });
+      } catch {
+        console.log('폴더가 생성안됬어요');
+      }
     }
   };
 
   return (
     <div className="w-full">
-      {directoryList.map((item) =>
-        item.type === 'note' ? (
-          <Note
-            theme={theme}
-            key={item.noteId}
-            nickname={item.nickname}
-            noteId={item.noteId}
-            title={item.title}
-          />
-        ) : (
-          <Folder
-            theme={theme}
-            key={item.folderId}
-            folderId={item.folderId}
-            title={item.title}
-            depth={0}
-            notes={item.notes}
-            parentId={parentId}
-            setParentId={setParentId}
-            showInput={showInput}
-            setShowInput={setShowInput}
-            currentNoteId={currentNoteId}
-            folderName={folderName}
-            setFolderName={setFolderName}
-            handleKeyDown={handleKeyDown}
-          />
-        )
-      )}
-      {parentId === -1 &&
+      {sideData &&
+        sideData.map((item) =>
+          item.type === 'note' ? (
+            <Note
+              theme={theme}
+              isPublic={item.isPublic}
+              key={item.type + item.id}
+              depth={0}
+              id={item.id}
+              title={item.title}
+            />
+          ) : (
+            <Folder
+              theme={theme}
+              isPublic={item.isPublic}
+              key={item.type + item.id}
+              id={item.id}
+              title={item.title}
+              depth={0}
+              notes={item.notes}
+              parentId={parentId}
+              setParentId={setParentId}
+              showInput={showInput}
+              setShowInput={setShowInput}
+              currentNoteId={currentNoteId}
+              folderName={folderName}
+              setFolderName={setFolderName}
+              getSideList={getSideList}
+            />
+          )
+        )}
+      {parentId === rootId &&
         showInput &&
         showInput.show &&
         showInput.type === 'note' && <CreateFile type="note" />}
-      {parentId === -1 &&
+      {parentId === rootId &&
         showInput &&
         showInput.show &&
         showInput.type === 'folder' && (
