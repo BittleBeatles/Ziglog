@@ -100,8 +100,8 @@ public class NoteServiceImpl implements NoteService{
         Note note =  noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         if (note.isPublic()) return note;
         if (member == null) throw new NoAuthorizationToReadException();
-        if (note.getId().equals(member.getId())) return note;
-        return null;
+        if (!note.getAuthor().getId().equals(member.getId())) throw new NoAuthorizationToReadException();
+        return note;
     }
 
     // Folder
