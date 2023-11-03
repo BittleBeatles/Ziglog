@@ -107,8 +107,8 @@ export default function ReadNote() {
         <div className="absolute">
           <BookmarkQuoteInfo
             theme={theme}
-            bookmarked={50}
-            quoted={50}
+            bookmarked={data.bookmarkCount}
+            quoted={quotationInfo.quotationList.length}
           ></BookmarkQuoteInfo>
         </div>
 
