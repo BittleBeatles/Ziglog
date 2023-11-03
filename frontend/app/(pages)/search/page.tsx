@@ -75,7 +75,6 @@ export default function Search() {
 
   return (
     <div className="flex flex-col justify-cneter items-center">
-      <h1>검색페이지입니다.</h1>
       <div className="w-2/3">
         <GlobalSearchInput onChange={(e) => setKeyword(e.target.value)} />
         <div className="h-full overflow-y-auto">
