@@ -19,7 +19,8 @@ export default function ReadNote() {
     quotationList: [],
   });
   const params = useParams();
-  const noteId = params.noteId as string;
+  const noteId = decodeURIComponent(params.noteId as string);
+  const nickname = decodeURIComponent(params.userNickname as string);
   const [data, setData] = useState<NoteInfo>({
     noteId: 1,
     title: '글제목',
@@ -33,18 +34,21 @@ export default function ReadNote() {
   useEffect(() => {
     const getNoteReadPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
-      if (result) {
+      if (result.statusCode === 200) {
         setData({
           ...data,
-          noteId: result.noteId,
-          title: result.title,
-          content: result.content,
-          nickname: result.nickname,
-          isPublic: result.isPublic,
-          bookmarkCount: result.bookmarkCount,
-          postTime: result.postTime,
-          editTime: result.editTime,
+          noteId: result.data.noteId,
+          title: result.data.title,
+          content: result.data.content,
+          nickname: result.data.nickname,
+          isPublic: result.data.isPublic,
+          bookmarkCount: result.data.bookmarkCount,
+          postTime: result.data.postTime,
+          editTime: result.data.editTime,
         });
+      } else {
+        alert(`${result.message}`);
+        window.location.replace(`/user-page/${nickname}`);
       }
     };
     const getQuotationList = async (noteId: number) => {

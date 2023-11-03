@@ -10,13 +10,13 @@ export type QuotationListApiResponse = ApiSuccessResponse<NoteRefListInfo>;
 export async function getNoteInfo(
   noteId: number,
   isLogin: boolean
-): Promise<NoteInfo> {
+): Promise<NoteApiData> {
   if (isLogin) {
     try {
       const res = await privateFetch<NoteApiData>(`${API_URL}/note/${noteId}`, {
         method: 'GET',
       });
-      return await Promise.resolve(res.body.data);
+      return await Promise.resolve(res.body);
     } catch (err) {
       throw err;
     }
@@ -25,7 +25,7 @@ export async function getNoteInfo(
       const res = await publicFetch<NoteApiData>(`${API_URL}/note/${noteId}`, {
         method: 'GET',
       });
-      return await Promise.resolve(res.body.data);
+      return await Promise.resolve(res.body);
     } catch (err) {
       throw err;
     }
