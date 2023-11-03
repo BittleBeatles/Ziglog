@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Git Pull') {
             steps {
-                git branch: 'dev/be', credentialsId: 'pj0642', url: 'https://lab.ssafy.com/s09-final/S09P31A407.git'
+                git branch: 'dev/be', credentialsId: 'ParkYeongseo', url: 'https://lab.ssafy.com/s09-final/S09P31A407.git	'
             }
         }
         stage('Pre Build Clean up') {
