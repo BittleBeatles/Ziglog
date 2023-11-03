@@ -18,7 +18,7 @@ export interface FolderProps {
   depth?: number;
   theme?: 'light' | 'dark';
   parentId?: number;
-  onEdit?: (id: number) => void;
+  onEdit?: (id: number, title: string) => void;
   setParentId?: Dispatch<SetStateAction<number>>;
   showInput?: { show: boolean; type: 'note' | 'folder' };
   setShowInput?: Dispatch<
@@ -106,9 +106,9 @@ export default function Folder({
   };
 
   // 폴더아이디 상위로 전달
-  const handleEdit = (folderId: number) => {
+  const handleEdit = (folderId: number, folderTitle: string) => {
     if (onEdit) {
-      onEdit(folderId);
+      onEdit(folderId, folderTitle);
     }
   };
 
@@ -138,7 +138,7 @@ export default function Folder({
         {isModifyDelete && (
           <div className="flex items-center ml-2">
             <IconButton
-              onClick={() => handleEdit(id)}
+              onClick={() => handleEdit(id, title)}
               theme={theme}
               name="Edit"
             />

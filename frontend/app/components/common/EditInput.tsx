@@ -1,11 +1,14 @@
 'use client';
-import React, { forwardRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, forwardRef, useState } from 'react';
 import SvgIcon from '@components/common/SvgIcon';
 import { InputHTMLAttributes } from 'react';
 import colors from '@src/design/color';
+import IconButton from './IconButton';
+import Text from './Text';
 
 interface EditInputProps extends InputHTMLAttributes<HTMLInputElement> {
   theme?: 'light' | 'dark';
+  setFolderEdit?: Dispatch<SetStateAction<boolean>>;
 }
 interface THEME_FOCUSED {
   isFocused: boolean;
@@ -13,7 +16,7 @@ interface THEME_FOCUSED {
 }
 
 const EditInput = forwardRef<HTMLInputElement, EditInputProps>(
-  ({ theme = 'light', ...rest }, ref) => {
+  ({ theme = 'light', setFolderEdit, ...rest }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     function getThemeVariant({ isFocused, theme }: THEME_FOCUSED) {
       if (isFocused && theme === 'light') return THEME_VARIANTS.focusLight;
@@ -24,22 +27,29 @@ const EditInput = forwardRef<HTMLInputElement, EditInputProps>(
     const themeClass = getThemeVariant({ isFocused, theme });
 
     return (
-      <div
-        className={`
-        w-1/3 h-16 p-2 text-lg rounded flex items-center 
-        ${themeClass}
-        `}
-      >
-        <input
-          className={`w-full outline-none ${
-            theme === 'light' ? 'bg-white' : 'bg-dark-background-page'
-          }`}
-          ref={ref}
-          {...rest}
-          type="text"
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-        />
+      <div className="fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className={`flex flex-col rounded w-1/3 p-5 ${themeClass}`}>
+          <div className="flex justify-between mb-3">
+            <Text type="h4">폴더명 수정</Text>
+            <IconButton
+              theme={theme}
+              name="Close"
+              onClick={() => setFolderEdit && setFolderEdit(false)}
+            />
+          </div>
+          <div className={`h-16 p-2 text-lg flex border items-center `}>
+            <input
+              className={`w-full outline-none ${
+                theme === 'light' ? 'bg-white' : 'bg-dark-background-page'
+              }`}
+              ref={ref}
+              {...rest}
+              type="text"
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+            />
+          </div>
+        </div>
       </div>
     );
   }

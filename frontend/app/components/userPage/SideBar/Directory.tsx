@@ -48,6 +48,7 @@ export default function Directory({
   const [showFolderEdit, setFolderEdit] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
   const [editingFolderId, setEditingFolderId] = useState(-1);
+  const [editingTitle, setEditingTitle] = useState('');
 
   // 폴더 입력했을 때 렌더링하기 위함
   const [keyDownCounter, setKeyDownCounter] = useState(0);
@@ -73,9 +74,10 @@ export default function Directory({
     }
   };
 
-  const onEdit = (folderId: number) => {
+  const onEdit = (folderId: number, title: string) => {
     setEditingFolderId(folderId);
     setFolderEdit(!showFolderEdit);
+    setEditingTitle(title);
   };
 
   useEffect(() => {
@@ -87,12 +89,6 @@ export default function Directory({
   const handleEditKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && editingFolderId !== -1 && newFolderName !== '') {
       e.preventDefault();
-      console.log(
-        'Editing folder with id:',
-        editingFolderId,
-        'New Name:',
-        newFolderName
-      );
       try {
         await editFolder(editingFolderId, newFolderName);
         getSideList();
@@ -163,13 +159,15 @@ export default function Directory({
           />
         )}
       {showFolderEdit && (
-        <div className="fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <EditInput
-            type="text"
-            onChange={(e) => setNewFolderName(e.target.value)}
-            onKeyDown={handleEditKeyDown}
-          />
-        </div>
+        <EditInput
+          type="text"
+          theme={theme}
+          placeholder="폴더명 수정"
+          defaultValue={`${editingTitle}`}
+          setFolderEdit={setFolderEdit}
+          onChange={(e) => setNewFolderName(e.target.value)}
+          onKeyDown={handleEditKeyDown}
+        />
       )}
     </div>
   );
