@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Button from '@components/common/Button';
 import IconButton from '@components/common/IconButton';
-import { useAppDispatch } from '@store/store';
+import { useAppDispatch, useAppSelector } from '@store/store';
 import { logOut, setMyTheme } from '@store/modules/userSlice';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -22,6 +22,7 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
   const openLoginModal = (open: boolean) => {
     loginModalOpen(open);
   };
+  const { nickname } = useAppSelector((state) => state.user);
   return (
     <div
       className={`${THEME_VARIANTS[theme]} w-full h-full p-5 flex items-center justify-between`}
@@ -55,7 +56,7 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
           size={24}
         />
         {isLogin && (
-          <Link href={`/user-page/${'SeongYong'}`}>
+          <Link href={`/user-page/${nickname}`}>
             <IconButton name="MyPage" theme={theme} size={24} />
           </Link>
         )}

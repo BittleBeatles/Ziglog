@@ -12,15 +12,15 @@ export default function ProfileImage({
   src = DefaultProfileImg,
   alt = 'profile image',
 }: ProfileImageProps) {
+  const imageSrc = src === '' ? DefaultProfileImg : src;
   return (
     <div className="rounded-full overflow-hidden">
       <Image
-        width={0}
-        height={0}
-        src={src}
+        width={size}
+        height={size}
+        src={imageSrc}
         alt={alt}
         priority={true}
-        style={{ width: size, height: size }}
       />
     </div>
   );
