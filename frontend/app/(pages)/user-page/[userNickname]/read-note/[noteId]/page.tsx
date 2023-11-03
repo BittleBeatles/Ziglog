@@ -19,7 +19,9 @@ export default function ReadNote() {
     quotationList: [],
   });
   const params = useParams();
-  const noteId = params.noteId as string;
+  const paramNoteId = decodeURIComponent(params.noteId as string);
+  const nickname = decodeURIComponent(params.userNickname as string);
+  const [hasAccess, setHasAccess] = useState(false);
   const [data, setData] = useState<NoteInfo>({
     noteId: 1,
     title: '글제목',
@@ -32,19 +34,24 @@ export default function ReadNote() {
   });
   useEffect(() => {
     const getNoteReadPage = async (noteId: number) => {
-      const result = await getNoteInfo(noteId);
-      if (result) {
+      const result = await getNoteInfo(noteId, isLogin);
+      if (result.statusCode === 200) {
+        setHasAccess(true);
         setData({
           ...data,
-          noteId: result.noteId,
-          title: result.title,
-          content: result.content,
-          nickname: result.nickname,
-          isPublic: result.isPublic,
-          bookmarkCount: result.bookmarkCount,
-          postTime: result.postTime,
-          editTime: result.editTime,
+          noteId: result.data.noteId,
+          title: result.data.title,
+          content: result.data.content,
+          nickname: result.data.nickname,
+          isPublic: result.data.isPublic,
+          bookmarkCount: result.data.bookmarkCount,
+          postTime: result.data.postTime,
+          editTime: result.data.editTime,
         });
+        getQuotationList(parseInt(paramNoteId));
+      } else {
+        alert(`${result.message}`);
+        window.location.replace(`/user-page/${nickname}`);
       }
     };
     const getQuotationList = async (noteId: number) => {
@@ -53,77 +60,79 @@ export default function ReadNote() {
         setQuotationInfo(result);
       }
     };
-    getNoteReadPage(parseInt(noteId));
-    getQuotationList(parseInt(noteId));
-  }, [data, noteId]);
+    getNoteReadPage(parseInt(paramNoteId));
+  }, [data, isLogin, nickname, paramNoteId]);
 
   const isMine = true;
   return (
-    <div id="sidebar-scroll" className="overflow-y-auto h-full">
-      <div className="mx-40 my-12">
-        <Text type="h1">{data.title}</Text>
-        <div className="flex flex-row place-items-center my-4">
-          <Text type="b">{data.nickname}</Text>
-          <Text className="mx-3" type="p">
-            {/* {data.postTime.toLocaleString('ko-KR')} */}
-            {new Date('2023-10-31 00:00:00').toLocaleString('ko-KR')}
-          </Text>
-          {isMine ? (
-            data.isPublic ? (
-              <SvgIcon name="Public" size={20}></SvgIcon>
+    hasAccess && (
+      <div id="sidebar-scroll" className="overflow-y-auto h-full">
+        <div className="mx-40 my-12">
+          <Text type="h1">{data.title}</Text>
+          <div className="flex flex-row place-items-center my-4">
+            <Text type="b">{data.nickname}</Text>
+            <Text className="mx-3" type="p">
+              {data.postTime && data.postTime.toLocaleString('ko-KR')}
+            </Text>
+            {isMine ? (
+              data.isPublic ? (
+                <SvgIcon name="Public" size={20}></SvgIcon>
+              ) : (
+                <SvgIcon name="Private" size={20}></SvgIcon>
+              )
+            ) : undefined}
+            {isMine ? (
+              <div className="flex flex-row">
+                <div className="ml-3">
+                  <Button
+                    onClick={() =>
+                      window.location.replace(
+                        `/user-page/${data.nickname}/edit-note/${paramNoteId}`
+                      )
+                    }
+                    color="blue"
+                    label="수정"
+                    size="text-xs"
+                  ></Button>
+                </div>
+                <div className="ml-3">
+                  <Button
+                    color="red"
+                    onClick={() =>
+                      deleteNote(parseInt(paramNoteId), data.nickname)
+                    }
+                    label="삭제"
+                    size="text-xs"
+                  ></Button>
+                </div>
+              </div>
             ) : (
-              <SvgIcon name="Private" size={20}></SvgIcon>
-            )
-          ) : undefined}
-          {isMine ? (
-            <div className="flex flex-row">
-              <div className="ml-3">
-                <Button
-                  onClick={() =>
-                    window.location.replace(
-                      `/user-page/${data.nickname}/edit-note/${noteId}`
-                    )
-                  }
-                  color="blue"
-                  label="수정"
-                  size="text-xs"
-                ></Button>
-              </div>
-              <div className="ml-3">
-                <Button
-                  color="red"
-                  onClick={() => deleteNote(parseInt(noteId), data.nickname)}
-                  label="삭제"
-                  size="text-xs"
-                ></Button>
-              </div>
-            </div>
-          ) : (
-            <div></div>
-          )}
-        </div>
-      </div>
-      <div className="flex flex-row mx-16">
-        <div className="absolute">
-          <BookmarkQuoteInfo
-            theme={theme}
-            bookmarked={data.bookmarkCount}
-            quoted={quotationInfo.quotationList.length}
-          ></BookmarkQuoteInfo>
-        </div>
-
-        <div data-color-mode={theme} className="w-full mx-24">
-          <div className="wmde-markdown-var">
-            <MarkdownPreview source={data.content} />
+              <div></div>
+            )}
           </div>
         </div>
+        <div className="flex flex-row mx-16">
+          <div className="absolute">
+            <BookmarkQuoteInfo
+              theme={theme}
+              bookmarked={data.bookmarkCount}
+              quoted={quotationInfo.quotationList.length}
+            ></BookmarkQuoteInfo>
+          </div>
+
+          <div data-color-mode={theme} className="w-full mx-24">
+            <div className="wmde-markdown-var">
+              <MarkdownPreview source={data.content} />
+            </div>
+          </div>
+        </div>
+        <div className="mx-40 mt-10 mb-4">
+          <QuotationListBox
+            theme={theme}
+            quotationList={quotationInfo.quotationList}
+          ></QuotationListBox>
+        </div>
       </div>
-      <div className="mx-40 mt-10 mb-4">
-        <QuotationListBox
-          theme={theme}
-          quotationList={quotationInfo.quotationList}
-        ></QuotationListBox>
-      </div>
-    </div>
+    )
   );
 }
