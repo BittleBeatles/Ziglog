@@ -43,20 +43,20 @@ export default function NicknameSetting({
   }, []);
 
   // newNickname: 변경할 닉네임, default 값은 변경 전 닉네임
-  const [newNickname, setValue] = useState(oldUserInfo.nickname);
+  const [newNickname, setNewNickname] = useState(oldUserInfo.nickname);
   // 변화가 감지되었을 때 변화된 값을 newNickname에 저장
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+    setNewNickname(e.target.value);
   };
   let isPossible = false;
   // isPos: 닉네임 중복 검사 결과
-  const [isPos, setNickname] = useState(false);
+  const [isPos, setIsPos] = useState(false);
   // 닉네임 중복 검사
   const isChangeable = async (newNickname: string) => {
     // 닉네임 중복 검사 값을 isPossible에 저장
     const res = await checkNickname(newNickname);
     isPossible = res.isValid;
-    setNickname(isPossible);
+    setIsPos(isPossible);
   };
   useEffect(() => {
     isChangeable(newNickname);
