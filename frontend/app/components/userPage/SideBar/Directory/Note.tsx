@@ -1,4 +1,5 @@
 'use client';
+import IconButton from '@components/common/IconButton';
 import SvgIcon from '@components/common/SvgIcon';
 import Text from '@components/common/Text';
 import colors from '@src/design/color';
@@ -13,6 +14,7 @@ export interface NoteProps {
   depth?: number;
   theme?: 'light' | 'dark';
   currentNoteId?: number;
+  isModifyDelete?: boolean;
 }
 
 export default function Note({
@@ -22,11 +24,12 @@ export default function Note({
   depth = 0,
   theme = 'light',
   currentNoteId,
+  isModifyDelete,
 }: NoteProps) {
   const param = useParams();
   const nickname = decodeURIComponent(param.userNickname as string);
   return (
-    <div>
+    <div className="flex items-center">
       <Link
         href={`/user-page/${nickname}/read-note/${id}`}
         className={`${

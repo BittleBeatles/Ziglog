@@ -6,7 +6,8 @@ import colors from '@src/design/color';
 import { findParentId } from './findParentId';
 import CreateFile from './CreateFile';
 import { DirectoryItem } from '@api/folder/types';
-import { createFolder } from '@api/folder/folder';
+import { createFolder, deleteFolder } from '@api/folder/folder';
+import IconButton from '@components/common/IconButton';
 
 export interface FolderProps {
   type?: 'folder';
@@ -17,6 +18,7 @@ export interface FolderProps {
   depth?: number;
   theme?: 'light' | 'dark';
   parentId?: number;
+  onEdit?: (id: number) => void;
   setParentId?: Dispatch<SetStateAction<number>>;
   showInput?: { show: boolean; type: 'note' | 'folder' };
   setShowInput?: Dispatch<
@@ -26,6 +28,7 @@ export interface FolderProps {
   folderName?: string;
   setFolderName?: Dispatch<SetStateAction<string>>;
   getSideList?: () => void;
+  isModifyDelete?: boolean;
 }
 
 export default function Folder({
@@ -42,6 +45,8 @@ export default function Folder({
   folderName,
   setFolderName,
   getSideList,
+  isModifyDelete,
+  onEdit,
 }: FolderProps) {
   const paddingLeft = `${depth * 1.25}rem`;
   const [isFolderOpen, setFolderOpen] = useState(
@@ -78,7 +83,6 @@ export default function Folder({
     ) {
       e.preventDefault();
       try {
-        console.log(parentId, folderName);
         await createFolder(parentId, folderName);
         getSideList();
         setFolderName('');
@@ -89,25 +93,60 @@ export default function Folder({
     }
   };
 
+  // 폴더 삭제
+  const handleDelete = async () => {
+    if (getSideList) {
+      try {
+        await deleteFolder(id);
+        getSideList();
+      } catch {
+        console.log('폴더가 삭제가 안됐음');
+      }
+    }
+  };
+
+  // 폴더아이디 상위로 전달
+  const handleEdit = (folderId: number) => {
+    if (onEdit) {
+      onEdit(folderId);
+    }
+  };
+
   return (
     <div className="folder mb-3" style={{ paddingLeft }}>
-      <div
-        onClick={handleFolder}
-        className={`flex items-center cursor-pointer hover:opacity-60 transition-opacity duration-300`}
-      >
-        {isFolderOpen ? (
-          <SvgIcon
-            name="FolderOpen"
-            color={theme === 'light' ? colors.black : colors.white}
-          />
-        ) : (
-          <SvgIcon
-            name="Folder"
-            color={theme === 'light' ? colors.black : colors.white}
-          />
+      <div className="flex items-center">
+        <div
+          onClick={handleFolder}
+          className={`flex items-center cursor-pointer hover:opacity-60 transition-opacity duration-300`}
+        >
+          {isFolderOpen ? (
+            <SvgIcon
+              name="FolderOpen"
+              color={theme === 'light' ? colors.black : colors.white}
+            />
+          ) : (
+            <SvgIcon
+              name="Folder"
+              color={theme === 'light' ? colors.black : colors.white}
+            />
+          )}
+          <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>
+            {title}
+          </Text>
+        </div>
+
+        {isModifyDelete && (
+          <div className="flex items-center ml-2">
+            <IconButton
+              onClick={() => handleEdit(id)}
+              theme={theme}
+              name="Edit"
+            />
+            <IconButton onClick={handleDelete} theme={theme} name="Remove" />
+          </div>
         )}
-        <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>{title}</Text>
       </div>
+
       {isFolderOpen && (
         <div className={`${BORDER_VARINTS[theme]}`}>
           {notes &&
@@ -121,6 +160,7 @@ export default function Folder({
                   id={item.id}
                   title={item.title}
                   currentNoteId={currentNoteId}
+                  isModifyDelete={isModifyDelete}
                 />
               ) : (
                 <Folder
@@ -139,11 +179,14 @@ export default function Folder({
                   folderName={folderName}
                   setFolderName={setFolderName}
                   getSideList={getSideList}
+                  isModifyDelete={isModifyDelete}
+                  onEdit={onEdit}
                 />
               )
             )}
         </div>
       )}
+
       {parentId === id &&
         showInput &&
         showInput.show &&
