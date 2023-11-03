@@ -3,12 +3,14 @@ import SvgIcon from '@components/common/SvgIcon';
 import Text from '@components/common/Text';
 import colors from '@src/design/color';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 export interface NoteProps {
   type?: 'note';
-  noteId: number;
+  id: number;
   title: string;
-  nickname: string;
+  isPublic: boolean;
+  depth?: number;
   theme?: 'light' | 'dark';
   currentNoteId?: number;
 }
@@ -16,17 +18,21 @@ export interface NoteProps {
 export default function Note({
   type,
   title,
-  noteId,
-  nickname,
+  id,
+  depth = 0,
   theme = 'light',
   currentNoteId,
 }: NoteProps) {
+  const param = useParams();
+  const nickname = decodeURIComponent(param.userNickname as string);
   return (
     <div>
       <Link
-        href={`/user-page/${nickname}/read-note/${noteId}`}
-        className={`flex items-center pl-5 mt-2 mb-2 hover:opacity-60 transition-opacity duration-300 ${
-          noteId === currentNoteId ? 'bg-gray-200' : ''
+        href={`/user-page/${nickname}/read-note/${id}`}
+        className={`${
+          depth !== 0 ? 'pl-5' : ''
+        }  flex items-center mt-2 mb-2 hover:opacity-60 transition-opacity duration-300  ${
+          id === currentNoteId ? 'bg-gray-200' : ''
         }`}
       >
         <SvgIcon

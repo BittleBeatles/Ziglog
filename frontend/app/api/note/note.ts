@@ -39,7 +39,7 @@ export async function createNote(folderId: number) {
     body: { folderId },
   })
     .then((res) => {
-      return console.log(`${folderId}에 노트가 생성되었습니다.`);
+      return res.status;
     })
     .catch((err) => {
       return console.log(err);
