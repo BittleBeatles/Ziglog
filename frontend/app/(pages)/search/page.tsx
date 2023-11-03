@@ -8,8 +8,11 @@ import { getSearchInfo } from '@api/search/search';
 import Text from '@components/common/Text';
 import Link from 'next/link';
 import { useScrollObserver } from '@src/hooks/useScrollObserve';
+import { useAppSelector } from '@store/store';
+import NavBar from '@components/common/NavBar';
 
 export default function Search() {
+  const { theme, isLogin } = useAppSelector((state) => state.user);
   const [keyword, setKeyword] = useState<string>('');
   const [searchData, setSearchData] = useState<SearchInfo | null>({
     notes: [],
@@ -73,42 +76,45 @@ export default function Search() {
   }, [debouncedKeyword, page]);
 
   return (
-    <div className="flex flex-col justify-cneter items-center">
-      <div className="w-2/3">
-        <GlobalSearchInput onChange={(e) => setKeyword(e.target.value)} />
-        <div className="h-full overflow-y-auto">
-          {searchData && searchData.notes.length > 0 ? (
-            <div>
-              {/* <p>총 {searchData.notes.length}개의 검색 결과가 있습니다.</p> */}
-              {searchData.notes.map((result, index) => (
-                <Link
-                  key={index}
-                  href={`/user-page/${result.nickname}/read-note/${result.noteId}`}
-                >
-                  <div>
-                    <GlobalSearchResult
-                      key={index}
-                      noteId={result.noteId}
-                      title={result.title}
-                      preview={result.preview !== null ? result.preview : ''}
-                      nickname={result.nickname}
-                      isPublic={result.isPublic}
-                      bookmarkCount={result.bookmarkCount}
-                      postTime={result.postTime}
-                      editTime={result.editTime}
-                      theme="light"
-                    />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            debouncedKeyword && (
+    <div>
+      <NavBar theme={theme} isLogin={isLogin} />
+      <div className="flex flex-col justify-cneter items-center">
+        <div className="w-2/3">
+          <GlobalSearchInput onChange={(e) => setKeyword(e.target.value)} />
+          <div className="h-full overflow-y-auto">
+            {searchData && searchData.notes.length > 0 ? (
               <div>
-                <Text type="p">{'검색 결과가 없습니다.'}</Text>
+                {/* <p>총 {searchData.notes.length}개의 검색 결과가 있습니다.</p> */}
+                {searchData.notes.map((result, index) => (
+                  <Link
+                    key={index}
+                    href={`/user-page/${result.nickname}/read-note/${result.noteId}`}
+                  >
+                    <div>
+                      <GlobalSearchResult
+                        key={index}
+                        noteId={result.noteId}
+                        title={result.title}
+                        preview={result.preview !== null ? result.preview : ''}
+                        nickname={result.nickname}
+                        isPublic={result.isPublic}
+                        bookmarkCount={result.bookmarkCount}
+                        postTime={result.postTime}
+                        editTime={result.editTime}
+                        theme="light"
+                      />
+                    </div>
+                  </Link>
+                ))}
               </div>
-            )
-          )}
+            ) : (
+              debouncedKeyword && (
+                <div>
+                  <Text type="p">{'검색 결과가 없습니다.'}</Text>
+                </div>
+              )
+            )}
+          </div>
         </div>
       </div>
     </div>
