@@ -32,7 +32,7 @@ export default function ReadNote() {
   });
   useEffect(() => {
     const getNoteReadPage = async (noteId: number) => {
-      const result = await getNoteInfo(noteId);
+      const result = await getNoteInfo(noteId, isLogin);
       if (result) {
         setData({
           ...data,
