@@ -41,6 +41,3 @@ spring:
 base-url:
   frontend: http://localhost:3000
   backend: http://k9a407.p.ssafy.io:8080
-
-sonar:
-  projectKey: s09-final_S09P31A407_AYuTJzziJNFRHGwFYwNH
