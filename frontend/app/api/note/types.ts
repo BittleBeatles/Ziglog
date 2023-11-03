@@ -33,3 +33,22 @@ export interface NoteRefType {
 export interface NoteRefListInfo {
   quotationList: NoteRefType[];
 }
+
+export interface FolderNoteList {
+  folder: Folder;
+}
+
+interface Folder {
+  type: string;
+  folderId: number;
+  title: string;
+  notes: Note[];
+  folderList: string[];
+}
+
+interface Note {
+  type: string;
+  noteId: number;
+  title: string;
+  isPublic: boolean;
+}
