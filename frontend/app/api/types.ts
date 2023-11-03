@@ -1,5 +1,5 @@
 export interface ApiSuccessResponse<D> {
-  statusCode: string;
+  statusCode: number;
   message: string;
   data: D;
 }
