@@ -17,8 +17,8 @@ public class ModifyNoteRequestDto {
 
     public Note toEntity(Member member, Long noteId){
         List<Quotation> quotations = quotingNotes.stream()
-                .map(quoting -> Quotation.builder().startNote(new Note(noteId))
-                        .endNote(new Note(quoting))
+                .map(quoting -> Quotation.builder().startNote(new Note(quoting))
+                        .endNote(new Note(noteId))
                         .build()).toList();
 
         return Note.builder()
