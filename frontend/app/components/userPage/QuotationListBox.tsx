@@ -43,22 +43,26 @@ export default function QuotationListBox({
       </div>
       {/* 목록 - 추후에 onClick 이벤트 추가하기*/}
       {showList && (
-        <ul className="flex flex-col gap-1">
-          {quotationList?.map((item) => {
-            console.log(item);
-            return (
-              <Link
-                href={`/user-page/${item.nickname}/read-note/${item.noteId}`}
-                key={item.noteId}
-              >
-                <li className={`${TEXT_COLOR[theme]}`} key={item.noteId}>
-                  <Text type="p">
-                    {item.nickname} : {item.title}
-                  </Text>
-                </li>
-              </Link>
-            );
-          })}
+        <ul className="flex flex-col gap-1 ml-2">
+          {quotationList.length > 0 ? (
+            quotationList.map((item) => {
+              console.log(item);
+              return (
+                <Link
+                  href={`/user-page/${item.nickname}/read-note/${item.noteId}`}
+                  key={item.noteId}
+                >
+                  <li className={`${TEXT_COLOR[theme]}`} key={item.noteId}>
+                    <Text type="p">
+                      {item.nickname} : {item.title}
+                    </Text>
+                  </li>
+                </Link>
+              );
+            })
+          ) : (
+            <div>이 글을 참조한 노트들이 없습니다.</div>
+          )}
         </ul>
       )}
     </div>
