@@ -85,7 +85,7 @@ export default function EditNote() {
         const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
         if (result) {
           alert('정보 수정이 성공적으로 일어났습니다.');
-          redirect(
+          window.location.replace(
             `/user-page/${params.userNickname}/read-note/${params.noteId}`
           );
         }
