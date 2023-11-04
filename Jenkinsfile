@@ -19,7 +19,7 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv(credentialsId: 'sonarToken', installationName: 'DevOps') {
+                withSonarQubeEnv(credentialsId: 'PYS_SONAR', installationName: 'DevOps') {
                     sh '''
                         cd "${WORKSPACE}"/backend
                         ./gradlew sonar
