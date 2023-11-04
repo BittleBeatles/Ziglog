@@ -32,7 +32,7 @@ public class BookmarkServiceImpl implements BookmarkService {
         Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
 
         List<Bookmark> bookmarkList = bookmarkRepository.findAllByMember(memberPersist);
-        if (bookmarkList.contains(note)) return;
+        bookmarkList.stream().filter(bookmark -> bookmark.getNote().getId().equals(noteId)).findAny().orElseThrow();
 
         Bookmark bookmark = Bookmark.builder()
                             .member(memberPersist)
