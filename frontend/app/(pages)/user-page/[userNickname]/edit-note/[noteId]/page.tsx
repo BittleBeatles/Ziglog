@@ -17,8 +17,6 @@ import { useAppSelector } from '@store/store';
 import * as commands from '@uiw/react-md-editor/lib/commands';
 import { getBookmark } from '@api/bookmark/bookmark';
 import { Note } from '@api/bookmark/types';
-import SvgIcon from '@components/common/SvgIcon';
-import { BookMark } from '@src/design/iconIndex';
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
@@ -197,9 +195,9 @@ export default function EditNote() {
                   />
                 </svg>
               ),
-              children: ({ execute }) => {
+              children: (handle: any) => {
                 useEffect(() => {
-                  execute();
+                  handle.execute();
                 }, [quotingNoteInfo]);
                 return (
                   <div>
@@ -214,12 +212,15 @@ export default function EditNote() {
                 state: commands.ExecuteState,
                 api: commands.TextAreaTextApi
               ) => {
-                console.log('>>>>>>update>>>>>', state);
-                let modifyText = `[[${state.selectedText}]]`;
-                if (!state.selectedText) {
-                  modifyText = `[[${quotingNoteInfo.nickname} : ${quotingNoteInfo.title}]] `;
+                if (quotingNoteInfo.noteId !== 0) {
+                  console.log('>>>>>>update>>>>>', state);
+                  let modifyText = `[[${state.selectedText}]]`;
+                  if (!state.selectedText) {
+                    modifyText = `[[${quotingNoteInfo.nickname} : ${quotingNoteInfo.title}]] `;
+                  }
+                  api.replaceSelection(modifyText);
+                  setQuotingNoteInfo({ nickname: '', title: '', noteId: 0 });
                 }
-                api.replaceSelection(modifyText);
               },
               buttonProps: { 'aria-label': 'See Bookmark List' },
             }),
