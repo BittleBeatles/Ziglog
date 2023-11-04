@@ -16,6 +16,8 @@ export interface Link extends LinkObject {
 }
 
 export interface GraphData {
+  folderSet?: number[];
+  noteSet?: number[];
   nodes: Node[];
   links: Link[];
 }

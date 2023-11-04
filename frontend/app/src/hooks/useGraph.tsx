@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Node, Link, GraphData } from '@components/userPage/GrapView/types';
+import { Node, Link, GraphData } from '@api/graph/types';
 import colors from '@src/design/color';
 
 export const useGraph = () => {
@@ -60,28 +60,29 @@ export const useGraph = () => {
       ctx.fillStyle = color;
       ctx.fill();
 
-      ctx.font = '6px Arial';
+      ctx.font = '6px Pretendard';
       ctx.textAlign = 'center';
       ctx.fillText(name, x, y + textDistance);
     };
 
-    if (node.x && node.y && node.name) {
-      switch (node.type) {
-        case 'folder':
-          drawCircle(node.name, 10, node.x, node.y, 5, colors['main-75']);
-          break;
-        case 'root':
-          drawCircle(node.name, 14, node.x, node.y, 8, colors['main-100']);
-          break;
-        case 'note':
-          drawCircle(node.name, 10, node.x, node.y, 5, colors.charcol);
-          break;
-        case 'link':
-          drawCircle(node.name, 10, node.x, node.y, 5, colors['main-50']);
-          break;
-        default:
-          console.error('Unknown node type:', node.type);
-          break;
+    if (node.x && node.y && node.name && node.nickname) {
+      if (node.type === 'folder' && node.name === 'root') {
+        drawCircle(node.nickname, 14, node.x, node.y, 8, colors['main-100']);
+      } else {
+        switch (node.type) {
+          case 'folder':
+            drawCircle(node.name, 12, node.x, node.y, 5, colors['main-75']);
+            break;
+          case 'note':
+            drawCircle(node.name, 12, node.x, node.y, 5, colors.charcol);
+            break;
+          case 'link':
+            drawCircle(node.name, 12, node.x, node.y, 5, colors['main-50']);
+            break;
+          default:
+            console.error('Unknown node type:', node.type);
+            break;
+        }
       }
     }
   }, []);
