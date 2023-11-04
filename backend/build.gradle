@@ -86,7 +86,7 @@ sonar {
 		property "sonar.projectKey", "s09-final_S09P31A407_AYuTJzziJNFRHGwFYwNH"
 		property "sonar.projectName", "S09P31A407"
 		property "sonar.host.url", "http://ziglog.site:8999"
-		//property "sonar.token", "squ_8d09e364864e15438e461e2782209c620bf55760"
+		property "sonar.token", "squ_8d09e364864e15438e461e2782209c620bf55760"
 		property 'sonar.java.source', 17
 		property 'sonar.junit.reportPaths', 'build/results'
 		property 'encoding', 'UTF-8'
