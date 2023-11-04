@@ -1,7 +1,7 @@
 import SvgIcon from '@components/common/SvgIcon';
 import { ButtonHTMLAttributes } from 'react';
 
-interface SingleQuotationProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface SingleQuotationProps extends ButtonHTMLAttributes<HTMLDivElement> {
   theme: 'light' | 'dark';
   isBookMarked?: boolean;
   title?: string;
