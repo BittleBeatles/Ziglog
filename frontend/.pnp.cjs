@@ -65,6 +65,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:18.2.0"],\
             ["react-force-graph-2d", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.25.2"],\
+            ["react-force-graph-3d", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.24.0"],\
             ["react-redux", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:8.1.3"],\
             ["redux", "npm:4.2.1"],\
             ["redux-logger", "npm:3.0.6"],\
@@ -80,6 +81,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["webpack", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:5.89.0"]\
           ],\
           "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["3d-force-graph", [\
+        ["npm:1.73.0", {\
+          "packageLocation": "./.yarn/cache/3d-force-graph-npm-1.73.0-f281bb3aa6-be9057ced8.zip/node_modules/3d-force-graph/",\
+          "packageDependencies": [\
+            ["3d-force-graph", "npm:1.73.0"],\
+            ["accessor-fn", "npm:1.5.0"],\
+            ["kapsule", "npm:1.14.5"],\
+            ["three", "npm:0.158.0"],\
+            ["three-forcegraph", "virtual:f281bb3aa60ebcacb40ca3c2fe96b8188b63f67ee963a64d713bbc29b24029c8e74cc980f30fe8f3e840323e88c37b7357b45cf5c9e9675824a3d4a88a2d8d79#npm:1.41.10"],\
+            ["three-render-objects", "virtual:f281bb3aa60ebcacb40ca3c2fe96b8188b63f67ee963a64d713bbc29b24029c8e74cc980f30fe8f3e840323e88c37b7357b45cf5c9e9675824a3d4a88a2d8d79#npm:1.29.0"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@aashutoshrathi/word-wrap", [\
@@ -10420,6 +10435,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["data-joint", [\
+        ["npm:1.3.1", {\
+          "packageLocation": "./.yarn/cache/data-joint-npm-1.3.1-f2d84a030d-9becfaccd5.zip/node_modules/data-joint/",\
+          "packageDependencies": [\
+            ["data-joint", "npm:1.3.1"],\
+            ["index-array-by", "npm:1.4.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["dayjs", [\
         ["npm:1.11.10", {\
           "packageLocation": "./.yarn/cache/dayjs-npm-1.11.10-2b4382efc1-a6b5a3813b.zip/node_modules/dayjs/",\
@@ -16454,6 +16479,55 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["ngraph.events", [\
+        ["npm:1.2.2", {\
+          "packageLocation": "./.yarn/cache/ngraph.events-npm-1.2.2-d3df547e22-358d312ebd.zip/node_modules/ngraph.events/",\
+          "packageDependencies": [\
+            ["ngraph.events", "npm:1.2.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["ngraph.forcelayout", [\
+        ["npm:3.3.1", {\
+          "packageLocation": "./.yarn/cache/ngraph.forcelayout-npm-3.3.1-670aa0593e-580ab50deb.zip/node_modules/ngraph.forcelayout/",\
+          "packageDependencies": [\
+            ["ngraph.forcelayout", "npm:3.3.1"],\
+            ["ngraph.events", "npm:1.2.2"],\
+            ["ngraph.merge", "npm:1.0.0"],\
+            ["ngraph.random", "npm:1.1.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["ngraph.graph", [\
+        ["npm:20.0.1", {\
+          "packageLocation": "./.yarn/cache/ngraph.graph-npm-20.0.1-7759d516fa-16e42c4c4f.zip/node_modules/ngraph.graph/",\
+          "packageDependencies": [\
+            ["ngraph.graph", "npm:20.0.1"],\
+            ["ngraph.events", "npm:1.2.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["ngraph.merge", [\
+        ["npm:1.0.0", {\
+          "packageLocation": "./.yarn/cache/ngraph.merge-npm-1.0.0-5bd1b34a67-e4ad9e55ac.zip/node_modules/ngraph.merge/",\
+          "packageDependencies": [\
+            ["ngraph.merge", "npm:1.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["ngraph.random", [\
+        ["npm:1.1.0", {\
+          "packageLocation": "./.yarn/cache/ngraph.random-npm-1.1.0-a20bb25148-926ed86450.zip/node_modules/ngraph.random/",\
+          "packageDependencies": [\
+            ["ngraph.random", "npm:1.1.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["no-case", [\
         ["npm:3.0.4", {\
           "packageLocation": "./.yarn/cache/no-case-npm-3.0.4-12884c3d98-0b2ebc113d.zip/node_modules/no-case/",\
@@ -18224,6 +18298,31 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-force-graph-2d", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.25.2"],\
             ["@types/react", "npm:18.2.28"],\
             ["force-graph", "npm:1.43.4"],\
+            ["prop-types", "npm:15.8.1"],\
+            ["react", "npm:18.2.0"],\
+            ["react-kapsule", "virtual:061278c91ff1094a685be5b8411eceed189006f8908a72ec5e76c289c261de1e37d92aeb9fcc24a63dd859be3f80b0e931a9d5ad5af1b09c8b1a7b3a3ed847c6#npm:2.4.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["react-force-graph-3d", [\
+        ["npm:1.24.0", {\
+          "packageLocation": "./.yarn/cache/react-force-graph-3d-npm-1.24.0-84593b7509-5084491aac.zip/node_modules/react-force-graph-3d/",\
+          "packageDependencies": [\
+            ["react-force-graph-3d", "npm:1.24.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.24.0", {\
+          "packageLocation": "./.yarn/__virtual__/react-force-graph-3d-virtual-8c88d2b4e6/0/cache/react-force-graph-3d-npm-1.24.0-84593b7509-5084491aac.zip/node_modules/react-force-graph-3d/",\
+          "packageDependencies": [\
+            ["react-force-graph-3d", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.24.0"],\
+            ["3d-force-graph", "npm:1.73.0"],\
+            ["@types/react", "npm:18.2.28"],\
             ["prop-types", "npm:15.8.1"],\
             ["react", "npm:18.2.0"],\
             ["react-kapsule", "virtual:061278c91ff1094a685be5b8411eceed189006f8908a72ec5e76c289c261de1e37d92aeb9fcc24a63dd859be3f80b0e931a9d5ad5af1b09c8b1a7b3a3ed847c6#npm:2.4.0"]\
@@ -20561,6 +20660,71 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["three", "npm:0.157.0"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:0.158.0", {\
+          "packageLocation": "./.yarn/cache/three-npm-0.158.0-6673f74646-30decfb781.zip/node_modules/three/",\
+          "packageDependencies": [\
+            ["three", "npm:0.158.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["three-forcegraph", [\
+        ["npm:1.41.10", {\
+          "packageLocation": "./.yarn/cache/three-forcegraph-npm-1.41.10-5bfdb1d0fc-921f3f7abc.zip/node_modules/three-forcegraph/",\
+          "packageDependencies": [\
+            ["three-forcegraph", "npm:1.41.10"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:f281bb3aa60ebcacb40ca3c2fe96b8188b63f67ee963a64d713bbc29b24029c8e74cc980f30fe8f3e840323e88c37b7357b45cf5c9e9675824a3d4a88a2d8d79#npm:1.41.10", {\
+          "packageLocation": "./.yarn/__virtual__/three-forcegraph-virtual-6b910cae65/0/cache/three-forcegraph-npm-1.41.10-5bfdb1d0fc-921f3f7abc.zip/node_modules/three-forcegraph/",\
+          "packageDependencies": [\
+            ["three-forcegraph", "virtual:f281bb3aa60ebcacb40ca3c2fe96b8188b63f67ee963a64d713bbc29b24029c8e74cc980f30fe8f3e840323e88c37b7357b45cf5c9e9675824a3d4a88a2d8d79#npm:1.41.10"],\
+            ["@types/three", null],\
+            ["accessor-fn", "npm:1.5.0"],\
+            ["d3-array", "npm:3.2.4"],\
+            ["d3-force-3d", "npm:3.0.5"],\
+            ["d3-scale", "npm:4.0.2"],\
+            ["d3-scale-chromatic", "npm:3.0.0"],\
+            ["data-joint", "npm:1.3.1"],\
+            ["kapsule", "npm:1.14.5"],\
+            ["ngraph.forcelayout", "npm:3.3.1"],\
+            ["ngraph.graph", "npm:20.0.1"],\
+            ["three", "npm:0.158.0"],\
+            ["tinycolor2", "npm:1.6.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/three",\
+            "three"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["three-render-objects", [\
+        ["npm:1.29.0", {\
+          "packageLocation": "./.yarn/cache/three-render-objects-npm-1.29.0-f88a8fe65d-90824e427a.zip/node_modules/three-render-objects/",\
+          "packageDependencies": [\
+            ["three-render-objects", "npm:1.29.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:f281bb3aa60ebcacb40ca3c2fe96b8188b63f67ee963a64d713bbc29b24029c8e74cc980f30fe8f3e840323e88c37b7357b45cf5c9e9675824a3d4a88a2d8d79#npm:1.29.0", {\
+          "packageLocation": "./.yarn/__virtual__/three-render-objects-virtual-62cb1bb519/0/cache/three-render-objects-npm-1.29.0-f88a8fe65d-90824e427a.zip/node_modules/three-render-objects/",\
+          "packageDependencies": [\
+            ["three-render-objects", "virtual:f281bb3aa60ebcacb40ca3c2fe96b8188b63f67ee963a64d713bbc29b24029c8e74cc980f30fe8f3e840323e88c37b7357b45cf5c9e9675824a3d4a88a2d8d79#npm:1.29.0"],\
+            ["@tweenjs/tween.js", "npm:21.0.0"],\
+            ["@types/three", null],\
+            ["accessor-fn", "npm:1.5.0"],\
+            ["kapsule", "npm:1.14.5"],\
+            ["polished", "npm:4.2.2"],\
+            ["three", "npm:0.158.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/three",\
+            "three"\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["throttleit", [\
@@ -22126,6 +22290,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:18.2.0"],\
             ["react-force-graph-2d", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.25.2"],\
+            ["react-force-graph-3d", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.24.0"],\
             ["react-redux", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:8.1.3"],\
             ["redux", "npm:4.2.1"],\
             ["redux-logger", "npm:3.0.6"],\

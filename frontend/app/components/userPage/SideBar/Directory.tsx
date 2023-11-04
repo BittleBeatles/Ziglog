@@ -152,12 +152,9 @@ export default function Directory({
       {parentId === rootId &&
         showInput &&
         showInput.show &&
-        showInput.type === 'note' && <CreateFile type="note" />}
-      {parentId === rootId &&
-        showInput &&
-        showInput.show &&
         showInput.type === 'folder' && (
           <CreateFile
+            theme={theme}
             onChange={(e) => setFolderName && setFolderName(e.target.value)}
             onKeyDown={(e) => handleKeyDown(e)}
             type="folder"

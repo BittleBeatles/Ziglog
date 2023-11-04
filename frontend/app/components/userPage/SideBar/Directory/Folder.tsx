@@ -190,21 +190,13 @@ export default function Folder({
             )}
         </div>
       )}
-
-      {parentId === id &&
-        showInput &&
-        showInput.show &&
-        showInput.type === 'note' && (
-          <div style={{ paddingLeft: '1.25rem' }}>
-            <CreateFile type="note" />
-          </div>
-        )}
       {parentId === id &&
         showInput &&
         showInput.show &&
         showInput.type === 'folder' && (
           <div style={{ paddingLeft: '1.25rem' }}>
             <CreateFile
+              theme={theme}
               onChange={(e) => setFolderName && setFolderName(e.target.value)}
               onKeyDown={(e) => handleKeyDown && handleKeyDown(e)}
               type="folder"

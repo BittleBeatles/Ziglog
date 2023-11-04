@@ -5,6 +5,19 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"3d-force-graph@npm:^1.73":
+  version: 1.73.0
+  resolution: "3d-force-graph@npm:1.73.0"
+  dependencies:
+    accessor-fn: 1
+    kapsule: 1
+    three: ">=0.118 <1"
+    three-forcegraph: 1
+    three-render-objects: ^1.29
+  checksum: be9057ced895131b8788f2f20f6fc587d027e697a353bb69df2ddd6a64e91670202b13e9ea44b794491a562f20551c779d18f85c35b6f8604dbfc27a9a3f77bc
+  languageName: node
+  linkType: hard
+
 "@aashutoshrathi/word-wrap@npm:^1.2.3":
   version: 1.2.6
   resolution: "@aashutoshrathi/word-wrap@npm:1.2.6"
@@ -7501,6 +7514,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"data-joint@npm:1":
+  version: 1.3.1
+  resolution: "data-joint@npm:1.3.1"
+  dependencies:
+    index-array-by: ^1.4.0
+  checksum: 9becfaccd59ca02a4caffe6b8b9b52d4e9df8ed93dc01cd3109ef67dc406e8fc678b539f8fd62662ce9b7a1061ec3b4865ca3b4d0edf69656c0cf97f9a2c1b1a
+  languageName: node
+  linkType: hard
+
 "dayjs@npm:^1.10.4":
   version: 1.11.10
   resolution: "dayjs@npm:1.11.10"
@@ -10430,7 +10452,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"index-array-by@npm:1":
+"index-array-by@npm:1, index-array-by@npm:^1.4.0":
   version: 1.4.1
   resolution: "index-array-by@npm:1.4.1"
   checksum: 030ca9ddbb50b6b525ef6c4da026968df75e728915ed574a28c4437dd4b8154217b21f519136abc8c198796d9ee609ee7279c02e6f6db72d248422e460656c09
@@ -11371,7 +11393,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"kapsule@npm:^1.14":
+"kapsule@npm:1, kapsule@npm:^1.14":
   version: 1.14.5
   resolution: "kapsule@npm:1.14.5"
   dependencies:
@@ -12752,6 +12774,47 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ngraph.events@npm:^1.0.0, ngraph.events@npm:^1.2.1":
+  version: 1.2.2
+  resolution: "ngraph.events@npm:1.2.2"
+  checksum: 358d312ebdf8eeddfac9741938f38cb7fe488b402641900613f632fe81fe63da92543db050c659e5a7dc7c28750b1109ce4d78cc9d68e66d732fba7128efbbc2
+  languageName: node
+  linkType: hard
+
+"ngraph.forcelayout@npm:3":
+  version: 3.3.1
+  resolution: "ngraph.forcelayout@npm:3.3.1"
+  dependencies:
+    ngraph.events: ^1.0.0
+    ngraph.merge: ^1.0.0
+    ngraph.random: ^1.0.0
+  checksum: 580ab50debd7cf03bae7752337496f45158a8808a6494df71080a28c5f047fa146d53daf5635ed22bb06cc95b06b217e3c104fe2071d8e5beb036c7697871b7d
+  languageName: node
+  linkType: hard
+
+"ngraph.graph@npm:20":
+  version: 20.0.1
+  resolution: "ngraph.graph@npm:20.0.1"
+  dependencies:
+    ngraph.events: ^1.2.1
+  checksum: 16e42c4c4fdabf8243b42291c8c5bf5baa0614773d62edf911b86ef2aa9f60a38e107a9d1bb97ab6feac2ac514c8e04a0aa24d1992502b21420fdd5f563c96cb
+  languageName: node
+  linkType: hard
+
+"ngraph.merge@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "ngraph.merge@npm:1.0.0"
+  checksum: e4ad9e55acec7704229f56e7d6157b17a9d87736efdbd2cee6c3fab92cffb99e94b3d8e2e5e75f863f4fe972192a2bff1381e58334115d7c9c08b55b1673801f
+  languageName: node
+  linkType: hard
+
+"ngraph.random@npm:^1.0.0":
+  version: 1.1.0
+  resolution: "ngraph.random@npm:1.1.0"
+  checksum: 926ed86450d2fc983aea92e22f595bf064c45d90e5efbf4bd85f14e825253c9e01417ef1357da0875691ccb61ec411443a7c8e1ec10885f2eb841366b3bd7960
+  languageName: node
+  linkType: hard
+
 "no-case@npm:^3.0.4":
   version: 3.0.4
   resolution: "no-case@npm:3.0.4"
@@ -13582,7 +13645,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"polished@npm:^4.2.2":
+"polished@npm:4, polished@npm:^4.2.2":
   version: 4.2.2
   resolution: "polished@npm:4.2.2"
   dependencies:
@@ -14186,6 +14249,19 @@ __metadata:
   peerDependencies:
     react: "*"
   checksum: c5454d0d124f443ed394e25ed93614256324d2e5fb3a76b2cc7d551d952b49fa584af13d4be694238b4e04bfc803de2c1786fdff8e14013e38273922b2cf41c2
+  languageName: node
+  linkType: hard
+
+"react-force-graph-3d@npm:^1.24.0":
+  version: 1.24.0
+  resolution: "react-force-graph-3d@npm:1.24.0"
+  dependencies:
+    3d-force-graph: ^1.73
+    prop-types: 15
+    react-kapsule: 2
+  peerDependencies:
+    react: "*"
+  checksum: 5084491aac5629a38176c4fef52513e423cddb4d98a41f445851bedb1895f1800e3ab04e908b5ad39544bb13610a214518348465c0baf7d6d7c709fa0024e179
   languageName: node
   linkType: hard
 
@@ -16174,6 +16250,47 @@ __metadata:
   languageName: node
   linkType: hard
 
+"three-forcegraph@npm:1":
+  version: 1.41.10
+  resolution: "three-forcegraph@npm:1.41.10"
+  dependencies:
+    accessor-fn: 1
+    d3-array: 1 - 3
+    d3-force-3d: 2 - 3
+    d3-scale: 1 - 4
+    d3-scale-chromatic: 1 - 3
+    data-joint: 1
+    kapsule: 1
+    ngraph.forcelayout: 3
+    ngraph.graph: 20
+    tinycolor2: 1
+  peerDependencies:
+    three: ">=0.118.3"
+  checksum: 921f3f7abc60816738aefde97946b51b00d06dba4e0f04b5fd9678d3dfa375579048008fe6f2994208dc09e359f0c17431f65cf5f7569b6ff7907919a7c61d41
+  languageName: node
+  linkType: hard
+
+"three-render-objects@npm:^1.29":
+  version: 1.29.0
+  resolution: "three-render-objects@npm:1.29.0"
+  dependencies:
+    "@tweenjs/tween.js": 18 - 21
+    accessor-fn: 1
+    kapsule: 1
+    polished: 4
+  peerDependencies:
+    three: "*"
+  checksum: 90824e427aa4605d9b52844a6a021ac323cd5890a02e5f9ed1651c23304366e57c1670d3cd607ac18a867a852be977127b4303729aabd586791e73c8b39b089c
+  languageName: node
+  linkType: hard
+
+"three@npm:>=0.118 <1":
+  version: 0.158.0
+  resolution: "three@npm:0.158.0"
+  checksum: 30decfb78125732ffc287946208d11b3ba8b6d765d7e806c1e0149f6edc3671e69e2cc680082486858bcd123a1ba24f6dbc8222e88b6edb9e17d9487ae4ed821
+  languageName: node
+  linkType: hard
+
 "three@npm:^0.157.0":
   version: 0.157.0
   resolution: "three@npm:0.157.0"
@@ -16221,7 +16338,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinycolor2@npm:^1.6.0":
+"tinycolor2@npm:1, tinycolor2@npm:^1.6.0":
   version: 1.6.0
   resolution: "tinycolor2@npm:1.6.0"
   checksum: 6df4d07fceeedc0a878d7bac47e2cd47c1ceeb1078340a9eb8a295bc0651e17c750f73d47b3028d829f30b85c15e0572c0fd4142083e4c21a30a597e47f47230
@@ -17476,6 +17593,7 @@ __metadata:
     react: ^18
     react-dom: ^18
     react-force-graph-2d: ^1.25.2
+    react-force-graph-3d: ^1.24.0
     react-redux: ^8.1.3
     redux: ^4.2.1
     redux-logger: ^3.0.6
