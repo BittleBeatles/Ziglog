@@ -15,28 +15,14 @@ interface QuotationModalProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export default function QuotationModal({
   theme = 'light',
   setQuotingNoteInfo,
+  bookmarks,
 }: QuotationModalProps) {
-  const bookmarks = [
-    {
-      noteId: 1,
-      title: '메롱입니다',
-      nickname: 'frog_slayer',
-      isBookmarked: true,
-    },
-    {
-      noteId: 2,
-      title: '안녕하세요',
-      nickname: 'hanulkim',
-      isBookmarked: true,
-    },
-  ];
-
   return (
     <div>
       <div
         className={`${THEME_VARIANTS[theme]} w-80 h-fit rounded-md border p-2`}
       >
-        {bookmarks.map((bookmark, index) => (
+        {bookmarks?.map((bookmark, index) => (
           <SingleQuotation
             key={index}
             theme={theme}

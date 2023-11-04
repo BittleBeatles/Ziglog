@@ -15,7 +15,8 @@ import { diffChars } from 'diff';
 import dynamic from 'next/dynamic';
 import { useAppSelector } from '@store/store';
 import * as commands from '@uiw/react-md-editor/lib/commands';
-
+import { getBookmark } from '@api/bookmark/bookmark';
+import { Note } from '@api/bookmark/types';
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
@@ -37,15 +38,14 @@ export default function EditNote() {
   const [content, setContent] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [quotingList, setQuotingList] = useState<number[]>([]);
+  const [bookmarks, setBookmarks] = useState<Note[]>([]);
   const [hasAccess, setHasAccess] = useState(false);
   const [quotingNoteInfo, setQuotingNoteInfo] = useState({
     nickname: '',
     title: '',
     noteId: 0,
   });
-  useEffect(() => {
-    console.log(quotingList);
-  }, [quotingList]);
+
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -64,7 +64,14 @@ export default function EditNote() {
         window.location.replace(`/user-page/${nickname}`);
       }
     };
+    const getBookmarkList = async () => {
+      const result = await getBookmark();
+      if (result) {
+        setBookmarks(result.notes);
+      }
+    };
     getNoteInfoEditPage(parseInt(noteId));
+    getBookmarkList();
   }, []);
 
   const handlePublicPrivateButton = () => {
@@ -158,7 +165,10 @@ export default function EditNote() {
                 }, [quotingNoteInfo]);
                 return (
                   <div>
-                    <QuotationModal setQuotingNoteInfo={setQuotingNoteInfo} />
+                    <QuotationModal
+                      bookmarks={bookmarks}
+                      setQuotingNoteInfo={setQuotingNoteInfo}
+                    />
                   </div>
                 );
               },
