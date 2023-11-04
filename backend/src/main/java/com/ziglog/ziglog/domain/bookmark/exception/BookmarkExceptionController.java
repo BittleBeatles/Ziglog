@@ -1,5 +1,6 @@
 package com.ziglog.ziglog.domain.bookmark.exception;
 
+import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkAlreadyExistsException;
 import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkNotFoundException;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,11 @@ public class BookmarkExceptionController {
 
     @ExceptionHandler(BookmarkNotFoundException.class)
     public ResponseDto<String> handleBookmarkNotFoundException (BookmarkExceptionCode err){
+        return toResponseDto(BookmarkExceptionCode.BOOKMARK_NOT_FOUND_EXCEPTION);
+    }
+
+    @ExceptionHandler(BookmarkAlreadyExistsException.class)
+    public ResponseDto<String> handleBookmarkAlreadyExistsException (BookmarkAlreadyExistsException err){
         return toResponseDto(BookmarkExceptionCode.BOOKMARK_NOT_FOUND_EXCEPTION);
     }
 
