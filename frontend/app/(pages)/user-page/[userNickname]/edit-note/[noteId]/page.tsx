@@ -16,6 +16,7 @@ import dynamic from 'next/dynamic';
 import { useAppSelector } from '@store/store';
 import * as commands from '@uiw/react-md-editor/lib/commands';
 import { div } from 'three/examples/jsm/nodes/Nodes.js';
+import { ExecuteCommandState } from '@uiw/react-md-editor';
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
@@ -37,10 +38,11 @@ export default function EditNote() {
   const [content, setContent] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [quotingNotes, setQuotingNotes] = useState([]);
-  const editorRef = useRef<HTMLDivElement>(null);
-  const quotationModalRef = useRef<HTMLDivElement>(null);
   const [hasAccess, setHasAccess] = useState(false);
-
+  const [quotingNoteInfo, setQuotingNoteInfo] = useState({
+    nickname: '',
+    title: '',
+  });
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -147,21 +149,24 @@ export default function EditNote() {
                   />
                 </svg>
               ),
-              children: (handle: any) => {
+              children: ({ execute, dispatch }) => {
                 return (
                   <div>
-                    <QuotationModal handle={handle} />
+                    <QuotationModal
+                      execute={execute}
+                      setQuotingNoteInfo={setQuotingNoteInfo}
+                    />
                   </div>
                 );
               },
               execute: (
-                state: commands.TextState,
+                state: commands.ExecuteState,
                 api: commands.TextAreaTextApi
               ) => {
                 console.log('>>>>>>update>>>>>', state);
-                let modifyText = `[[${state.selectedText}]] \n`;
+                let modifyText = `[[${state.selectedText}]]`;
                 if (!state.selectedText) {
-                  modifyText = `[[]] `;
+                  modifyText = `[[${quotingNoteInfo.nickname} : ${quotingNoteInfo.title}]] `;
                 }
                 api.replaceSelection(modifyText);
               },
