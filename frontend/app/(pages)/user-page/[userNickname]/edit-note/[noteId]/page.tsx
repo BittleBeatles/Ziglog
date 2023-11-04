@@ -46,6 +46,7 @@ export default function EditNote() {
     noteId: 0,
   });
 
+  // 노트 정보 불러오기 + 북마크 정보 가져오기
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -73,7 +74,7 @@ export default function EditNote() {
     getNoteInfoEditPage(parseInt(noteId));
     getBookmarkList();
   }, []);
-
+  // 공개/비공개 여부 수정하기
   const handlePublicPrivateButton = () => {
     const changePublicStatus = async (noteId: number, isPublic: boolean) => {
       const body = { isPublic: !isPublic };
@@ -85,7 +86,7 @@ export default function EditNote() {
     };
     changePublicStatus(parseInt(noteId), isPublic);
   };
-
+  // 노트 수정하기
   const handleNoteEdit = () => {
     if (
       (oldContent.content &&
@@ -94,10 +95,40 @@ export default function EditNote() {
       (!oldContent.content && content) ||
       (!oldContent.title && title)
     ) {
+      // 참조 목록 업데이트 하기
+      const regex = /\[\[(.*?)\]\]/g;
+      const matches = content.match(regex);
+      const extractedQuotingNotes: string[] = [];
+      if (matches) {
+        matches.forEach((match) => {
+          const extractedContent = match.slice(2, -2); // Remove the double square brackets
+          extractedQuotingNotes.push(extractedContent);
+        });
+      }
+      const splitQuotingNotes = extractedQuotingNotes.map((content) => {
+        const parts = content.split(':');
+        return {
+          nickname: parts[0].trim(),
+          title: parts[1].trim(),
+        };
+      });
+      const updatedQuotingList: number[] = [];
+      splitQuotingNotes.forEach((splitNote) => {
+        const matchingBookmark = bookmarks.find(
+          (bookmark) =>
+            bookmark.nickname === splitNote.nickname &&
+            bookmark.title === splitNote.title
+        );
+        if (matchingBookmark) {
+          if (!updatedQuotingList.includes(matchingBookmark.noteId)) {
+            updatedQuotingList.push(matchingBookmark.noteId);
+          }
+        }
+      });
       const body = {
         title: title,
         content: content,
-        quotingNotes: quotingList,
+        quotingNotes: updatedQuotingList,
       };
       const editNote = async (body: EditNoteParams) => {
         const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
@@ -182,9 +213,6 @@ export default function EditNote() {
                   modifyText = `[[${quotingNoteInfo.nickname} : ${quotingNoteInfo.title}]] `;
                 }
                 api.replaceSelection(modifyText);
-                if (!quotingList.includes(quotingNoteInfo.noteId)) {
-                  setQuotingList([...quotingList, quotingNoteInfo.noteId]);
-                }
               },
               buttonProps: { 'aria-label': 'See Bookmark List' },
             }),
