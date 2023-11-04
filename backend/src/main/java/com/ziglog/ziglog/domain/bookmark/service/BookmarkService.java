@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BookmarkService {
 
-    //북마크 추가;
+    //북마크 추가
     void addBookmark(Member member, Long noteId) throws Exception;
 
     //북마크 삭제
