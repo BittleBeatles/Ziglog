@@ -27,7 +27,7 @@ export default function Home() {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % textList.length);
         setFade(true);
       }, 1000);
-    }, 5000);
+    }, 2500); // 시간초 조절
 
     return () => {
       clearInterval(intervalId);
@@ -44,7 +44,6 @@ export default function Home() {
           <Text
             type="h1"
             className={`text-7xl ${fade ? 'fade-in' : 'fade-out'}`}
-            // Key를 변경하여 React에게 DOM 요소를 다시 생성하도록 함으로써 애니메이션을 재생
             key={currentIndex}
           >
             {textList[currentIndex]}
