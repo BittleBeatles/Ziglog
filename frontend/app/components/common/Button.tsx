@@ -23,7 +23,7 @@ export default function Button({
   return (
     <button
       onClick={onClick}
-      className={`${COLOR_VARIANTS[color]} ${size} font-bold colorClass text-white w-fit h-fit px-3 py-2 rounded-full`}
+      className={`${COLOR_VARIANTS[color]} ${size} font-bold colorClass text-white w-fit h-fit px-3 py-2 rounded-full opacity-100 hover:opacity-60 transition-opacity duration-300`}
     >
       {label}
     </button>
