@@ -15,8 +15,7 @@ import { diffChars } from 'diff';
 import dynamic from 'next/dynamic';
 import { useAppSelector } from '@store/store';
 import * as commands from '@uiw/react-md-editor/lib/commands';
-import { div } from 'three/examples/jsm/nodes/Nodes.js';
-import { ExecuteCommandState } from '@uiw/react-md-editor';
+
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
@@ -37,12 +36,16 @@ export default function EditNote() {
   const [title, setTitle] = useState('글제목');
   const [content, setContent] = useState('');
   const [isPublic, setIsPublic] = useState(false);
-  const [quotingNotes, setQuotingNotes] = useState([]);
+  const [quotingList, setQuotingList] = useState<number[]>([]);
   const [hasAccess, setHasAccess] = useState(false);
   const [quotingNoteInfo, setQuotingNoteInfo] = useState({
     nickname: '',
     title: '',
+    noteId: 0,
   });
+  useEffect(() => {
+    console.log(quotingList);
+  }, [quotingList]);
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -87,7 +90,7 @@ export default function EditNote() {
       const body = {
         title: title,
         content: content,
-        quotingNotes: quotingNotes,
+        quotingNotes: quotingList,
       };
       const editNote = async (body: EditNoteParams) => {
         const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
@@ -149,13 +152,13 @@ export default function EditNote() {
                   />
                 </svg>
               ),
-              children: ({ execute, dispatch }) => {
+              children: ({ execute }) => {
+                useEffect(() => {
+                  execute();
+                }, [quotingNoteInfo]);
                 return (
                   <div>
-                    <QuotationModal
-                      execute={execute}
-                      setQuotingNoteInfo={setQuotingNoteInfo}
-                    />
+                    <QuotationModal setQuotingNoteInfo={setQuotingNoteInfo} />
                   </div>
                 );
               },
@@ -169,8 +172,11 @@ export default function EditNote() {
                   modifyText = `[[${quotingNoteInfo.nickname} : ${quotingNoteInfo.title}]] `;
                 }
                 api.replaceSelection(modifyText);
+                if (!quotingList.includes(quotingNoteInfo.noteId)) {
+                  setQuotingList([...quotingList, quotingNoteInfo.noteId]);
+                }
               },
-              buttonProps: { 'aria-label': 'Insert title' },
+              buttonProps: { 'aria-label': 'See Bookmark List' },
             }),
           ]}
         ></MDEditor>
