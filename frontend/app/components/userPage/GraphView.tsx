@@ -1,10 +1,11 @@
 'use client';
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import dynamic from 'next/dynamic';
 import colors from '@src/design/color';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useGraph } from '@src/hooks/useGraph';
-import { GraphData, Link, Node } from './GrapView/types';
+import { GraphData, Link, Node } from '../../api/graph/types';
+import GraphDataContext from '@(pages)/user-page/[userNickname]/GraphDataContext';
 
 const ForceGraph = dynamic(() => import('react-force-graph-2d'), {
   ssr: false,
@@ -17,6 +18,14 @@ interface GraphViewProps {
 export default function GraphView({ theme }: GraphViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
+  const params = useParams();
+  const nickname = decodeURIComponent(params.userNickname as string);
+  const { graphData, getGraphData } = useContext(GraphDataContext);
+
+  useEffect(() => {
+    getGraphData();
+  }, [nickname]);
+
   const {
     highlightLinks,
     handleNodeHover,
@@ -25,15 +34,14 @@ export default function GraphView({ theme }: GraphViewProps) {
     addNeighborsAndLinks,
   } = useGraph();
 
-  // 노드에서 이웃과 링크 추가해주는 함수
   addNeighborsAndLinks(data);
 
   const router = useRouter();
   const handleClick = (node: Node) => {
     if (node.type === 'note') {
-      router.push(`/user-page/${'SeongYong'}/read-note/${node.id}`);
+      router.push(`/user-page/${nickname}/read-note/${node.id}`);
     } else if (node.type === 'link') {
-      router.push(`/user-page/${'SeongYong'}/read-note/${node.id}`);
+      router.push(`/user-page/${nickname}/read-note/${node.id}`);
     } else {
       console.warn('존재하지 않는 노드입니다:', node.type);
     }
@@ -56,7 +64,7 @@ export default function GraphView({ theme }: GraphViewProps) {
   return (
     <div className="w-full h-full" ref={containerRef}>
       <ForceGraph
-        graphData={data}
+        graphData={graphData}
         width={dimensions.width - 5}
         height={dimensions.height - 5}
         backgroundColor={
