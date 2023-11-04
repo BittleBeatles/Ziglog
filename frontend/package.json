@@ -25,6 +25,8 @@
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "return-fetch": "^0.4.5",
+    "sharp": "^0.32.6",
+    "supports-color": "^9.4.0",
     "tailwind-scrollbar-hide": "^1.1.7",
     "three": "^0.157.0"
   },
