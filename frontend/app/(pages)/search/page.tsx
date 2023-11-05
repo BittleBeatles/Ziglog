@@ -24,21 +24,20 @@ export default function Search() {
   const perPage = 5;
   const router = useRouter();
 
+  // URL 쿼리 매개변수에서 검색어 추출
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const keyword2 = urlParams.get('keyword');
-  const initialKeyword = keyword2 || '';
-
-  // URL 쿼리 매개변수에서 검색어 추출
   useEffect(() => {
     if (keyword2) {
-      setKeyword(decodeURIComponent(keyword2)); // URL 디코드하여 검색어 설정
+      setKeyword(decodeURIComponent(keyword2));
+    } else {
+      setKeyword('');
     }
   }, [keyword2]);
 
   // 검색 디바운싱
-  const debouncedKeyword = useDebounce(keyword, 500);
-  console.log(debouncedKeyword);
+  const debouncedKeyword = useDebounce(keyword, 1000);
 
   const handleSearch = () => {
     // 검색 버튼을 클릭했을 때 키워드를 URL 쿼리 매개변수로 추가
@@ -56,12 +55,12 @@ export default function Search() {
   //스크롤 감지 훅
   useScrollObserver(handleScroll);
 
-  // 검색어 바뀔 때마다 초기화
+  // 검색어 바뀔 때마다 초기화 (디바운싱 된 값으로)
   useEffect(() => {
     setPage(0);
     handleSearch();
     setSearchData({ notes: [] });
-  }, [keyword]);
+  }, [debouncedKeyword]);
 
   useEffect(() => {
     async function fetchMoreData(debouncedKeyword: string, page: number) {
@@ -94,17 +93,34 @@ export default function Search() {
     }
   }, [debouncedKeyword, page]);
 
+  // 뒤로가기 이벤트를 감지하고 처리
+  const handleGoBack = () => {
+    router.push(`/`);
+  };
+
+  useEffect(() => {
+    window.addEventListener('popstate', handleGoBack);
+    return () => {
+      window.removeEventListener('popstate', handleGoBack);
+    };
+  }, []);
+
   return (
     <div>
       <NavBar theme={theme} isLogin={isLogin} />
       <div className="flex flex-col justify-cneter items-center">
         <div className="w-2/3">
           <GlobalSearchInput
+            defaultValue={keyword}
+            placeholder="검색어를 입력하세요"
             onChange={(e) => setKeyword(e.target.value)}
-            value={initialKeyword}
           />
           <div className="h-full overflow-y-auto">
-            {searchData && searchData.notes.length > 0 ? (
+            {loading && !searchData ? (
+              <div>
+                <Text type="p">{'로딩 중입니다.'}</Text>
+              </div>
+            ) : searchData && searchData.notes.length > 0 ? (
               <div>
                 {/* <p>총 {searchData.notes.length}개의 검색 결과가 있습니다.</p> */}
                 {searchData.notes.map((result, index) => (
