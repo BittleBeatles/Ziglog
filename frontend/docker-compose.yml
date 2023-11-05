@@ -1,0 +1,11 @@
+services:
+    next:
+        build: .
+        ports:
+            - 3000:3000
+        networks:
+            - net-pub
+
+networks:
+    net-pub:
+        external: true

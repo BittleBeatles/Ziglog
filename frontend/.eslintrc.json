@@ -1,0 +1,30 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "rules": {
+    // 'React' must be in scope when using JSX 에러 해결
+    "react/react-in-jsx-scope": "off",
+    // 디펜더시 warning 끔
+    "react-hooks/exhaustive-deps": "off",
+    "react/display-name": "off",
+    // ts파일에서 tsx구문 허용
+    "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": "off"
+  },
+  "ignorePatterns": ["next.config.js", "cypress.config.js"] // 이 부분 추가
+}
