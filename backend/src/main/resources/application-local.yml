@@ -1,3 +1,4 @@
+# 로컬 프론트 & 백엔드
 spring:
   config:
     activate:
@@ -42,6 +43,11 @@ spring:
       host: 127.0.0.1
       password:
       port: 6379
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
 
 base-url:
   frontend: http://localhost:3000
