@@ -1,23 +1,28 @@
-# 로컬 프론트 & 배포 백엔드
+# 배포 프론트 & 백엔드
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: release
 
-  # DB & JPA Configuration
+  h2: #H2 Configuration
+    console:
+      enabled: true
+      path: /h2-console
+
   datasource:
-    url: jdbc:mysql://mysql:3306/zigzagdb
-    username: root
-    password: rootpwd
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/test;
+    username: sa
+    password:
 
-  jpa:
+  jpa: #JPA Configuration
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
     properties:
       hibernate:
-        dialect : org.hibernate.dialect.MySQLDialect
-        show-sql: true
-    hibernate:
-      ddl-auto: none
+        format_sql: true
+        show_sql: true
 
   #OAuth2 Configuration
   security:
@@ -35,15 +40,16 @@ spring:
   # Redis Configuration
   data:
     redis:
-      host: redis
+      host: 127.0.0.1
       password:
       port: 6379
+
 
 server:
   port: 8080
   servlet:
-    context-path: /dev/api
+    context-path: /api
 
 base-url:
-  frontend: http://localhost:3000
-  backend: http://ziglog.site:8080
+  frontend: https://ziglog.site
+  backend: https://ziglog.site

@@ -11,11 +11,6 @@ logging:
           descriptor:
             sql: trace
 
-server:
-  port: 8080
-  servlet:
-    context-path: /api
-
 # Jwt Configuration => 분리 필요
 jwt:
   secret-key: asd19i23hj909sfua9s0fdusd90fua9023fjnh

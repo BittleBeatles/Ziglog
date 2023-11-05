@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -30,7 +31,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    private static final String REFRESH_URL = "/api/auth/refresh";
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
+    private static final String REFRESH_URL = "/auth/refresh";
     private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     @Override
@@ -38,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         log.info("requestURI: {}", request.getRequestURI());
-        if (request.getRequestURI().equals(REFRESH_URL)){
+        if (request.getRequestURI().equals(contextPath + REFRESH_URL)){
             checkRefreshTokenAndReissueAccessToken(request, response, filterChain);
         }
         else {

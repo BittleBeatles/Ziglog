@@ -1,4 +1,4 @@
-# docker-compose.yml
+# docker-compose-dev.yml
 networks:
   net-pub:
     external: true
@@ -20,3 +20,8 @@ services:
       - redis
     networks:
       - net-pub
+    entrypoint:
+      - "java"
+      - "-Dspring.profiles.active=dev"
+      - "-jar"
+      - "/app.jar"

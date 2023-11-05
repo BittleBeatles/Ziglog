@@ -59,18 +59,23 @@ public class SecurityConfig {
     @Value("${jwt.access.header}")
     private String accessTokenHeader;
 
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
+
+    @Value("${base-url.frontend}")
+    private String frontUrl;
+
     private static final String REFRESH_TOKEN_COOKIE_NAME = "refreshToken";
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfig = new CorsConfiguration();
 
-        corsConfig.addAllowedOrigin("http://localhost:3000");
+        corsConfig.addAllowedOrigin(frontUrl);
         corsConfig.setAllowCredentials(true);
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod("*");
         corsConfig.addExposedHeader(accessTokenHeader);
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
