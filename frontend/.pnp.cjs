@@ -74,6 +74,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sharp", "npm:0.32.6"],\
             ["storybook", "npm:7.5.0-alpha.7"],\
             ["supports-color", "npm:9.4.0"],\
+            ["sweetalert2", "npm:11.9.0"],\
             ["tailwind-scrollbar-hide", "npm:1.1.7"],\
             ["tailwindcss", "npm:3.3.3"],\
             ["three", "npm:0.157.0"],\
@@ -20356,6 +20357,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["sweetalert2", [\
+        ["npm:11.9.0", {\
+          "packageLocation": "./.yarn/cache/sweetalert2-npm-11.9.0-54ef739ee2-86556beace.zip/node_modules/sweetalert2/",\
+          "packageDependencies": [\
+            ["sweetalert2", "npm:11.9.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["synchronous-promise", [\
         ["npm:2.0.17", {\
           "packageLocation": "./.yarn/cache/synchronous-promise-npm-2.0.17-949e3e408d-7b1342c937.zip/node_modules/synchronous-promise/",\
@@ -22299,6 +22309,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sharp", "npm:0.32.6"],\
             ["storybook", "npm:7.5.0-alpha.7"],\
             ["supports-color", "npm:9.4.0"],\
+            ["sweetalert2", "npm:11.9.0"],\
             ["tailwind-scrollbar-hide", "npm:1.1.7"],\
             ["tailwindcss", "npm:3.3.3"],\
             ["three", "npm:0.157.0"],\

@@ -11,7 +11,8 @@ import { deleteNote, getNoteInfo, getReferenceList } from '@api/note/note';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@store/store';
 import { NoteRefListInfo } from '@api/note/types';
-import './/page.css';
+import './page.css';
+import { showAlert } from '@src/util/alert';
 
 export default function ReadNote() {
   const { theme, isLogin } = useAppSelector((state) => state.user);
@@ -50,7 +51,7 @@ export default function ReadNote() {
         });
         getQuotationList(parseInt(paramNoteId));
       } else {
-        alert(`${result.message}`);
+        showAlert(`${result.message}`, 'info');
         window.location.replace(`/user-page/${nickname}`);
       }
     };

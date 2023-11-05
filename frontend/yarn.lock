@@ -16015,6 +16015,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sweetalert2@npm:^11.9.0":
+  version: 11.9.0
+  resolution: "sweetalert2@npm:11.9.0"
+  checksum: 86556beace3e13690ef416375618ecf3994db77c657b065e8223e35cd6cd6d7665554eb6db9012beaefe37bb808a34ea8c4441ec02c8ed5d135061cbe0c5a916
+  languageName: node
+  linkType: hard
+
 "synchronous-promise@npm:^2.0.15":
   version: 2.0.17
   resolution: "synchronous-promise@npm:2.0.17"
@@ -17602,6 +17609,7 @@ __metadata:
     sharp: ^0.32.6
     storybook: 7.5.0-alpha.7
     supports-color: ^9.4.0
+    sweetalert2: ^11.9.0
     tailwind-scrollbar-hide: ^1.1.7
     tailwindcss: ^3
     three: ^0.157.0
