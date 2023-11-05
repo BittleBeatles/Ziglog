@@ -7,7 +7,6 @@ interface NodeSampleProps {
 }
 
 export default function NodeSample({ type, text, theme }: NodeSampleProps) {
-  console.log(theme);
   return (
     <div className={`flex items-center mr-2 ${THEME_VARIANTS[theme]}`}>
       <div className={`w-5 h-5 rounded-full mr-1 ${COLOR_VAIANTS[type]}`} />
