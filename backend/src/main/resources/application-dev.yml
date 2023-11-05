@@ -6,7 +6,7 @@ spring:
 
   # DB & JPA Configuration
   datasource:
-    url: jdbc:mysql://mysql:3306/zigzagdb
+    url: jdbc:mysql://mysql-dev:3306/zigzagdb
     username: root
     password: rootpwd
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -35,7 +35,7 @@ spring:
   # Redis Configuration
   data:
     redis:
-      host: redis
+      host: redis-dev
       password:
       port: 6379
 

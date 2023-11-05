@@ -1,9 +1,6 @@
 package com.ziglog.ziglog.global.auth.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.global.auth.entity.oauth2.CustomOAuth2User;
-import com.ziglog.ziglog.global.auth.service.CustomOAuth2UserService;
 import com.ziglog.ziglog.global.auth.service.JwtService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
