@@ -6,7 +6,7 @@ spring:
 
   # DB & JPA Configuration
   datasource:
-    url: jdbc:mysql://mysql-release:3306/zigzagdb
+    url: jdbc:mysql://mysql-release:3306/ziglogdb
     username: root
     password: rootpwd
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -45,5 +45,5 @@ server:
     context-path: /api
 
 base-url:
-  frontend: http://ziglog.site
-  backend: http://ziglog.site
+  frontend: https://ziglog.site
+  backend: https://ziglog.site
