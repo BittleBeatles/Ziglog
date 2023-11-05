@@ -1,5 +1,5 @@
 'use client';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Text from '@components/common/Text';
 import SvgIcon from '@components/common/SvgIcon';
 import Button from '@components/common/Button';
@@ -28,7 +28,14 @@ export default function ReadNote() {
   const [quotationInfo, setQuotationInfo] = useState<NoteRefListInfo>({
     quotationList: [],
   });
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const keyword = urlParams.get('keyword');
+  // console.log('키워드:', keyword);
+  // console.log('urlParams:', urlParams);
+  // console.log('queryString:', queryString);
   const params = useParams();
+  const router = useRouter();
   const paramNoteId = decodeURIComponent(params.noteId as string);
   const paramsNickname = decodeURIComponent(params.userNickname as string);
   const [hasAccess, setHasAccess] = useState(false);

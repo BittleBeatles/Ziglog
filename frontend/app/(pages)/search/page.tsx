@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { useScrollObserver } from '@src/hooks/useScrollObserve';
 import { useAppSelector } from '@store/store';
 import NavBar from '@components/common/NavBar';
+import { useRouter } from 'next/navigation';
 
 export default function Search() {
   const { theme, isLogin } = useAppSelector((state) => state.user);
@@ -21,9 +22,28 @@ export default function Search() {
   const [loading, setLoading] = useState(false); // 데이터 로드 중인지 여부
   const [hasMore, setHasMore] = useState(true); // 더 많은 페이지가 있는지 여부
   const perPage = 5;
+  const router = useRouter();
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const keyword2 = urlParams.get('keyword');
+  const initialKeyword = keyword2 || '';
+
+  // URL 쿼리 매개변수에서 검색어 추출
+  useEffect(() => {
+    if (keyword2) {
+      setKeyword(decodeURIComponent(keyword2)); // URL 디코드하여 검색어 설정
+    }
+  }, [keyword2]);
 
   // 검색 디바운싱
   const debouncedKeyword = useDebounce(keyword, 500);
+  console.log(debouncedKeyword);
+
+  const handleSearch = () => {
+    // 검색 버튼을 클릭했을 때 키워드를 URL 쿼리 매개변수로 추가
+    router.push(`/search?keyword=${encodeURIComponent(keyword)}`);
+  };
 
   // 스크롤 이벤트 핸들러
   const handleScroll = () => {
@@ -39,6 +59,7 @@ export default function Search() {
   // 검색어 바뀔 때마다 초기화
   useEffect(() => {
     setPage(0);
+    handleSearch();
     setSearchData({ notes: [] });
   }, [keyword]);
 
@@ -67,12 +88,10 @@ export default function Search() {
     if (!debouncedKeyword) {
       setPage(0);
       setSearchData({ notes: [] });
-      return;
+    } else {
+      setHasMore(true);
+      fetchMoreData(debouncedKeyword, page);
     }
-
-    setHasMore(true);
-
-    fetchMoreData(debouncedKeyword, page);
   }, [debouncedKeyword, page]);
 
   return (
@@ -80,7 +99,10 @@ export default function Search() {
       <NavBar theme={theme} isLogin={isLogin} />
       <div className="flex flex-col justify-cneter items-center">
         <div className="w-2/3">
-          <GlobalSearchInput onChange={(e) => setKeyword(e.target.value)} />
+          <GlobalSearchInput
+            onChange={(e) => setKeyword(e.target.value)}
+            value={initialKeyword}
+          />
           <div className="h-full overflow-y-auto">
             {searchData && searchData.notes.length > 0 ? (
               <div>
@@ -88,7 +110,10 @@ export default function Search() {
                 {searchData.notes.map((result, index) => (
                   <Link
                     key={index}
-                    href={`/user-page/${result.nickname}/read-note/${result.noteId}`}
+                    href={{
+                      pathname: `/user-page/${result.nickname}/read-note/${result.noteId}`,
+                      query: { keyword: debouncedKeyword },
+                    }}
                   >
                     <div>
                       <GlobalSearchResult
