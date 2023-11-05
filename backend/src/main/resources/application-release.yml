@@ -2,7 +2,7 @@
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: release
 
   # DB & JPA Configuration
   datasource:
@@ -45,5 +45,5 @@ server:
     context-path: /api
 
 base-url:
-  frontend: https://ziglog.site
-  backend: https://ziglog.site
+  frontend: http://ziglog.site
+  backend: http://ziglog.site
