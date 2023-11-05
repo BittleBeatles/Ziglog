@@ -64,7 +64,7 @@ export default function EditNote() {
         setContent(result.data.content);
         setIsPublic(result.data.isPublic);
       } else {
-        showAlert(`${result.message}`, 'success');
+        showAlert(`${result.message}`, 'error');
         window.location.replace(`/user-page/${nickname}`);
       }
     };
