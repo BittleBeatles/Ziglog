@@ -4,20 +4,20 @@ networks:
     external: true
 
 services:
-  redis:
+  redis-dev:
     image: redis
-    container_name: spring-redis
+    container_name: redis-dev
     ports:
       - 6379:6379
     networks:
       - net-pub
 
-  spring:
+  spring-dev:
     build: .
     ports:
       - 8080:8080
     depends_on:
-      - redis
+      - redis-dev
     networks:
       - net-pub
     entrypoint:
