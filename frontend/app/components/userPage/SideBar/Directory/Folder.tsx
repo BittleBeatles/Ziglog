@@ -1,13 +1,14 @@
 import Text from '@components/common/Text';
 import Note, { NoteProps } from './Note';
 import SvgIcon from '@components/common/SvgIcon';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import colors from '@src/design/color';
 import { findParentId } from './findParentId';
 import CreateFile from './CreateFile';
 import { DirectoryItem } from '@api/folder/types';
 import { createFolder, deleteFolder } from '@api/folder/folder';
 import IconButton from '@components/common/IconButton';
+import GraphDataContext from '@(pages)/user-page/[userNickname]/GraphDataContext';
 
 export interface FolderProps {
   type?: 'folder';
@@ -54,6 +55,7 @@ export default function Folder({
       (item) => item.type === 'note' && (item as NoteProps).id === currentNoteId
     )
   );
+  const { getGraphData } = useContext(GraphDataContext);
 
   const handleFolder = () => {
     if (!isFolderOpen) {
@@ -85,6 +87,7 @@ export default function Folder({
       try {
         await createFolder(parentId, folderName);
         getSideList();
+        getGraphData();
         setFolderName('');
         setShowInput({ show: false, type: 'folder' });
       } catch {
@@ -99,6 +102,7 @@ export default function Folder({
       try {
         await deleteFolder(id);
         getSideList();
+        getGraphData();
       } catch {
         console.log('폴더가 삭제가 안됐음');
       }
@@ -113,7 +117,7 @@ export default function Folder({
   };
 
   return (
-    <div className="folder mb-3" style={{ paddingLeft }}>
+    <div className="folder mb-2" style={{ paddingLeft }}>
       <div className="flex items-center">
         <div
           onClick={handleFolder}
@@ -186,21 +190,13 @@ export default function Folder({
             )}
         </div>
       )}
-
-      {parentId === id &&
-        showInput &&
-        showInput.show &&
-        showInput.type === 'note' && (
-          <div style={{ paddingLeft: '1.25rem' }}>
-            <CreateFile type="note" />
-          </div>
-        )}
       {parentId === id &&
         showInput &&
         showInput.show &&
         showInput.type === 'folder' && (
           <div style={{ paddingLeft: '1.25rem' }}>
             <CreateFile
+              theme={theme}
               onChange={(e) => setFolderName && setFolderName(e.target.value)}
               onKeyDown={(e) => handleKeyDown && handleKeyDown(e)}
               type="folder"

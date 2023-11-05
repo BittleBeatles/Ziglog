@@ -2,6 +2,7 @@ import {
   Dispatch,
   KeyboardEvent,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
 } from 'react';
@@ -15,6 +16,7 @@ import { DirectoryItem } from '@api/folder/types';
 import IconButton from '@components/common/IconButton';
 import Text from '@components/common/Text';
 import EditInput from '@components/common/EditInput';
+import GraphDataContext from '@(pages)/user-page/[userNickname]/GraphDataContext';
 
 export interface DirectoryProps {
   sideData: DirectoryItem[];
@@ -49,6 +51,7 @@ export default function Directory({
   const [newFolderName, setNewFolderName] = useState('');
   const [editingFolderId, setEditingFolderId] = useState(-1);
   const [editingTitle, setEditingTitle] = useState('');
+  const { getGraphData } = useContext(GraphDataContext);
 
   // 폴더 입력했을 때 렌더링하기 위함
   const [keyDownCounter, setKeyDownCounter] = useState(0);
@@ -65,6 +68,7 @@ export default function Directory({
       try {
         await createFolder(rootId, folderName);
         getSideList();
+        getGraphData();
         setKeyDownCounter(keyDownCounter + 1);
         setFolderName('');
         setShowInput({ show: false, type: 'folder' });
@@ -92,6 +96,7 @@ export default function Directory({
       try {
         await editFolder(editingFolderId, newFolderName);
         getSideList();
+        getGraphData();
         setNewFolderName('');
         setFolderEdit(false);
       } catch {
@@ -147,12 +152,9 @@ export default function Directory({
       {parentId === rootId &&
         showInput &&
         showInput.show &&
-        showInput.type === 'note' && <CreateFile type="note" />}
-      {parentId === rootId &&
-        showInput &&
-        showInput.show &&
         showInput.type === 'folder' && (
           <CreateFile
+            theme={theme}
             onChange={(e) => setFolderName && setFolderName(e.target.value)}
             onKeyDown={(e) => handleKeyDown(e)}
             type="folder"

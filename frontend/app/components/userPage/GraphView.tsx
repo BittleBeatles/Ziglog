@@ -1,12 +1,19 @@
 'use client';
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import dynamic from 'next/dynamic';
 import colors from '@src/design/color';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useGraph } from '@src/hooks/useGraph';
-import { GraphData, Link, Node } from './GrapView/types';
+import { GraphData, Link, Node } from '@api/graph/types';
+import GraphDataContext from '@(pages)/user-page/[userNickname]/GraphDataContext';
+import Button from '@components/common/Button';
+import NodeSample from '@components/common/NodeSample';
 
-const ForceGraph = dynamic(() => import('react-force-graph-2d'), {
+const ForchGraph2D = dynamic(() => import('react-force-graph-2d'), {
+  ssr: false,
+});
+
+const ForchGraph3D = dynamic(() => import('react-force-graph-3d'), {
   ssr: false,
 });
 
@@ -17,23 +24,40 @@ interface GraphViewProps {
 export default function GraphView({ theme }: GraphViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
+  const params = useParams();
+  const nickname = decodeURIComponent(params.userNickname as string);
+  const { graphData, getGraphData } = useContext(GraphDataContext);
+  const [changeView, setChangeView] = useState<'2d' | '3d'>('2d');
+
+  useEffect(() => {
+    getGraphData();
+  }, [nickname]);
+
+  const handleView = () => {
+    if (changeView === '2d') {
+      setChangeView('3d');
+    } else {
+      setChangeView('2d');
+    }
+  };
+
   const {
     highlightLinks,
     handleNodeHover,
     handleLinkHover,
     nodePaint,
+    node3dPaint,
     addNeighborsAndLinks,
   } = useGraph();
 
-  // 노드에서 이웃과 링크 추가해주는 함수
-  addNeighborsAndLinks(data);
+  addNeighborsAndLinks(graphData);
 
   const router = useRouter();
   const handleClick = (node: Node) => {
     if (node.type === 'note') {
-      router.push(`/user-page/${'SeongYong'}/read-note/${node.id}`);
+      router.push(`/user-page/${nickname}/read-note/${node.id}`);
     } else if (node.type === 'link') {
-      router.push(`/user-page/${'SeongYong'}/read-note/${node.id}`);
+      router.push(`/user-page/${nickname}/read-note/${node.id}`);
     } else {
       console.warn('존재하지 않는 노드입니다:', node.type);
     }
@@ -54,63 +78,57 @@ export default function GraphView({ theme }: GraphViewProps) {
   }, []);
 
   return (
-    <div className="w-full h-full" ref={containerRef}>
-      <ForceGraph
-        graphData={data}
-        width={dimensions.width - 5}
-        height={dimensions.height - 5}
-        backgroundColor={
-          theme === 'light' ? colors.white : colors['dark-background-layout']
-        }
-        onNodeClick={handleClick}
-        linkColor={colors.black}
-        linkWidth={(link) => (highlightLinks.has(link) ? 5 : 1)}
-        linkDirectionalParticles={3}
-        linkDirectionalParticleWidth={(link) =>
-          highlightLinks.has(link) ? 3 : 0
-        }
-        onNodeHover={handleNodeHover}
-        onLinkHover={handleLinkHover}
-        nodeCanvasObject={nodePaint}
-      />
+    <div
+      className="w-full h-full flex flex-col justify-center items-center relative"
+      ref={containerRef}
+    >
+      <div className="flex absolute top-0 left-0 p-4 z-10 items-center">
+        <NodeSample theme={theme} type="folder" text="폴더" />
+        {theme === 'light' ? (
+          <NodeSample theme={theme} type="noteLight" text="노트" />
+        ) : (
+          <NodeSample theme={theme} type="noteDark" text="노트" />
+        )}
+
+        <NodeSample theme={theme} type="link" text="참조" />
+      </div>
+      <div className="absolute top-0 right-0 p-4 z-10">
+        <Button
+          onClick={handleView}
+          label={changeView === '2d' ? '3D' : '2D'}
+          color="blue"
+        />
+      </div>
+      {changeView === '2d' && (
+        <ForchGraph2D
+          graphData={graphData}
+          width={dimensions.width - 30}
+          height={dimensions.height - 30}
+          onNodeClick={handleClick}
+          linkColor={colors.black}
+          linkWidth={(link) => (highlightLinks.has(link) ? 5 : 1)}
+          linkDirectionalParticles={3}
+          linkDirectionalParticleWidth={(link) =>
+            highlightLinks.has(link) ? 3 : 0
+          }
+          onNodeHover={handleNodeHover}
+          onLinkHover={handleLinkHover}
+          nodeCanvasObject={nodePaint}
+        />
+      )}
+
+      {changeView === '3d' && (
+        <ForchGraph3D
+          graphData={graphData}
+          width={dimensions.width - 30}
+          height={dimensions.height - 30}
+          onNodeClick={handleClick}
+          backgroundColor="rgba(255, 255, 255, 0)"
+          nodeColor={colors.black}
+          nodeThreeObject={node3dPaint}
+          linkColor={() => colors.grey}
+        />
+      )}
     </div>
   );
 }
-
-const data: GraphData = {
-  nodes: [
-    { id: 1, name: 'name1', type: 'folder', nickname: 'seongyong', realId: 1 },
-    { id: 2, name: 'name2', type: 'note', nickname: 'hanul', realId: 1 },
-    {
-      id: 3,
-      name: '동성 마 좀 치나',
-      type: 'root',
-      nickname: 'hanul',
-      realId: 1,
-    },
-    { id: 4, name: 'name4', type: 'folder', nickname: 'hanul', realId: 2 },
-    { id: 5, name: 'name5', type: 'note', nickname: 'suhyeong', realId: 2 },
-    { id: 6, name: 'name6', type: 'link', nickname: 'suhyeong', realId: 1 },
-    { id: 7, name: 'name7', type: 'folder', nickname: 'jeongmin', realId: 3 },
-    { id: 8, name: 'name8', type: 'note', nickname: 'hyeona', realId: 3 },
-    { id: 9, name: 'name9', type: 'link', nickname: 'yongs', realId: 2 },
-    {
-      id: 10,
-      name: 'name10',
-      type: 'folder',
-      nickname: 'yongs',
-      realId: 4,
-    },
-  ],
-  links: [
-    { source: 1, target: 3 },
-    { source: 2, target: 1 },
-    { source: 4, target: 3 },
-    { source: 5, target: 4 },
-    { source: 6, target: 4 },
-    { source: 7, target: 3 },
-    { source: 8, target: 7 },
-    { source: 9, target: 7 },
-    { source: 10, target: 3 },
-  ],
-};

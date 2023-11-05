@@ -5,10 +5,12 @@ import { InputHTMLAttributes } from 'react';
 
 interface FolderCreateProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: 'folder' | 'note';
+  theme: 'light' | 'dark';
 }
 
 export default function CreateFile({
   type = 'folder',
+  theme,
   ...rest
 }: FolderCreateProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -24,7 +26,7 @@ export default function CreateFile({
       {type === 'note' ? (
         <SvgIcon name="Note" />
       ) : (
-        <div className="flex mt-2 mb-2">
+        <div className={`flex mt-2 mb-2 ${THEME_VARIANTS[theme]}`}>
           <SvgIcon name="Folder" color={colors.grey} />
           <input className="w-full" ref={inputRef} {...rest} type="text" />
         </div>
@@ -32,3 +34,8 @@ export default function CreateFile({
     </div>
   );
 }
+
+const THEME_VARIANTS = {
+  light: '',
+  dark: 'text-black',
+};

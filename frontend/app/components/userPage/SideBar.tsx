@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import ProfileImage from '@components/common/ProfileImage';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
@@ -18,6 +18,7 @@ import { getBookmark } from '@api/bookmark/bookmark';
 import { Note } from '@api/bookmark/types';
 import { DirectoryItem } from '@api/folder/types';
 import { getFolderList } from '@api/folder/folder';
+import GraphDataContext from '@(pages)/user-page/[userNickname]/GraphDataContext';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -28,6 +29,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const { isLogin, nickname, rootFolderId } = useAppSelector(
     (state) => state.user
   );
+  const { getGraphData } = useContext(GraphDataContext);
 
   // 주소 기반 닉네임 및 프로필 이미지
   const params = useParams();
@@ -119,14 +121,14 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       // 노트 생성 API 호출 및 결과 대기
       const result = await createNote(parentId);
       // 성공적으로 노트가 추가되면 sideList를 업데이트
-      console.log(result);
+      getGraphData();
       if (result === 200) {
         getSideList();
       } else {
-        console.error('Failed to add the note:', result);
+        console.error(result);
       }
     } catch (error) {
-      console.error('Error adding note:', error);
+      console.error(error);
     }
   };
 
