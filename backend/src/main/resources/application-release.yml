@@ -35,7 +35,7 @@ spring:
   # Redis Configuration
   data:
     redis:
-      host: redis
+      host: redis-release
       password:
       port: 6379
 
