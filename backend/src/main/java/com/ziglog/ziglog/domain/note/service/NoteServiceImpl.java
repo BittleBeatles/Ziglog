@@ -52,9 +52,9 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Note modifyNote(Member member, Note note) throws NoteNotFoundException, InconsistentFolderOwnerException {
-        checkOwner(member, note);
-
         Note notePersist = noteRepository.findNoteById(note.getId()).orElseThrow(NoteNotFoundException::new);
+        checkOwner(member, notePersist);
+
         notePersist.setTitle(note.getTitle());//타이틀
         notePersist.setContent(note.getContent());//컨텐츠
         notePersist.setPreview(note.getPreview());//목록 프리뷰
@@ -155,12 +155,16 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public void checkOwner(Member member, Note note) throws InconsistentNoteOwnerException {
-        if (!note.getAuthor().getId().equals(member.getId())) throw new InconsistentNoteOwnerException();
+        if (!note.getAuthor().getId().equals(member.getId())) {
+            throw new InconsistentNoteOwnerException();
+        }
     }
 
     @Override
     public void checkOwner(Member member, Folder folder) throws InconsistentFolderOwnerException {
-        if (!folder.getOwner().getId().equals(member.getId())) throw new InconsistentFolderOwnerException();
+        if (!folder.getOwner().getId().equals(member.getId())) {
+            throw new InconsistentFolderOwnerException();
+        }
     }
 
     @Override
