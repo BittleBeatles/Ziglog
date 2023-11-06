@@ -9,8 +9,11 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Ziglog',
+  title: 'Ziglog : 지식 그래프 노트 필기 웹 서비스',
   description: '특화A407',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
@@ -20,6 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className={pretendard.className}>
+      <head>
+        <link rel="icon" href="./favicon.ico" sizes="any" />
+      </head>
       <body>
         <ReduxProvider>{children}</ReduxProvider>
       </body>
