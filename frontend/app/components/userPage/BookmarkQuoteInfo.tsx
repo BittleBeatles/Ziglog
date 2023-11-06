@@ -1,69 +1,39 @@
-import { InputHTMLAttributes, useState } from 'react';
+import { ButtonHTMLAttributes } from 'react';
 import SvgIcon from '../common/SvgIcon';
 import Text from '../common/Text';
-import { addBookmark, deleteBookmark } from '@api/bookmark/bookmark';
 
-interface BookmarkQuoteInfoProps extends InputHTMLAttributes<HTMLInputElement> {
-  theme?: 'light' | 'dark';
-  bookmarked: number;
-  quoted: number;
+interface BookmarkQuoteInfoProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  theme: 'light' | 'dark';
+  bookmarkCount: number;
+  quotedCount: number;
+  isBookmarked: boolean;
+  handleBookmarkChange: () => void;
 }
 
 export default function BookmarkQuoteInfo({
-  theme = 'light',
-  bookmarked = 50,
-  quoted = 50,
-  ...rest
+  theme,
+  bookmarkCount,
+  quotedCount,
+  isBookmarked,
+  handleBookmarkChange,
 }: BookmarkQuoteInfoProps) {
-  const num = bookmarked;
-  const [isBookMarked, setBookmark] = useState(false);
-  const [bookmarkNo, doBookmark] = useState(num);
-  function changeBookmark(isBookMarked: boolean) {
-    setBookmark(isBookMarked);
-  }
-  const addBookmarkCount = () => {
-    doBookmark(bookmarkNo + 1);
-  };
-  const deleteBookmarkCount = () => {
-    doBookmark(bookmarkNo - 1);
-  };
-
-  const noteId = 1;
   return (
     <div
       className={`${THEME_VARIANTS[theme]} w-16 h-44 rounded-full py-6 grid place-items-center`}
     >
-      {isBookMarked ? (
-        <SvgIcon
-          onClick={() => {
-            deleteBookmark(noteId);
-            changeBookmark(!isBookMarked);
-            deleteBookmarkCount();
-            console.log(num);
-          }}
-          name={'BookMarkFill'}
-          color={theme == 'light' ? 'black' : 'white'}
-          size={28}
-        />
-      ) : (
-        <SvgIcon
-          onClick={() => {
-            addBookmark(noteId);
-            changeBookmark(!isBookMarked);
-            addBookmarkCount();
-            console.log(num);
-          }}
-          name={'BookMark'}
-          color={theme == 'light' ? 'black' : 'white'}
-          size={28}
-        />
-      )}
+      <SvgIcon
+        onClick={() => handleBookmarkChange()}
+        name={isBookmarked ? 'BookMarkFill' : 'BookMark'}
+        color={theme == 'light' ? 'black' : 'white'}
+        size={28}
+      />
 
       <Text className="mb-4" type="p">
-        {bookmarkNo > 999 ? '1000+' : bookmarkNo}
+        {bookmarkCount > 999 ? '1000+' : bookmarkCount}
       </Text>
       <SvgIcon name="Share" color={theme == 'light' ? 'black' : 'white'} />
-      <Text type="p">{quoted > 999 ? '1000+' : quoted}</Text>
+      <Text type="p">{quotedCount > 999 ? '1000+' : quotedCount}</Text>
     </div>
   );
 }

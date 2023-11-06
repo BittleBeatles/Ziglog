@@ -11,11 +11,19 @@ import { deleteNote, getNoteInfo, getReferenceList } from '@api/note/note';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@store/store';
 import { NoteRefListInfo } from '@api/note/types';
+import {
+  isNoteBookmarked,
+  addBookmark,
+  deleteBookmark,
+} from '@api/bookmark/bookmark';
 import './page.css';
 import { showAlert } from '@src/util/alert';
+import { useRouter } from 'next/navigation';
 
 export default function ReadNote() {
+  const router = useRouter();
   const { theme, isLogin } = useAppSelector((state) => state.user);
+  const userNickname = useAppSelector((state) => state.user.nickname);
   const [quotationInfo, setQuotationInfo] = useState<NoteRefListInfo>({
     quotationList: [],
   });
@@ -23,8 +31,6 @@ export default function ReadNote() {
   const paramNoteId = decodeURIComponent(params.noteId as string);
   const paramsNickname = decodeURIComponent(params.userNickname as string);
   const [hasAccess, setHasAccess] = useState(false);
-  const { nickname } = useAppSelector((state) => state.user);
-  const [isMine, setMine] = useState(nickname === paramsNickname);
   const [data, setData] = useState<NoteInfo>({
     noteId: 1,
     title: '글제목',
@@ -35,6 +41,8 @@ export default function ReadNote() {
     postTime: new Date('2023-10-31 00:00:00'),
     editTime: new Date('2023-10-31 00:00:00'),
   });
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
   useEffect(() => {
     const getNoteReadPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -54,18 +62,38 @@ export default function ReadNote() {
         getQuotationList(parseInt(paramNoteId));
       } else {
         showAlert(`${result.message}`, 'error');
-        window.location.replace(`/user-page/${nickname}`);
+        router.push(`/user-page/${paramsNickname}`);
       }
     };
     const getQuotationList = async (noteId: number) => {
       const result = await getReferenceList(noteId);
       if (result) {
         setQuotationInfo(result);
+        getIsBookmarked(noteId);
+      }
+    };
+    const getIsBookmarked = async (noteId: number) => {
+      const result = await isNoteBookmarked(noteId);
+      if (result) {
+        setIsBookmarked(result.bookmarked);
       }
     };
     getNoteReadPage(parseInt(paramNoteId));
   }, []);
 
+  // 북마크 추가, 취소하기
+  const handleBookmarkChange = () => {
+    if (isBookmarked) {
+      deleteBookmark(parseInt(paramNoteId));
+      setData({ ...data, bookmarkCount: data.bookmarkCount - 1 });
+    } else {
+      addBookmark(parseInt(paramNoteId));
+      setData({ ...data, bookmarkCount: data.bookmarkCount + 1 });
+    }
+    setIsBookmarked(!isBookmarked);
+  };
+
+  const isMine = isLogin && userNickname === data.nickname;
   return (
     hasAccess && (
       <div id="sidebar-scroll" className="overflow-y-auto h-full">
@@ -76,19 +104,19 @@ export default function ReadNote() {
             <Text className="mx-3" type="p">
               {data.postTime && data.postTime.toLocaleString('ko-KR')}
             </Text>
-            {isMine ? (
-              data.isPublic ? (
-                <SvgIcon name="Public" size={20}></SvgIcon>
-              ) : (
-                <SvgIcon name="Private" size={20}></SvgIcon>
-              )
-            ) : undefined}
+
+            {data.isPublic ? (
+              <SvgIcon name="Public" size={20}></SvgIcon>
+            ) : (
+              <SvgIcon name="Private" size={20}></SvgIcon>
+            )}
+
             {isMine ? (
               <div className="flex flex-row">
                 <div className="ml-3">
                   <Button
                     onClick={() =>
-                      window.location.replace(
+                      router.push(
                         `/user-page/${data.nickname}/edit-note/${paramNoteId}`
                       )
                     }
@@ -117,8 +145,10 @@ export default function ReadNote() {
           <div className="absolute">
             <BookmarkQuoteInfo
               theme={theme}
-              bookmarked={data.bookmarkCount}
-              quoted={quotationInfo.quotationList.length}
+              bookmarkCount={data.bookmarkCount}
+              quotedCount={quotationInfo.quotationList.length}
+              isBookmarked={isBookmarked}
+              handleBookmarkChange={handleBookmarkChange}
             ></BookmarkQuoteInfo>
           </div>
 
