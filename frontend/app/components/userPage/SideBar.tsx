@@ -26,7 +26,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const { isLogin, nickname, rootFolderId } = useAppSelector(
     (state) => state.user
   );
-  const { getGraphData, getSideList, getBookmarkList } =
+  const { getGraphData, getSideList, bookmarkList, getBookmarkList } =
     useContext(SideDataContext);
 
   // 주소 기반 닉네임 및 프로필 이미지
@@ -40,7 +40,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const [parentId, setParentId] = useState<number>(rootFolderId);
   const [isModalOpen, setModalOpen] = useState(false);
   const [folderName, setFolderName] = useState('');
-  const [bookmarkList, setBookmarkList] = useState<Note[]>([]);
+  // const [bookmarkList, setBookmarkList] = useState<Note[]>([]);
 
   //파일 추가 변수
   const [showInput, setShowInput] = useState<{

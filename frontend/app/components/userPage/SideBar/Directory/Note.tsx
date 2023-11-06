@@ -48,6 +48,7 @@ export default function Note({
         <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>{title}</Text>
         {!isPublic && !isMine && (
           <SvgIcon
+            size={18}
             name="Private"
             color={theme === 'light' ? colors.black : colors.white}
           />
