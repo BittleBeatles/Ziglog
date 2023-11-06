@@ -23,6 +23,7 @@ public class SearchResponseDto {
         private Long noteId;
         private String title;
         private String nickname;
+        private String profileUrl;
         private String preview;
         private Boolean isPublic;
         private Integer bookmarkCount;
@@ -38,6 +39,7 @@ public class SearchResponseDto {
                     .noteId(note.getId())
                     .title(note.getTitle())
                     .nickname(note.getAuthor().getNickname())
+                    .profileUrl(note.getAuthor().getProfileUrl())
                     .preview(note.getPreview())
                     .isPublic(note.isPublic())
                     .bookmarkCount(note.getBookmarks().size())
