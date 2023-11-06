@@ -18,7 +18,7 @@ public class BookmarkExceptionController {
 
     @ExceptionHandler(BookmarkAlreadyExistsException.class)
     public ResponseDto<String> handleBookmarkAlreadyExistsException (BookmarkAlreadyExistsException err){
-        return toResponseDto(BookmarkExceptionCode.BOOKMARK_NOT_FOUND_EXCEPTION);
+        return toResponseDto(BookmarkExceptionCode.BOOKMARK_ALREADY_EXISTS_EXCEPTION);
     }
 
     public static ResponseDto<String> toResponseDto(BookmarkExceptionCode exceptionCode){
