@@ -17,7 +17,7 @@ public class MyInfoResponseDto {
     private String nickname;
     private Long rootFolderId;
 
-    public static MyInfoResponseDto toDto(Member member, Folder folder) throws Exception {
+    public static MyInfoResponseDto toDto(Member member, Folder folder) {
         return MyInfoResponseDto.builder()
                 .profileUrl(member.getProfileUrl())
                 .nickname(member.getNickname())
