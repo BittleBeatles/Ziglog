@@ -172,7 +172,7 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public List<Note> getNotesQuotingThis(Long noteId) throws Exception {
+    public List<Note> getNotesQuotingThis(Long noteId) throws NoteNotFoundException {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         return note.getQuoted().stream().map(Quotation::getEndNote).toList();
     }
