@@ -11,7 +11,7 @@ public interface MemberService {
     void modifyUserNickname(Member member, String nickname) throws UserNotFoundException, InvalidUserModificationRequestException;
     void modifyUserProfile(Member member, String profileUrl) throws UserNotFoundException;
     Member signUp(String email, String nickname) throws Exception;
-    boolean isValidNickname(String nickname);
+    boolean isValidNickname(Member member, String nickname);
     boolean isValidNicknameFormat(String nickname);
     boolean isNotDuplicatedNickname(String nickname);
 }

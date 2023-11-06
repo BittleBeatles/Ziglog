@@ -32,7 +32,7 @@ public class MemberController {
                 description = "현재 로그인한 회원의 닉네임과 프로필 사진을 변경 및 저장")
     public ResponseDto<UserPublicInfoResponseDto> modifyNickname(@AuthenticationPrincipal CustomUserDetails userDetails,
                                               ModifyUserRequestDto nickname) throws Exception{
-        Member member = userDetails.member();//이거 안 돼야하는데 왜 되는 거지???
+        Member member = userDetails.member();
         memberService.modifyUserNickname(member, nickname.getNickname());
         memberService.modifyUserProfile(member, nickname.getProfileUrl());
         return ResponseDto.of(UserPublicInfoResponseDto.toDto(member));
@@ -41,8 +41,9 @@ public class MemberController {
     @Operation(summary = "사용 가능한 닉네임인지 확인",
             description = "닉네임은 1자 이상 12자 이하로, 알파벳 대소문자, 숫자, 갖춘 한글로만 구성되어야 함")
     @PostMapping("/check/nickname")
-    public ResponseDto<NicknameValidationResponseDto> checkNicknameValidation(@RequestBody NicknameDto nickname){
-        return ResponseDto.of(NicknameValidationResponseDto.toDto(memberService.isValidNickname(nickname.getNickname())));
+    public ResponseDto<NicknameValidationResponseDto> checkNicknameValidation(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                              @RequestBody NicknameDto nickname){
+        return ResponseDto.of(NicknameValidationResponseDto.toDto(memberService.isValidNickname(userDetails.member(), nickname.getNickname())));
     }
 
     @Operation(summary = "닉네임으로 공개 정보를 조회",
