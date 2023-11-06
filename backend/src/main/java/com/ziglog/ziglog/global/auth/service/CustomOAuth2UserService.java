@@ -3,11 +3,10 @@ package com.ziglog.ziglog.global.auth.service;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.entity.Role;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
-import com.ziglog.ziglog.domain.member.service.MemberService;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
-import com.ziglog.ziglog.global.auth.dto.RegistrationId;
 import com.ziglog.ziglog.global.auth.dto.OAuth2Attributes;
+import com.ziglog.ziglog.global.auth.dto.RegistrationId;
 import com.ziglog.ziglog.global.auth.entity.oauth2.CustomOAuth2User;
 import com.ziglog.ziglog.global.auth.util.NicknameGenerator;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service

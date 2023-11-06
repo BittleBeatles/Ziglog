@@ -2,7 +2,6 @@ package com.ziglog.ziglog.global.auth.entity.oauth2;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
