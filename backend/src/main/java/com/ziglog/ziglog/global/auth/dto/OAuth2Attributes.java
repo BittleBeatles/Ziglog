@@ -25,7 +25,7 @@ public class OAuth2Attributes {
         return null;
     }
 
-   private static OAuth2Attributes ofGoogle(String nameAttributeKey, Map<String, Object> attributes){
+    private static OAuth2Attributes ofGoogle(String nameAttributeKey, Map<String, Object> attributes){
         return OAuth2Attributes.builder()
                 .nameAttributeKey(nameAttributeKey)
                 .oAuth2UserInfo(new OAuth2GoogleUserInfo(attributes))
