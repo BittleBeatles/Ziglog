@@ -46,4 +46,4 @@ server:
 
 base-url:
   frontend: http://localhost:3000
-  backend: http://ziglog.site:8080
+  backend: http://ziglog.site:8080/dev
