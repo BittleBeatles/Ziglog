@@ -61,8 +61,8 @@ export default function ReadNote() {
         });
         getQuotationList(parseInt(paramNoteId));
       } else {
-        showAlert(`${result.message}`, 'error');
         router.push(`/user-page/${paramsNickname}`);
+        showAlert(`${result.message}`, 'error');
       }
     };
     const getQuotationList = async (noteId: number) => {
