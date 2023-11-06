@@ -91,6 +91,7 @@ export async function modifyUserInfo(
         body: { nickname, profileUrl },
       }
     );
+    console.log(Promise);
     return await Promise.resolve('[user info modified]');
   } catch (err) {
     throw err;
