@@ -140,11 +140,17 @@ export default function Folder({
         {isModifyDelete && (
           <div className="flex items-center ml-2">
             <IconButton
+              size={18}
               onClick={() => handleEdit(id, title)}
               theme={theme}
               name="Edit"
             />
-            <IconButton onClick={handleDelete} theme={theme} name="Remove" />
+            <IconButton
+              size={18}
+              onClick={handleDelete}
+              theme={theme}
+              name="Remove"
+            />
           </div>
         )}
       </div>
