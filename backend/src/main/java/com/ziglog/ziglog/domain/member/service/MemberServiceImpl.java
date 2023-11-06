@@ -81,11 +81,4 @@ public class MemberServiceImpl implements MemberService{
     public boolean isNotDuplicatedNickname(String nickname){
         return !memberRepository.existsMemberByNickname(nickname);
     }
-
-    @Override
-    public void testContext(Member member) throws Exception{
-        Member mem2 = memberRepository.findByEmail(member.getEmail()).orElseThrow(Exception::new);
-        if (mem2.equals(member)) log.info("same entity in JPA persistence context");
-        else log.info("diff");
-    }
 }
