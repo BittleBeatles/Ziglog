@@ -1,6 +1,7 @@
 package com.ziglog.ziglog.domain.bookmark.service;
 
 import com.ziglog.ziglog.domain.bookmark.entity.Bookmark;
+import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkAlreadyExistsException;
 import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkNotFoundException;
 import com.ziglog.ziglog.domain.bookmark.repository.BookmarkRepository;
 import com.ziglog.ziglog.domain.member.entity.Member;
@@ -27,12 +28,12 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final BookmarkRepository bookmarkRepository;
 
     @Override
-    public void addBookmark(Member member, Long noteId) throws UserNotFoundException {
+    public void addBookmark(Member member, Long noteId) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException{
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
 
         List<Bookmark> bookmarkList = bookmarkRepository.findAllByMember(memberPersist);
-        bookmarkList.stream().filter(bookmark -> bookmark.getNote().getId().equals(noteId)).findAny().orElseThrow();
+        bookmarkList.stream().filter(bookmark -> bookmark.getNote().getId().equals(noteId)).findAny().orElseThrow(BookmarkAlreadyExistsException::new);
 
         Bookmark bookmark = Bookmark.builder()
                             .member(memberPersist)
