@@ -4,7 +4,7 @@ spring:
       - local
   kafka:
     bootstrap-servers:
-      - ziglog.site:9092 #single
+      - http://ziglog.site:9092 #single
     consumer:
       group-id: testGroup
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
