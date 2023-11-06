@@ -80,7 +80,7 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
         )}
       </div>
       {isModalOpen ? (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
           <SocialLoginModal theme={theme} openLoginModal={openLoginModal} />
         </div>
       ) : undefined}

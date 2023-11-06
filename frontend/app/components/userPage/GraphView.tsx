@@ -5,7 +5,7 @@ import colors from '@src/design/color';
 import { useParams, useRouter } from 'next/navigation';
 import { useGraph } from '@src/hooks/useGraph';
 import { GraphData, Link, Node } from '@api/graph/types';
-import GraphDataContext from '@(pages)/user-page/[userNickname]/GraphDataContext';
+import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import Button from '@components/common/Button';
 import NodeSample from '@components/common/NodeSample';
 
@@ -26,7 +26,7 @@ export default function GraphView({ theme }: GraphViewProps) {
   const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
   const params = useParams();
   const nickname = decodeURIComponent(params.userNickname as string);
-  const { graphData, getGraphData } = useContext(GraphDataContext);
+  const { graphData, getGraphData } = useContext(SideDataContext);
   const [changeView, setChangeView] = useState<'2d' | '3d'>('2d');
 
   useEffect(() => {
@@ -55,9 +55,9 @@ export default function GraphView({ theme }: GraphViewProps) {
   const router = useRouter();
   const handleClick = (node: Node) => {
     if (node.type === 'note') {
-      router.push(`/user-page/${nickname}/read-note/${node.id}`);
+      router.push(`/user-page/${nickname}/read-note/${node.realId}`);
     } else if (node.type === 'link') {
-      router.push(`/user-page/${nickname}/read-note/${node.id}`);
+      router.push(`/user-page/${nickname}/read-note/${node.realId}`);
     } else {
       console.warn('존재하지 않는 노드입니다:', node.type);
     }

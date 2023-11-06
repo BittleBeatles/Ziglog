@@ -21,8 +21,10 @@ export default function ReadNote() {
   });
   const params = useParams();
   const paramNoteId = decodeURIComponent(params.noteId as string);
-  const nickname = decodeURIComponent(params.userNickname as string);
+  const paramsNickname = decodeURIComponent(params.userNickname as string);
   const [hasAccess, setHasAccess] = useState(false);
+  const { nickname } = useAppSelector((state) => state.user);
+  const [isMine, setMine] = useState(nickname === paramsNickname);
   const [data, setData] = useState<NoteInfo>({
     noteId: 1,
     title: '글제목',
@@ -64,7 +66,6 @@ export default function ReadNote() {
     getNoteReadPage(parseInt(paramNoteId));
   }, []);
 
-  const isMine = true;
   return (
     hasAccess && (
       <div id="sidebar-scroll" className="overflow-y-auto h-full">

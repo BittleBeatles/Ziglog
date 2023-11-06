@@ -12,14 +12,12 @@ import Note from './Directory/Note';
 import { createFolder, editFolder } from '@api/folder/folder';
 import { useParams } from 'next/navigation';
 import { useAppSelector } from '@store/store';
-import { DirectoryItem } from '@api/folder/types';
 import IconButton from '@components/common/IconButton';
 import Text from '@components/common/Text';
 import EditInput from '@components/common/EditInput';
-import GraphDataContext from '@(pages)/user-page/[userNickname]/GraphDataContext';
+import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 
 export interface DirectoryProps {
-  sideData: DirectoryItem[];
   theme?: 'light' | 'dark';
   parentId?: number;
   setParentId?: Dispatch<SetStateAction<number>>;
@@ -29,11 +27,9 @@ export interface DirectoryProps {
   >;
   folderName?: string;
   setFolderName?: Dispatch<SetStateAction<string>>;
-  getSideList: () => void;
 }
 
 export default function Directory({
-  sideData,
   theme = 'light',
   parentId,
   setParentId,
@@ -41,7 +37,6 @@ export default function Directory({
   folderName,
   setFolderName,
   setShowInput,
-  getSideList,
 }: DirectoryProps) {
   const params = useParams();
   const currentNoteId = Number(params.noteId);
@@ -51,7 +46,7 @@ export default function Directory({
   const [newFolderName, setNewFolderName] = useState('');
   const [editingFolderId, setEditingFolderId] = useState(-1);
   const [editingTitle, setEditingTitle] = useState('');
-  const { getGraphData } = useContext(GraphDataContext);
+  const { getGraphData, sideData, getSideList } = useContext(SideDataContext);
 
   // 폴더 입력했을 때 렌더링하기 위함
   const [keyDownCounter, setKeyDownCounter] = useState(0);
@@ -143,7 +138,6 @@ export default function Directory({
               currentNoteId={currentNoteId}
               folderName={folderName}
               setFolderName={setFolderName}
-              getSideList={getSideList}
               isModifyDelete={isModifyDelete}
               onEdit={onEdit}
             />
