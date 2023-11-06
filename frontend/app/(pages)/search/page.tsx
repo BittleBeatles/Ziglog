@@ -106,21 +106,22 @@ export default function Search() {
   }, []);
 
   return (
-    <div>
+    <div
+      className={`${
+        searchData ? THEME_VARIANTS[theme] : THEME_VARIANTS[theme]
+      }`}
+    >
       <NavBar theme={theme} isLogin={isLogin} />
       <div className="flex flex-col justify-cneter items-center">
         <div className="w-2/3">
           <GlobalSearchInput
+            theme={theme}
             defaultValue={keyword}
             placeholder="검색어를 입력하세요"
             onChange={(e) => setKeyword(e.target.value)}
           />
           <div className="h-full overflow-y-auto">
-            {loading && !searchData ? (
-              <div>
-                <Text type="p">{'로딩 중입니다.'}</Text>
-              </div>
-            ) : searchData && searchData.notes.length > 0 ? (
+            {searchData && searchData.notes.length > 0 ? (
               <div>
                 {/* <p>총 {searchData.notes.length}개의 검색 결과가 있습니다.</p> */}
                 {searchData.notes.map((result, index) => (
@@ -142,14 +143,14 @@ export default function Search() {
                         bookmarkCount={result.bookmarkCount}
                         postTime={result.postTime}
                         editTime={result.editTime}
-                        theme="light"
+                        theme={theme}
                       />
                     </div>
                   </Link>
                 ))}
               </div>
             ) : (
-              debouncedKeyword && (
+              !hasMore && (
                 <div>
                   <Text type="p">{'검색 결과가 없습니다.'}</Text>
                 </div>
@@ -161,3 +162,8 @@ export default function Search() {
     </div>
   );
 }
+
+const THEME_VARIANTS = {
+  light: '',
+  dark: 'bg-dark-background-layout text-white',
+};

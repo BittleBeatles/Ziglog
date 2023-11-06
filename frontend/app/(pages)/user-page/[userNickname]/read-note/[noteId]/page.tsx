@@ -123,11 +123,14 @@ export default function ReadNote() {
   };
 
   useEffect(() => {
-    window.addEventListener('popstate', handleGoBack);
+    if (keyword) {
+      window.addEventListener('popstate', handleGoBack);
+    }
     return () => {
       window.removeEventListener('popstate', handleGoBack);
     };
-  }, []);
+  }, [keyword]);
+
   return (
     hasAccess && (
       <div id="sidebar-scroll" className="overflow-y-auto h-full">
