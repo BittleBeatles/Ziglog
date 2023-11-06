@@ -3,3 +3,7 @@ export interface Note {
   title: string;
   nickname: string;
 }
+
+export interface IsBookmarked {
+  bookmarked: boolean;
+}

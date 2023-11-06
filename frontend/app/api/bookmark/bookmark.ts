@@ -1,10 +1,11 @@
 import { ApiSuccessResponse } from '@api/types';
 import { privateFetch } from '..';
 import { API_URL } from '@api/constants';
-import { Note } from './types';
+import { Note, IsBookmarked } from './types';
 
 export type AddBookmarkApiResponse = ApiSuccessResponse<null>;
 export type GetBookmarkResponse = ApiSuccessResponse<{ notes: Note[] }>;
+export type IsBookmarkedApiRespone = ApiSuccessResponse<IsBookmarked>;
 
 export async function addBookmark(noteId: number) {
   return privateFetch<AddBookmarkApiResponse>(`${API_URL}/bookmark`, {
@@ -39,5 +40,19 @@ export async function getBookmark(): Promise<{ notes: Note[] }> {
     return res.body.data;
   } catch (err) {
     throw err;
+  }
+}
+
+export async function isNoteBookmarked(noteId: number): Promise<IsBookmarked> {
+  try {
+    const res = await privateFetch<IsBookmarkedApiRespone>(
+      `${API_URL}/bookmark/${noteId}`,
+      {
+        method: 'GET',
+      }
+    );
+    return res.body.data;
+  } catch (error) {
+    throw error;
   }
 }
