@@ -8,6 +8,7 @@ interface BookmarkQuoteInfoProps
   bookmarkCount: number;
   quotedCount: number;
   isBookmarked: boolean;
+  handleBookmarkChange: () => void;
 }
 
 export default function BookmarkQuoteInfo({
@@ -15,13 +16,14 @@ export default function BookmarkQuoteInfo({
   bookmarkCount,
   quotedCount,
   isBookmarked,
-  ...rest
+  handleBookmarkChange,
 }: BookmarkQuoteInfoProps) {
   return (
     <div
       className={`${THEME_VARIANTS[theme]} w-16 h-44 rounded-full py-6 grid place-items-center`}
     >
       <SvgIcon
+        onClick={() => handleBookmarkChange()}
         name={isBookmarked ? 'BookMarkFill' : 'BookMark'}
         color={theme == 'light' ? 'black' : 'white'}
         size={28}
