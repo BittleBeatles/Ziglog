@@ -51,7 +51,7 @@ export default function ReadNote() {
         });
         getQuotationList(parseInt(paramNoteId));
       } else {
-        showAlert(`${result.message}`, 'info');
+        showAlert(`${result.message}`, 'error');
         window.location.replace(`/user-page/${nickname}`);
       }
     };
