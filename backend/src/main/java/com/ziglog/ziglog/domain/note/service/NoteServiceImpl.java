@@ -97,7 +97,6 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Note readNote(Member member, Long noteId) throws NoteNotFoundException, NoAuthorizationToReadException {
-        //TODO 인증 여부에 따라 보일지 말지를 결정하는 로직이 필요
         Note note =  noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         if (note.isPublic()) return note;
         if (member == null) throw new NoAuthorizationToReadException();
