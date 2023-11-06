@@ -17,7 +17,7 @@ public interface NoteService {
     void checkOwner(Member member, Folder folder) throws InconsistentNoteOwnerException;;
     Note createNote(Member member, Long folderId) throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException; //비어있는 새 노트를 생성
     Note modifyNote(Member member, Note note) throws NoteNotFoundException, InconsistentFolderOwnerException; //현재 이 노트의 내용을 저장
-    Note setPublic(Member member, Long noteId, Boolean isPublic)  throws InconsistentFolderOwnerException, NoteNotFoundException;
+    Note setPublic(Member member, Long noteId, Boolean isPublic) throws InconsistentFolderOwnerException, NoteNotFoundException;
     void deleteNote(Member member, Long noteId) throws InconsistentNoteOwnerException, NoteNotFoundException; //해당 아이디의 노트를 삭제
     Note readNote(Member member, Long noteId) throws NoteNotFoundException, NoAuthorizationToReadException; //해당 ID의 노트의 Detail을 가져 오기
     List<Note> getNotesQuotingThis(Long noteId) throws NoteNotFoundException;
