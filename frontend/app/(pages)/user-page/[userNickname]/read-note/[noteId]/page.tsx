@@ -31,8 +31,6 @@ export default function ReadNote() {
   const paramNoteId = decodeURIComponent(params.noteId as string);
   const paramsNickname = decodeURIComponent(params.userNickname as string);
   const [hasAccess, setHasAccess] = useState(false);
-  const { nickname } = useAppSelector((state) => state.user);
-  const [isMine, setMine] = useState(nickname === paramsNickname);
   const [data, setData] = useState<NoteInfo>({
     noteId: 1,
     title: '글제목',
@@ -64,7 +62,7 @@ export default function ReadNote() {
         getQuotationList(parseInt(paramNoteId));
       } else {
         showAlert(`${result.message}`, 'error');
-        window.location.replace(`/user-page/${nickname}`);
+        router.push(`/user-page/${paramsNickname}`);
       }
     };
     const getQuotationList = async (noteId: number) => {
