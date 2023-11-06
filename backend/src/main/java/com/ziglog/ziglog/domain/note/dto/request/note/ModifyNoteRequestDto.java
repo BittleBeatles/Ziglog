@@ -1,6 +1,5 @@
 package com.ziglog.ziglog.domain.note.dto.request.note;
 
-import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
 import lombok.AllArgsConstructor;

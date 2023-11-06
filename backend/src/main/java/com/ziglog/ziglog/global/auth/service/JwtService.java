@@ -2,8 +2,6 @@ package com.ziglog.ziglog.global.auth.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.ziglog.ziglog.domain.member.entity.Member;
-import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.global.auth.entity.RefreshToken;
 import com.ziglog.ziglog.global.auth.repository.RefreshTokenRepository;
 import jakarta.servlet.http.Cookie;
@@ -13,11 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;

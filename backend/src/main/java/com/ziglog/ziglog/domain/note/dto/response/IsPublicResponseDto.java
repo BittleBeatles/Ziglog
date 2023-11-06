@@ -1,6 +1,5 @@
 package com.ziglog.ziglog.domain.note.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
