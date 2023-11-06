@@ -8,7 +8,7 @@ import MarkdownPreview from '@uiw/react-markdown-preview';
 import QuotationListBox from '@components/userPage/QuotationListBox';
 import { NoteInfo } from '@api/note/types';
 import { deleteNote, getNoteInfo, getReferenceList } from '@api/note/note';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useAppSelector } from '@store/store';
 import { NoteRefListInfo } from '@api/note/types';
 import {
@@ -19,6 +19,7 @@ import {
 import './page.css';
 import { showAlert } from '@src/util/alert';
 import { useRouter } from 'next/navigation';
+import SideDataContext from '../../SideDataContext';
 
 export default function ReadNote() {
   const router = useRouter();
@@ -42,7 +43,7 @@ export default function ReadNote() {
     editTime: new Date('2023-10-31 00:00:00'),
   });
   const [isBookmarked, setIsBookmarked] = useState(false);
-
+  const { getBookmarkList } = useContext(SideDataContext);
   useEffect(() => {
     const getNoteReadPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -82,13 +83,19 @@ export default function ReadNote() {
   }, []);
 
   // 북마크 추가, 취소하기
-  const handleBookmarkChange = () => {
+  const handleBookmarkChange = async () => {
     if (isBookmarked) {
-      deleteBookmark(parseInt(paramNoteId));
-      setData({ ...data, bookmarkCount: data.bookmarkCount - 1 });
+      const res = deleteBookmark(parseInt(paramNoteId));
+      if (await res) {
+        setData({ ...data, bookmarkCount: data.bookmarkCount - 1 });
+        getBookmarkList();
+      }
     } else {
-      addBookmark(parseInt(paramNoteId));
-      setData({ ...data, bookmarkCount: data.bookmarkCount + 1 });
+      const res = addBookmark(parseInt(paramNoteId));
+      if (await res) {
+        setData({ ...data, bookmarkCount: data.bookmarkCount + 1 });
+        getBookmarkList();
+      }
     }
     setIsBookmarked(!isBookmarked);
   };

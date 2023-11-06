@@ -13,7 +13,7 @@ export async function addBookmark(noteId: number) {
     body: { noteId },
   })
     .then((res) => {
-      return console.log(res);
+      return res.body;
     })
     .catch((err) => {
       throw err;
@@ -25,7 +25,7 @@ export async function deleteBookmark(noteId: number) {
     method: 'DELETE',
   })
     .then((res) => {
-      return console.log('북마크가 삭제되었습니다.');
+      return res.body;
     })
     .catch((err) => {
       throw err;
