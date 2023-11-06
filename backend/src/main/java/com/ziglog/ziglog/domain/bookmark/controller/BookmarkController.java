@@ -3,7 +3,11 @@ package com.ziglog.ziglog.domain.bookmark.controller;
 import com.ziglog.ziglog.domain.bookmark.dto.request.AddBookmarkRequestDto;
 import com.ziglog.ziglog.domain.bookmark.dto.response.BookmarkListDto;
 import com.ziglog.ziglog.domain.bookmark.dto.response.IsBookmarkedDto;
+import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkAlreadyExistsException;
+import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkNotFoundException;
 import com.ziglog.ziglog.domain.bookmark.service.BookmarkService;
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
+import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +30,7 @@ public class BookmarkController {
             description = "해당 노트를 내 북마크에 추가합니다.")
     @PostMapping("")
     public ResponseDto<Void> addBookmark(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                         @RequestBody AddBookmarkRequestDto addBookmarkRequestDto) throws Exception {
+                                         @RequestBody AddBookmarkRequestDto addBookmarkRequestDto) throws UserNotFoundException, NoteNotFoundException, BookmarkAlreadyExistsException {
         bookmarkService.addBookmark(userDetails.member(), addBookmarkRequestDto.getNoteId());
         return ResponseDto.of(200, "success");
     }
@@ -35,7 +39,7 @@ public class BookmarkController {
             description = "해당 글을 내 북마크 목록에서 삭제합니다")
     @DeleteMapping("/{noteId}")
     public ResponseDto<Void> deleteBookmark(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                            @PathVariable("noteId") Long noteId) throws Exception {
+                                            @PathVariable("noteId") Long noteId) throws NoteNotFoundException, UserNotFoundException, BookmarkNotFoundException {
         bookmarkService.deleteBookmark(userDetails.member(), noteId);
         return ResponseDto.of(200, "success");
     }
@@ -43,7 +47,7 @@ public class BookmarkController {
     @Operation(summary = "북마크 목록 조회",
             description = "내 북마크 목록을 조회합니다.")
     @GetMapping("")
-    public ResponseDto<BookmarkListDto> getLoginUserBookmarks(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
+    public ResponseDto<BookmarkListDto> getLoginUserBookmarks(@AuthenticationPrincipal CustomUserDetails userDetails) throws UserNotFoundException {
         return ResponseDto.of(BookmarkListDto.toDto(bookmarkService.getBookmarks(userDetails.member())));
     }
 
@@ -51,7 +55,7 @@ public class BookmarkController {
             description = "해당 글이 내가 북마크한 글인지의 여부를 확인합니다.")
     @GetMapping("/{noteId}")
     public ResponseDto<IsBookmarkedDto> checkIsBookmarked(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                          @PathVariable("noteId") Long noteId) throws Exception {
+                                                          @PathVariable("noteId") Long noteId) throws UserNotFoundException {
         return ResponseDto.of(new IsBookmarkedDto(bookmarkService.checkIsBookmarked(userDetails.member(), noteId)));
     }
 

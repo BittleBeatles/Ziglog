@@ -6,7 +6,10 @@ import com.ziglog.ziglog.domain.member.dto.response.MyInfoResponseDto;
 import com.ziglog.ziglog.domain.member.dto.response.NicknameValidationResponseDto;
 import com.ziglog.ziglog.domain.member.dto.response.UserPublicInfoResponseDto;
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.member.exception.exceptions.InvalidUserModificationRequestException;
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.service.MemberService;
+import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.service.NoteService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
@@ -31,7 +34,7 @@ public class MemberController {
     @Operation(summary = "현재 로그인한 회원 정보를 수정",
                 description = "현재 로그인한 회원의 닉네임과 프로필 사진을 변경 및 저장")
     public ResponseDto<UserPublicInfoResponseDto> modifyNickname(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                              ModifyUserRequestDto nickname) throws Exception{
+                                              ModifyUserRequestDto nickname) throws UserNotFoundException, InvalidUserModificationRequestException {
         Member member = userDetails.member();
         memberService.modifyUserNickname(member, nickname.getNickname());
         memberService.modifyUserProfile(member, nickname.getProfileUrl());
@@ -49,14 +52,14 @@ public class MemberController {
     @Operation(summary = "닉네임으로 공개 정보를 조회",
             description = "닉네임으로 해당 사용자의 닉네임과 프로필 이미지 주소를 조회")
     @GetMapping("/{nickname}")
-    public ResponseDto<UserPublicInfoResponseDto> getUserPublicInfo(@PathVariable String nickname) throws Exception{
+    public ResponseDto<UserPublicInfoResponseDto> getUserPublicInfo(@PathVariable String nickname) throws UserNotFoundException {
         return ResponseDto.of(UserPublicInfoResponseDto.toDto(memberService.findUserByNickname(nickname)));
     }
 
     @Operation(summary = "현재 로그인한 회원의 공개 정보를 조회",
             description = "액세스 토큰을 기반으로 현재 로그인한 사용자의 닉네임과 프로필 이미지 주소를 조회")
     @GetMapping("/info")
-    public ResponseDto<MyInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception{
+    public ResponseDto<MyInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws UserNotFoundException, NoteNotFoundException {
         return ResponseDto.of(MyInfoResponseDto.toDto(memberService.findUserByEmail(userDetails.member().getEmail()),
                 noteService.getRootFolder(userDetails.member().getNickname())));
     }
