@@ -35,7 +35,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public void modifyUserNickname(Member member, String nickname) throws UserNotFoundException, InvalidUserModificationRequestException {
-        if (!isValidNickname(nickname)) throw new InvalidUserModificationRequestException();
+        if (!isValidNickname(member, nickname)) throw new InvalidUserModificationRequestException();
         memberRepository.findByEmail(member.getEmail())
                         .orElseThrow(UserNotFoundException::new)
                         .setNickname(nickname);
@@ -49,8 +49,9 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public boolean isValidNickname(String nickname) {
-        //기존에 사용하던 닉네임과 동일한지 여부를 확인하는 로직이 추가돼야 함
+    public boolean isValidNickname(Member member, String nickname) {
+        //기존에 사용하던 닉네임과 동일한지 여부를 확인하는 로직이 추가돼야 o함
+        if (member.getNickname().equals(nickname)) return true;
         if (!isValidNicknameFormat(nickname)) return false;
         return isNotDuplicatedNickname(nickname);
     }
@@ -74,7 +75,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     public boolean isValidNicknameFormat(String nickname){
-        String regex = "^[a-zA-Z0-9가-힣]{1,12}$";
+        String regex = "^[a-zA-Z0-9가-힣]{1,18}$";
         return nickname.matches(regex);
     }
 
