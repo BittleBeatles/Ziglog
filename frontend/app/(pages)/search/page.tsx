@@ -87,6 +87,7 @@ export default function Search() {
     if (!debouncedKeyword) {
       setPage(0);
       setSearchData({ notes: [] });
+      setHasMore(true);
     } else {
       setHasMore(true);
       fetchMoreData(debouncedKeyword, page);
@@ -110,6 +111,7 @@ export default function Search() {
       className={`${
         searchData ? THEME_VARIANTS[theme] : THEME_VARIANTS[theme]
       }`}
+      // className="bg-red-400"
     >
       <NavBar theme={theme} isLogin={isLogin} />
       <div className="flex flex-col justify-cneter items-center">
@@ -120,7 +122,7 @@ export default function Search() {
             placeholder="검색어를 입력하세요"
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <div className="h-full overflow-y-auto">
+          <div className="h-screen overflow-y-auto">
             {searchData && searchData.notes.length > 0 ? (
               <div>
                 {/* <p>총 {searchData.notes.length}개의 검색 결과가 있습니다.</p> */}
