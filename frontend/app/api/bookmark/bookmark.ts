@@ -13,7 +13,7 @@ export async function addBookmark(noteId: number) {
     body: { noteId },
   })
     .then((res) => {
-      return console.log('북마크가 추가되었습니다.');
+      return console.log(res);
     })
     .catch((err) => {
       throw err;
