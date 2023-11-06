@@ -46,7 +46,7 @@ export default function Search() {
 
   // 스크롤 이벤트 핸들러
   const handleScroll = () => {
-    if (!loading && hasMore) {
+    if (hasMore) {
       setLoading(true);
       setPage(page + 1);
     }
@@ -87,7 +87,7 @@ export default function Search() {
     if (!debouncedKeyword) {
       setPage(0);
       setSearchData({ notes: [] });
-      setHasMore(true);
+      setLoading(true);
     } else {
       setHasMore(true);
       fetchMoreData(debouncedKeyword, page);
@@ -122,7 +122,7 @@ export default function Search() {
             placeholder="검색어를 입력하세요"
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <div className="h-screen overflow-y-auto">
+          <div className="min-h-screen overflow-y-auto">
             {searchData && searchData.notes.length > 0 ? (
               <div>
                 {/* <p>총 {searchData.notes.length}개의 검색 결과가 있습니다.</p> */}
@@ -153,7 +153,7 @@ export default function Search() {
                 ))}
               </div>
             ) : (
-              !hasMore && (
+              !loading && (
                 <div>
                   <Text type="p">{'검색 결과가 없습니다.'}</Text>
                 </div>

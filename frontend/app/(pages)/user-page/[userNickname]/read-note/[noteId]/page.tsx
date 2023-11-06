@@ -27,10 +27,6 @@ export default function ReadNote() {
   const [quotationInfo, setQuotationInfo] = useState<NoteRefListInfo>({
     quotationList: [],
   });
-  // 쿼리 키워드 추출.
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const keyword = urlParams.get('keyword');
 
   const params = useParams();
   const paramNoteId = decodeURIComponent(params.noteId as string);
@@ -111,8 +107,20 @@ export default function ReadNote() {
 
   const isMine = isLogin && userNickname === data.nickname;
 
+  useEffect(() => {
+    window.addEventListener('popstate', handleGoBack);
+    return () => {
+      window.removeEventListener('popstate', handleGoBack);
+    };
+  }, []);
+
   // 뒤로가기 이벤트를 감지하고 처리
   const handleGoBack = () => {
+    // 쿼리 키워드 추출.
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const keyword = urlParams.get('keyword');
+    console.log('kyword:', keyword);
     if (keyword) {
       // 검색어를 가진 페이지로 돌아가기
       router.push(`/search?keyword=${encodeURIComponent(keyword)}`);
@@ -121,15 +129,6 @@ export default function ReadNote() {
       window.history.back();
     }
   };
-
-  useEffect(() => {
-    if (keyword) {
-      window.addEventListener('popstate', handleGoBack);
-    }
-    return () => {
-      window.removeEventListener('popstate', handleGoBack);
-    };
-  }, [keyword]);
 
   return (
     hasAccess && (

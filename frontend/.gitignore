@@ -45,8 +45,4 @@ next-env.d.ts
 
 # enb
 .env.development
-<<<<<<< HEAD
 .env.production
-=======
-.env.production
->>>>>>> 9a3bfc6 (fix : api 경로 변경 및 env)
