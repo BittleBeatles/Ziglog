@@ -42,3 +42,7 @@ next-env.d.ts
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# enb
+.env.development
+.env.production
