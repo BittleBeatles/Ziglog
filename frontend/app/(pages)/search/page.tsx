@@ -139,6 +139,7 @@ export default function Search() {
                         title={result.title}
                         preview={result.preview !== null ? result.preview : ''}
                         nickname={result.nickname}
+                        profileUrl={result.profileUrl}
                         isPublic={result.isPublic}
                         bookmarkCount={result.bookmarkCount}
                         postTime={result.postTime}

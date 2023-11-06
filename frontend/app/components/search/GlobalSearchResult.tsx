@@ -6,6 +6,7 @@ interface GlobalSearchResultProps {
   title: string;
   preview: string | null;
   nickname: string;
+  profileUrl: string;
   isPublic: boolean;
   bookmarkCount: number;
   postTime: Date;
@@ -18,6 +19,7 @@ export default function GlobalSearchResult({
   title,
   preview,
   nickname,
+  profileUrl,
   isPublic,
   bookmarkCount,
   postTime,
@@ -41,7 +43,7 @@ export default function GlobalSearchResult({
   return (
     <div {...rest} className={`${THEME_VARIANTS[theme]} p-5 mt-3`}>
       <div className="flex flex-row items-center">
-        <ProfileImage size={40} />
+        <ProfileImage src={`${profileUrl}`} size={40} />
         <Text className="ml-4">{`${nickname}`}</Text>
       </div>
       <div className="mt-3">
