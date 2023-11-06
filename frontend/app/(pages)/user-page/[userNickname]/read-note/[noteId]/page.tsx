@@ -11,6 +11,11 @@ import { deleteNote, getNoteInfo, getReferenceList } from '@api/note/note';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@store/store';
 import { NoteRefListInfo } from '@api/note/types';
+import {
+  isNoteBookmarked,
+  addBookmark,
+  deleteBookmark,
+} from '@api/bookmark/bookmark';
 import './page.css';
 import { showAlert } from '@src/util/alert';
 
@@ -35,6 +40,7 @@ export default function ReadNote() {
     postTime: new Date('2023-10-31 00:00:00'),
     editTime: new Date('2023-10-31 00:00:00'),
   });
+  const [isBookmarked, setIsBookmarked] = useState(false);
   useEffect(() => {
     const getNoteReadPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -61,11 +67,27 @@ export default function ReadNote() {
       const result = await getReferenceList(noteId);
       if (result) {
         setQuotationInfo(result);
+        getIsBookmarked(noteId);
+      }
+    };
+    const getIsBookmarked = async (noteId: number) => {
+      const result = await isNoteBookmarked(noteId);
+      if (result) {
+        setIsBookmarked(result.bookmarked);
       }
     };
     getNoteReadPage(parseInt(paramNoteId));
   }, []);
 
+  // 북마크 추가, 취소하기
+  const handleBookmarkChange = () => {
+    if (isBookmarked) {
+      deleteBookmark();
+    } else {
+      addBookmark();
+    }
+  };
+  const isMine = true;
   return (
     hasAccess && (
       <div id="sidebar-scroll" className="overflow-y-auto h-full">
@@ -117,8 +139,10 @@ export default function ReadNote() {
           <div className="absolute">
             <BookmarkQuoteInfo
               theme={theme}
-              bookmarked={data.bookmarkCount}
-              quoted={quotationInfo.quotationList.length}
+              bookmarkCount={data.bookmarkCount}
+              quotedCount={quotationInfo.quotationList.length}
+              isBookmarked={isBookmarked}
+              onClick={handleBookmarkChange}
             ></BookmarkQuoteInfo>
           </div>
 
