@@ -156,6 +156,7 @@ export default function ReadNote() {
               quotedCount={quotationInfo.quotationList.length}
               isBookmarked={isBookmarked}
               handleBookmarkChange={handleBookmarkChange}
+              isLogin={isLogin}
             ></BookmarkQuoteInfo>
           </div>
 
