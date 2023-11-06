@@ -18,7 +18,7 @@ import * as commands from '@uiw/react-md-editor/lib/commands';
 import { getBookmark } from '@api/bookmark/bookmark';
 import { Note } from '@api/bookmark/types';
 import { showAlert } from '@src/util/alert';
-import { API_URL } from '@api/constants';
+
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
@@ -104,7 +104,9 @@ export default function EditNote() {
       if (matches) {
         matches.forEach((match) => {
           const extractedContent = match.slice(1, -1);
-          extractedQuotingNotes.push(extractedContent);
+          if (extractedContent && extractedContent.includes(':')) {
+            extractedQuotingNotes.push(extractedContent);
+          }
         });
       }
       const splitQuotingNotes = extractedQuotingNotes.map((content) => {
@@ -218,8 +220,7 @@ export default function EditNote() {
                   console.log('>>>>>>update>>>>>', state);
                   let modifyText = `[[${state.selectedText}]]`;
                   if (!state.selectedText) {
-                    modifyText = `[${quotingNoteInfo.nickname} : ${quotingNoteInfo.title}](${process.env.NEXT_PUBLIC_BASE_URL}/user-page/${quotingNoteInfo.nickname}/read-note/${quotingNoteInfo.noteId}
-                    ) `;
+                    modifyText = `[${quotingNoteInfo.nickname} : ${quotingNoteInfo.title}](${process.env.NEXT_PUBLIC_BASE_URL}/user-page/${quotingNoteInfo.nickname}/read-note/${quotingNoteInfo.noteId})`;
                   }
                   api.replaceSelection(modifyText);
                   setQuotingNoteInfo({ nickname: '', title: '', noteId: 0 });
