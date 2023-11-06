@@ -56,10 +56,6 @@ export async function ReissueToken() {
   })
     .then((res) => {
       store.dispatch(setUserToken(res.body.data));
-      console.log(
-        '[received new accessToken from reissue request]',
-        res.body.data
-      );
       return res.body.data;
     })
     .catch((err) => {

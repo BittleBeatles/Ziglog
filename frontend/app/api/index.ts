@@ -32,9 +32,11 @@ export const privateFetch = returnFetchJson({
       return config;
     },
     response: async (response, config, fetch) => {
-      if (response.status === 401) {
+      let retryCounter = 0;
+      if (response.status !== 401) {
         const newAccessToken = await ReissueToken();
-        if (newAccessToken) {
+        retryCounter++;
+        if (newAccessToken && retryCounter < 3) {
           config[1] = {
             ...config[1],
             headers: {
@@ -46,8 +48,10 @@ export const privateFetch = returnFetchJson({
               Authorization: `${newAccessToken.grantType} ${newAccessToken.accessToken}`,
             },
           };
+          retryCounter = 0;
           return fetch(...config);
         } else {
+          retryCounter = 0;
           throw new Error('Failed to reissue token');
         }
       }
