@@ -59,11 +59,11 @@ public class Note {
     private List<Bookmark> bookmarks = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "startNote")
+    @OneToMany(mappedBy = "startNote", cascade = CascadeType.REMOVE)
     private List<Quotation> quoted = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "endNote")
+    @OneToMany(mappedBy = "endNote", cascade = CascadeType.REMOVE)
     private List<Quotation> quoting = new ArrayList<>();
 
     public Note(Long id){
