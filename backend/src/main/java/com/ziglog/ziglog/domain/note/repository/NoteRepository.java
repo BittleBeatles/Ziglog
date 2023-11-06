@@ -1,7 +1,6 @@
 package com.ziglog.ziglog.domain.note.repository;
 
 import com.ziglog.ziglog.domain.note.entity.Note;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
