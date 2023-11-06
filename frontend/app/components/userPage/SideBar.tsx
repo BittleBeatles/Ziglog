@@ -14,11 +14,8 @@ import { Logout, getUserInfo } from '@api/user/user';
 import { createNote } from '@api/note/note';
 import { useAppDispatch, useAppSelector } from '@store/store';
 import { setMyTheme } from '@store/modules/userSlice';
-import { getBookmark } from '@api/bookmark/bookmark';
 import { Note } from '@api/bookmark/types';
-import { DirectoryItem } from '@api/folder/types';
-import { getFolderList } from '@api/folder/folder';
-import GraphDataContext from '@(pages)/user-page/[userNickname]/GraphDataContext';
+import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -29,7 +26,8 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const { isLogin, nickname, rootFolderId } = useAppSelector(
     (state) => state.user
   );
-  const { getGraphData } = useContext(GraphDataContext);
+  const { getGraphData, getSideList, getBookmarkList } =
+    useContext(SideDataContext);
 
   // 주소 기반 닉네임 및 프로필 이미지
   const params = useParams();
@@ -38,8 +36,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const [isMine, setMine] = useState(nickname === paramsNickname);
 
   const router = useRouter();
-  // 폴더 상태
-  const [sideData, setSideData] = useState<DirectoryItem[]>([]);
+  // 폴더 상태 => 전역으로 관리가 필요함
   const [parentId, setParentId] = useState<number>(rootFolderId);
   const [isModalOpen, setModalOpen] = useState(false);
   const [folderName, setFolderName] = useState('');
@@ -84,12 +81,6 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   }, [showInput.type]);
 
   useEffect(() => {
-    const getBookmarkList = async () => {
-      const result = await getBookmark();
-      if (result) {
-        setBookmarkList(result.notes);
-      }
-    };
     getBookmarkList();
   }, []);
 
@@ -103,17 +94,6 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
     };
     getProfileUrl();
   }, [paramsNickname]);
-
-  const getSideList = useCallback(async () => {
-    try {
-      const res = await getFolderList(nickname);
-      if (res) {
-        setSideData(res);
-      }
-    } catch (error) {
-      console.error('Failed to fetch directory list:', error);
-    }
-  }, [nickname]);
 
   // 노트 추가
   const addNote = async () => {
@@ -134,7 +114,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
 
   useEffect(() => {
     getSideList();
-  }, [getSideList]);
+  }, []);
 
   return (
     <div
@@ -155,7 +135,11 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
           name="DoubleArrowLeft"
         />
       </div>
-      <div className="control flex justify-between mt-5 px-8">
+      <div
+        className={`control flex mt-5 px-8 ${
+          isMine ? 'justify-between' : 'gap-2'
+        }`}
+      >
         <IconButtonWithBg
           onClick={() => router.push('/search')}
           size={30}
@@ -163,23 +147,27 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
           name="GlobalSearch"
         />
         <IconButtonWithBg
-          onClick={addFolder}
-          size={30}
-          theme={theme}
-          name="AddFolder"
-        />
-        <IconButtonWithBg
-          onClick={addNote}
-          size={30}
-          theme={theme}
-          name="AddNote"
-        />
-        <IconButtonWithBg
           onClick={() => router.push(`/user-page/${paramsNickname}`)}
           size={30}
           theme={theme}
           name="GraphView"
         />
+        {isMine && (
+          <>
+            <IconButtonWithBg
+              onClick={addFolder}
+              size={30}
+              theme={theme}
+              name="AddFolder"
+            />
+            <IconButtonWithBg
+              onClick={addNote}
+              size={30}
+              theme={theme}
+              name="AddNote"
+            />
+          </>
+        )}
       </div>
 
       <div className="flex justify-center mt-5 px-8">
@@ -196,8 +184,6 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
               parentId={parentId}
               setParentId={setParentId}
               theme={theme}
-              getSideList={getSideList}
-              sideData={sideData}
               showInput={showInput}
               setShowInput={setShowInput}
               folderName={folderName}
@@ -228,7 +214,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         {isLogin && !isMine && (
           <Button
             onClick={() => router.push(`/user-page/${nickname}`)}
-            label="마이페이지로 가기"
+            label="마이페이지"
             color="charcol"
           />
         )}
