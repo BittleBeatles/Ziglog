@@ -2,6 +2,7 @@ package com.ziglog.ziglog.global.auth.dto;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.global.auth.entity.oauth2.OAuth2GoogleUserInfo;
+import com.ziglog.ziglog.global.auth.entity.oauth2.OAuth2KakaoUserInfo;
 import com.ziglog.ziglog.global.auth.entity.oauth2.OAuth2UserInfo;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,13 +23,21 @@ public class OAuth2Attributes {
 
     public static OAuth2Attributes of(RegistrationId clientName, String nameAttributeKey, Map<String, Object> attributes){
         if (clientName == RegistrationId.google) return ofGoogle(nameAttributeKey, attributes);
+        if (clientName == RegistrationId.kakao) return ofKakao(nameAttributeKey, attributes);
         return null;
     }
 
-   private static OAuth2Attributes ofGoogle(String nameAttributeKey, Map<String, Object> attributes){
+    private static OAuth2Attributes ofGoogle(String nameAttributeKey, Map<String, Object> attributes){
         return OAuth2Attributes.builder()
                 .nameAttributeKey(nameAttributeKey)
                 .oAuth2UserInfo(new OAuth2GoogleUserInfo(attributes))
+                .build();
+    }
+
+    private static OAuth2Attributes ofKakao(String nameAttributeKey, Map<String, Object> attributes){
+        return OAuth2Attributes.builder()
+                .nameAttributeKey(nameAttributeKey)
+                .oAuth2UserInfo(new OAuth2KakaoUserInfo(attributes))
                 .build();
     }
 
