@@ -60,7 +60,7 @@ public class NoteController {
             description = "해당 노트의 내용(제목, 내용, 이 글이 인용하고 있는 글 목록)을 수정")
     @PutMapping("/{noteId}")
     public ResponseDto<Void> modifyNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId, @RequestBody ModifyNoteRequestDto modifyNoteRequestDto) throws Exception {
-        noteService.modifyNote(userDetails.member(), modifyNoteRequestDto.toEntity(userDetails.member(), noteId));
+        noteService.modifyNote(userDetails.member(), modifyNoteRequestDto.toEntity(noteId));
         return ResponseDto.of(200, "success");
     }
 
