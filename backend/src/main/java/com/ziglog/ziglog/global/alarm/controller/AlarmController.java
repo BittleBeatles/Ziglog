@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class AlarmController {
 
     private final AlarmService alarmService;
-
     @GetMapping(value = "/subscribe", produces = "text/event-steream")
     public SseEmitter subscribe(@AuthenticationPrincipal CustomUserDetails userDetails){
         return new SseEmitter();

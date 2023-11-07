@@ -76,6 +76,7 @@ public class JwtService {
 
     public void setAccessTokenHeader(HttpServletResponse response, String accessToken){
         log.info("send access token");
+        log.info("put {} to {}", accessToken, accessTokenHeader);
         response.setHeader(accessTokenHeader, accessToken);
     }
 
