@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.global.notification.entity;
+package com.ziglog.ziglog.domain.notification.entity;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
 import jakarta.persistence.*;

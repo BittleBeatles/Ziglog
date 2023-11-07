@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.global.notification.service;
+package com.ziglog.ziglog.domain.notification.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;

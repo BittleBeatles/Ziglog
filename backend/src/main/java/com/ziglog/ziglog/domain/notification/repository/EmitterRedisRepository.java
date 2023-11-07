@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.global.notification.repository;
+package com.ziglog.ziglog.domain.notification.repository;
 
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.repository.CrudRepository;

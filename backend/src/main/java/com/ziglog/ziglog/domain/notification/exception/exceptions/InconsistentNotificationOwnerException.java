@@ -1,6 +1,6 @@
-package com.ziglog.ziglog.global.notification.exception.exceptions;
+package com.ziglog.ziglog.domain.notification.exception.exceptions;
 
-import com.ziglog.ziglog.global.notification.exception.NotificationExceptionCode;
+import com.ziglog.ziglog.domain.notification.exception.NotificationExceptionCode;
 
 public class InconsistentNotificationOwnerException extends RuntimeException{
     public InconsistentNotificationOwnerException(){
