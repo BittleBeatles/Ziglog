@@ -120,6 +120,7 @@ export default function Directory({
               depth={0}
               id={item.id}
               title={item.title}
+              currentNoteId={currentNoteId}
               isModifyDelete={isModifyDelete}
             />
           ) : (

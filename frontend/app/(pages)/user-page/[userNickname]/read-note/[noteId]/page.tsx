@@ -42,7 +42,7 @@ export default function ReadNote() {
     editTime: new Date('2023-10-31 00:00:00'),
   });
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const { getBookmarkList } = useContext(SideDataContext);
+  const { getBookmarkList, getSideList } = useContext(SideDataContext);
   useEffect(() => {
     const getNoteReadPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -97,6 +97,12 @@ export default function ReadNote() {
       }
     }
     setIsBookmarked(!isBookmarked);
+  };
+
+  const handleDelete = async () => {
+    await deleteNote(parseInt(paramNoteId), data.nickname);
+    await getSideList();
+    router.push(`/user-page/${userNickname}`);
   };
 
   // 닉네임 클릭 시,
@@ -173,9 +179,7 @@ export default function ReadNote() {
                 <div className="ml-3">
                   <Button
                     color="red"
-                    onClick={() =>
-                      deleteNote(parseInt(paramNoteId), data.nickname)
-                    }
+                    onClick={handleDelete}
                     label="삭제"
                     size="text-xs"
                   ></Button>

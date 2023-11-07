@@ -1,11 +1,13 @@
 'use client';
+import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import SvgIcon from '@components/common/SvgIcon';
 import Text from '@components/common/Text';
 import colors from '@src/design/color';
+import { findParentId } from '@src/util/findParentId';
 import { useAppSelector } from '@store/store';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 export interface NoteProps {
   type?: 'note';
@@ -30,6 +32,7 @@ export default function Note({
   const paramsNickname = decodeURIComponent(param.userNickname as string);
   const { nickname } = useAppSelector((state) => state.user);
   const [isMine] = useState(nickname === paramsNickname);
+  const { sideData } = useContext(SideDataContext);
 
   return (
     <div className="flex items-center">
@@ -38,7 +41,7 @@ export default function Note({
         className={`${
           depth !== 0 ? 'pl-5' : ''
         }  flex items-center mt-2 mb-2 hover:opacity-60 transition-opacity duration-300  ${
-          id === currentNoteId ? 'bg-gray-200' : ''
+          id === currentNoteId ? 'text-main-75' : ''
         }`}
       >
         <SvgIcon
