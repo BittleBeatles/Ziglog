@@ -41,7 +41,11 @@ export default function BookmarkQuoteInfo({
       <Text className="mb-4" type="p">
         {bookmarkCount > 999 ? '1000+' : bookmarkCount}
       </Text>
-      <SvgIcon name="Share" color={theme == 'light' ? 'black' : 'white'} />
+      <SvgIcon
+        name="Quote"
+        color={theme == 'light' ? 'black' : 'white'}
+        size={20}
+      />
       <Text type="p">{quotedCount > 999 ? '1000+' : quotedCount}</Text>
     </div>
   );
