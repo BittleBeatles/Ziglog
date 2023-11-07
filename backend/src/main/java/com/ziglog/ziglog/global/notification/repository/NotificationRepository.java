@@ -1,27 +1,19 @@
 package com.ziglog.ziglog.global.notification.repository;
 
+import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.global.notification.entity.Notification;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class NotificationRepository {
+public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    private final Map<Long, SseEmitter> emitterMap = new ConcurrentHashMap<>();
-
-    public void put(Long id, SseEmitter emitter) {
-        emitterMap.put(id, emitter);
-    }
-
-    public SseEmitter get(Long id){
-        return emitterMap.get(id);
-    }
-
-    public void deleteById(Long id) {
-        emitterMap.remove(id);
-    }
-
-
+    //RDB에 들어감
+    void deleteById(Long id);
+    List<Notification> findAllByOwner(Member owner);
 }
