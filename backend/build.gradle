@@ -38,9 +38,10 @@ dependencies {
 	implementation 'com.auth0:java-jwt:4.2.1'
 
 	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'com.vladsch.flexmark:flexmark-all:0.64.8'
+
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
     implementation 'org.testng:testng:7.7.0'
-
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
 	compileOnly 'org.projectlombok:lombok'
