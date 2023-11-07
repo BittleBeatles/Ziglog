@@ -113,9 +113,17 @@ export default function ReadNote() {
             </Text>
 
             {data.isPublic ? (
-              <SvgIcon name="Public" size={20}></SvgIcon>
+              <SvgIcon
+                name="Public"
+                size={20}
+                color={theme === 'light' ? 'black' : 'white'}
+              ></SvgIcon>
             ) : (
-              <SvgIcon name="Private" size={20}></SvgIcon>
+              <SvgIcon
+                name="Private"
+                size={20}
+                color={theme === 'light' ? 'black' : 'white'}
+              ></SvgIcon>
             )}
 
             {isMine ? (
