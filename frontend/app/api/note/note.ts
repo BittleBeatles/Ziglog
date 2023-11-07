@@ -68,9 +68,9 @@ export async function deleteNote(noteId: number, nickname: string) {
     }
   )
     .then((res) => {
-      showAlert('성공적으로 삭제되었습니다. ', 'success');
       window.location.replace(`/user-page/${nickname}`);
-      return console.log(`${noteId}번 노트가 삭제되었습니다.`);
+      showAlert('성공적으로 삭제되었습니다. ', 'success');
+      return `${noteId}번 노트가 삭제되었습니다.`;
     })
     .catch((err) => {
       throw err;

@@ -42,7 +42,7 @@ export default function Note({
         }`}
       >
         <SvgIcon
-          name="Note"
+          name="NoteDescription"
           color={theme === 'light' ? colors.black : colors.white}
         />
         <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>{title}</Text>

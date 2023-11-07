@@ -8,8 +8,8 @@ export default function OauthPage() {
   useEffect(() => {
     const oauthLogin = async () => {
       // [TOKEN] 가져오기
-      const urlParmas = new URLSearchParams(window.location.search);
-      const accessToken = urlParmas.get('at') || '';
+      const urlParams = new URLSearchParams(window.location.search);
+      const accessToken = urlParams.get('at') || '';
       dispatch(setUserToken({ accessToken, grantType: 'Bearer' }));
       // [USERINFO] 가져오기
       const result = await getMyInfo();
