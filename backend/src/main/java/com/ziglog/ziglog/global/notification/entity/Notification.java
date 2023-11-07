@@ -2,8 +2,10 @@ package com.ziglog.ziglog.global.notification.entity;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Notification {
 
     @Id
@@ -19,6 +21,4 @@ public class Notification {
 
     @ManyToOne(fetch = FetchType.LAZY)//이 알림이 갈 곳
     private Member owner;
-
-
 }

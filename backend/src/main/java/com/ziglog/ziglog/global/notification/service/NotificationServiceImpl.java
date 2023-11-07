@@ -2,6 +2,9 @@ package com.ziglog.ziglog.global.notification.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
+import com.ziglog.ziglog.global.notification.entity.Notification;
+import com.ziglog.ziglog.global.notification.exception.exceptions.AlreadyRemovedNotificationException;
+import com.ziglog.ziglog.global.notification.exception.exceptions.InconsistentNotificationOwnerException;
 import com.ziglog.ziglog.global.notification.repository.EmitterRedisRepository;
 import com.ziglog.ziglog.global.notification.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,8 +46,12 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 
+    //RDB에서 알림을 삭제
     @Override
-    public void delete(Member member, Long notificationId) throws UserNotFoundException  {//+ 이미 삭제, 알림 주인 아님
+    public void delete(Member member, Long notificationId) throws AlreadyRemovedNotificationException, InconsistentNotificationOwnerException {
+        Notification notification = notificationRepository.findById(notificationId).orElseThrow(AlreadyRemovedNotificationException::new);
+        if (!notification.getOwner().getId().equals(member.getId())) throw new InconsistentNotificationOwnerException();
+        notificationRepository.delete(notification);
     }
 
     private SseEmitter createEmitter(Long memberId){
