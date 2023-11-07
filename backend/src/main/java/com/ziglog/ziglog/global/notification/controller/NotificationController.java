@@ -21,7 +21,7 @@ public class NotificationController {
 
     @GetMapping(value = "/subscribe", produces = "text/event-stream")
     public SseEmitter subscribe(@AuthenticationPrincipal CustomUserDetails userDetails){
-        return emitterService.subscribe(userDetails.member().getId());
+        return emitterService.subscribe(userDetails.member());
     }
 
     @DeleteMapping(value = "/delete/{notificationId}")
