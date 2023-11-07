@@ -15,6 +15,7 @@ public class ModifyNoteRequestDto {
     private List<Long> quotingNotes;
 
     public Note toEntity(Long noteId){
+        //TODO 바꿔야 됨
         List<Quotation> quotations = quotingNotes.stream()
                 .map(quoting -> Quotation.builder().startNote(new Note(quoting))
                         .endNote(new Note(noteId))

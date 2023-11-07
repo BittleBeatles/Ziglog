@@ -10,6 +10,9 @@ import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
+import com.ziglog.ziglog.domain.notification.entity.Notification;
+import com.ziglog.ziglog.domain.notification.service.EmitterService;
+import com.ziglog.ziglog.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class BookmarkServiceImpl implements BookmarkService {
@@ -26,9 +28,12 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
     private final BookmarkRepository bookmarkRepository;
+    //TODO 결합도 높아지는 거 같긴 한데 좀 더 나은 설계를 생각해봐야 함
+    private final NotificationService notificationService;
+    private final EmitterService emitterService;
 
     @Override
-    public void addBookmark(Member member, Long noteId) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException{
+    public void addBookmark(Member member, Long noteId) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
 
@@ -41,8 +46,15 @@ public class BookmarkServiceImpl implements BookmarkService {
                             .note(note)
                             .build();
 
-        bookmarkRepository.save(bookmark);
+        bookmark = bookmarkRepository.save(bookmark);
         memberPersist.getBookmarks().add(bookmark);
+
+        Notification notification = notificationService.saveBookmarkNotification(memberPersist, bookmark);
+        try {
+            emitterService.notifyEvent(member, notification);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -74,5 +86,4 @@ public class BookmarkServiceImpl implements BookmarkService {
         }
         return false;
     }
-
 }

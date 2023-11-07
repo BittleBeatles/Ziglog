@@ -7,8 +7,8 @@ import java.io.IOException;
 
 public interface EmitterService {
 
-    SseEmitter subscribe(Member member);
+    SseEmitter subscribe(Member member) throws Exception;
 
     //이벤트 객체 전송
-    void notifyEvent(Member member, Object event) throws IOException;
+    void notifyEvent(Member member, Object event) throws Exception;
 }

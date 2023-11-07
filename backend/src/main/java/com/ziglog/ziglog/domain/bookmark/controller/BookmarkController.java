@@ -30,7 +30,8 @@ public class BookmarkController {
             description = "해당 노트를 내 북마크에 추가합니다.")
     @PostMapping("")
     public ResponseDto<Void> addBookmark(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                         @RequestBody AddBookmarkRequestDto addBookmarkRequestDto) throws UserNotFoundException, NoteNotFoundException, BookmarkAlreadyExistsException {
+                                         @RequestBody AddBookmarkRequestDto addBookmarkRequestDto)
+            throws UserNotFoundException, NoteNotFoundException, BookmarkAlreadyExistsException, Exception {
         bookmarkService.addBookmark(userDetails.member(), addBookmarkRequestDto.getNoteId());
         return ResponseDto.of(200, "success");
     }

@@ -1,14 +1,11 @@
 package com.ziglog.ziglog.domain.notification.repository;
 
+import com.ziglog.ziglog.domain.notification.entity.Emitter;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 @RedisHash
-public interface EmitterRedisRepository extends CrudRepository<SseEmitter, Long> {
-    // pub - sub 구성해야 됨 근데
+public interface EmitterRedisRepository extends CrudRepository<Emitter, Long> {
 
 }
