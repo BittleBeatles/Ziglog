@@ -6,6 +6,7 @@ import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.auth.repository.RefreshTokenRepository;
 import com.ziglog.ziglog.global.auth.service.JwtService;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,9 +31,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
-
-    @Value("${server.servlet.context-path}")
-    private String contextPath;
     private static final String REFRESH_URL = "/auth/refresh";
     private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
@@ -40,8 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        log.info("requestURI: {}", request.getRequestURI());
-        if (request.getRequestURI().equals(contextPath + REFRESH_URL)){
+        if (request.getServletPath().equals(REFRESH_URL)){
             checkRefreshTokenAndReissueAccessToken(request, response, filterChain);
         }
         else {
