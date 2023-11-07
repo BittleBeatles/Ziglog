@@ -30,7 +30,7 @@ export default function Search() {
   const keyword2 = urlParams.get('keyword');
   useEffect(() => {
     if (keyword2) {
-      setKeyword(decodeURIComponent(keyword2));
+      setKeyword(keyword2);
     } else {
       setKeyword('');
     }
@@ -65,7 +65,11 @@ export default function Search() {
   useEffect(() => {
     async function fetchMoreData(debouncedKeyword: string, page: number) {
       try {
-        const response = await getSearchInfo(debouncedKeyword, page, perPage);
+        const response = await getSearchInfo(
+          encodeURIComponent(debouncedKeyword),
+          page,
+          perPage
+        );
         const newData = response;
 
         if (newData && newData.notes.length > 0) {
@@ -107,12 +111,7 @@ export default function Search() {
   }, []);
 
   return (
-    <div
-      className={`${
-        searchData ? THEME_VARIANTS[theme] : THEME_VARIANTS[theme]
-      }`}
-      // className="bg-red-400"
-    >
+    <div className={`${THEME_VARIANTS[theme]}`}>
       <NavBar theme={theme} isLogin={isLogin} />
       <div className="flex flex-col justify-cneter items-center">
         <div className="w-2/3">

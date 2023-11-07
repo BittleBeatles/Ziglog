@@ -27,7 +27,6 @@ export default function ReadNote() {
   const [quotationInfo, setQuotationInfo] = useState<NoteRefListInfo>({
     quotationList: [],
   });
-
   const params = useParams();
   const paramNoteId = decodeURIComponent(params.noteId as string);
   const paramsNickname = decodeURIComponent(params.userNickname as string);
@@ -107,28 +106,25 @@ export default function ReadNote() {
 
   const isMine = isLogin && userNickname === data.nickname;
 
-  useEffect(() => {
-    window.addEventListener('popstate', handleGoBack);
-    return () => {
-      window.removeEventListener('popstate', handleGoBack);
-    };
-  }, []);
-
-  // 뒤로가기 이벤트를 감지하고 처리
-  const handleGoBack = () => {
-    // 쿼리 키워드 추출.
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const keyword = urlParams.get('keyword');
-    console.log('kyword:', keyword);
-    if (keyword) {
-      // 검색어를 가진 페이지로 돌아가기
-      router.push(`/search?keyword=${encodeURIComponent(keyword)}`);
-    } else {
-      // 검색어가 없는 경우의 기본 검색 결과 페이지로 돌아가기
-      window.history.back();
-    }
-  };
+  //검색페이지에서 왔을 때 뒤로 가기 검색 유지
+  // const handleGoBack = (event: { preventDefault: () => void }) => {
+  //   event.preventDefault();
+  //   const currentQueryString = new URLSearchParams(window.location.search).get(
+  //     'keyword'
+  //   );
+  //   console.log('키워드 있어?', currentQueryString);
+  //   if (currentQueryString) {
+  //     router.push(`/search?keyword=${encodeURIComponent(currentQueryString)}`);
+  //   } else {
+  //     router.back();
+  //   }
+  // };
+  // useEffect(() => {
+  //   window.addEventListener('popstate', handleGoBack);
+  //   return () => {
+  //     window.removeEventListener('popstate', handleGoBack);
+  //   };
+  // }, []);
 
   return (
     hasAccess && (
