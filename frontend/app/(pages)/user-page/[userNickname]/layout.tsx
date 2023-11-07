@@ -4,7 +4,7 @@ import IconButton from '@components/common/IconButton';
 import SideBar from '@components/userPage/SideBar';
 import { useAppSelector } from '@store/store';
 import { ReactNode, useState } from 'react';
-import { GraphDataProvider } from './GraphDataContext';
+import { SideDataProvider } from './SideDataContext';
 
 export default function UserLayout({ children }: { children: ReactNode }) {
   const [isSideBarOpen, setSideBarOpen] = useState(true);
@@ -15,7 +15,7 @@ export default function UserLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className={`${THEME_VARIANTS[theme]} flex`}>
-      <GraphDataProvider>
+      <SideDataProvider>
         {isSideBarOpen && (
           <div className="w-1/6">
             <SideBar sideBarToggle={sideBarToggle} theme={theme} />
@@ -31,7 +31,7 @@ export default function UserLayout({ children }: { children: ReactNode }) {
         <div className="p-4 w-full h-screen">
           <Box theme={theme}>{children}</Box>
         </div>
-      </GraphDataProvider>
+      </SideDataProvider>
     </div>
   );
 }

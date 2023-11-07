@@ -3,12 +3,12 @@ import Note, { NoteProps } from './Note';
 import SvgIcon from '@components/common/SvgIcon';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import colors from '@src/design/color';
-import { findParentId } from './findParentId';
+import { findParentId } from '@src/util/findParentId';
 import CreateFile from './CreateFile';
 import { DirectoryItem } from '@api/folder/types';
 import { createFolder, deleteFolder } from '@api/folder/folder';
 import IconButton from '@components/common/IconButton';
-import GraphDataContext from '@(pages)/user-page/[userNickname]/GraphDataContext';
+import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 
 export interface FolderProps {
   type?: 'folder';
@@ -28,7 +28,6 @@ export interface FolderProps {
   currentNoteId?: number;
   folderName?: string;
   setFolderName?: Dispatch<SetStateAction<string>>;
-  getSideList?: () => void;
   isModifyDelete?: boolean;
 }
 
@@ -45,7 +44,6 @@ export default function Folder({
   currentNoteId,
   folderName,
   setFolderName,
-  getSideList,
   isModifyDelete,
   onEdit,
 }: FolderProps) {
@@ -55,7 +53,7 @@ export default function Folder({
       (item) => item.type === 'note' && (item as NoteProps).id === currentNoteId
     )
   );
-  const { getGraphData } = useContext(GraphDataContext);
+  const { getGraphData, getSideList } = useContext(SideDataContext);
 
   const handleFolder = () => {
     if (!isFolderOpen) {
@@ -142,11 +140,17 @@ export default function Folder({
         {isModifyDelete && (
           <div className="flex items-center ml-2">
             <IconButton
+              size={18}
               onClick={() => handleEdit(id, title)}
               theme={theme}
               name="Edit"
             />
-            <IconButton onClick={handleDelete} theme={theme} name="Remove" />
+            <IconButton
+              size={18}
+              onClick={handleDelete}
+              theme={theme}
+              name="Remove"
+            />
           </div>
         )}
       </div>
@@ -182,7 +186,6 @@ export default function Folder({
                   currentNoteId={currentNoteId}
                   folderName={folderName}
                   setFolderName={setFolderName}
-                  getSideList={getSideList}
                   isModifyDelete={isModifyDelete}
                   onEdit={onEdit}
                 />

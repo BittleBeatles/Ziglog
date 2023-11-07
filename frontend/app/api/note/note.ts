@@ -2,7 +2,7 @@ import { privateFetch, publicFetch } from '..';
 import { API_URL } from '@api/constants';
 import { NoteInfo, NoteRefListInfo } from './types';
 import { ApiSuccessResponse } from '@api/types';
-
+import { showAlert } from '@src/util/alert';
 export type NoteApiData = ApiSuccessResponse<NoteInfo>;
 export type CreateNoteApiResponse = ApiSuccessResponse<null>;
 export type QuotationListApiResponse = ApiSuccessResponse<NoteRefListInfo>;
@@ -68,6 +68,7 @@ export async function deleteNote(noteId: number, nickname: string) {
     }
   )
     .then((res) => {
+      showAlert('성공적으로 삭제되었습니다. ', 'success');
       window.location.replace(`/user-page/${nickname}`);
       return console.log(`${noteId}번 노트가 삭제되었습니다.`);
     })

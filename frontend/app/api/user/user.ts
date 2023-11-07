@@ -4,6 +4,7 @@ import { TokenInfo, MyInfo, UserInfo, LogoutInfo } from './types';
 import { store } from '@store/store';
 import { setUserToken, logOut } from '@store/modules/userSlice';
 import { ApiSuccessResponse } from '@api/types';
+import { showAlert } from '@src/util/alert';
 
 export type MyApiData = ApiSuccessResponse<MyInfo>;
 export type UserApiData = ApiSuccessResponse<UserInfo>;
@@ -42,6 +43,7 @@ export async function Logout(): Promise<LogoutInfo> {
 
     store.dispatch(logOut());
     window.location.replace('/');
+    showAlert('로그아웃 되었습니다', 'success');
     return 'Logout 성공';
   } catch (err) {
     throw err;
