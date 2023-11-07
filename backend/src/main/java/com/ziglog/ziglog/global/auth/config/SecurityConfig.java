@@ -39,9 +39,6 @@ public class SecurityConfig {
     @Value("${jwt.access.header}")
     private String accessTokenHeader;
 
-    @Value("${server.servlet.context-path}")
-    private String contextPath;
-
     @Value("${base-url.frontend}")
     private String frontUrl;
 
