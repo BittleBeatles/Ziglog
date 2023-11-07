@@ -137,10 +137,10 @@ export default function EditNote() {
       const editNote = async (body: EditNoteParams) => {
         const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
         if (result) {
-          showAlert('정보 수정이 성공적으로 일어났습니다', 'success');
           window.location.replace(
             `/user-page/${params.userNickname}/read-note/${params.noteId}`
           );
+          showAlert('정보 수정이 성공적으로 일어났습니다', 'success');
         }
       };
       editNote(body);
