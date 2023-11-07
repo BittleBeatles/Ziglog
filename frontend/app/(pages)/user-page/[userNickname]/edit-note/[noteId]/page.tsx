@@ -206,6 +206,7 @@ export default function EditNote() {
                 return (
                   <div>
                     <QuotationModal
+                      theme={theme}
                       bookmarks={bookmarks}
                       setQuotingNoteInfo={setQuotingNoteInfo}
                     />
