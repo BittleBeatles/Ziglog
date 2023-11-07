@@ -45,7 +45,6 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void delete(Member member, Long notificationId) throws UserNotFoundException  {//+ 이미 삭제, 알림 주인 아님
-
     }
 
     private SseEmitter createEmitter(Long memberId){
