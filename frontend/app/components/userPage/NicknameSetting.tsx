@@ -13,7 +13,6 @@ import Button from '@components/common/Button';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
 import { getMyInfo, modifyUserInfo, checkNickname } from '@api/user/user';
-import { useS3Upload } from 'next-s3-upload';
 
 interface NicknameSettingProps extends InputHTMLAttributes<HTMLInputElement> {
   theme?: 'light' | 'dark';
@@ -73,11 +72,7 @@ export default function NicknameSetting({
   // };
 
   const [imageUrl, setImageUrl] = useState(oldUserInfo.profileImage);
-  const { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
-  const handleFileChange = async (file: File) => {
-    const { url } = await uploadToS3(file);
-    setImageUrl(url);
-  };
+
   // const handleFileChange = async (event) => {
   //   const file = event.target.files[0];
   //   const { url } = await uploadToS3(file);
@@ -119,7 +114,7 @@ export default function NicknameSetting({
                   theme={theme}
                   onClick={uploadFile}
                   // onInput={() => handleFileChange}
-                  onChange={() => handleFileChange}
+                  onChange={() => console.log('dk')}
                   // ref={imageRef}
                 />
               </div>

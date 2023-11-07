@@ -13,7 +13,7 @@ const initialState: userSliceInfo = {
   grantType: '',
   isLogin: false,
   nickname: '',
-  profileImage: '',
+  profileUrl: '',
   theme: 'light',
   rootFolderId: 0,
 };
@@ -48,7 +48,7 @@ export const user = createSlice({
       state.nickname = action.payload;
     },
     setMyProfileImage: (state, action: PayloadAction<string>) => {
-      state.profileImage = action.payload;
+      state.profileUrl = action.payload;
     },
   },
 });
