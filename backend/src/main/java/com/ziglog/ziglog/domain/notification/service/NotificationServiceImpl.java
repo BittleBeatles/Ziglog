@@ -1,6 +1,8 @@
 package com.ziglog.ziglog.domain.notification.service;
 
+import com.ziglog.ziglog.domain.bookmark.entity.Bookmark;
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.note.entity.Quotation;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.exception.exceptions.AlreadyRemovedNotificationException;
 import com.ziglog.ziglog.domain.notification.exception.exceptions.InconsistentNotificationOwnerException;
@@ -31,5 +33,26 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationRepository.findAllByOwner(member);
     }
 
+    @Override
+    public Notification saveBookmarkNotification(Member member, Bookmark bookmark) {
+        if (bookmark.getMember().getId().equals(member.getId())) return null; //자기 자신의 글을 북마크 한 경우에는 알림을 발생시키지 않음
+        Notification notification = Notification.builder()
+                .owner(bookmark.getMember())
+                .isRead(false)
+                .message(member.getNickname() + "님이 회원님의 글을 북마크했습니다.")
+                .build();
 
+        return notificationRepository.save(notification);
+    }
+
+    @Override
+    public Notification saveQuotationNotification(Member member, Quotation quotation){
+        if (quotation.getEndNote().getAuthor().getId().equals(member.getId())) return null; //내 자신의 글을 인용한 경우에는 알림 발생시키지 않음
+        Notification notification = Notification.builder()
+                .owner(quotation.getStartNote().getAuthor())
+                .isRead(false)
+                .message(member.getNickname() + "님이 회원님의 글을 인용했습니다.")
+                .build();
+        return notificationRepository.save(notification);
+    }
 }

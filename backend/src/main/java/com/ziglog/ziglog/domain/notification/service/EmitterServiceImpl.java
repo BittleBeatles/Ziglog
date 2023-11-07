@@ -1,11 +1,14 @@
 package com.ziglog.ziglog.domain.notification.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.notification.entity.Emitter;
 import com.ziglog.ziglog.domain.notification.repository.EmitterRedisRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -17,40 +20,39 @@ public class EmitterServiceImpl implements EmitterService {
     private EmitterRedisRepository emitterRepository;
 
     @Override
-    public SseEmitter subscribe(Member member) {
+    public SseEmitter subscribe(Member member) throws Exception {
         SseEmitter emitter = createEmitter(member);
         notifyEvent(member, "Event stream created");
         return emitter;
     }
 
     @Override
-    public void notifyEvent(Member member, Object event) {
-//        SseEmitter emitter = emitterRepository.get(memberId);
-//        if (emitter != null) {
-//            try {
-//                log.info("emitter send");
-//                emitter.send(SseEmitter.event().id(String.valueOf(memberId)).name("sse").data(event));
-//            } catch (Exception e){
-//                emitterRepository.deleteById(memberId);
-//                emitter.completeWithError(new IOException("서버로부터 이벤트를 수신할 수 없습니다."));
-//            }
-//        }
-//        else {
-//            log.info("emitter null");
-//        }
+    public void notifyEvent(Member member, Object event) throws Exception {
+        SseEmitter sseEmitter = getEmitter(member);
+
+        try {
+            sseEmitter.send(SseEmitter.event().id(String.valueOf(member.getId())).name("sse").data(event));
+        } catch (Exception e){
+            emitterRepository.deleteById(member.getId());
+            sseEmitter.completeWithError(new IOException("서버로부터 이벤트를 보낼 수 없습니다."));
+        }
     }
 
     private SseEmitter createEmitter(Member member) {
         log.info("create new Emitter");
         SseEmitter sseEmitter = new SseEmitter(TIMEOUT);
-        //emitterRepository.put(member.getId(), sseEmitter);
+        emitterRepository.save(
+                Emitter.builder()
+                        .id(member.getId())
+                        .emitter(sseEmitter)
+                    .build());
+
         log.info("put new Emitter");
         return sseEmitter;
     }
 
-    //Redis에서 Emitter를 가져옴
-    private SseEmitter getEmitter(Member member){
-        return null;
+    private SseEmitter getEmitter(Member member) throws Exception {
+        Emitter emitter = emitterRepository.findById(member.getId()).orElseThrow(Exception::new);
+        return emitter.getEmitter();
     }
-
 }
