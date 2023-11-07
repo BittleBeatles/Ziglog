@@ -1,5 +1,13 @@
 package com.ziglog.ziglog.domain.note.service;
 
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.parser.PegdownExtensions;
+import com.vladsch.flexmark.profile.pegdown.Extensions;
+import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.util.ast.TextCollectingVisitor;
+import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
@@ -57,7 +65,9 @@ public class NoteServiceImpl implements NoteService{
 
         notePersist.setTitle(note.getTitle());//타이틀
         notePersist.setContent(note.getContent());//컨텐츠
-        notePersist.setPreview(note.getPreview());//목록 프리뷰
+        String preview = makePreview(note.getContent());
+        notePersist.setPreview(preview);//목록 프리뷰
+        log.info("preview : {}", preview);
         notePersist.setEditDatetime(LocalDateTime.now());//수정일
 
         List<Quotation> noteQuoting = note.getQuoting(); //새 노트가 인용하고 있는 노트의 리스트
@@ -175,5 +185,23 @@ public class NoteServiceImpl implements NoteService{
     public List<Note> getNotesQuotingThis(Long noteId) throws NoteNotFoundException {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         return note.getQuoted().stream().map(Quotation::getEndNote).toList();
+    }
+
+    public String makePreview(String markdownDetail){
+        DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(Extensions.ALL);
+        MutableDataSet FORMAT_OPTIONS = new MutableDataSet();
+        FORMAT_OPTIONS.set(Parser.EXTENSIONS, Parser.EXTENSIONS.get(OPTIONS));
+
+        Parser PARSER = Parser.builder(OPTIONS).build();
+
+        Node document = PARSER.parse(markdownDetail);
+
+        TextCollectingVisitor textCollectingVisitor = new TextCollectingVisitor();
+        String text = textCollectingVisitor.collectAndGetText(document);
+
+        text = text.substring(0, Integer.min(text.length(), 200));
+        text = text.replace('\n', ' ');
+
+        return text;
     }
 }
