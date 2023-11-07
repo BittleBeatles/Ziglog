@@ -1,18 +1,14 @@
-package com.ziglog.ziglog.global.notification.service;
+package com.ziglog.ziglog.domain.notification.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
-import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
-import com.ziglog.ziglog.global.notification.entity.Notification;
-import com.ziglog.ziglog.global.notification.exception.exceptions.AlreadyRemovedNotificationException;
-import com.ziglog.ziglog.global.notification.exception.exceptions.InconsistentNotificationOwnerException;
-import com.ziglog.ziglog.global.notification.repository.EmitterRedisRepository;
-import com.ziglog.ziglog.global.notification.repository.NotificationRepository;
+import com.ziglog.ziglog.domain.notification.entity.Notification;
+import com.ziglog.ziglog.domain.notification.exception.exceptions.AlreadyRemovedNotificationException;
+import com.ziglog.ziglog.domain.notification.exception.exceptions.InconsistentNotificationOwnerException;
+import com.ziglog.ziglog.domain.notification.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service

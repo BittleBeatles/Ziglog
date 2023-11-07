@@ -1,13 +1,11 @@
-package com.ziglog.ziglog.global.notification.service;
+package com.ziglog.ziglog.domain.notification.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
-import com.ziglog.ziglog.global.notification.repository.EmitterRedisRepository;
+import com.ziglog.ziglog.domain.notification.repository.EmitterRedisRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor

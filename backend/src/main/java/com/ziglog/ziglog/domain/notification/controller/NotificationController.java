@@ -1,8 +1,8 @@
-package com.ziglog.ziglog.global.notification.controller;
+package com.ziglog.ziglog.domain.notification.controller;
 
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
-import com.ziglog.ziglog.global.notification.service.EmitterService;
-import com.ziglog.ziglog.global.notification.service.NotificationService;
+import com.ziglog.ziglog.domain.notification.service.EmitterService;
+import com.ziglog.ziglog.domain.notification.service.NotificationService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

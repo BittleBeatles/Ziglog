@@ -1,7 +1,7 @@
-package com.ziglog.ziglog.global.notification.exception;
+package com.ziglog.ziglog.domain.notification.exception;
 
-import com.ziglog.ziglog.global.notification.exception.exceptions.AlreadyRemovedNotificationException;
-import com.ziglog.ziglog.global.notification.exception.exceptions.InconsistentNotificationOwnerException;
+import com.ziglog.ziglog.domain.notification.exception.exceptions.AlreadyRemovedNotificationException;
+import com.ziglog.ziglog.domain.notification.exception.exceptions.InconsistentNotificationOwnerException;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ExceptionHandler;
