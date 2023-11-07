@@ -3,6 +3,9 @@
     {
       "extends": ["plugin:cypress/recommended"],
       "files": ["cypress/**/*.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
       "rules": {}
     }
   ]
