@@ -12,8 +12,8 @@ import ProfileChangeButton from '@components/common/ProfileChangeButton';
 import Button from '@components/common/Button';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
-import { getMyInfo, modifyUserInfo } from '@api/user/user';
-import { checkNickname, getUserInfo } from '@api/user/user';
+import { getMyInfo, modifyUserInfo, checkNickname } from '@api/user/user';
+import { useS3Upload } from 'next-s3-upload';
 
 interface NicknameSettingProps extends InputHTMLAttributes<HTMLInputElement> {
   theme?: 'light' | 'dark';
@@ -26,7 +26,7 @@ export default function NicknameSetting({
 }: NicknameSettingProps) {
   // oldUserInfo: 변경 전 사용자의 정보
   const [oldUserInfo, setOldUserInfo] = useState({
-    nickname: '닉네임',
+    nickname: '',
     profileImage: '',
   });
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function NicknameSetting({
       if (result) {
         setOldUserInfo({
           nickname: result.nickname,
-          profileImage: result.profileImage,
+          profileImage: result.profileUrl,
         });
       }
     };
@@ -48,9 +48,9 @@ export default function NicknameSetting({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewNickname(e.target.value);
   };
-  let isPossible = false;
+  let isPossible = true;
   // isPos: 닉네임 중복 검사 결과
-  const [isPos, setIsPos] = useState(false);
+  const [isPos, setIsPos] = useState(true);
   // 닉네임 중복 검사
   const isChangeable = async (newNickname: string) => {
     // 닉네임 중복 검사 값을 isPossible에 저장
@@ -62,15 +62,32 @@ export default function NicknameSetting({
     isChangeable(newNickname);
   }, [newNickname]);
 
-  const imageRef = useRef<HTMLInputElement>(null);
-  const handleProfileImageChangeClick = () => {
-    if (imageRef.current) {
-      imageRef.current.click();
-    }
+  // const imageRef = useRef<HTMLInputElement>(null);
+  // const handleProfileImageChangeClick = () => {
+  //   if (imageRef.current) {
+  //     imageRef.current.click();
+  //   }
+  // };
+  // const handleImageInput = () => {
+  //   console.log('[이미지 업로드 로직]');
+  // };
+
+  const [imageUrl, setImageUrl] = useState(oldUserInfo.profileImage);
+  const { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
+  const handleFileChange = async (file: File) => {
+    const { url } = await uploadToS3(file);
+    setImageUrl(url);
   };
-  const handleImageInput = () => {
-    console.log('[이미지 업로드 로직]');
-  };
+  // const handleFileChange = async (event) => {
+  //   const file = event.target.files[0];
+  //   const { url } = await uploadToS3(file);
+
+  //   setImageUrl(url);
+  // };
+  function uploadFile(): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <div
       className={`${THEME_VARIANTS[theme]} w-132 shadow-md border text-center rounded-md justify-center p-5`}
@@ -95,21 +112,21 @@ export default function NicknameSetting({
           <div className="mt-1 pr-28">
             <div className="relative w-32 h-32 mx-auto">
               <div className="absolute">
-                <ProfileImage size={100} />
+                <ProfileImage src={oldUserInfo.profileImage} size={100} />
               </div>
               <div className="absolute right-4 bottom-2 h-14">
                 <ProfileChangeButton
                   theme={theme}
-                  onClick={handleProfileImageChangeClick}
-                  onInput={handleImageInput}
-                  ref={imageRef}
+                  onClick={uploadFile}
+                  // onInput={() => handleFileChange}
+                  onChange={() => handleFileChange}
+                  // ref={imageRef}
                 />
               </div>
             </div>
           </div>
         </div>
       </div>
-
       <div className="grid place-items-center">
         <div className="flex flex-row justify-center items-center">
           <div className="mr-12 mt-3 text-lg font-bold">
@@ -127,7 +144,7 @@ export default function NicknameSetting({
               </Text>
             ) : (
               <Text className="mt-1 text-left text-xs text-red-500">
-                이미 존재하는 닉네임입니다
+                사용 불가능한 닉네임입니다
               </Text>
             )}
           </div>
@@ -137,9 +154,10 @@ export default function NicknameSetting({
       <div className="mt-7 mb-2">
         <Button
           onClick={() => {
-            modifyUserInfo;
+            modifyUserInfo(newNickname, imageUrl);
             openModal(false);
           }}
+          disabled={isPos ? false : true}
           label="저장하기"
           color="blue"
         />
