@@ -1,5 +1,5 @@
 'use client';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Text from '@components/common/Text';
 import SvgIcon from '@components/common/SvgIcon';
 import Button from '@components/common/Button';
@@ -18,7 +18,6 @@ import {
 } from '@api/bookmark/bookmark';
 import './page.css';
 import { showAlert } from '@src/util/alert';
-import { useRouter } from 'next/navigation';
 import SideDataContext from '../../SideDataContext';
 
 export default function ReadNote() {
@@ -106,6 +105,27 @@ export default function ReadNote() {
   };
 
   const isMine = isLogin && userNickname === data.nickname;
+
+  //검색페이지에서 왔을 때 뒤로 가기 검색 유지
+  // const handleGoBack = (event: { preventDefault: () => void }) => {
+  //   event.preventDefault();
+  //   const currentQueryString = new URLSearchParams(window.location.search).get(
+  //     'keyword'
+  //   );
+  //   console.log('키워드 있어?', currentQueryString);
+  //   if (currentQueryString) {
+  //     router.push(`/search?keyword=${encodeURIComponent(currentQueryString)}`);
+  //   } else {
+  //     router.back();
+  //   }
+  // };
+  // useEffect(() => {
+  //   window.addEventListener('popstate', handleGoBack);
+  //   return () => {
+  //     window.removeEventListener('popstate', handleGoBack);
+  //   };
+  // }, []);
+
   return (
     hasAccess && (
       <div id="sidebar-scroll" className="overflow-y-auto h-full">

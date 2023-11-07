@@ -7,6 +7,7 @@ export interface SearchResult {
   title: string;
   preview: string | null;
   nickname: string;
+  profileUrl: string;
   isPublic: boolean;
   bookmarkCount: number;
   postTime: Date;

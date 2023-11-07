@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { useScrollObserver } from '@src/hooks/useScrollObserve';
 import { useAppSelector } from '@store/store';
 import NavBar from '@components/common/NavBar';
+import { useRouter } from 'next/navigation';
 
 export default function Search() {
   const { theme, isLogin } = useAppSelector((state) => state.user);
@@ -21,13 +22,31 @@ export default function Search() {
   const [loading, setLoading] = useState(false); // 데이터 로드 중인지 여부
   const [hasMore, setHasMore] = useState(true); // 더 많은 페이지가 있는지 여부
   const perPage = 5;
+  const router = useRouter();
+
+  // URL 쿼리 매개변수에서 검색어 추출
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const keyword2 = urlParams.get('keyword');
+  useEffect(() => {
+    if (keyword2) {
+      setKeyword(keyword2);
+    } else {
+      setKeyword('');
+    }
+  }, [keyword2]);
 
   // 검색 디바운싱
-  const debouncedKeyword = useDebounce(keyword, 500);
+  const debouncedKeyword = useDebounce(keyword, 1000);
+
+  const handleSearch = () => {
+    // 검색 버튼을 클릭했을 때 키워드를 URL 쿼리 매개변수로 추가
+    router.push(`/search?keyword=${encodeURIComponent(keyword)}`);
+  };
 
   // 스크롤 이벤트 핸들러
   const handleScroll = () => {
-    if (!loading && hasMore) {
+    if (hasMore) {
       setLoading(true);
       setPage(page + 1);
     }
@@ -36,16 +55,21 @@ export default function Search() {
   //스크롤 감지 훅
   useScrollObserver(handleScroll);
 
-  // 검색어 바뀔 때마다 초기화
+  // 검색어 바뀔 때마다 초기화 (디바운싱 된 값으로)
   useEffect(() => {
     setPage(0);
+    handleSearch();
     setSearchData({ notes: [] });
-  }, [keyword]);
+  }, [debouncedKeyword]);
 
   useEffect(() => {
     async function fetchMoreData(debouncedKeyword: string, page: number) {
       try {
-        const response = await getSearchInfo(debouncedKeyword, page, perPage);
+        const response = await getSearchInfo(
+          encodeURIComponent(debouncedKeyword),
+          page,
+          perPage
+        );
         const newData = response;
 
         if (newData && newData.notes.length > 0) {
@@ -67,28 +91,47 @@ export default function Search() {
     if (!debouncedKeyword) {
       setPage(0);
       setSearchData({ notes: [] });
-      return;
+      setLoading(true);
+    } else {
+      setHasMore(true);
+      fetchMoreData(debouncedKeyword, page);
     }
-
-    setHasMore(true);
-
-    fetchMoreData(debouncedKeyword, page);
   }, [debouncedKeyword, page]);
 
+  // 뒤로가기 이벤트를 감지하고 처리
+  const handleGoBack = () => {
+    router.push(`/`);
+  };
+
+  useEffect(() => {
+    window.addEventListener('popstate', handleGoBack);
+    return () => {
+      window.removeEventListener('popstate', handleGoBack);
+    };
+  }, []);
+
   return (
-    <div>
+    <div className={`${THEME_VARIANTS[theme]}`}>
       <NavBar theme={theme} isLogin={isLogin} />
       <div className="flex flex-col justify-cneter items-center">
         <div className="w-2/3">
-          <GlobalSearchInput onChange={(e) => setKeyword(e.target.value)} />
-          <div className="h-full overflow-y-auto">
+          <GlobalSearchInput
+            theme={theme}
+            defaultValue={keyword}
+            placeholder="검색어를 입력하세요"
+            onChange={(e) => setKeyword(e.target.value)}
+          />
+          <div className="min-h-screen overflow-y-auto">
             {searchData && searchData.notes.length > 0 ? (
               <div>
                 {/* <p>총 {searchData.notes.length}개의 검색 결과가 있습니다.</p> */}
                 {searchData.notes.map((result, index) => (
                   <Link
                     key={index}
-                    href={`/user-page/${result.nickname}/read-note/${result.noteId}`}
+                    href={{
+                      pathname: `/user-page/${result.nickname}/read-note/${result.noteId}`,
+                      query: { keyword: debouncedKeyword },
+                    }}
                   >
                     <div>
                       <GlobalSearchResult
@@ -97,18 +140,19 @@ export default function Search() {
                         title={result.title}
                         preview={result.preview !== null ? result.preview : ''}
                         nickname={result.nickname}
+                        profileUrl={result.profileUrl}
                         isPublic={result.isPublic}
                         bookmarkCount={result.bookmarkCount}
                         postTime={result.postTime}
                         editTime={result.editTime}
-                        theme="light"
+                        theme={theme}
                       />
                     </div>
                   </Link>
                 ))}
               </div>
             ) : (
-              debouncedKeyword && (
+              !loading && (
                 <div>
                   <Text type="p">{'검색 결과가 없습니다.'}</Text>
                 </div>
@@ -120,3 +164,8 @@ export default function Search() {
     </div>
   );
 }
+
+const THEME_VARIANTS = {
+  light: '',
+  dark: 'bg-dark-background-layout text-white',
+};
