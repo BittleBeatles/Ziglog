@@ -26,5 +26,5 @@
     ],
     "@typescript-eslint/no-unused-vars": "off"
   },
-  "ignorePatterns": ["next.config.js", "cypress.config.js"] // 이 부분 추가
+  "ignorePatterns": ["next.config.js", "cypress.config.js"]
 }
