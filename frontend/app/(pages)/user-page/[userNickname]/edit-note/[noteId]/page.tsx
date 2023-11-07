@@ -18,7 +18,7 @@ import * as commands from '@uiw/react-md-editor/lib/commands';
 import { getBookmark } from '@api/bookmark/bookmark';
 import { Note } from '@api/bookmark/types';
 import { showAlert } from '@src/util/alert';
-
+import { useRouter } from 'next/navigation';
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
@@ -47,7 +47,7 @@ export default function EditNote() {
     title: '',
     noteId: 0,
   });
-
+  const router = useRouter();
   // 노트 정보 불러오기 + 북마크 정보 가져오기
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
@@ -63,8 +63,8 @@ export default function EditNote() {
         setContent(result.data.content);
         setIsPublic(result.data.isPublic);
       } else {
+        router.push(`/user-page/${nickname}`);
         showAlert(`${result.message}`, 'error');
-        window.location.replace(`/user-page/${nickname}`);
       }
     };
     const getBookmarkList = async () => {
@@ -137,7 +137,7 @@ export default function EditNote() {
       const editNote = async (body: EditNoteParams) => {
         const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
         if (result) {
-          window.location.replace(
+          router.push(
             `/user-page/${params.userNickname}/read-note/${params.noteId}`
           );
           showAlert('정보 수정이 성공적으로 일어났습니다', 'success');
