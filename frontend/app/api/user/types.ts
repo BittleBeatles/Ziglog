@@ -12,7 +12,7 @@ export interface LogoutInfo {}
 
 export interface MyInfo {
   nickname: string;
-  profileImage: string;
+  profileUrl: string;
   rootFolderId: number;
 }
 
