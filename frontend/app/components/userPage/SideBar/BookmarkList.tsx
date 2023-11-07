@@ -5,7 +5,6 @@ import SvgIcon from '@components/common/SvgIcon';
 import Text from '@components/common/Text';
 import colors from '@src/design/color';
 import { showAlert } from '@src/util/alert';
-import Link from 'next/link';
 import { useState, useContext } from 'react';
 import Swal from 'sweetalert2';
 import { deleteBookmark } from '@api/bookmark/bookmark';
@@ -51,6 +50,17 @@ export default function BookmarkList({
       }
     });
   };
+  const handleTitleClick = (
+    nickname: string,
+    noteId: number,
+    isPublic: boolean
+  ) => {
+    if (isPublic) {
+      router.push(`/user-page/${nickname}/read-note/${noteId}`);
+    } else {
+      showAlert('비공개 글 입니다.', 'info');
+    }
+  };
   return (
     <div className="w-full">
       <div className="flex justify-between">
@@ -94,14 +104,19 @@ export default function BookmarkList({
               </span>
               <span
                 onClick={() =>
-                  router.push(
-                    `/user-page/${note.nickname}/read-note/${note.noteId}`
-                  )
+                  handleTitleClick(note.nickname, note.noteId, note.isPublic)
                 }
-                className={`pl-1 truncate ${THEME_VARINTS[theme]} cursor-pointer hover:opacity-60 transition-opacity duration-300`}
+                className={`px-1 truncate ${THEME_VARINTS[theme]} cursor-pointer hover:opacity-60 transition-opacity duration-300`}
               >
                 {note.title}
               </span>
+              {!note.isPublic && (
+                <SvgIcon
+                  name="Private"
+                  color={theme === 'dark' ? 'white' : 'black'}
+                  size={20}
+                />
+              )}
             </div>
           );
         })}
