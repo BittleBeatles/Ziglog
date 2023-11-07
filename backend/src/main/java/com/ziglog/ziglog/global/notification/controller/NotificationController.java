@@ -1,6 +1,7 @@
 package com.ziglog.ziglog.global.notification.controller;
 
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
+import com.ziglog.ziglog.global.notification.service.EmitterService;
 import com.ziglog.ziglog.global.notification.service.NotificationService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,9 +17,11 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class NotificationController {
 
     private final NotificationService notificationService;
+    private final EmitterService emitterService;
+
     @GetMapping(value = "/subscribe", produces = "text/event-stream")
     public SseEmitter subscribe(@AuthenticationPrincipal CustomUserDetails userDetails){
-        return notificationService.subscribe(userDetails.member().getId());
+        return emitterService.subscribe(userDetails.member().getId());
     }
 
     @DeleteMapping(value = "/delete/{notificationId}")
