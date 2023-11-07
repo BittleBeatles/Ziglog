@@ -2,7 +2,7 @@
 import { redirect, useParams } from 'next/navigation';
 import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
 import Button from '@components/common/Button';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import NoteTitleInput from '@components/userPage/NoteTitleInput';
 import QuotationModal from '@components/userPage/QuotationModal';
 import { getNoteInfo } from '@api/note/note';
@@ -19,6 +19,7 @@ import { getBookmark } from '@api/bookmark/bookmark';
 import { Note } from '@api/bookmark/types';
 import { showAlert } from '@src/util/alert';
 import { useRouter } from 'next/navigation';
+import SideDataContext from '../../SideDataContext';
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
@@ -39,7 +40,6 @@ export default function EditNote() {
   const [title, setTitle] = useState('글제목');
   const [content, setContent] = useState('');
   const [isPublic, setIsPublic] = useState(false);
-  const [quotingList, setQuotingList] = useState<number[]>([]);
   const [bookmarks, setBookmarks] = useState<Note[]>([]);
   const [hasAccess, setHasAccess] = useState(false);
   const [quotingNoteInfo, setQuotingNoteInfo] = useState({
@@ -47,6 +47,7 @@ export default function EditNote() {
     title: '',
     noteId: 0,
   });
+  const { getBookmarkList } = useContext(SideDataContext);
   const router = useRouter();
   // 노트 정보 불러오기 + 북마크 정보 가져오기
   useEffect(() => {
@@ -67,14 +68,15 @@ export default function EditNote() {
         showAlert(`${result.message}`, 'error');
       }
     };
-    const getBookmarkList = async () => {
+    // 마크다운용 북마크 가져오기
+    const getMdBookmarkList = async () => {
       const result = await getBookmark();
       if (result) {
         setBookmarks(result.notes);
       }
     };
     getNoteInfoEditPage(parseInt(noteId));
-    getBookmarkList();
+    getMdBookmarkList();
   }, []);
   // 공개/비공개 여부 수정하기
   const handlePublicPrivateButton = () => {
@@ -84,6 +86,7 @@ export default function EditNote() {
       if (result) {
         setIsPublic(!isPublic);
         showAlert('공개/비공개 설정이 수정되었습니다', 'success');
+        getBookmarkList();
       }
     };
     changePublicStatus(parseInt(noteId), isPublic);
@@ -140,7 +143,7 @@ export default function EditNote() {
           router.push(
             `/user-page/${params.userNickname}/read-note/${params.noteId}`
           );
-          showAlert('정보 수정이 성공적으로 일어났습니다', 'success');
+          showAlert('수정되었습니다', 'success');
         }
       };
       editNote(body);
