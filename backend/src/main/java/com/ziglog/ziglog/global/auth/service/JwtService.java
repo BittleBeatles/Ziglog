@@ -115,7 +115,7 @@ public class JwtService {
         ResponseCookie cookie = ResponseCookie.from(REFRESH_TOKEN_COOKIE_NAME, refreshToken)
                 .maxAge(refreshTokenExpiration)
                 .path("/")
-                .secure(true)
+                //.secure(true)
                 .sameSite("None")
                 .httpOnly(true)
                 .build();
