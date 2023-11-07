@@ -8,6 +8,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -16,4 +17,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     //RDB에 들어감
     void deleteById(Long id);
     List<Notification> findAllByOwner(Member owner);
+
+    Optional<Notification> findById(Long notificationId);
 }
