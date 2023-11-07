@@ -55,11 +55,8 @@ export async function ReissueToken() {
     method: 'GET',
   })
     .then((res) => {
-      store.dispatch(setUserToken(res.body.data));
-      console.log(
-        '[received new accessToken from reissue request]',
-        res.body.data
-      );
+      store.dispatch(setUserToken({ ...res.body.data, grantType: 'Bearer' }));
+      // console.log('[received new accessToken from reissue request]');
       return res.body.data;
     })
     .catch((err) => {
