@@ -1,5 +1,8 @@
 package com.ziglog.ziglog.global.notification.service;
 
+import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
+import com.ziglog.ziglog.global.notification.repository.EmitterRedisRepository;
 import com.ziglog.ziglog.global.notification.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +15,8 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
-    private static final Long TIMEOUT = 1000 * 60 * 30L;// 30분
+    private static final Long TIMEOUT = 1000 * 60 * 30L;// 30분 => 따로 yml 파일에 넣기
+    private final EmitterRedisRepository emitterRepository;
     private final NotificationRepository notificationRepository;
 
     @Override
@@ -24,26 +28,30 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void notifyEvent(Long memberId, Object event) {
-        SseEmitter emitter = notificationRepository.get(memberId);
+        SseEmitter emitter = emitterRepository.get(memberId);
         if (emitter != null) {
             try {
                 log.info("emitter send");
                 emitter.send(SseEmitter.event().id(String.valueOf(memberId)).name("sse").data(event));
             } catch (Exception e){
-                notificationRepository.deleteById(memberId);
+                emitterRepository.deleteById(memberId);
                 emitter.completeWithError(new IOException("서버로부터 이벤트를 수신할 수 없습니다."));
             }
         }
         else {
             log.info("emitter null");
         }
+    }
+
+    @Override
+    public void delete(Member member, Long notificationId) throws UserNotFoundException  {//+ 이미 삭제, 알림 주인 아님
 
     }
 
     private SseEmitter createEmitter(Long memberId){
         log.info("create new Emitter");
         SseEmitter sseEmitter = new SseEmitter(TIMEOUT);
-        notificationRepository.put(memberId, sseEmitter);
+        emitterRepository.put(memberId, sseEmitter);
         log.info("put new Emitter");
         return sseEmitter;
     }

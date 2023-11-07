@@ -1,28 +1,31 @@
 package com.ziglog.ziglog.global.notification.controller;
 
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.global.notification.service.NotificationService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
-
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/alarm")
+@RequestMapping("/notification")
+@Tag(name = "SSE 연결 및 알림을 컨트롤러")
 public class NotificationController {
 
     private final NotificationService notificationService;
-    @GetMapping(value = "/subscribe/{id}", produces = "text/event-stream")
-    public SseEmitter subscribe(@PathVariable Long id){
-        return notificationService.subscribe(id);
+    @GetMapping(value = "/subscribe", produces = "text/event-stream")
+    public SseEmitter subscribe(@AuthenticationPrincipal CustomUserDetails userDetails){
+        return notificationService.subscribe(userDetails.member().getId());
     }
 
-    @PostMapping("/send/{id}")
-    public void sendData(@PathVariable  Long id) throws IOException {
-        notificationService.notifyEvent(id, "hello");
+    @DeleteMapping(value = "/delete/{notificationId}")
+    public String deleteNotification(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                     @PathVariable Long notificationId) throws UserNotFoundException {
+        notificationService.delete(userDetails.member(), notificationId);
+        return "hello";
     }
 
 }
