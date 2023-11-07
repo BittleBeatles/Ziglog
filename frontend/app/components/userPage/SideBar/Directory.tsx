@@ -120,6 +120,8 @@ export default function Directory({
               depth={0}
               id={item.id}
               title={item.title}
+              parentId={parentId}
+              setParentId={setParentId}
               currentNoteId={currentNoteId}
               isModifyDelete={isModifyDelete}
             />

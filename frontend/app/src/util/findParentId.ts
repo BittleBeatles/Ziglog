@@ -26,3 +26,16 @@ export const findParentId = (
   }
   return rootid;
 };
+
+export function findFolderIdByNoteId(list: DirectoryItem[], noteId: number) {
+  for (const item of list) {
+    if (item.type === 'folder' && item.notes) {
+      for (const note of item.notes) {
+        if (note.id === noteId) {
+          return item.id;
+        }
+      }
+    }
+  }
+  return rootid;
+}
