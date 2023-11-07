@@ -55,7 +55,7 @@ export default function BookmarkList({
             >
               <div className="flex items-center mb-3 opacity-100 hover:opacity-60 transition-opacity duration-300">
                 <SvgIcon
-                  name="Note"
+                  name="NoteDescription"
                   color={theme === 'light' ? colors.black : colors.white}
                 />
                 <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>
