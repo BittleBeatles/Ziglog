@@ -100,6 +100,11 @@ export default function ReadNote() {
     setIsBookmarked(!isBookmarked);
   };
 
+  // 닉네임 클릭 시,
+  const handleNicknameClick = () => {
+    router.push(`/user-page/${data.nickname}`);
+  };
+
   const isMine = isLogin && userNickname === data.nickname;
   return (
     hasAccess && (
@@ -107,7 +112,12 @@ export default function ReadNote() {
         <div className="mx-40 my-12">
           <Text type="h1">{data.title}</Text>
           <div className="flex flex-row place-items-center my-4">
-            <Text type="b">{data.nickname}</Text>
+            <span
+              className=" cursor-pointer font-bold"
+              onClick={handleNicknameClick}
+            >
+              {data.nickname}
+            </span>
             <Text className="mx-3" type="p">
               {data.postTime && data.postTime.toLocaleString('ko-KR')}
             </Text>
