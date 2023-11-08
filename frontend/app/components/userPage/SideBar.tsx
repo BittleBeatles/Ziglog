@@ -9,7 +9,7 @@ import PersonalSearchInput from './SideBar/PersonalSearchInput';
 import Directory from './SideBar/Directory';
 import BookmarkList from './SideBar/BookmarkList';
 import { useParams, useRouter } from 'next/navigation';
-import NicknameSetting from './NicknameSetting';
+import ChangeUserInfoBox from './ChangeUserInfoBox';
 import { Logout, getUserInfo } from '@api/user/user';
 import { createNote } from '@api/note/note';
 import { useAppDispatch, useAppSelector } from '@store/store';
@@ -241,7 +241,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       </div>
       {isModalOpen && (
         <div className="fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <NicknameSetting theme={theme} openModal={openModal} />
+          <ChangeUserInfoBox theme={theme} openModal={openModal} />
         </div>
       )}
       {loginModalOpen && (
