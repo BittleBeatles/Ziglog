@@ -1,15 +1,12 @@
 'use client';
-import { redirect, useParams } from 'next/navigation';
-import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
+import { useParams } from 'next/navigation';
+
 import Button from '@components/common/Button';
 import { useContext, useEffect, useRef, useState } from 'react';
 import NoteTitleInput from '@components/userPage/NoteTitleInput';
 import QuotationModal from '@components/userPage/QuotationModal';
 import { getNoteInfo } from '@api/note/note';
-import {
-  sendEditNoteInfoRequest,
-  changeNotePublicStatusRequest,
-} from '@api/note/editNote';
+import { sendEditNoteInfoRequest } from '@api/note/editNote';
 import { EditNoteParams } from '@api/note/types';
 import { diffChars } from 'diff';
 import dynamic from 'next/dynamic';
@@ -47,7 +44,7 @@ export default function EditNote() {
     title: '',
     noteId: 0,
   });
-  const { getBookmarkList } = useContext(SideDataContext);
+  const { getBookmarkList, getSideList } = useContext(SideDataContext);
   const router = useRouter();
   // 노트 정보 불러오기 + 북마크 정보 가져오기
   useEffect(() => {
@@ -78,19 +75,6 @@ export default function EditNote() {
     getNoteInfoEditPage(parseInt(noteId));
     getMdBookmarkList();
   }, []);
-  // 공개/비공개 여부 수정하기
-  const handlePublicPrivateButton = () => {
-    const changePublicStatus = async (noteId: number, isPublic: boolean) => {
-      const body = { isPublic: !isPublic };
-      const result = await changeNotePublicStatusRequest(noteId, body);
-      if (result) {
-        setIsPublic(!isPublic);
-        showAlert('공개/비공개 설정이 수정되었습니다', 'success');
-        getBookmarkList();
-      }
-    };
-    changePublicStatus(parseInt(noteId), isPublic);
-  };
   // 노트 수정하기
   const handleNoteEdit = () => {
     if (
@@ -144,6 +128,8 @@ export default function EditNote() {
             `/user-page/${params.userNickname}/read-note/${params.noteId}`
           );
           showAlert('수정되었습니다', 'success');
+          getSideList();
+          getBookmarkList();
         }
       };
       editNote(body);
@@ -163,11 +149,6 @@ export default function EditNote() {
             onChange={(e) => setTitle(e.target.value)}
           />
           <div className="flex flex-row items-center gap-3">
-            <PublicPrivateToggle
-              onClick={() => handlePublicPrivateButton()}
-              scope={isPublic ? 'Public' : 'Private'}
-              theme={theme}
-            />
             <Button
               label={isPublic ? '게시하기' : '저장하기'}
               color="charcol"
