@@ -23,6 +23,7 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+    open-in-view: false #SSE 테스트를 위해 끄기
 
   #OAuth2 Configuration
   security:
