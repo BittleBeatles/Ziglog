@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '@store/store';
 import { setMyTheme } from '@store/modules/userSlice';
 import { Note } from '@api/bookmark/types';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
+import SocialLoginModal from '@components/common/SocialLoginModal';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -26,6 +27,8 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const { isLogin, nickname, rootFolderId } = useAppSelector(
     (state) => state.user
   );
+  // 로그인 모달
+  const [loginModalOpen, setLoginModalOpne] = useState(false);
   const { getGraphData, getSideList, bookmarkList, getBookmarkList } =
     useContext(SideDataContext);
 
@@ -179,7 +182,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         className="h-full w-full overflow-y-auto scroll-bar px-2"
       >
         <div className="px-6">
-          <div className="flex justify-start mt-5">
+          <div className="flex justify-start mt-5 mb-3">
             <Directory
               parentId={parentId}
               setParentId={setParentId}
@@ -190,10 +193,14 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
               setFolderName={setFolderName}
             />
           </div>
-          <hr />
-          <div className="flex justify-start mt-5">
-            <BookmarkList theme={theme} noteList={bookmarkList} />
-          </div>
+          {isMine && (
+            <div>
+              <hr />
+              <div className="flex justify-start mt-5">
+                <BookmarkList theme={theme} noteList={bookmarkList} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -205,7 +212,13 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
           theme={theme}
           name={theme === 'light' ? 'LightMode' : 'DarkMode'}
         />
-        {!isLogin && <Button label="로그인하기" color="charcol" />}
+        {!isLogin && (
+          <Button
+            onClick={() => setLoginModalOpne(true)}
+            label="로그인"
+            color="charcol"
+          />
+        )}
 
         {isLogin && isMine && (
           <Button onClick={() => Logout()} label="로그아웃" color="charcol" />
@@ -229,6 +242,11 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       {isModalOpen && (
         <div className="fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <NicknameSetting theme={theme} openModal={openModal} />
+        </div>
+      )}
+      {loginModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
+          <SocialLoginModal theme={theme} openLoginModal={setLoginModalOpne} />
         </div>
       )}
     </div>
