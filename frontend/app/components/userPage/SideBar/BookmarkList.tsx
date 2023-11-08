@@ -75,7 +75,7 @@ export default function BookmarkList({
             color={theme === 'light' ? colors.black : colors.white}
           />
           <Text type="b" className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>
-            북마크
+            내 북마크
           </Text>
         </div>
         {noteList.length > 5 && !showAll && (
