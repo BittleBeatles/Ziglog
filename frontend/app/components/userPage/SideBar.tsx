@@ -193,7 +193,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
               setFolderName={setFolderName}
             />
           </div>
-          {isMine && (
+          {isLogin && (
             <div>
               <hr />
               <div className="flex justify-start mt-5">
