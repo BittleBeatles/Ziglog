@@ -7,7 +7,7 @@ const myBucket = new AWS.S3({
   params: { Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET },
   region: process.env.NEXT_PUBLIC_AWS_REGION,
 });
-export const uploadImageFile = (image: any, setImage: any) => {
+export const uploadImageFile = (image: any, setProfileUrl: any) => {
   const params = {
     ACL: 'public-read',
     Body: image,
@@ -15,14 +15,12 @@ export const uploadImageFile = (image: any, setImage: any) => {
     Key: process.env.NEXT_PUBLIC_AWS_FOLDER_NAME + '/' + image.name,
   };
 
-  myBucket
-    .putObject(params)
-    .on('httpUploadProgress', (evt: any) => {
-      setTimeout(() => {
-        setImage(null);
-      }, 3000);
-    })
-    .send((err) => {
-      if (err) console.log('image upload error', err);
-    });
+  myBucket.putObject(params).send((err) => {
+    if (err) {
+      console.log('image upload error', err);
+    } else {
+      const imageUrl = `https://${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}.s3-${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/${params.Key}`;
+      setProfileUrl(imageUrl);
+    }
+  });
 };
