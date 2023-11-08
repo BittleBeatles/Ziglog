@@ -23,10 +23,10 @@ export default function QuotationListBox({
   const [showList, setShowList] = useState(false);
   return (
     <div
-      className={`${THEME_VARIANTS[theme]} relative rounded-md h-72 p-5 flex flex-col gap-5`}
+      className={`${THEME_VARIANTS[theme]} relative rounded-md p-5 flex flex-col gap-4`}
     >
       {/* 북마크 아이콘  */}
-      <div className="absolute -top-2 right-24">
+      <div className="absolute -top-3 right-24">
         <SvgIcon name="BookMarkFill" color={colors['main-100']} size={70} />
       </div>
       {/* 제목 */}
@@ -46,17 +46,18 @@ export default function QuotationListBox({
         <ul className="flex flex-col gap-1 ml-2">
           {quotationList.length > 0 ? (
             quotationList.map((item) => {
-              console.log(item);
               return (
                 <Link
                   href={`/user-page/${item.nickname}/read-note/${item.noteId}`}
                   key={item.noteId}
                 >
-                  <li className={`${TEXT_COLOR[theme]}`} key={item.noteId}>
-                    <Text type="p">
-                      {item.nickname} : {item.title}
-                    </Text>
-                  </li>
+                  <Text
+                    type="p"
+                    className={`${TEXT_COLOR[theme]}`}
+                    key={item.noteId}
+                  >
+                    {item.nickname} : {item.title}
+                  </Text>
                 </Link>
               );
             })

@@ -51,3 +51,10 @@
     animation: fade-out 1s ease-out;
   }
 }
+
+@layer base {
+  ul,
+  ol {
+    list-style: revert;
+  }
+}

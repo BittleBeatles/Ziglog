@@ -1,19 +1,21 @@
 import SingleQuotation from '@components/userPage/QuotationModal/SingleQuotation';
 import { ButtonHTMLAttributes } from 'react';
+import { showAlert } from '@src/util/alert';
 interface Bookmark {
   noteId: number;
   title: string;
   nickname: string;
+  isPublic: boolean;
 }
 
 interface QuotationModalProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  theme?: 'light' | 'dark';
+  theme: 'light' | 'dark';
   bookmarks?: Bookmark[];
   setQuotingNoteInfo: any;
 }
 
 export default function QuotationModal({
-  theme = 'light',
+  theme,
   setQuotingNoteInfo,
   bookmarks,
 }: QuotationModalProps) {
@@ -26,15 +28,17 @@ export default function QuotationModal({
           <SingleQuotation
             key={index}
             theme={theme}
-            isBookMarked={true}
             title={bookmark.title}
             nickname={bookmark.nickname}
+            isPublic={bookmark.isPublic}
             onClick={() => {
-              setQuotingNoteInfo({
-                title: bookmark.title,
-                nickname: bookmark.nickname,
-                noteId: bookmark.noteId,
-              });
+              bookmark.isPublic
+                ? setQuotingNoteInfo({
+                    title: bookmark.title,
+                    nickname: bookmark.nickname,
+                    noteId: bookmark.noteId,
+                  })
+                : showAlert('비공개 글입니다', 'info');
             }}
           ></SingleQuotation>
         ))}

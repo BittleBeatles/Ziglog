@@ -29,7 +29,8 @@ import Remove from '@public/icons/remove.svg';
 import Edit from '@public/icons/edit.svg';
 import More from '@public/icons/more.svg';
 import Loading from '@public/icons/loading.svg';
-
+import NoteDescription from '@public/icons/noteDescription.svg';
+import Quote from '@public/icons/quote.svg';
 export {
   AddFolder,
   AddNote,
@@ -62,4 +63,6 @@ export {
   Edit,
   More,
   Loading,
+  NoteDescription,
+  Quote,
 };

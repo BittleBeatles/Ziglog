@@ -1,15 +1,12 @@
 'use client';
-import { redirect, useParams } from 'next/navigation';
-import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
+import { useParams } from 'next/navigation';
+
 import Button from '@components/common/Button';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import NoteTitleInput from '@components/userPage/NoteTitleInput';
 import QuotationModal from '@components/userPage/QuotationModal';
 import { getNoteInfo } from '@api/note/note';
-import {
-  sendEditNoteInfoRequest,
-  changeNotePublicStatusRequest,
-} from '@api/note/editNote';
+import { sendEditNoteInfoRequest } from '@api/note/editNote';
 import { EditNoteParams } from '@api/note/types';
 import { diffChars } from 'diff';
 import dynamic from 'next/dynamic';
@@ -18,7 +15,8 @@ import * as commands from '@uiw/react-md-editor/lib/commands';
 import { getBookmark } from '@api/bookmark/bookmark';
 import { Note } from '@api/bookmark/types';
 import { showAlert } from '@src/util/alert';
-import { API_URL } from '@api/constants';
+import { useRouter } from 'next/navigation';
+import SideDataContext from '../../SideDataContext';
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
@@ -39,7 +37,6 @@ export default function EditNote() {
   const [title, setTitle] = useState('글제목');
   const [content, setContent] = useState('');
   const [isPublic, setIsPublic] = useState(false);
-  const [quotingList, setQuotingList] = useState<number[]>([]);
   const [bookmarks, setBookmarks] = useState<Note[]>([]);
   const [hasAccess, setHasAccess] = useState(false);
   const [quotingNoteInfo, setQuotingNoteInfo] = useState({
@@ -47,7 +44,8 @@ export default function EditNote() {
     title: '',
     noteId: 0,
   });
-
+  const { getBookmarkList, getSideList } = useContext(SideDataContext);
+  const router = useRouter();
   // 노트 정보 불러오기 + 북마크 정보 가져오기
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
@@ -63,31 +61,20 @@ export default function EditNote() {
         setContent(result.data.content);
         setIsPublic(result.data.isPublic);
       } else {
+        router.push(`/user-page/${nickname}`);
         showAlert(`${result.message}`, 'error');
-        window.location.replace(`/user-page/${nickname}`);
       }
     };
-    const getBookmarkList = async () => {
+    // 마크다운용 북마크 가져오기
+    const getMdBookmarkList = async () => {
       const result = await getBookmark();
       if (result) {
         setBookmarks(result.notes);
       }
     };
     getNoteInfoEditPage(parseInt(noteId));
-    getBookmarkList();
+    getMdBookmarkList();
   }, []);
-  // 공개/비공개 여부 수정하기
-  const handlePublicPrivateButton = () => {
-    const changePublicStatus = async (noteId: number, isPublic: boolean) => {
-      const body = { isPublic: !isPublic };
-      const result = await changeNotePublicStatusRequest(noteId, body);
-      if (result) {
-        setIsPublic(!isPublic);
-        showAlert('공개/비공개 설정이 수정되었습니다', 'success');
-      }
-    };
-    changePublicStatus(parseInt(noteId), isPublic);
-  };
   // 노트 수정하기
   const handleNoteEdit = () => {
     if (
@@ -104,7 +91,9 @@ export default function EditNote() {
       if (matches) {
         matches.forEach((match) => {
           const extractedContent = match.slice(1, -1);
-          extractedQuotingNotes.push(extractedContent);
+          if (extractedContent && extractedContent.includes(':')) {
+            extractedQuotingNotes.push(extractedContent);
+          }
         });
       }
       const splitQuotingNotes = extractedQuotingNotes.map((content) => {
@@ -135,10 +124,12 @@ export default function EditNote() {
       const editNote = async (body: EditNoteParams) => {
         const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
         if (result) {
-          showAlert('정보 수정이 성공적으로 일어났습니다', 'success');
-          window.location.replace(
+          router.push(
             `/user-page/${params.userNickname}/read-note/${params.noteId}`
           );
+          showAlert('수정되었습니다', 'success');
+          getSideList();
+          getBookmarkList();
         }
       };
       editNote(body);
@@ -158,11 +149,6 @@ export default function EditNote() {
             onChange={(e) => setTitle(e.target.value)}
           />
           <div className="flex flex-row items-center gap-3">
-            <PublicPrivateToggle
-              onClick={() => handlePublicPrivateButton()}
-              scope={isPublic ? 'Public' : 'Private'}
-              theme={theme}
-            />
             <Button
               label={isPublic ? '게시하기' : '저장하기'}
               color="charcol"
@@ -204,6 +190,7 @@ export default function EditNote() {
                 return (
                   <div>
                     <QuotationModal
+                      theme={theme}
                       bookmarks={bookmarks}
                       setQuotingNoteInfo={setQuotingNoteInfo}
                     />
@@ -218,8 +205,7 @@ export default function EditNote() {
                   console.log('>>>>>>update>>>>>', state);
                   let modifyText = `[[${state.selectedText}]]`;
                   if (!state.selectedText) {
-                    modifyText = `[${quotingNoteInfo.nickname} : ${quotingNoteInfo.title}](${process.env.NEXT_PUBLIC_BASE_URL}/user-page/${quotingNoteInfo.nickname}/read-note/${quotingNoteInfo.noteId}
-                    ) `;
+                    modifyText = `[${quotingNoteInfo.nickname} : ${quotingNoteInfo.title}](${process.env.NEXT_PUBLIC_BASE_URL}/user-page/${quotingNoteInfo.nickname}/read-note/${quotingNoteInfo.noteId})`;
                   }
                   api.replaceSelection(modifyText);
                   setQuotingNoteInfo({ nickname: '', title: '', noteId: 0 });

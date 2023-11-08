@@ -167,6 +167,8 @@ export default function Folder({
                   depth={depth + 1}
                   id={item.id}
                   title={item.title}
+                  parentId={parentId}
+                  setParentId={setParentId}
                   currentNoteId={currentNoteId}
                   isModifyDelete={isModifyDelete}
                 />

@@ -46,7 +46,7 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
           />
         )}
       </Link>
-      <div className="flex ml-auto space-x-4 items-center">
+      <div className="flex gap-4 justify-between items-center">
         <IconButton
           onClick={() =>
             dispatch(setMyTheme(theme === 'light' ? 'dark' : 'light'))
@@ -56,15 +56,16 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
           size={24}
         />
         {isLogin && (
-          <Link href={`/user-page/${nickname}`}>
+          <Link className="flex items-center" href={`/user-page/${nickname}`}>
             <IconButton name="MyPage" theme={theme} size={24} />
           </Link>
         )}
-        <Link href={`/search`}>
+        <Link className="flex items-center" href={`/search`}>
           <IconButton name="Search" theme={theme} size={24} />
         </Link>
         {isLogin ? (
           <Button
+            className="flex items-center"
             onClick={() => {
               Logout();
             }}
@@ -73,6 +74,7 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
           />
         ) : (
           <Button
+            className="flex items-center"
             onClick={() => openLoginModal(true)}
             label="로그인"
             color="charcol"

@@ -5,6 +5,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color: 'charcol' | 'red' | 'blue';
   onClick?: () => void;
   size?: string;
+  disabled?: boolean;
 }
 
 const COLOR_VARIANTS = {
@@ -18,12 +19,20 @@ export default function Button({
   color,
   onClick,
   size = '',
+  disabled = false,
   ...rest
 }: ButtonProps) {
   return (
     <button
+      disabled={disabled}
       onClick={onClick}
-      className={`${COLOR_VARIANTS[color]} ${size} font-bold colorClass text-white w-fit h-fit px-3 py-2 rounded-full opacity-100 hover:opacity-60 transition-opacity duration-300`}
+      className={`${
+        COLOR_VARIANTS[color]
+      } ${size} font-bold colorClass text-white w-fit h-fit px-3 py-2 rounded-full opacity-100 ${
+        !disabled
+          ? 'hover:opacity-60 transition-opacity duration-300'
+          : 'opacity-60'
+      }`}
     >
       {label}
     </button>

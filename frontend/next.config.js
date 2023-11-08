@@ -4,10 +4,14 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 module.exports = {
   reactStrictMode: true,
   env: {
-    BASE_URL: process.env.BASE_URL,
+    BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
   },
   images: {
-    domains: ['lh3.googleusercontent.com', 'k.kakaocdn.net'],
+    domains: [
+      'lh3.googleusercontent.com',
+      'k.kakaocdn.net',
+      'ziglog.s3-ap-northeast-2.amazonaws.com',
+    ],
   },
   eslint: {
     ignoreDuringBuilds: true,
