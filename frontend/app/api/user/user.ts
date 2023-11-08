@@ -43,7 +43,7 @@ export async function Logout(): Promise<LogoutInfo> {
     });
 
     store.dispatch(logOut());
-    window.location.replace('/');
+    window.location.reload();
     showAlert('로그아웃 되었습니다', 'success');
     return 'Logout 성공';
   } catch (err) {
