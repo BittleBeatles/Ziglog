@@ -14,4 +14,6 @@ public interface NotificationService {
     List<Notification> getNotifications(Member member);
     Notification saveBookmarkNotification(Member member, Bookmark bookmark);
     Notification saveQuotationNotification(Member member, Quotation quotation);
+
+    void readNotification(Member member, Long notificationId) throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException;
 }

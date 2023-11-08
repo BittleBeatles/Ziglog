@@ -4,9 +4,12 @@ import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.member.service.MemberService;
+import com.ziglog.ziglog.domain.notification.exception.exceptions.AlreadyRemovedNotificationException;
+import com.ziglog.ziglog.domain.notification.exception.exceptions.InconsistentNotificationOwnerException;
 import com.ziglog.ziglog.domain.notification.service.EmitterService;
 import com.ziglog.ziglog.domain.notification.service.NotificationService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
+import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,11 +33,19 @@ public class NotificationController {
         return emitterService.subscribe(member);
     }
 
-    @DeleteMapping(value = "/delete/{notificationId}")
-    public String deleteNotification(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                     @PathVariable Long notificationId) throws UserNotFoundException {
+    @DeleteMapping("/delete/{notificationId}")
+    public ResponseDto<Void> deleteNotification(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                 @PathVariable Long notificationId)
+            throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException {
         notificationService.delete(userDetails.member(), notificationId);
-        return "hello";
+        return ResponseDto.of(200, "success");
     }
 
+    @PutMapping("/read/{notificationId}")
+    public ResponseDto<Void> readNotification(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                              @PathVariable Long notificationId)
+            throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException {
+        notificationService.readNotification(userDetails.member(), notificationId);
+        return ResponseDto.of(200, "success");
+    }
 }

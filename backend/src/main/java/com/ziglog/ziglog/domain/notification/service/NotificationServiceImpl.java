@@ -23,8 +23,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override // 주어진 아이디의 알림을 DB에서 삭제
     public void delete(Member member, Long notificationId) throws AlreadyRemovedNotificationException, InconsistentNotificationOwnerException {
-        Notification notification = notificationRepository.findById(notificationId).orElseThrow(AlreadyRemovedNotificationException::new);
-        if (!notification.getOwner().getId().equals(member.getId())) throw new InconsistentNotificationOwnerException();
+        Notification notification = getVerified(member, notificationId);
         notificationRepository.delete(notification);
     }
 
@@ -55,4 +54,17 @@ public class NotificationServiceImpl implements NotificationService {
                 .build();
         return notificationRepository.save(notification);
     }
+
+    @Override
+    public void readNotification(Member member, Long notificationId) throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException{
+        Notification notification = getVerified(member, notificationId);
+        notification.read();
+    }
+
+    private Notification getVerified(Member member, Long notificationId) throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException {
+        Notification notification = notificationRepository.findById(notificationId).orElseThrow(AlreadyRemovedNotificationException::new);
+        if (!notification.getOwner().getId().equals(member.getId())) throw new InconsistentNotificationOwnerException();
+        return notification;
+    }
+
 }

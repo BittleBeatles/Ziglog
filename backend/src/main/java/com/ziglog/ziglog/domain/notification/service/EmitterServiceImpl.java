@@ -5,12 +5,11 @@ import com.ziglog.ziglog.domain.notification.entity.Emitter;
 import com.ziglog.ziglog.domain.notification.repository.EmitterRedisRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +17,9 @@ import java.io.ObjectOutputStream;
 public class EmitterServiceImpl implements EmitterService {
     //TODO
     //브라우저와의 연결 관리. Redis에 올라간 SseEmitter 객체 관리
-    private static final Long TIMEOUT = 1000 * 60 * 30L;// 30분 => 따로 yml 파일에 넣기
+
+    @Value("${jwt.access.expiration}")
+    private Long TIMEOUT;// 30분 => 따로 yml 파일에 넣기
     private final EmitterRedisRepository emitterRepository;
 
     @Override
