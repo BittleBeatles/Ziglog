@@ -9,7 +9,8 @@ import { useState, useContext } from 'react';
 import Swal from 'sweetalert2';
 import { deleteBookmark } from '@api/bookmark/bookmark';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useAppSelector } from '@store/store';
 
 export interface BookmarkListProps {
   noteList: Note[];
@@ -29,11 +30,15 @@ export default function BookmarkList({
   const [showAll, setShowAll] = useState(false);
   const displayedNotes = showAll ? noteList : noteList.slice(0, 5);
   const { getBookmarkList } = useContext(SideDataContext);
+  const { nickname } = useAppSelector((state) => state.user);
+  const params = useParams();
+  const paramsNickname = decodeURIComponent(params.userNickname as string);
+  const isMine = useState(nickname === paramsNickname);
   const handleUndoBookmark = (noteId: number, theme: 'light' | 'dark') => {
     const bg = THEME_VARIANTS[theme];
     const textColor = theme === 'light' ? 'black' : 'white';
     Swal.fire({
-      html: '해당 노트에 대한 북마크를<br>해제하시겠습니까?',
+      html: '해당 노트에 대한 북마크를<br/>해제하시겠습니까?',
       showCloseButton: true,
       width: 300,
       background: bg,
@@ -55,7 +60,7 @@ export default function BookmarkList({
     noteId: number,
     isPublic: boolean
   ) => {
-    if (isPublic) {
+    if (isPublic || isMine) {
       router.push(`/user-page/${nickname}/read-note/${noteId}`);
     } else {
       showAlert('비공개 글 입니다.', 'info');

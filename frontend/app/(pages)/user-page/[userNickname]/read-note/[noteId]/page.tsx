@@ -19,6 +19,8 @@ import {
 import './page.css';
 import { showAlert } from '@src/util/alert';
 import SideDataContext from '../../SideDataContext';
+import { changeNotePublicStatusRequest } from '@api/note/editNote';
+import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
 
 export default function ReadNote() {
   const router = useRouter();
@@ -42,7 +44,8 @@ export default function ReadNote() {
     editTime: new Date('2023-10-31 00:00:00'),
   });
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const { getBookmarkList } = useContext(SideDataContext);
+  const { getBookmarkList, getSideList } = useContext(SideDataContext);
+  const [isPublic, setIsPublic] = useState(false);
   useEffect(() => {
     const getNoteReadPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -59,6 +62,7 @@ export default function ReadNote() {
           postTime: result.data.postTime,
           editTime: result.data.editTime,
         });
+        setIsPublic(result.data.isPublic);
         getQuotationList(parseInt(paramNoteId));
       } else {
         router.push(`/user-page/${paramsNickname}`);
@@ -99,9 +103,31 @@ export default function ReadNote() {
     setIsBookmarked(!isBookmarked);
   };
 
+  const handleDelete = async () => {
+    await deleteNote(parseInt(paramNoteId), data.nickname);
+    getSideList();
+    getBookmarkList();
+    router.push(`/user-page/${userNickname}`);
+  };
+
   // 닉네임 클릭 시,
   const handleNicknameClick = () => {
     router.push(`/user-page/${data.nickname}`);
+  };
+
+  // 공개/비공개 여부 수정하기
+
+  const handlePublicPrivateButton = () => {
+    const changePublicStatus = async (noteId: number, isPublic: boolean) => {
+      const body = { isPublic: !isPublic };
+      const result = await changeNotePublicStatusRequest(noteId, body);
+      if (result) {
+        setIsPublic(!isPublic);
+        showAlert('공개/비공개 설정이 수정되었습니다', 'success');
+        getBookmarkList();
+      }
+    };
+    changePublicStatus(parseInt(paramNoteId), isPublic);
   };
 
   const isMine = isLogin && userNickname === data.nickname;
@@ -130,7 +156,17 @@ export default function ReadNote() {
     hasAccess && (
       <div id="sidebar-scroll" className="overflow-y-auto h-full">
         <div className="mx-40 my-12">
-          <Text type="h1">{data.title}</Text>
+          <div className="flex gap-2">
+            <Text type="h1">{data.title}</Text>
+            {isMine && (
+              <PublicPrivateToggle
+                onClick={() => handlePublicPrivateButton()}
+                scope={isPublic ? 'Public' : 'Private'}
+                theme={theme}
+              />
+            )}
+          </div>
+
           <div className="flex flex-row place-items-center my-4">
             <span
               className=" cursor-pointer font-bold"
@@ -138,23 +174,9 @@ export default function ReadNote() {
             >
               {data.nickname}
             </span>
-            <Text className="mx-3" type="p">
+            <Text className="ml-3" type="p">
               {data.postTime && data.postTime.toLocaleString('ko-KR')}
             </Text>
-
-            {data.isPublic ? (
-              <SvgIcon
-                name="Public"
-                size={20}
-                color={theme === 'light' ? 'black' : 'white'}
-              ></SvgIcon>
-            ) : (
-              <SvgIcon
-                name="Private"
-                size={20}
-                color={theme === 'light' ? 'black' : 'white'}
-              ></SvgIcon>
-            )}
 
             {isMine ? (
               <div className="flex flex-row">
@@ -173,9 +195,7 @@ export default function ReadNote() {
                 <div className="ml-3">
                   <Button
                     color="red"
-                    onClick={() =>
-                      deleteNote(parseInt(paramNoteId), data.nickname)
-                    }
+                    onClick={handleDelete}
                     label="삭제"
                     size="text-xs"
                   ></Button>

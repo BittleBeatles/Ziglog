@@ -17,7 +17,7 @@ export default function PublicPrivateToggle({
   return (
     <button
       {...rest}
-      className={`${THEME_VARIANTS[theme]} flex flex-row gap-3  rounded-lg w-fit p-3 font-bold`}
+      className={`${THEME_VARIANTS[theme]} flex flex-row gap-3  rounded-lg w-fit p-3 font-bold opacity-100 hover:opacity-60 transition-opacity duration-300`}
     >
       <SvgIcon
         name={scope}
