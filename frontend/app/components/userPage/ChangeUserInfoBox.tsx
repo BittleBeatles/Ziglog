@@ -1,60 +1,65 @@
 'use client';
-import { useState, useEffect, ChangeEvent, useRef } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
 import ProfileImage from '@components/common/ProfileImage';
-import { getMyInfo } from '@api/user/user';
+import { getMyInfo, modifyUserInfo } from '@api/user/user';
 import ProfileChangeButton from '@components/common/ProfileChangeButton';
 import { uploadImageFile } from '@src/util/uploadImageFile';
+import NicknameInput from '@components/common/NicknameInput';
+import { useAppSelector } from '@store/store';
+import { checkNickname } from '@api/user/user';
+import Button from '@components/common/Button';
+
 interface ChangeUserInfoProps {
   theme: 'light' | 'dark';
-  // openModal: (open: boolean) => void;
+  openModal: (open: boolean) => void;
 }
 
 export default function ChangeUserInfoBox({
-  theme, // openModal,
+  theme,
+  openModal,
 }: ChangeUserInfoProps) {
-  const imageRef = useRef<any>(null);
-  const [image, setImage] = useState<any>('');
-  const [userInfo, setUserInfo] = useState({
-    nickname: '',
-    profileUrl: '',
-  });
-  const handleChange = async (e: ChangeEvent<HTMLInputElement>): void => {
-    try {
-      await uploadImageFile(image, setImage);
-    } catch (error) {}
-    // const file = e.target.files[0];
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.readAsDataURL(file);
-    //   reader.onload = () => {
-    //     setUserInfo({ ...userInfo, profileUrl: reader.result as string });
-    //   };
-    // }
-  };
+  const userNickname = useAppSelector((state) => state.user.nickname);
+  const [profileUrl, setProfileUrl] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [isUnique, setIsUnique] = useState(true);
+
   useEffect(() => {
     const getUserInfoEditPage = async () => {
       const result = await getMyInfo();
       if (result) {
-        setUserInfo({
-          nickname: result.nickname,
-          profileUrl: result.profileUrl,
-        });
-        setImage(result.profileUrl);
+        setProfileUrl(result.profileUrl);
+        setNickname(result.nickname);
       }
     };
     getUserInfoEditPage();
   }, []);
 
-  const handleClick = async () => {
+  const handleClick = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
-      await uploadImageFile(image, setImage);
-      alert('[succeeded uploading image to s3]');
-    } catch (error) {
-      alert('[failed to upload image to s3]');
+      await uploadImageFile(e.target.files[0], setProfileUrl);
+    } catch (error) {}
+  };
+
+  const handleNicknameCheck = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (userNickname !== e.target.value) {
+      const res = await checkNickname(e.target.value);
+      if (res.isValid) {
+        setIsUnique(true);
+        setNickname(e.target.value);
+      } else {
+        setIsUnique(false);
+      }
     }
   };
+
+  const handleSubmit = () => {
+    modifyUserInfo(nickname, profileUrl);
+    openModal(false);
+    window.location.reload();
+  };
+
   return (
     <div
       className={`${THEME_VARIANTS[theme]} w-132 shadow-md border text-center rounded-md justify-center p-5`}
@@ -70,23 +75,46 @@ export default function ChangeUserInfoBox({
           />
         </div>
       </div>
-      {/* 프로필 */}
-      <div className="flex flex-row gap-5">
-        <Text type="h4">프로필</Text>
-        <div className="relative">
-          <ProfileImage src={userInfo.profileUrl} size={100} />
-          <span className="absolute -bottom-2 ">
-            <ProfileChangeButton
-              theme="light"
-              onChange={async (e: ChangeEvent<HTMLInputElement>) => {
-                uploadImageFile(e.target.files[0], setImage);
-              }}
+      {/* 프로필 & 닉네임 */}
+      <div className="flex flex-col gap-5 my-5 ml-20">
+        {/* 프로필 */}
+        <div className="flex flex-row gap-16 ">
+          <Text type="h4">프로필</Text>
+          <div className="relative">
+            <ProfileImage src={profileUrl} size={100} />
+            <span className="absolute -bottom-2 -right-5">
+              <ProfileChangeButton theme="light" onChange={handleClick} />
+            </span>
+          </div>
+        </div>
+        {/* 닉네임 수정 */}
+        <div className="flex flex-row gap-5 ">
+          <Text type="h4">닉네임</Text>
+          <div className="flex flex-col items-start gap-1">
+            <NicknameInput
+              theme={theme}
+              nickname={nickname}
+              onChange={handleNicknameCheck}
             />
-
-            {/* <input type="file" accept="image/*" onChange={(e) => onUpload(e)} /> */}
-          </span>
+            {!isUnique ? (
+              <Text className="text-xs text-red-500">
+                사용 불가능한 닉네임입니다.
+              </Text>
+            ) : (
+              <Text className="text-xs text-green-600">
+                사용 가능한 닉네임입니다.
+              </Text>
+            )}
+          </div>
         </div>
       </div>
+      {/* 제출하기 */}
+      <Button
+        onClick={handleSubmit}
+        disabled={isUnique ? false : true}
+        label="저장하기"
+        color="blue"
+      />
     </div>
   );
 }
