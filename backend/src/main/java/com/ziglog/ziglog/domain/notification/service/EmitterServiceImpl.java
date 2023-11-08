@@ -17,6 +17,7 @@ import java.io.IOException;
 public class EmitterServiceImpl implements EmitterService {
     //TODO
     //브라우저와의 연결 관리. Redis에 올라간 SseEmitter 객체 관리
+    //카프카 연결해서 비동기적으로 처리해야 함 Transaction 안 물고
 
     @Value("${jwt.access.expiration}")
     private Long TIMEOUT;// 30분 => 따로 yml 파일에 넣기

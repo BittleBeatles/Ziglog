@@ -10,12 +10,14 @@ import com.ziglog.ziglog.domain.notification.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class NotificationServiceImpl implements NotificationService {
     //RDB에서의 알림 관리
 
@@ -37,7 +39,6 @@ public class NotificationServiceImpl implements NotificationService {
         if (bookmark.getMember().getId().equals(member.getId())) return null; //자기 자신의 글을 북마크 한 경우에는 알림을 발생시키지 않음
         Notification notification = Notification.builder()
                 .owner(bookmark.getMember())
-                .isRead(false)
                 .message(member.getNickname() + "님이 회원님의 글을 북마크했습니다.")
                 .build();
 
@@ -49,7 +50,6 @@ public class NotificationServiceImpl implements NotificationService {
         if (quotation.getEndNote().getAuthor().getId().equals(member.getId())) return null; //내 자신의 글을 인용한 경우에는 알림 발생시키지 않음
         Notification notification = Notification.builder()
                 .owner(quotation.getStartNote().getAuthor())
-                .isRead(false)
                 .message(member.getNickname() + "님이 회원님의 글을 인용했습니다.")
                 .build();
         return notificationRepository.save(notification);
@@ -66,5 +66,4 @@ public class NotificationServiceImpl implements NotificationService {
         if (!notification.getOwner().getId().equals(member.getId())) throw new InconsistentNotificationOwnerException();
         return notification;
     }
-
 }
