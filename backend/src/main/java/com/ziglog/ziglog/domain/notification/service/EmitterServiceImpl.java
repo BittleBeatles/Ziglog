@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class EmitterServiceImpl implements EmitterService {
     //TODO
     //브라우저와의 연결 관리. Redis에 올라간 SseEmitter 객체 관리
     private static final Long TIMEOUT = 1000 * 60 * 30L;// 30분 => 따로 yml 파일에 넣기
-    private EmitterRedisRepository emitterRepository;
+    private final EmitterRedisRepository emitterRepository;
 
     @Override
     public SseEmitter subscribe(Member member) throws Exception {
@@ -27,13 +29,13 @@ public class EmitterServiceImpl implements EmitterService {
     }
 
     @Override
-    public void notifyEvent(Member member, Object event) throws Exception {
-        SseEmitter sseEmitter = getEmitter(member);
-
+    public void notifyEvent(Member target, Object event) throws Exception {
+        SseEmitter sseEmitter = getEmitter(target);
         try {
-            sseEmitter.send(SseEmitter.event().id(String.valueOf(member.getId())).name("sse").data(event));
+            log.info("snet event");
+            sseEmitter.send(SseEmitter.event().id(String.valueOf(target.getId())).name("sse").data("hello"));
         } catch (Exception e){
-            emitterRepository.deleteById(member.getId());
+            emitterRepository.deleteById(target.getId());
             sseEmitter.completeWithError(new IOException("서버로부터 이벤트를 보낼 수 없습니다."));
         }
     }
@@ -41,7 +43,7 @@ public class EmitterServiceImpl implements EmitterService {
     private SseEmitter createEmitter(Member member) {
         log.info("create new Emitter");
         SseEmitter sseEmitter = new SseEmitter(TIMEOUT);
-        emitterRepository.save(
+        emitterRepository.save(member,
                 Emitter.builder()
                         .id(member.getId())
                         .emitter(sseEmitter)

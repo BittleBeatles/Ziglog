@@ -49,9 +49,10 @@ public class BookmarkServiceImpl implements BookmarkService {
         bookmark = bookmarkRepository.save(bookmark);
         memberPersist.getBookmarks().add(bookmark);
 
-        Notification notification = notificationService.saveBookmarkNotification(memberPersist, bookmark);
+        Notification notification = notificationService.saveBookmarkNotification(note.getAuthor(), bookmark);
+
         try {
-            emitterService.notifyEvent(member, notification);
+            emitterService.notifyEvent(note.getAuthor(), notification);
         } catch (Exception e) {
             e.printStackTrace();
         }
