@@ -156,7 +156,7 @@ export default function ReadNote() {
     hasAccess && (
       <div id="sidebar-scroll" className="overflow-y-auto h-full">
         <div className="mx-40 my-12">
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <Text type="h1">{data.title}</Text>
             {isMine && (
               <PublicPrivateToggle
