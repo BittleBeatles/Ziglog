@@ -20,7 +20,7 @@ export default function QuotationListBox({
   theme,
   quotationList,
 }: QuotationListBoxProps) {
-  const [showList, setShowList] = useState(false);
+  const [showList, setShowList] = useState(true);
   return (
     <div
       className={`${THEME_VARIANTS[theme]} relative rounded-md p-5 flex flex-col gap-4`}
