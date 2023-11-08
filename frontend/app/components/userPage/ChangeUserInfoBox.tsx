@@ -7,10 +7,10 @@ import { getMyInfo, modifyUserInfo } from '@api/user/user';
 import ProfileChangeButton from '@components/common/ProfileChangeButton';
 import { uploadImageFile } from '@src/util/uploadImageFile';
 import NicknameInput from '@components/common/NicknameInput';
-import { useAppSelector } from '@store/store';
 import { checkNickname } from '@api/user/user';
 import Button from '@components/common/Button';
-
+import { useAppDispatch, useAppSelector } from '@store/store';
+import { setMyInfo } from '@store/modules/userSlice';
 interface ChangeUserInfoProps {
   theme: 'light' | 'dark';
   openModal: (open: boolean) => void;
@@ -20,6 +20,8 @@ export default function ChangeUserInfoBox({
   theme,
   openModal,
 }: ChangeUserInfoProps) {
+  const dispatch = useAppDispatch();
+  const { rootFolderId } = useAppSelector((state) => state.user);
   const userNickname = useAppSelector((state) => state.user.nickname);
   const [profileUrl, setProfileUrl] = useState('');
   const [nickname, setNickname] = useState('');
@@ -38,7 +40,8 @@ export default function ChangeUserInfoBox({
 
   const handleClick = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
-      await uploadImageFile(e.target.files[0], setProfileUrl);
+      const selectFile = e.target.files ? e.target.files[0] : null;
+      uploadImageFile(selectFile, setProfileUrl);
     } catch (error) {}
   };
 
@@ -57,7 +60,14 @@ export default function ChangeUserInfoBox({
   const handleSubmit = () => {
     modifyUserInfo(nickname, profileUrl);
     openModal(false);
-    window.location.reload();
+    dispatch(
+      setMyInfo({
+        nickname: nickname,
+        profileUrl: profileUrl,
+        rootFolderId: rootFolderId,
+      })
+    );
+    window.location.replace(`/user-page/${nickname}`);
   };
 
   return (
