@@ -27,4 +27,8 @@ public class Notification {
 
     @ManyToOne(fetch = FetchType.LAZY)//이 알림이 갈 곳
     private Member owner;
+
+    public void read(){
+        this.isRead = true;
+    }
 }
