@@ -38,7 +38,8 @@ export default function ChangeUserInfoBox({
 
   const handleClick = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
-      await uploadImageFile(e.target.files[0], setProfileUrl);
+      const selectFile = e.target.files ? e.target.files[0] : null;
+      uploadImageFile(selectFile, setProfileUrl);
     } catch (error) {}
   };
 
