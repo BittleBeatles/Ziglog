@@ -1,5 +1,13 @@
 package com.ziglog.ziglog.domain.note.service;
 
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.parser.PegdownExtensions;
+import com.vladsch.flexmark.profile.pegdown.Extensions;
+import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.util.ast.TextCollectingVisitor;
+import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
@@ -10,10 +18,14 @@ import com.ziglog.ziglog.domain.note.exception.exceptions.*;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
+import com.ziglog.ziglog.domain.notification.entity.Notification;
+import com.ziglog.ziglog.domain.notification.service.EmitterService;
+import com.ziglog.ziglog.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.querydsl.QuerydslUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +42,10 @@ public class NoteServiceImpl implements NoteService{
     private final FolderRepository folderRepository;
     private final NoteRepository noteRepository;
     private final QuotationRepository quotationRepository;
+
+    //TODO 결합도 높아짐 리팩토링 필요함
+    private final NotificationService notificationService;
+    private final EmitterService emitterService;
 
     //Note
     @Override
@@ -52,12 +68,15 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Note modifyNote(Member member, Note note) throws NoteNotFoundException, InconsistentFolderOwnerException {
+        //TODO 코드 다시 보니까 개판이라서 다시 짜야 됨. 인용하고 있는 노트 번호들에 대한 검증이 필요함
         Note notePersist = noteRepository.findNoteById(note.getId()).orElseThrow(NoteNotFoundException::new);
         checkOwner(member, notePersist);
 
         notePersist.setTitle(note.getTitle());//타이틀
         notePersist.setContent(note.getContent());//컨텐츠
-        notePersist.setPreview(note.getPreview());//목록 프리뷰
+        String preview = makePreview(note.getContent());
+        notePersist.setPreview(preview);//목록 프리뷰
+        log.info("preview : {}", preview);
         notePersist.setEditDatetime(LocalDateTime.now());//수정일
 
         List<Quotation> noteQuoting = note.getQuoting(); //새 노트가 인용하고 있는 노트의 리스트
@@ -66,6 +85,17 @@ public class NoteServiceImpl implements NoteService{
         quotationRepository.deleteQuotationsByIdIn(originQuoting.stream().map(Quotation::getId).toList());
         quotationRepository.saveAll(noteQuoting);
         notePersist.setQuoting(noteQuoting);
+
+        //TODO 리팩토링 필요
+        noteQuoting.stream().forEach(quotation -> {
+            Note startNote = noteRepository.findNoteById(quotation.getStartNote().getId()).get();
+            Notification notification = notificationService.saveQuotationNotification(member, Quotation.builder().startNote(startNote).build());
+            try {
+                emitterService.notifyEvent(startNote.getAuthor(), notification);
+            } catch (Exception e){
+               e.printStackTrace();
+            }
+        });
 
         return notePersist;
     }
@@ -175,5 +205,23 @@ public class NoteServiceImpl implements NoteService{
     public List<Note> getNotesQuotingThis(Long noteId) throws NoteNotFoundException {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         return note.getQuoted().stream().map(Quotation::getEndNote).toList();
+    }
+
+    public String makePreview(String markdownDetail){
+        DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(Extensions.ALL);
+        MutableDataSet FORMAT_OPTIONS = new MutableDataSet();
+        FORMAT_OPTIONS.set(Parser.EXTENSIONS, Parser.EXTENSIONS.get(OPTIONS));
+
+        Parser PARSER = Parser.builder(OPTIONS).build();
+
+        Node document = PARSER.parse(markdownDetail);
+
+        TextCollectingVisitor textCollectingVisitor = new TextCollectingVisitor();
+        String text = textCollectingVisitor.collectAndGetText(document);
+
+        text = text.substring(0, Integer.min(text.length(), 200));
+        text = text.replace('\n', ' ');
+
+        return text;
     }
 }
