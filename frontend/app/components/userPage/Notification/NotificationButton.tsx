@@ -4,23 +4,23 @@ interface NotificationButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   onClick?: () => void;
-  disabled?: boolean;
+  isSelected?: boolean;
 }
 
 export default function NotificationButton({
   label,
   onClick,
-  disabled = false,
+  isSelected = false,
   ...rest
 }: NotificationButtonProps) {
   return (
     <button
-      className={`colorClass text-black w-fit h-fit px-2 py-1 rounded-full opacity-100 ${
-        !disabled
-          ? 'hover:opacity-60 transition-opacity duration-300'
-          : 'opacity-60'
+      {...rest}
+      className={`bg-zinc-300 text-black w-fit h-fit px-5 py-1 rounded-full opacity-100 ${
+        !isSelected
+          ? 'opacity-60'
+          : 'hover:opacity-60 transition-opacity duration-300 border border-black '
       }`}
-      disabled={disabled}
       onClick={onClick}
     >
       {label}
