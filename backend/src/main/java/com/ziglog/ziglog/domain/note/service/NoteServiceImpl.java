@@ -11,6 +11,7 @@ import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
+import com.ziglog.ziglog.domain.note.dto.request.folder.CreateFolderRequestDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
@@ -133,7 +134,9 @@ public class NoteServiceImpl implements NoteService{
 
     // Folder
     @Override
-    public Folder createFolder(Member member, String title, Long parentId) throws FolderNotFoundException, InconsistentNoteOwnerException, UserNotFoundException {
+    public Folder createFolder(Member member, CreateFolderRequestDto requestDto) throws FolderNotFoundException, InconsistentNoteOwnerException, UserNotFoundException {
+        Long parentId = requestDto.getParentId();
+        String title = requestDto.getFolderName();
         log.info("parentId : {}", parentId);
         Folder parent = folderRepository.findById(parentId).orElseThrow(FolderNotFoundException::new);
         checkOwner(member, parent);

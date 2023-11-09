@@ -31,7 +31,7 @@ public class FolderController {
     @PostMapping("")
     public ResponseDto<Void> createFolder(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody CreateFolderRequestDto createFolderRequestDto)
             throws FolderNotFoundException, InconsistentNoteOwnerException, UserNotFoundException {
-        noteService.createFolder(userDetails.member(), createFolderRequestDto.getFolderName(), createFolderRequestDto.getParentId());
+        noteService.createFolder(userDetails.member(), createFolderRequestDto);
         return ResponseDto.of(200, "success");
     }
 

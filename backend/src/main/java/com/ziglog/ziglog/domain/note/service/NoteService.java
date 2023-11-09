@@ -2,6 +2,7 @@ package com.ziglog.ziglog.domain.note.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
+import com.ziglog.ziglog.domain.note.dto.request.folder.CreateFolderRequestDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.*;
@@ -22,7 +23,7 @@ public interface NoteService {
     Note readNote(Member member, Long noteId) throws NoteNotFoundException, NoAuthorizationToReadException; //해당 ID의 노트의 Detail을 가져 오기
 
    // 폴더
-    Folder createFolder(Member member, String title, Long folderId) throws FolderNotFoundException, InconsistentNoteOwnerException, UserNotFoundException;//새로운 폴더를 추가
+    Folder createFolder(Member member, CreateFolderRequestDto requestDto) throws FolderNotFoundException, InconsistentNoteOwnerException, UserNotFoundException;//새로운 폴더를 추가
     Folder modifyFolder(Member member, Folder folder) throws InconsistentFolderOwnerException, FolderNotFoundException;//폴더의 이름을 변경
 
     void deleteFolder(Member member, Long folderId) throws FolderNotFoundException, UserNotFoundException,
