@@ -34,7 +34,7 @@ export default function SingleNotification({
   return (
     <div
       className={`${THEME_VARIANTS[theme]} ${
-        isChecked && HOVER_COLOR[theme]
+        !isChecked && HOVER_COLOR[theme]
       } w-120 px-4 h-20 rounded-md flex flex-row`}
     >
       <div className="grid place-content-center">
@@ -65,7 +65,7 @@ export default function SingleNotification({
                 </p>
               )}
             </div>
-            <p className="leading-4 font-normal underline-offset-2 text-gray-500">
+            <p className="leading-4 font-normal underline text-gray-500">
               {title}
             </p>
           </div>
@@ -95,7 +95,7 @@ export default function SingleNotification({
                 </p>
               )}
             </div>
-            <p className="leading-4 font-normal underline-offset-2">{title}</p>
+            <p className="leading-4 font-normal underline">{title}</p>
           </div>
         </div>
       )}
