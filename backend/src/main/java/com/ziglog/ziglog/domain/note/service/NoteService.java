@@ -4,6 +4,12 @@ import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.note.dto.request.folder.CreateFolderRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.folder.ModifyFolderNameRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.CreateNoteRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.ModifyNoteRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.SetPublicRequestDto;
+import com.ziglog.ziglog.domain.note.dto.response.IsPublicResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.ReadNoteResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.RetrieveFolderResponseDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.*;
@@ -13,6 +19,12 @@ import org.springframework.data.domain.Slice;
 import java.util.List;
 
 public interface NoteService {
+
+    void createNote(Member member, CreateNoteRequestDto requestDto)throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException;
+    ReadNoteResponseDto read(Member member, Long noteId) throws NoteNotFoundException, NoAuthorizationToReadException;
+    IsPublicResponseDto setPublic(Member member, Long noteId, SetPublicRequestDto requestDto)  throws InconsistentFolderOwnerException, NoteNotFoundException;
+    void modifyNote(Member member, Long noteId, ModifyNoteRequestDto requestDto) throws NoteNotFoundException, InconsistentFolderOwnerException;
+    RetrieveFolderResponseDto retrieveRootNote(String nickname) throws UserNotFoundException, NoteNotFoundException;
 
     // 노트
     void checkOwner(Member member, Note note) throws InconsistentNoteOwnerException;
