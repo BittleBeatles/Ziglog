@@ -23,9 +23,6 @@ import com.ziglog.ziglog.domain.notification.service.EmitterService;
 import com.ziglog.ziglog.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.querydsl.QuerydslUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,15 +84,15 @@ public class NoteServiceImpl implements NoteService{
         notePersist.setQuoting(noteQuoting);
 
         //TODO 리팩토링 필요
-        noteQuoting.stream().forEach(quotation -> {
-            Note startNote = noteRepository.findNoteById(quotation.getStartNote().getId()).get();
-            Notification notification = notificationService.saveQuotationNotification(member, Quotation.builder().startNote(startNote).build());
-            try {
-                emitterService.notifyEvent(startNote.getAuthor(), notification);
-            } catch (Exception e){
-               e.printStackTrace();
-            }
-        });
+//        noteQuoting.stream().forEach(quotation -> {
+//            Note startNote = noteRepository.findNoteById(quotation.getStartNote().getId()).get();
+//            Notification notification = notificationService.saveQuotationNotification(member, Quotation.builder().startNote(startNote).build());
+//            try {
+//                emitterService.notifyEvent(startNote.getAuthor(), notification);
+//            } catch (Exception e){
+//               e.printStackTrace();
+//            }
+//        });
 
         return notePersist;
     }
