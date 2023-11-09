@@ -1,7 +1,6 @@
 package com.ziglog.ziglog.domain.note.service;
 
 import com.vladsch.flexmark.parser.Parser;
-import com.vladsch.flexmark.parser.PegdownExtensions;
 import com.vladsch.flexmark.profile.pegdown.Extensions;
 import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;
 import com.vladsch.flexmark.util.ast.Node;
@@ -13,6 +12,12 @@ import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundExceptio
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.dto.request.folder.CreateFolderRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.folder.ModifyFolderNameRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.CreateNoteRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.ModifyNoteRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.SetPublicRequestDto;
+import com.ziglog.ziglog.domain.note.dto.response.IsPublicResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.ReadNoteResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.RetrieveFolderResponseDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
@@ -20,7 +25,6 @@ import com.ziglog.ziglog.domain.note.exception.exceptions.*;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
-import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.service.EmitterService;
 import com.ziglog.ziglog.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +49,31 @@ public class NoteServiceImpl implements NoteService{
     //TODO 결합도 높아짐 리팩토링 필요함
     private final NotificationService notificationService;
     private final EmitterService emitterService;
+
+    @Override
+    public void createNote(Member member, CreateNoteRequestDto requestDto)throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException{
+        createNote(member, requestDto.getFolderId());
+    }
+
+    @Override
+    public ReadNoteResponseDto read(Member member, Long noteId) throws NoteNotFoundException, NoAuthorizationToReadException{
+        return ReadNoteResponseDto.toDto(readNote(member, noteId));
+    }
+
+    @Override
+    public  IsPublicResponseDto setPublic(Member member, Long noteId, SetPublicRequestDto requestDto)  throws InconsistentFolderOwnerException, NoteNotFoundException{
+        return IsPublicResponseDto.toDto(setPublic(member, noteId, requestDto.getIsPublic()).isPublic());
+    }
+
+    @Override
+    public void modifyNote(Member member, Long noteId, ModifyNoteRequestDto requestDto) throws NoteNotFoundException, InconsistentFolderOwnerException{
+        modifyNote(member, requestDto.toEntity(noteId));
+    }
+
+    @Override
+    public RetrieveFolderResponseDto retrieveRootNote(String nickname) throws UserNotFoundException, NoteNotFoundException {
+        return RetrieveFolderResponseDto.toDto(getRootFolder(nickname));
+    }
 
     //Note
     @Override

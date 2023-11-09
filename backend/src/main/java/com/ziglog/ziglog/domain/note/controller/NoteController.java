@@ -33,11 +33,11 @@ public class NoteController {
     @Operation(summary = "사용자의 문서를 조회",
             description = "닉네임을 통해 해당 사용자의 개인 페이지 좌측 상단에서 볼 수 있는 폴더 + 문서를 조회")
     @GetMapping("")
-    public ResponseDto<RetrieveFolderResponseDto> listNoteOf(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("nickname") String nickname)
-            throws UserNotFoundException, NoteNotFoundException {
-        return ResponseDto.of(RetrieveFolderResponseDto.toDto(noteService.getRootFolder(nickname)));
+    public ResponseDto<RetrieveFolderResponseDto> retrieve (@RequestParam("nickname") String nickname) throws UserNotFoundException, NoteNotFoundException {
+        return ResponseDto.of(noteService.retrieveRootNote(nickname));
     }
 
+    //TODO
     @Operation(summary = "이 글을 인용하고 있는 글들의 목록을 불러 옴",
             description = "이 글을 인용하고 있는 글의 저자 닉네임과 글의 제목 목록을 조회")
     @GetMapping("/ref")
@@ -59,7 +59,7 @@ public class NoteController {
     @PostMapping("")
     public ResponseDto<Void> createNote(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody CreateNoteRequestDto createNoteRequestDto)
            throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException {
-        noteService.createNote(userDetails.member(), createNoteRequestDto.getFolderId());
+        noteService.createNote(userDetails.member(), createNoteRequestDto);
         return ResponseDto.of(201, "success");
     }
 
@@ -68,7 +68,7 @@ public class NoteController {
     @PutMapping("/{noteId}")
     public ResponseDto<Void> modifyNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId, @RequestBody ModifyNoteRequestDto modifyNoteRequestDto)
             throws NoteNotFoundException, InconsistentFolderOwnerException {
-        noteService.modifyNote(userDetails.member(), modifyNoteRequestDto.toEntity(noteId));
+        noteService.modifyNote(userDetails.member(), noteId, modifyNoteRequestDto);
         return ResponseDto.of(200, "success");
     }
 
@@ -77,8 +77,8 @@ public class NoteController {
     @GetMapping("/{noteId}")
     public ResponseDto<ReadNoteResponseDto> readNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId)
             throws NoteNotFoundException, NoAuthorizationToReadException {
-        if (userDetails == null) return ResponseDto.of(ReadNoteResponseDto.toDto(noteService.readNote(null, noteId)));
-        return ResponseDto.of(ReadNoteResponseDto.toDto(noteService.readNote(userDetails.member(), noteId)));
+        if (userDetails == null) return ResponseDto.of(noteService.read(null, noteId));
+        return ResponseDto.of(noteService.read(userDetails.member(), noteId));
     }
 
     @Operation(summary = "노트 공개 여부 변경",
@@ -87,6 +87,6 @@ public class NoteController {
     public ResponseDto<IsPublicResponseDto> setPublic(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                       @PathVariable("noteId") Long noteId, @RequestBody SetPublicRequestDto setPublicRequestDto)
             throws InconsistentFolderOwnerException, NoteNotFoundException{
-        return ResponseDto.of(IsPublicResponseDto.toDto(noteService.setPublic(userDetails.member(), noteId, setPublicRequestDto.getIsPublic()).isPublic()));
+        return ResponseDto.of(noteService.setPublic(userDetails.member(), noteId, setPublicRequestDto));
     }
 }

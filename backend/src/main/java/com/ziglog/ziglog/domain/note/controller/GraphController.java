@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GraphController {
     private final NoteService noteService;
 
+    //TODO
     @GetMapping("")
     public ResponseDto<GraphResponseDto> getGraphByNickname(@RequestParam("nickname") String nickname) throws Exception {
         return ResponseDto.of(GraphResponseDto.toDto(noteService.getRootFolder(nickname)));
