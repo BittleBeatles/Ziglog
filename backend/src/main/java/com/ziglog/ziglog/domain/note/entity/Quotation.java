@@ -1,5 +1,6 @@
 package com.ziglog.ziglog.domain.note.entity;
 
+import com.ziglog.ziglog.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,4 +26,5 @@ public class Quotation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "e_note_id")
     private Note endNote;
+
 }
