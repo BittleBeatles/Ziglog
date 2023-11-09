@@ -20,11 +20,22 @@ public interface NoteService {
     Note setPublic(Member member, Long noteId, Boolean isPublic) throws InconsistentFolderOwnerException, NoteNotFoundException;
     void deleteNote(Member member, Long noteId) throws InconsistentNoteOwnerException, NoteNotFoundException; //해당 아이디의 노트를 삭제
     Note readNote(Member member, Long noteId) throws NoteNotFoundException, NoAuthorizationToReadException; //해당 ID의 노트의 Detail을 가져 오기
+
+    // 인용
     List<Note> getNotesQuotingThis(Long noteId) throws NoteNotFoundException;
-    Slice<Note> searchPublicNotesByTitle(String keyword, Pageable pageable) throws Exception;
+    void addQuotation(Member member, Long startNoteId, Long endNoteId);
+    void deleteQuotation(Member member, Long startNoteId, Long endNoteId);
+
+    void updateQuotations(Member member, Note note, List<Long> quotationsToAdd);
+
+
+
+    // 검색
+    Slice<Note> searchPublicNotes(String keyword, Pageable pageable) throws Exception;
+    Slice<Note> searchPersonalPage(String nickname, String keyword, Pageable pageable) throws Exception;
+
     // 폴더
     Folder createFolder(Member member, String title, Long folderId) throws FolderNotFoundException, InconsistentNoteOwnerException, UserNotFoundException;//새로운 폴더를 추가
-
     Folder modifyFolder(Member member, Folder folder) throws InconsistentFolderOwnerException, FolderNotFoundException;//폴더의 이름을 변경
 
     void deleteFolder(Member member, Long folderId) throws FolderNotFoundException, UserNotFoundException,

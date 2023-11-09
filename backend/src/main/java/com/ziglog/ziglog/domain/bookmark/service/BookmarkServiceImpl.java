@@ -28,9 +28,6 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
     private final BookmarkRepository bookmarkRepository;
-    //TODO 결합도 높아지는 거 같긴 한데 좀 더 나은 설계를 생각해봐야 함
-    private final NotificationService notificationService;
-    private final EmitterService emitterService;
 
     @Override
     public void addBookmark(Member member, Long noteId) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException {
@@ -49,13 +46,13 @@ public class BookmarkServiceImpl implements BookmarkService {
         bookmark = bookmarkRepository.save(bookmark);
         memberPersist.getBookmarks().add(bookmark);
 
-        Notification notification = notificationService.saveBookmarkNotification(note.getAuthor(), bookmark);
-
-        try {
-            emitterService.notifyEvent(note.getAuthor(), notification);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        Notification notification = notificationService.saveBookmarkNotification(note.getAuthor(), bookmark);
+//
+//        try {
+//            emitterService.notifyEvent(note.getAuthor(), notification);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -70,9 +67,10 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public List<Bookmark> getBookmarks(Member member) throws UserNotFoundException {
+    public List<Note> getBookmarkedNotes(Member member) throws UserNotFoundException {
         Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
-        return memberPersist.getBookmarks();
+        List<Note> bookmarkedNotes = memberPersist.getBookmarks().stream().map(Bookmark::getNote).toList() ;
+        return bookmarkedNotes;
     }
 
     @Override
