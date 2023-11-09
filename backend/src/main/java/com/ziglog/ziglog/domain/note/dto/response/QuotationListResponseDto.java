@@ -6,18 +6,19 @@ import lombok.Getter;
 
 import java.util.List;
 
-public record QuotationListResponseDto(List<QuotingThisNoteDto> quotationList) {
+public record QuotationListResponseDto(List<QuotationDto> quotationList) {
+
     @Getter
     @Builder
-    private static class QuotingThisNoteDto {
+    private static class QuotationDto{
         private Long noteId;
         private String title;
         private String nickname;
     }
 
     public static QuotationListResponseDto toDto(List<Note> quotedBy) {
-        List<QuotingThisNoteDto> notesQuotingThis = quotedBy.stream().map(note ->
-                QuotingThisNoteDto.builder()
+        List<QuotationDto> notesQuotingThis = quotedBy.stream().map(note ->
+                QuotationDto.builder()
                         .noteId(note.getId())
                         .title(note.getTitle())
                         .nickname(note.getAuthor().getNickname())
