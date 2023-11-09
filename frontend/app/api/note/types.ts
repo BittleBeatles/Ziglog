@@ -52,3 +52,15 @@ interface Note {
   title: string;
   isPublic: boolean;
 }
+
+interface quoteNote {
+  noteId: number;
+  title: string;
+  isPublic: boolean;
+  nickname: string;
+}
+
+export interface quotingQuotedNotes {
+  quotingNotes: quoteNote[];
+  quotedNotes: quoteNote[];
+}
