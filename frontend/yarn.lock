@@ -4463,6 +4463,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/gtag.js@npm:^0.0.18":
+  version: 0.0.18
+  resolution: "@types/gtag.js@npm:0.0.18"
+  checksum: 9207cb9faf1f39da41f3ce0428cc91647f16817717148d3e538bab32428f8213ad9c1374ac9e386d08f5bb4e3ae5f94df9443ae8851edf79e76ae68024ae6d76
+  languageName: node
+  linkType: hard
+
 "@types/hast@npm:^2.0.0":
   version: 2.3.7
   resolution: "@types/hast@npm:2.3.7"
@@ -17688,6 +17695,7 @@ __metadata:
     "@storybook/testing-library": 0.2.2
     "@svgr/webpack": ^8.1.0
     "@types/diff": ^5
+    "@types/gtag.js": ^0.0.18
     "@types/node": ^20
     "@types/react": ^18
     "@types/react-dom": ^18

@@ -39,6 +39,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@storybook/testing-library", "npm:0.2.2"],\
             ["@svgr/webpack", "npm:8.1.0"],\
             ["@types/diff", "npm:5.0.7"],\
+            ["@types/gtag.js", "npm:0.0.18"],\
             ["@types/node", "npm:20.8.6"],\
             ["@types/react", "npm:18.2.28"],\
             ["@types/react-dom", "npm:18.2.13"],\
@@ -6687,6 +6688,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/graceful-fs", "npm:4.1.7"],\
             ["@types/node", "npm:20.8.6"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/gtag.js", [\
+        ["npm:0.0.18", {\
+          "packageLocation": "./.yarn/cache/@types-gtag.js-npm-0.0.18-dbe2f5d9eb-9207cb9faf.zip/node_modules/@types/gtag.js/",\
+          "packageDependencies": [\
+            ["@types/gtag.js", "npm:0.0.18"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -22395,6 +22405,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@storybook/testing-library", "npm:0.2.2"],\
             ["@svgr/webpack", "npm:8.1.0"],\
             ["@types/diff", "npm:5.0.7"],\
+            ["@types/gtag.js", "npm:0.0.18"],\
             ["@types/node", "npm:20.8.6"],\
             ["@types/react", "npm:18.2.28"],\
             ["@types/react-dom", "npm:18.2.13"],\
