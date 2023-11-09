@@ -8,7 +8,5 @@ import java.util.List;
 
 public interface SearchService {//추후 최적화를 위해 분리된 서비스로 제공
     // 검색
-    Slice<Note> searchPublicNotes(String keyword, Pageable pageable) throws Exception;
-
-    Slice<Note> searchPersonalPage(String nickname, String keyword, Pageable pageable) throws Exception;
+    Slice<Note> searchNotes(String keyword, String nickname, Pageable pageable) throws Exception;
 }
