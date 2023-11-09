@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
+    "@types/gtag.js": "^0.0.18",
     "@uiw/react-markdown-preview": "^4.2.2",
     "@uiw/react-md-editor": "^3.24.1",
     "aws-sdk": "^2.1489.0",

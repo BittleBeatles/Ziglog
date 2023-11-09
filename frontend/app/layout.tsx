@@ -2,7 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { ReduxProvider } from '@store/provider';
 import localFont from 'next/font/local';
-
+import Script from 'next/script';
 const pretendard = localFont({
   src: './src/fonts/PretendardVariable.woff2',
   display: 'swap',
@@ -23,6 +23,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className={pretendard.className}>
+      <head>
+        {/* <!-- Google tag (gtag.js) --> */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+        />
+        <Script id="google-analytics">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+        `}
+        </Script>
+      </head>
       <body>
         <ReduxProvider>{children}</ReduxProvider>
       </body>
