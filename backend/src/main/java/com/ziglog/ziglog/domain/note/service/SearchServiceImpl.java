@@ -1,21 +1,32 @@
 package com.ziglog.ziglog.domain.note.service;
 
+import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
+import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional
+@Service
+@Slf4j
 public class SearchServiceImpl implements SearchService {
 
     private final NoteRepository noteRepository;
-    // 검색
-    public Slice<Note> searchPublicNotes(String keyword, Pageable pageable) throws Exception{
-        return noteRepository.findAllByTitleAndContentContaining(keyword, pageable);
-    }
+    private final MemberRepository memberRepository;
 
-    public Slice<Note> searchPersonalPage(String nickname, String keyword, Pageable pageable) throws Exception{
-        return noteRepository.findAllByTitleAndContentContaining(keyword, pageable);
+    // 검색
+    public Slice<Note> searchNotes(String keyword, String nickname, Pageable pageable) throws Exception{
+        if (nickname != null) {
+            Member member = memberRepository.findByNickname(nickname).orElseThrow(UserNotFoundException::new);
+            return noteRepository.findAllByTitleContainingAndAuthor(keyword, member, pageable);
+        }
+        return noteRepository.findAllByTitleContaining(keyword, pageable);
     }
 }

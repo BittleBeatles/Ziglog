@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/graph")
 @Tag(name="그래프 컨트롤러")
 public class GraphController {
-
     private final NoteService noteService;
 
     @GetMapping("")

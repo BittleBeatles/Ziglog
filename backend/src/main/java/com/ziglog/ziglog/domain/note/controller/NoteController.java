@@ -10,6 +10,7 @@ import com.ziglog.ziglog.domain.note.dto.response.ReadNoteResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.RetrieveFolderResponseDto;
 import com.ziglog.ziglog.domain.note.exception.exceptions.*;
 import com.ziglog.ziglog.domain.note.service.NoteService;
+import com.ziglog.ziglog.domain.note.service.QuotationService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class NoteController {
 
     private final NoteService noteService;
+    private final QuotationService quotationService;
 
     @Operation(summary = "사용자의 문서를 조회",
             description = "닉네임을 통해 해당 사용자의 개인 페이지 좌측 상단에서 볼 수 있는 폴더 + 문서를 조회")
@@ -40,7 +42,7 @@ public class NoteController {
             description = "이 글을 인용하고 있는 글의 저자 닉네임과 글의 제목 목록을 조회")
     @GetMapping("/ref")
     public ResponseDto<QuotationListResponseDto> getNotesQuoting(@RequestParam("noteId") Long noteId) throws NoteNotFoundException{
-        return ResponseDto.of(QuotationListResponseDto.toDto(noteService.getNotesQuotingThis(noteId)));
+        return ResponseDto.of(QuotationListResponseDto.toDto(quotationService.getNotesQuotingThis(noteId)));
     }
 
     @Operation(summary = "노트 삭제",
