@@ -3,9 +3,11 @@ package com.ziglog.ziglog.domain.note.service;
 import com.ziglog.ziglog.ZiglogApplication;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.service.MemberServiceImpl;
+import com.ziglog.ziglog.domain.note.dto.request.folder.CreateFolderRequestDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
+import com.ziglog.ziglog.domain.note.exception.exceptions.NoAuthorizationToReadException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -176,23 +178,16 @@ class NoteServiceImplTest {
     @DisplayName("폴더 생성 테스트")
     @Test
     void createFolderTest() throws Exception {
-        Folder folder = Folder.builder()
-                .title("folder")
-                .owner(member1)
-                .build();
-        noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
+        CreateFolderRequestDto folderRequestDto = new CreateFolderRequestDto("folder", mem1RootFolder.getId());
+        noteService.createFolder(member1, folderRequestDto);
         assertEquals(2, member1.getFolders().size());
     }
 
     @DisplayName("폴더명 수정 테스트 - 잘못된 사용자")
     @Test
     void modifyFolderTest_InvalidOwner() throws Exception{
-        Folder folder = Folder.builder()
-                .title("folder")
-                .owner(member1)
-                .build();
-
-        noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
+        CreateFolderRequestDto folderRequestDto = new CreateFolderRequestDto("folder", mem1RootFolder.getId());
+        Folder folder = noteService.createFolder(member1, folderRequestDto);
 
         Folder folderModified = Folder.builder()
                 .id(folder.getId())
@@ -216,8 +211,8 @@ class NoteServiceImplTest {
     @DisplayName("폴더명 수정 테스트 - 성공 사례")
     @Test
     void modifyFolderTest_Success() throws Exception {
-        String title = "title";
-        Folder folder = noteService.createFolder(member1, title, mem1RootFolder.getId());
+        CreateFolderRequestDto folderRequestDto = new CreateFolderRequestDto("folder", mem1RootFolder.getId());
+        Folder folder = noteService.createFolder(member1, folderRequestDto);
 
         Folder folderModified = Folder.builder()
                 .id(folder.getId())
@@ -230,11 +225,8 @@ class NoteServiceImplTest {
     @DisplayName("폴더 삭제 테스트 - 잘못된 사용자")
     @Test
     void deleteFolderTest_InvalidOwner() throws Exception{
-        Folder folder = Folder.builder()
-                .title("folder")
-                .owner(member1)
-                .build();
-        Folder folderToDelete = noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
+        CreateFolderRequestDto folderRequestDto = new CreateFolderRequestDto("folder", mem1RootFolder.getId());
+        Folder folderToDelete = noteService.createFolder(member1, folderRequestDto);
 
         assertThrows(Exception.class, () -> noteService.deleteFolder(member2, folderToDelete.getId()));
     }
@@ -253,11 +245,8 @@ class NoteServiceImplTest {
     @DisplayName("폴더 삭제 테스트 - 성공")
     @Test
     void deleteFolderTest_Success() throws Exception{
-        Folder folder = Folder.builder()
-                .title("folder")
-                .owner(member1)
-                .build();
-        Folder folderToDelete = noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
+        CreateFolderRequestDto folderRequestDto = new CreateFolderRequestDto("folder", mem1RootFolder.getId());
+        Folder folderToDelete = noteService.createFolder(member1, folderRequestDto);
 
         assertDoesNotThrow(() -> noteService.deleteFolder(member1, folderToDelete.getId()));
         assertEquals(1, member1.getFolders().size());
@@ -273,18 +262,11 @@ class NoteServiceImplTest {
     @DisplayName("폴더 리스트 테스트 - 성공 사례")
     @Test
     void listFolderTest_Success() throws Exception{
+        CreateFolderRequestDto folderRequestDto = new CreateFolderRequestDto("folder", mem1RootFolder.getId());
+        CreateFolderRequestDto folderRequestDto2 = new CreateFolderRequestDto("folder2", mem1RootFolder.getId());
 
-        Folder folder = Folder.builder()
-                .title("folder")
-                .owner(member1)
-                .build();
-
-        Folder folder2 = Folder.builder()
-                .title("folder2")
-                .owner(member1)
-                .build();
-        noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
-        noteService.createFolder(member1, folder2.getTitle(), mem1RootFolder.getId());
+        noteService.createFolder(member1, folderRequestDto);
+        noteService.createFolder(member1, folderRequestDto2);
 
         assertDoesNotThrow(() -> noteService.getRootFolder(member1.getNickname()));
     }
@@ -292,18 +274,11 @@ class NoteServiceImplTest {
     @DisplayName("폴더 사이의 부모 관계 생성이 제대로 되는지 테스트")
     @Test
     void checkParentChildRelation_BetweenFolders() throws Exception{
-        Folder folder = Folder.builder()
-                .title("folder")
-                .owner(member1)
-                .build();
-        folder = noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
+        CreateFolderRequestDto folderRequestDto = new CreateFolderRequestDto("folder", mem1RootFolder.getId());
+        Folder folder = noteService.createFolder(member1, folderRequestDto);
 
-        Folder folder2 = Folder.builder()
-                .title("folder2")
-                .owner(member1)
-                .parent(folder)
-                .build();
-        folder2 = noteService.createFolder(member1, folder2.getTitle(), folder.getId());
+        CreateFolderRequestDto folderRequestDto2 = new CreateFolderRequestDto("folder2", folder.getId());
+        Folder folder2 = noteService.createFolder(member1, folderRequestDto2);
 
         assertTrue(folder.getChildren().contains(folder2));//폴더1의 자식을 확인
         assertEquals(folder, folder2.getParent());//폴더2의 부모를 확인
@@ -312,11 +287,8 @@ class NoteServiceImplTest {
     @DisplayName("노트-폴더 사이의 부모 관계 생성이 제대로 되는지 테스트")
     @Test
     void checkParentChildRelation_BetweenFolderAndNote() throws Exception{
-        Folder folder = Folder.builder()
-                .title("folder")
-                .owner(member1)
-                .build();
-        folder = noteService.createFolder(member1, folder.getTitle(), mem1RootFolder.getId());
+        CreateFolderRequestDto folderRequestDto = new CreateFolderRequestDto("folder", mem1RootFolder.getId());
+        Folder folder = noteService.createFolder(member1, folderRequestDto);
         Note note = noteService.createNote(member1, folder.getId());
 
         assertTrue(folder.getNotes().contains(note));//폴더1의 자식을 확인
@@ -327,7 +299,7 @@ class NoteServiceImplTest {
     @Test
     void readPrivateNote() throws Exception {
         Note note = noteService.createNote(member1, mem1RootFolder.getId());
-        assertNull(noteService.readNote(member2, note.getId()));
+        assertThrows(NoAuthorizationToReadException.class, () -> noteService.readNote(member2, note.getId()));
     }
 
     @DisplayName("공개 글을 다른 사람이 조회할 수 있는지 테스트")
