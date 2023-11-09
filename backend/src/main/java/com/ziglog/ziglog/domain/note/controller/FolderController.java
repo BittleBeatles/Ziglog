@@ -40,7 +40,7 @@ public class FolderController {
     @PutMapping("")
     public ResponseDto<Void> modifyFolder(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ModifyFolderNameRequestDto modifyFolderNameRequestDto)
             throws InconsistentFolderOwnerException, FolderNotFoundException {
-        noteService.modifyFolder(userDetails.member(), modifyFolderNameRequestDto.toEntity());
+        noteService.modifyFolder(userDetails.member(), modifyFolderNameRequestDto);
         return ResponseDto.of(200, "success");
     }
 
