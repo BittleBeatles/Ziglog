@@ -22,16 +22,15 @@ public class BookmarkListDto {
         private String nickname;
         private Boolean isPublic;
 
-        BookmarkedNoteInfo(Bookmark bookmark){
-            Note note = bookmark.getNote();
+        BookmarkedNoteInfo(Note note){
             this.noteId = note.getId();
             this.title = note.getTitle();
-            this.nickname = note.getAuthor().getNickname();
+            this.nickname = note.getAuthor().getNickname();//Lazy => 바뀌어야 됨
             this.isPublic = note.isPublic();
         }
     }
 
-    public static BookmarkListDto toDto(List<Bookmark> bookmarks) {
-        return new BookmarkListDto(bookmarks.stream().map(BookmarkedNoteInfo::new).toList());
+    public static BookmarkListDto toDto(List<Note> bookmarkedNotes) {
+        return new BookmarkListDto(bookmarkedNotes.stream().map(BookmarkedNoteInfo::new).toList());
     }
 }

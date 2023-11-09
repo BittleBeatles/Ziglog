@@ -10,6 +10,9 @@ import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
+import com.ziglog.ziglog.domain.notification.entity.Notification;
+import com.ziglog.ziglog.domain.notification.service.EmitterService;
+import com.ziglog.ziglog.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class BookmarkServiceImpl implements BookmarkService {
@@ -28,7 +30,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final BookmarkRepository bookmarkRepository;
 
     @Override
-    public void addBookmark(Member member, Long noteId) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException{
+    public void addBookmark(Member member, Long noteId) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
 
@@ -41,8 +43,16 @@ public class BookmarkServiceImpl implements BookmarkService {
                             .note(note)
                             .build();
 
-        bookmarkRepository.save(bookmark);
+        bookmark = bookmarkRepository.save(bookmark);
         memberPersist.getBookmarks().add(bookmark);
+
+//        Notification notification = notificationService.saveBookmarkNotification(note.getAuthor(), bookmark);
+//
+//        try {
+//            emitterService.notifyEvent(note.getAuthor(), notification);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -57,9 +67,10 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public List<Bookmark> getBookmarks(Member member) throws UserNotFoundException {
+    public List<Note> getBookmarkedNotes(Member member) throws UserNotFoundException {
         Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
-        return memberPersist.getBookmarks();
+        List<Note> bookmarkedNotes = memberPersist.getBookmarks().stream().map(Bookmark::getNote).toList() ;
+        return bookmarkedNotes;
     }
 
     @Override

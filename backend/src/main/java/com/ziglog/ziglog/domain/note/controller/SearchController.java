@@ -2,6 +2,7 @@ package com.ziglog.ziglog.domain.note.controller;
 
 import com.ziglog.ziglog.domain.note.dto.response.SearchResponseDto;
 import com.ziglog.ziglog.domain.note.service.NoteService;
+import com.ziglog.ziglog.domain.note.service.SearchService;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "검색 API 관련 컨트롤러")
 public class SearchController {
 
-    private final NoteService noteService;
+    private final SearchService searchService;
     @GetMapping("")
-    public ResponseDto<SearchResponseDto> searchAllByTitle(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("perPage") Integer perPage) throws Exception{
+    public ResponseDto<SearchResponseDto> searchAllByTitle(@RequestParam("keyword") String keyword,
+                                                           @RequestParam(name = "nickname", required = false) String nickname,
+                                @RequestParam("page") Integer page, @RequestParam("perPage") Integer perPage) throws Exception{
         //최근 글부터 보여줌
         PageRequest pageRequest = PageRequest.of(page, perPage, Sort.by("postDatetime").descending());
-        return ResponseDto.of(SearchResponseDto.toDto(noteService.searchPublicNotesByTitle(keyword, pageRequest)));
+        return ResponseDto.of(SearchResponseDto.toDto(searchService.searchNotes(keyword, nickname, pageRequest)));
     }
 }
