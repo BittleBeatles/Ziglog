@@ -61,73 +61,63 @@ export default function SingleNotification({
             <ProfileImage alt="img" size={55} src={profileUrl} />
           </Link>
         </div>
-        {isChecked ? (
-          <div className="flex flex-row">
-            <div className="w-2 h-2 rounded-full bg-red-transparent mt-3 mr-2"></div>
-            <div className="grid place-content-center">
-              <p className="text-xs text-gray-500">
-                {date.toLocaleString('ko-KR', {
-                  year: '2-digit',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: 'numeric',
-                  minute: '2-digit',
-                })}
+        <div className="flex flex-row">
+          <div
+            className={`${isChecked ? 'bg-transparent' : 'bg-red-500'}
+              w-2 h-2 rounded-full bg-red-transparent mt-3 mr-2`}
+          ></div>
+          <div className="grid place-content-center">
+            <p className={`text-xs ${isChecked ? 'text-gray-500' : ''}`}>
+              {date.toLocaleString('ko-KR', {
+                year: '2-digit',
+                month: '2-digit',
+                day: '2-digit',
+                hour: 'numeric',
+                minute: '2-digit',
+              })}
+            </p>
+            <div className="flex flex-row">
+              <p
+                className={`truncate max-w-xxs ${
+                  isChecked ? 'text-gray-500' : ''
+                }`}
+              >
+                {userNickname}
               </p>
-              <div className="flex flex-row">
-                <p className="truncate max-w-xxs text-gray-500">
-                  {userNickname}
+              {type == 'bookmark' ? (
+                <p
+                  className={`leading-4 py-1 ${
+                    isChecked ? 'text-gray-500' : ''
+                  }`}
+                >
+                  {'님이 나의 게시물을 북마크했습니다.'}
                 </p>
-                {type == 'bookmark' ? (
-                  <p className="leading-4 py-1 text-gray-500">
-                    {'님이 나의 게시물을 북마크했습니다.'}
-                  </p>
-                ) : (
-                  <p className="leading-4 py-1 text-gray-500">
-                    {'님이 나의 게시물을 인용했습니다.'}
-                  </p>
-                )}
-              </div>
-              <div className="flex flex-row">
-                <div className="h-4 w-1 bg-gray-500 mr-1"></div>
-                <p className="leading-4 font-normal text-gray-500">
-                  {noteTitle}
+              ) : (
+                <p
+                  className={`leading-4 py-1 ${
+                    isChecked ? 'text-gray-500' : ''
+                  }`}
+                >
+                  {'님이 나의 게시물을 인용했습니다.'}
                 </p>
-              </div>
+              )}
+            </div>
+            <div className="flex flex-row">
+              <div
+                className={`h-4 w-1 ${
+                  isChecked ? 'bg-gray-500' : 'bg-blue-300'
+                } mr-1`}
+              ></div>
+              <p
+                className={`leading-4 font-normal  ${
+                  isChecked ? 'text-gray-500' : ''
+                }`}
+              >
+                {noteTitle}
+              </p>
             </div>
           </div>
-        ) : (
-          <div className="flex flex-row">
-            <div className="w-2 h-2 rounded-full bg-red-500 mt-3 mr-2"></div>
-            <div className="grid place-content-center">
-              <p className="text-xs">
-                {date.toLocaleString('ko-KR', {
-                  year: '2-digit',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: 'numeric',
-                  minute: '2-digit',
-                })}
-              </p>
-              <div className="flex flex-row">
-                <p className="truncate max-w-xxs">{userNickname}</p>
-                {type == 'bookmark' ? (
-                  <p className="leading-4 py-1">
-                    {'님이 나의 게시물을 북마크했습니다.'}
-                  </p>
-                ) : (
-                  <p className="leading-4 py-1">
-                    {'님이 나의 게시물을 인용했습니다.'}
-                  </p>
-                )}
-              </div>
-              <div className="flex flex-row">
-                <div className="h-4 w-1 bg-blue-300 mr-1"></div>
-                <p className="leading-4 font-normal">{noteTitle}</p>
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
       </div>
     </Link>
   );
