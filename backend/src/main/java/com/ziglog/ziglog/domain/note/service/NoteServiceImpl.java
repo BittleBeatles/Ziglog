@@ -196,42 +196,6 @@ public class NoteServiceImpl implements NoteService{
         }
     }
 
-    @Override
-    public Slice<Note> searchPublicNotesByTitle(String keyword, Pageable pageable) throws Exception {
-        return noteRepository.findAllByTitleContainingIgnoreCaseAndIsPublic(keyword, true, pageable);
-    }
-
-    @Override
-    public List<Note> getNotesQuotingThis(Long noteId) throws NoteNotFoundException {
-        Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
-        return note.getQuoted().stream().map(Quotation::getEndNote).toList();
-    }
-
-    @Override
-    public void addQuotation(Member member, Long startNoteId, Long endNoteId) {
-
-
-    }
-
-    @Override
-    public void deleteQuotation(Member member, Long startNoteId, Long endNoteId) {
-
-    }
-
-    @Override
-    public void updateQuotations(Member member, Note note, List<Long> quotationsToAdd) {
-
-    }
-
-    @Override
-    public Slice<Note> searchPublicNotes(String keyword, Pageable pageable) throws Exception {
-        return null;
-    }
-
-    @Override
-    public Slice<Note> searchPersonalPage(String nickname, String keyword, Pageable pageable) throws Exception {
-        return null;
-    }
 
     public String makePreview(String markdownDetail){
         DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(Extensions.ALL);
@@ -239,7 +203,6 @@ public class NoteServiceImpl implements NoteService{
         FORMAT_OPTIONS.set(Parser.EXTENSIONS, Parser.EXTENSIONS.get(OPTIONS));
 
         Parser PARSER = Parser.builder(OPTIONS).build();
-
         Node document = PARSER.parse(markdownDetail);
 
         TextCollectingVisitor textCollectingVisitor = new TextCollectingVisitor();

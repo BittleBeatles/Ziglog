@@ -13,5 +13,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     Optional<Note> findNoteById(Long noteId);
     List<Note> findAllById(Long noteId);
     void removeNoteById(Long noteId);
-    Slice<Note> findAllByTitleContainingIgnoreCaseAndIsPublic(String title, Boolean isPublic, Pageable pageable);
+    Slice<Note> findAllByTitleAndContentContaining(String keyword, Pageable pageable);
+
+    Slice<Note> findDistinctBy(String keyword, String nickname,Pageable pageable);
 }
