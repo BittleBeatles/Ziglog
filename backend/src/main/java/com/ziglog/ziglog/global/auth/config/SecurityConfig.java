@@ -72,6 +72,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/auth/oauth2/authorization")).requiresSecure()
                 )
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers(new AntPathRequestMatcher("/user/info")).authenticated()
                         .anyRequest().permitAll()
                 )
                 .oauth2Login((oauth2login) ->

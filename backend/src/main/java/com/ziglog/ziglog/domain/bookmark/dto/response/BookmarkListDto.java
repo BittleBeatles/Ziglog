@@ -20,12 +20,14 @@ public class BookmarkListDto {
         private Long noteId;
         private String title;
         private String nickname;
+        private Boolean isPublic;
 
         BookmarkedNoteInfo(Bookmark bookmark){
-            Note note = bookmark.getNote();
+            Note note = bookmark.getNote();//Lazy
             this.noteId = note.getId();
             this.title = note.getTitle();
-            this.nickname = note.getAuthor().getNickname();
+            this.nickname = note.getAuthor().getNickname();//Lazy => 바뀌어야 됨
+            this.isPublic = note.isPublic();
         }
     }
 
