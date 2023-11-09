@@ -7,12 +7,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ModifyFolderNameRequestDto {
-    private Long folderId;
     private String folderName;
-    public Folder toEntity(){
-        return Folder.builder()
-                .id(folderId)
-                .title(folderName)
-                .build();
-    }
+    private Long folderId;
 }

@@ -12,6 +12,7 @@ import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.dto.request.folder.CreateFolderRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.folder.ModifyFolderNameRequestDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
@@ -154,12 +155,12 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Folder modifyFolder(Member member, Folder folder) throws InconsistentFolderOwnerException, FolderNotFoundException {
+    public Folder modifyFolder(Member member, ModifyFolderNameRequestDto requestDto) throws InconsistentFolderOwnerException, FolderNotFoundException {
         //JPA 영속성 컨테스트 내
-        Folder origin = folderRepository.findById(folder.getId()).orElseThrow(FolderNotFoundException::new);
+        Folder origin = folderRepository.findById(requestDto.getFolderId()).orElseThrow(FolderNotFoundException::new);
         checkOwner(member,origin);
 
-        origin.setTitle(folder.getTitle());
+        origin.setTitle(requestDto.getFolderName());
         return origin;
     }
 

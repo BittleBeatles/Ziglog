@@ -4,6 +4,7 @@ import com.ziglog.ziglog.ZiglogApplication;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.service.MemberServiceImpl;
 import com.ziglog.ziglog.domain.note.dto.request.folder.CreateFolderRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.folder.ModifyFolderNameRequestDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
@@ -189,23 +190,15 @@ class NoteServiceImplTest {
         CreateFolderRequestDto folderRequestDto = new CreateFolderRequestDto("folder", mem1RootFolder.getId());
         Folder folder = noteService.createFolder(member1, folderRequestDto);
 
-        Folder folderModified = Folder.builder()
-                .id(folder.getId())
-                .title("folder2")
-                .build();
-
-        assertThrows(Exception.class, () -> noteService.modifyFolder(member2, folderModified));
+        ModifyFolderNameRequestDto requestDto = new ModifyFolderNameRequestDto("folder2", folder.getId());
+        assertThrows(Exception.class, () -> noteService.modifyFolder(member2, requestDto));
     }
 
     @DisplayName("폴더명 수정 테스트 - 존재하지 않는 폴더")
     @Test
     void modifyFolderTest_NoSuchFolder(){
-        Folder folderModified = Folder.builder()
-                .title("folder2")
-                .owner(member1)
-                .build();
-
-        assertThrows(Exception.class, () -> noteService.modifyFolder(member1, folderModified));
+        ModifyFolderNameRequestDto requestDto = new ModifyFolderNameRequestDto("folder2",  0L);
+        assertThrows(Exception.class, () -> noteService.modifyFolder(member1, requestDto));
     }
 
     @DisplayName("폴더명 수정 테스트 - 성공 사례")
@@ -214,12 +207,9 @@ class NoteServiceImplTest {
         CreateFolderRequestDto folderRequestDto = new CreateFolderRequestDto("folder", mem1RootFolder.getId());
         Folder folder = noteService.createFolder(member1, folderRequestDto);
 
-        Folder folderModified = Folder.builder()
-                .id(folder.getId())
-                .title("folder2")
-                .build();
+        ModifyFolderNameRequestDto modifyFolderNameRequestDto = new ModifyFolderNameRequestDto("folder2", folder.getId());
 
-        assertEquals("folder2", noteService.modifyFolder(member1, folderModified).getTitle());
+        assertEquals("folder2", noteService.modifyFolder(member1, modifyFolderNameRequestDto).getTitle());
     }
 
     @DisplayName("폴더 삭제 테스트 - 잘못된 사용자")
