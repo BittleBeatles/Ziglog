@@ -93,6 +93,6 @@ export const BookmarkCheckBoxExample = {
         isPublic: true,
       },
     ],
-    quotingNotes: [1, 2],
+    quotingNoteIds: [1, 2],
   },
 } satisfies Story;
