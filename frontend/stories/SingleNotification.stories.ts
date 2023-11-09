@@ -13,10 +13,10 @@ type Story = StoryObj<typeof meta>;
 export const SingleNotificationExample = {
   args: {
     theme: 'light',
-    isChecked: false,
+    isRead: false,
     type: 'bookmark',
-    title: '리락쿠마가 짱이다.',
-    nickname: '탈퇴한 회원',
+    noteTitle: '리락쿠마가 짱이다.',
+    userNickname: '탈퇴한회원',
     date: new Date('2023.11.08 14:29'),
   },
 } satisfies Story;
