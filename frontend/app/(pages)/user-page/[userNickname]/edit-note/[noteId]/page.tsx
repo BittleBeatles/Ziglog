@@ -17,6 +17,8 @@ import { Note } from '@api/bookmark/types';
 import { showAlert } from '@src/util/alert';
 import { useRouter } from 'next/navigation';
 import SideDataContext from '../../SideDataContext';
+import BookmarkCheckBox from '@components/userPage/BookmarkCheckBox';
+
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
@@ -39,6 +41,7 @@ export default function EditNote() {
   const [isPublic, setIsPublic] = useState(false);
   const [bookmarks, setBookmarks] = useState<Note[]>([]);
   const [hasAccess, setHasAccess] = useState(false);
+  const [quotingNoteIds, setQuotingNoteIds] = useState<number[]>([1, 2, 3]);
   const [quotingNoteInfo, setQuotingNoteInfo] = useState({
     nickname: '',
     title: '',
@@ -46,7 +49,7 @@ export default function EditNote() {
   });
   const { getBookmarkList, getSideList } = useContext(SideDataContext);
   const router = useRouter();
-  // 노트 정보 불러오기 + 북마크 정보 가져오기
+  // 노트 정보 불러오기 + 북마크 정보 가져오기 + 참조하는 노트 id 목록 가져오기
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -84,42 +87,9 @@ export default function EditNote() {
       (!oldContent.content && content) ||
       (!oldContent.title && title)
     ) {
-      // 참조 목록 업데이트 하기
-      const regex = /\[(.*?)\]/g;
-      const matches = content.match(regex);
-      const extractedQuotingNotes: string[] = [];
-      if (matches) {
-        matches.forEach((match) => {
-          const extractedContent = match.slice(1, -1);
-          if (extractedContent && extractedContent.includes(':')) {
-            extractedQuotingNotes.push(extractedContent);
-          }
-        });
-      }
-      const splitQuotingNotes = extractedQuotingNotes.map((content) => {
-        const parts = content.split(':');
-        return {
-          nickname: parts[0].trim(),
-          title: parts[1].trim(),
-        };
-      });
-      const updatedQuotingList: number[] = [];
-      splitQuotingNotes.forEach((splitNote) => {
-        const matchingBookmark = bookmarks.find(
-          (bookmark) =>
-            bookmark.nickname === splitNote.nickname &&
-            bookmark.title === splitNote.title
-        );
-        if (matchingBookmark) {
-          if (!updatedQuotingList.includes(matchingBookmark.noteId)) {
-            updatedQuotingList.push(matchingBookmark.noteId);
-          }
-        }
-      });
       const body = {
         title: title,
         content: content,
-        quotingNotes: updatedQuotingList,
       };
       const editNote = async (body: EditNoteParams) => {
         const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
@@ -162,7 +132,7 @@ export default function EditNote() {
         <MDEditor
           className="relative"
           data-color-mode={theme}
-          height={600}
+          height={400}
           value={content}
           onChange={(v) => setContent(v || '')}
           preview={'live'}
@@ -205,7 +175,6 @@ export default function EditNote() {
                 api: commands.TextAreaTextApi
               ) => {
                 if (quotingNoteInfo.noteId !== 0) {
-                  console.log('>>>>>>update>>>>>', state);
                   let modifyText = `[[${state.selectedText}]]`;
                   if (!state.selectedText) {
                     modifyText = `[${quotingNoteInfo.nickname} : ${quotingNoteInfo.title}](${process.env.NEXT_PUBLIC_BASE_URL}/user-page/${quotingNoteInfo.nickname}/read-note/${quotingNoteInfo.noteId})`;
@@ -218,6 +187,12 @@ export default function EditNote() {
             }),
           ]}
         ></MDEditor>
+        <BookmarkCheckBox
+          theme={theme}
+          bookmarkList={bookmarks}
+          quotingNoteIds={quotingNoteIds}
+          setQuotingNoteIds={setQuotingNoteIds}
+        />
       </div>
     )
   );
