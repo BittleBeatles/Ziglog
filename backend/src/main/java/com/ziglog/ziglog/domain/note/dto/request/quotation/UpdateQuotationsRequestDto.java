@@ -2,11 +2,13 @@ package com.ziglog.ziglog.domain.note.dto.request.quotation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class UpdateQuotationsRequestDto {
-    List<Long> quotingNoteIds;
+    private List<Long> quotingNoteIds;
 }
