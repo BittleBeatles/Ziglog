@@ -35,7 +35,7 @@ public class QuotationServiceImpl implements QuotationService {
         List<Note> quoted = getNotesQuotingThis(note);
         List<Note> quoting = getNotesQuotedByThis(note);
 
-        return QuotationListResponseDto.toDto(quoted, quoting);
+        return QuotationListResponseDto.toDto(quoting, quoted);
     }
 
     @Override

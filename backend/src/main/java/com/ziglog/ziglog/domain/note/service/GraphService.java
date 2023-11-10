@@ -8,4 +8,6 @@ public interface GraphService {
 
     GraphResponseDto retrieveParentChildOnly(Folder folder);
 
+    GraphResponseDto retrieveNotesOf(String nickname);
+
 }
