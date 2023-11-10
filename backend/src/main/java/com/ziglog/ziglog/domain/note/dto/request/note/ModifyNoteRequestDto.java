@@ -12,20 +12,12 @@ import java.util.List;
 public class ModifyNoteRequestDto {
     private String title;
     private String content;
-    private List<Long> quotingNotes;
 
     public Note toEntity(Long noteId){
-        //TODO 바꿔야 됨
-        List<Quotation> quotations = quotingNotes.stream()
-                .map(quoting -> Quotation.builder().startNote(new Note(quoting))
-                        .endNote(new Note(noteId))
-                        .build()).toList();
-
         return Note.builder()
                 .id(noteId)
                 .title(title)
                 .content(content)
-                .quoting(quotations)
                 .build();
     }
 }

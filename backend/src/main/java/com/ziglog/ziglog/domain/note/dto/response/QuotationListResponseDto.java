@@ -3,10 +3,15 @@ package com.ziglog.ziglog.domain.note.dto.response;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import lombok.Builder;
 import lombok.Getter;
+import org.apache.kafka.common.protocol.types.Field;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public record QuotationListResponseDto(List<QuotationDto> quotationList) {
+@Builder
+public class QuotationListResponseDto {
+    private List<QuotationDto> quotingNotes;
+    private List<QuotationDto> quotedNotes;
 
     @Getter
     @Builder
@@ -14,16 +19,30 @@ public record QuotationListResponseDto(List<QuotationDto> quotationList) {
         private Long noteId;
         private String title;
         private String nickname;
+        private Boolean isPublic;
     }
 
-    public static QuotationListResponseDto toDto(List<Note> quotedBy) {
-        List<QuotationDto> notesQuotingThis = quotedBy.stream().map(note ->
+    public static QuotationListResponseDto toDto(List<Note> quoting, List<Note> quoted) {
+        List<QuotationDto> quotingNotes = quoting.stream().map(note ->
+                QuotationDto.builder()
+                        .noteId(note.getId())
+                        .title(note.getTitle())
+                        .nickname(note.getAuthor().getNickname())
+                        .isPublic(note.isPublic())
+                        .build()
+        ).toList();
+
+        List<QuotationDto> quotedNotes = quoted.stream().map(note ->
                 QuotationDto.builder()
                         .noteId(note.getId())
                         .title(note.getTitle())
                         .nickname(note.getAuthor().getNickname())
                         .build()
         ).toList();
-        return new QuotationListResponseDto(notesQuotingThis);
+
+        return QuotationListResponseDto.builder()
+                .quotedNotes(quotedNotes)
+                .quotingNotes(quotingNotes)
+                .build();
     }
 }

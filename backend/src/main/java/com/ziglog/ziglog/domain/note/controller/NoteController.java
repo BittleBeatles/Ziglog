@@ -37,13 +37,6 @@ public class NoteController {
         return ResponseDto.of(noteService.retrieveRootNote(nickname));
     }
 
-    //TODO
-    @Operation(summary = "이 글을 인용하고 있는 글들의 목록을 불러 옴",
-            description = "이 글을 인용하고 있는 글의 저자 닉네임과 글의 제목 목록을 조회")
-    @GetMapping("/ref")
-    public ResponseDto<QuotationListResponseDto> getNotesQuoting(@RequestParam("noteId") Long noteId) throws NoteNotFoundException{
-        return ResponseDto.of(QuotationListResponseDto.toDto(quotationService.getNotesQuotingThis(noteId)));
-    }
 
     @Operation(summary = "노트 삭제",
             description = "해당 아이디의 노트를 삭제")

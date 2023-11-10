@@ -26,7 +26,7 @@ logging:
 jwt:
   secret-key: asd19i23hj909sfua9s0fdusd90fua9023fjnh
   access:
-    expiration: 1800
+    expiration: 3600000
     header: Authorization
   refresh:
     expiration: 1209600
