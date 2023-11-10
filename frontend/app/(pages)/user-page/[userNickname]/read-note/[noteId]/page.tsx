@@ -45,6 +45,20 @@ export default function ReadNote() {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const { getBookmarkList, getSideList } = useContext(SideDataContext);
   const [isPublic, setIsPublic] = useState(false);
+  const getQuotationList = async (noteId: number) => {
+    const result = await getReferenceList(noteId);
+    console.log('참조목록 리스트', result);
+    if (result) {
+      setQuotationInfo(result);
+    }
+  };
+  const getIsBookmarked = async (noteId: number) => {
+    const result = await isNoteBookmarked(noteId);
+    if (result) {
+      console.log('북마크 여부', result.bookmarked);
+      setIsBookmarked(result.bookmarked);
+    }
+  };
   useEffect(() => {
     const getNoteReadPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -63,24 +77,13 @@ export default function ReadNote() {
         });
         setIsPublic(result.data.isPublic);
         getQuotationList(parseInt(paramNoteId));
+        getIsBookmarked(parseInt(paramNoteId));
       } else {
         router.push(`/user-page/${paramsNickname}`);
         showAlert(`${result.message}`, 'error');
       }
     };
-    const getQuotationList = async (noteId: number) => {
-      const result = await getReferenceList(noteId);
-      if (result) {
-        setQuotationInfo(result);
-        getIsBookmarked(noteId);
-      }
-    };
-    const getIsBookmarked = async (noteId: number) => {
-      const result = await isNoteBookmarked(noteId);
-      if (result) {
-        setIsBookmarked(result.bookmarked);
-      }
-    };
+
     getNoteReadPage(parseInt(paramNoteId));
   }, []);
 
