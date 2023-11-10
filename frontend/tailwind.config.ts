@@ -35,6 +35,9 @@ const config: Config = {
         '120': '30rem',
         '132': '33rem',
       },
+      maxWidth: {
+        xxs: '7rem',
+      },
       animation: {
         'draw-line': 'drawLine 3s forwards infinite',
       },
