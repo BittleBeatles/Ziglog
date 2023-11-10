@@ -1,5 +1,5 @@
 import SingleQuotation from '@components/userPage/QuotationModal/SingleQuotation';
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, Dispatch, SetStateAction } from 'react';
 import { showAlert } from '@src/util/alert';
 interface Bookmark {
   noteId: number;
@@ -11,7 +11,13 @@ interface Bookmark {
 interface QuotationModalProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   theme: 'light' | 'dark';
   bookmarks?: Bookmark[];
-  setQuotingNoteInfo: any;
+  setQuotingNoteInfo: Dispatch<
+    SetStateAction<{
+      nickname: string;
+      title: string;
+      noteId: number;
+    }>
+  >;
 }
 
 export default function QuotationModal({
