@@ -51,14 +51,15 @@ public class QuotationServiceImpl implements QuotationService {
     @Override
     public List<Long> updateQuotations(Member member, Long noteId, UpdateQuotationsRequestDto requestDto)
             throws UserNotFoundException, NoteNotFoundException {
+
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         if (!note.getAuthor().getId().equals(member.getId())) throw new InconsistentNoteOwnerException();
 
         List<Long> prevQuotingId = note.getQuoting().stream().map(quotation -> quotation.getStartNote().getId()).toList();
-        List<Long> noteToNotify = requestDto.getQuotingIds().stream().filter(id -> !prevQuotingId.contains(id)).toList();
+        List<Long> noteToNotify = requestDto.getQuotingNoteIds().stream().filter(id -> !prevQuotingId.contains(id)).toList();
 
         quotationRepository.deleteQuotationsByIdIn(note.getQuoting().stream().map(Quotation::getId).toList());
-        List<Quotation>  newQuotationList = requestDto.getQuotingIds().stream().map(id -> Quotation.builder()
+        List<Quotation>  newQuotationList = requestDto.getQuotingNoteIds().stream().map(id -> Quotation.builder()
                 .startNote(Note.builder().id(id).build())
                 .endNote(note)
                 .owner(member)

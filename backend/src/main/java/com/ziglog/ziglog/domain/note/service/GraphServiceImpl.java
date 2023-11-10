@@ -23,6 +23,6 @@ public class GraphServiceImpl implements GraphService {
     @Override
     public GraphResponseDto retrieveFolder(Folder folder) throws FolderNotFoundException {
         Folder folderPersist = folderRepository.findById(folder.getId()).orElseThrow(FolderNotFoundException::new);
-        return GraphResponseDto.toDto(folder);
+        return GraphResponseDto.toDto(folderPersist);
     }
 }
