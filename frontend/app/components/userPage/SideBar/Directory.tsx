@@ -108,11 +108,13 @@ export default function Directory({
         <Text type="b">
           {isMine && isMine ? '내 워크스페이스' : '워크스페이스'}
         </Text>
-        <IconButton
-          onClick={() => setModifyDelete(!isModifyDelete)}
-          theme={theme}
-          name="More"
-        />
+        {isMine && (
+          <IconButton
+            onClick={() => setModifyDelete(!isModifyDelete)}
+            theme={theme}
+            name="More"
+          />
+        )}
       </div>
       {sideData &&
         sideData.map((item) =>

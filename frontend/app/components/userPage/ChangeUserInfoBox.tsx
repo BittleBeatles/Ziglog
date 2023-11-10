@@ -78,7 +78,7 @@ export default function ChangeUserInfoBox({
         <Text type="h1">개인정보 수정</Text>
         <div className="absolute inset-y-0 right-0">
           <IconButton
-            // onClick={() => openModal(false)}
+            onClick={() => openModal(false)}
             theme={theme}
             name="Close"
           />
