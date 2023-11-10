@@ -124,7 +124,10 @@ export default function EditNote() {
       const editNote = async (body: EditNoteParams) => {
         const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
         if (result) {
-          router.push(
+          // router.push(
+          //   `/user-page/${params.userNickname}/read-note/${params.noteId}`
+          // );
+          window.location.replace(
             `/user-page/${params.userNickname}/read-note/${params.noteId}`
           );
           showAlert('수정되었습니다', 'success');

@@ -1,7 +1,6 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
 import Text from '@components/common/Text';
-import SvgIcon from '@components/common/SvgIcon';
 import Button from '@components/common/Button';
 import BookmarkQuoteInfo from '@components/userPage/BookmarkQuoteInfo';
 import MarkdownPreview from '@uiw/react-markdown-preview';
@@ -190,7 +189,7 @@ export default function ReadNote() {
                     color="blue"
                     label="수정"
                     size="text-xs"
-                  ></Button>
+                  />
                 </div>
                 <div className="ml-3">
                   <Button
@@ -198,7 +197,7 @@ export default function ReadNote() {
                     onClick={handleDelete}
                     label="삭제"
                     size="text-xs"
-                  ></Button>
+                  />
                 </div>
               </div>
             ) : (
@@ -215,12 +214,15 @@ export default function ReadNote() {
               isBookmarked={isBookmarked}
               handleBookmarkChange={handleBookmarkChange}
               isLogin={isLogin}
-            ></BookmarkQuoteInfo>
+            />
           </div>
 
-          <div data-color-mode={theme} className="w-full mx-24">
+          <div className="w-full mx-24">
             <div className="wmde-markdown-var">
-              <MarkdownPreview source={data.content} />
+              <MarkdownPreview
+                source={data.content}
+                wrapperElement={{ 'data-color-mode': theme }}
+              />
             </div>
           </div>
         </div>
@@ -228,7 +230,7 @@ export default function ReadNote() {
           <QuotationListBox
             theme={theme}
             quotationList={quotationInfo.quotationList}
-          ></QuotationListBox>
+          />
         </div>
       </div>
     )
