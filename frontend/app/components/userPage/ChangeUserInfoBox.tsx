@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect, ChangeEvent } from 'react';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';

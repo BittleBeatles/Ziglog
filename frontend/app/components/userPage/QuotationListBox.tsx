@@ -62,7 +62,7 @@ export default function QuotationListBox({
               );
             })
           ) : (
-            <div>이 글을 참조한 노트들이 없습니다.</div>
+            <Text>이 글을 참조한 노트들이 없습니다.</Text>
           )}
         </ul>
       )}
