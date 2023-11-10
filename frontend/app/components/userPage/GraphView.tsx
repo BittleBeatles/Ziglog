@@ -1,6 +1,11 @@
 'use client';
-import React, { useRef, useState, useEffect, useContext } from 'react';
-import dynamic from 'next/dynamic';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+} from 'react';
 import colors from '@src/design/color';
 import { useParams, useRouter } from 'next/navigation';
 import { useGraph } from '@src/hooks/useGraph';
@@ -8,14 +13,12 @@ import { Node } from '@api/graph/types';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import NodeSample from '@components/common/NodeSample';
 import GraphConverter from '@components/common/GraphConverter';
-
-const ForchGraph2D = dynamic(() => import('react-force-graph-2d'), {
-  ssr: false,
-});
-
-const ForchGraph3D = dynamic(() => import('react-force-graph-3d'), {
-  ssr: false,
-});
+import ForchGraph2D, {
+  ForceGraphMethods as Force2DGraphMehods,
+} from 'react-force-graph-2d';
+import ForchGraph3D, {
+  ForceGraphMethods as Force3DGraphMehods,
+} from 'react-force-graph-3d';
 
 interface GraphViewProps {
   theme: 'light' | 'dark';
@@ -27,7 +30,9 @@ export default function GraphView({ theme }: GraphViewProps) {
   const params = useParams();
   const nickname = decodeURIComponent(params.userNickname as string);
   const { graphData, getGraphData } = useContext(SideDataContext);
-  const [changeView, setChangeView] = useState<'2d' | '3d' | 'note'>('2d');
+  const [changeView, setChangeView] = useState<'2d' | '3d' | 'note'>('3d');
+  const fg2dref = useRef<Force2DGraphMehods>();
+  const fg3dref = useRef<Force3DGraphMehods>();
 
   useEffect(() => {
     getGraphData();
@@ -73,6 +78,31 @@ export default function GraphView({ theme }: GraphViewProps) {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
+  fg2dref.current?.zoom(6);
+  fg3dref.current?.cameraPosition({ x: 100, y: 100, z: 100 });
+
+  const zoomClick = useCallback(
+    (node: any) => {
+      if (node.x && node.y && node.z) {
+        const distance = 40;
+        const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+        if (fg3dref.current) {
+          console.log(fg3dref.current);
+          fg3dref.current.cameraPosition(
+            {
+              x: node.x * distRatio,
+              y: node.y * distRatio,
+              z: node.z * distRatio,
+            },
+            node,
+            3000
+          );
+        }
+      }
+    },
+    [fg3dref]
+  );
+
   return (
     <div
       className="w-full h-full flex flex-col justify-center items-center relative"
@@ -93,6 +123,7 @@ export default function GraphView({ theme }: GraphViewProps) {
       </div>
       {changeView === '2d' && (
         <ForchGraph2D
+          ref={fg2dref}
           graphData={graphData}
           width={dimensions.width - 30}
           height={dimensions.height - 30}
@@ -111,10 +142,11 @@ export default function GraphView({ theme }: GraphViewProps) {
 
       {changeView === '3d' && (
         <ForchGraph3D
+          ref={fg3dref}
           graphData={graphData}
           width={dimensions.width - 30}
           height={dimensions.height - 30}
-          onNodeClick={handleClick}
+          onNodeClick={zoomClick}
           backgroundColor="rgba(255, 255, 255, 0)"
           nodeColor={colors.black}
           nodeThreeObject={node3dPaint}

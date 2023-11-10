@@ -3,6 +3,7 @@ import { Node, Link, GraphData } from '@api/graph/types';
 import colors from '@src/design/color';
 import { useAppSelector } from '@store/store';
 import * as THREE from 'three';
+import SpriteText from 'three-spritetext';
 
 export const useGraph = () => {
   const [highlightLinks, setHighlightLinks] = useState(new Set());
@@ -65,31 +66,31 @@ export const useGraph = () => {
         ctx.fillStyle = color;
         ctx.fill();
 
-        ctx.font = '6px Pretendard';
+        ctx.font = '3px Pretendard';
         ctx.textAlign = 'center';
         ctx.fillText(name, x, y + textDistance);
       };
 
       if (node.x && node.y && node.name && node.nickname) {
         if (node.type === 'folder' && node.name === 'root') {
-          drawCircle(node.nickname, 14, node.x, node.y, 8, colors['main-100']);
+          drawCircle(node.nickname, 5, node.x, node.y, 2, colors['main-100']);
         } else {
           switch (node.type) {
             case 'folder':
-              drawCircle(node.name, 12, node.x, node.y, 5, colors['main-75']);
+              drawCircle(node.name, 5, node.x, node.y, 2, colors['main-75']);
               break;
             case 'note':
               drawCircle(
                 node.name,
-                12,
+                5,
                 node.x,
                 node.y,
-                5,
+                2,
                 theme === 'light' ? colors.charcol : colors.white
               );
               break;
             case 'link':
-              drawCircle(node.name, 12, node.x, node.y, 5, colors['main-50']);
+              drawCircle(node.name, 5, node.x, node.y, 2, colors['main-50']);
               break;
             default:
               console.error('Unknown node type:', node.type);
@@ -104,35 +105,6 @@ export const useGraph = () => {
   // 3d 버전 페인팅
   const node3dPaint = useCallback(
     (node: Node) => {
-      const canvas = document.createElement('canvas');
-      const size = 128;
-      canvas.width = size;
-      canvas.height = size;
-
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
-        const texture = new THREE.Texture();
-        const material = new THREE.SpriteMaterial({ map: texture });
-        const fallbackSprite = new THREE.Sprite(material);
-        fallbackSprite.scale.set(10, 10, 10);
-        return fallbackSprite;
-      }
-
-      const drawCircle = (color: string) => {
-        ctx.beginPath();
-        ctx.arc(size / 2, size / 2, size / 2, 0, 2 * Math.PI, false);
-        ctx.fillStyle = color;
-        ctx.fill();
-      };
-
-      const drawText = (text: string, fontSize: number, color: string) => {
-        ctx.font = `30px Pretendard`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillStyle = color;
-        ctx.fillText(text, size / 2, size / 2);
-      };
-
       let color;
 
       if (node.name === 'root') {
@@ -149,25 +121,37 @@ export const useGraph = () => {
             color = colors['main-50'];
             break;
           default:
-            color = '#888888'; // Default color for unknown types
+            color = '#888888';
             console.error('Unknown node type:', node.type);
             break;
         }
       }
 
-      drawCircle(color);
-      if (node.name) {
-        drawText(node.name, 12, 'black'); // You can adjust the font size and text color as needed
+      const geometry = new THREE.SphereGeometry(5, 32, 32);
+      const material = new THREE.MeshPhongMaterial({
+        color: color,
+        shininess: 80,
+      });
+      const sphere = new THREE.Mesh(geometry, material);
+
+      let sprite;
+      if (node.name === 'root') {
+        sprite = new SpriteText(node.nickname);
+      } else {
+        sprite = new SpriteText(node.name);
       }
+      sprite.color = theme === 'light' ? colors.charcol : colors.white;
+      sprite.textHeight = 3;
+      sprite.position.set(0, 10, 0);
+      sprite.fontFace = 'Pretendard';
+      // sprite.fontSize = 1;
 
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.needsUpdate = true; // Update the texture
+      sphere.add(sprite);
 
-      const material = new THREE.SpriteMaterial({ map: texture });
-      const sprite = new THREE.Sprite(material);
-      sprite.scale.set(10, 10, 10); // The scale can be adjusted as needed
+      const group = new THREE.Group();
+      group.add(sphere);
 
-      return sprite;
+      return group;
     },
     [theme]
   );
