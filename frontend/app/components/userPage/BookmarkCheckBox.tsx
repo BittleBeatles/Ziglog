@@ -10,7 +10,7 @@ interface BookmarkCheckBoxProps {
   bookmarkList: Note[];
   quotingNoteIds: number[];
   setQuotingNoteIds: Dispatch<SetStateAction<number[]>>;
-  setIdChange:Disaptch<SetStateAction<boolean>>
+  setIdChange: Dispatch<SetStateAction<boolean>>;
 }
 
 const TEXT_COLOR = {
@@ -23,7 +23,7 @@ export default function BookmarkCheckBox({
   bookmarkList,
   quotingNoteIds,
   setQuotingNoteIds,
-  setIdChange
+  setIdChange,
 }: BookmarkCheckBoxProps) {
   const handleChangeCheck = (noteId: number) => {
     if (quotingNoteIds.includes(noteId)) {
@@ -31,7 +31,7 @@ export default function BookmarkCheckBox({
     } else {
       setQuotingNoteIds([...quotingNoteIds, noteId]);
     }
-    setIdChange(true)
+    setIdChange(true);
   };
   return (
     <div
