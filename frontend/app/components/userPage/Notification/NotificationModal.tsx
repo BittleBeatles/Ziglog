@@ -1,15 +1,19 @@
-'use client';
 import ModalLayout from '@components/common/ModalLayout';
 import Text from '@components/common/Text';
 import NotificationButton from '@components/userPage/Notification/NotificationButton';
 import SingleNotification from './SingleNotification';
 import { useState } from 'react';
+import IconButton from '@components/common/IconButton';
 
 interface NotificationModalProps {
   theme: 'light' | 'dark';
+  openModal: (open: boolean) => void;
 }
 
-export default function NotificationModal({ theme }: NotificationModalProps) {
+export default function NotificationModal({
+  theme,
+  openModal,
+}: NotificationModalProps) {
   const [selectedType, setSelectedType] = useState<
     'all' | 'bookmark' | 'quotation'
   >('all');
@@ -20,6 +24,13 @@ export default function NotificationModal({ theme }: NotificationModalProps) {
     <ModalLayout classname={`${THEME_VARIANTS[theme]} px-10`}>
       <div className="">
         <Text type="h4">{'알림'}</Text>
+        <div className="absolute inset-y-0 right-0">
+          <IconButton
+            onClick={() => openModal(false)}
+            theme={theme}
+            name="Close"
+          />
+        </div>
         <div className={`${THEME_VARIANTS[theme]} border-t my-2`}></div>
         <div className="flex justify-satrt gap-2 mb-2">
           <NotificationButton
