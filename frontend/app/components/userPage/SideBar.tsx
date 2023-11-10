@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import ProfileImage from '@components/common/ProfileImage';
 import Text from '@components/common/Text';
 import IconButton from '@components/common/IconButton';
