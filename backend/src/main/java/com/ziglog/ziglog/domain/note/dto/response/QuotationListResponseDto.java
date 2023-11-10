@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Builder
+@Getter
 public class QuotationListResponseDto {
     private List<QuotationDto> quotingNotes;
     private List<QuotationDto> quotedNotes;
@@ -37,6 +38,7 @@ public class QuotationListResponseDto {
                         .noteId(note.getId())
                         .title(note.getTitle())
                         .nickname(note.getAuthor().getNickname())
+                        .isPublic(note.isPublic())
                         .build()
         ).toList();
 
