@@ -32,7 +32,8 @@
     "supports-color": "^9.4.0",
     "sweetalert2": "^11.9.0",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "three": "^0.157.0"
+    "three": "^0.157.0",
+    "three-spritetext": "^1.8.1"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "7.5.0-alpha.7",

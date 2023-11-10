@@ -80,6 +80,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tailwind-scrollbar-hide", "npm:1.1.7"],\
             ["tailwindcss", "npm:3.3.3"],\
             ["three", "npm:0.157.0"],\
+            ["three-spritetext", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.8.1"],\
             ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
             ["webpack", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:5.89.0"]\
           ],\
@@ -20832,6 +20833,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["three-spritetext", [\
+        ["npm:1.8.1", {\
+          "packageLocation": "./.yarn/cache/three-spritetext-npm-1.8.1-4eb6051d47-9173045851.zip/node_modules/three-spritetext/",\
+          "packageDependencies": [\
+            ["three-spritetext", "npm:1.8.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.8.1", {\
+          "packageLocation": "./.yarn/__virtual__/three-spritetext-virtual-b7bfdf8b2c/0/cache/three-spritetext-npm-1.8.1-4eb6051d47-9173045851.zip/node_modules/three-spritetext/",\
+          "packageDependencies": [\
+            ["three-spritetext", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.8.1"],\
+            ["@types/three", "npm:0.157.2"],\
+            ["three", "npm:0.157.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/three",\
+            "three"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["throttleit", [\
         ["npm:1.0.0", {\
           "packageLocation": "./.yarn/cache/throttleit-npm-1.0.0-6cbcfe7b7b-1b2db4d245.zip/node_modules/throttleit/",\
@@ -22446,6 +22469,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tailwind-scrollbar-hide", "npm:1.1.7"],\
             ["tailwindcss", "npm:3.3.3"],\
             ["three", "npm:0.157.0"],\
+            ["three-spritetext", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.8.1"],\
             ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
             ["webpack", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:5.89.0"]\
           ],\

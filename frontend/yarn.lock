@@ -16376,6 +16376,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"three-spritetext@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "three-spritetext@npm:1.8.1"
+  peerDependencies:
+    three: ">=0.86.0"
+  checksum: 9173045851ad38035e386cc0bf44c2163ea52d8dbb2d18d89ae2137c7f27b08073c155f89108bf5fb1c0dc69baa520b6ec7722a6e5f260c33e2f3a92d4e0c6f7
+  languageName: node
+  linkType: hard
+
 "three@npm:>=0.118 <1":
   version: 0.158.0
   resolution: "three@npm:0.158.0"
@@ -17736,6 +17745,7 @@ __metadata:
     tailwind-scrollbar-hide: ^1.1.7
     tailwindcss: ^3
     three: ^0.157.0
+    three-spritetext: ^1.8.1
     typescript: ^5
     webpack: ^5.89.0
   languageName: unknown
