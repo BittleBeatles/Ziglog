@@ -18,7 +18,7 @@ import { showAlert } from '@src/util/alert';
 import { useRouter } from 'next/navigation';
 import SideDataContext from '../../SideDataContext';
 import BookmarkCheckBox from '@components/userPage/BookmarkCheckBox';
-
+import { getQuotingNoteIdData, putQuotingNoteIdData } from '@api/quote/quote';
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
@@ -41,7 +41,7 @@ export default function EditNote() {
   const [isPublic, setIsPublic] = useState(false);
   const [bookmarks, setBookmarks] = useState<Note[]>([]);
   const [hasAccess, setHasAccess] = useState(false);
-  const [quotingNoteIds, setQuotingNoteIds] = useState<number[]>([1, 2, 3]);
+  const [quotingNoteIds, setQuotingNoteIds] = useState<number[]>([]);
   const [quotingNoteInfo, setQuotingNoteInfo] = useState({
     nickname: '',
     title: '',
@@ -49,6 +49,20 @@ export default function EditNote() {
   });
   const { getBookmarkList, getSideList } = useContext(SideDataContext);
   const router = useRouter();
+  // [마크다운용 북마크 가져오기]
+  const getMdBookmarkList = async () => {
+    const result = await getBookmark();
+    if (result) {
+      setBookmarks(result.notes);
+    }
+  };
+  // [참조 노트 ID 목록 가져오기]
+  const getQuotingNoteIdsList = async () => {
+    const result = await getQuotingNoteIdData(parseInt(noteId));
+    if (result) {
+      setQuotingNoteIds(result.quotingNoteIds);
+    }
+  };
   // 노트 정보 불러오기 + 북마크 정보 가져오기 + 참조하는 노트 id 목록 가져오기
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
@@ -63,20 +77,15 @@ export default function EditNote() {
         setTitle(result.data.title);
         setContent(result.data.content);
         setIsPublic(result.data.isPublic);
+
+        getMdBookmarkList();
+        getQuotingNoteIdsList();
       } else {
         router.push(`/user-page/${nickname}`);
         showAlert(`${result.message}`, 'error');
       }
     };
-    // 마크다운용 북마크 가져오기
-    const getMdBookmarkList = async () => {
-      const result = await getBookmark();
-      if (result) {
-        setBookmarks(result.notes);
-      }
-    };
     getNoteInfoEditPage(parseInt(noteId));
-    getMdBookmarkList();
   }, []);
   // 노트 수정하기
   const handleNoteEdit = () => {
@@ -91,12 +100,11 @@ export default function EditNote() {
         title: title,
         content: content,
       };
+      // 노트 제목 + 내용 수정
       const editNote = async (body: EditNoteParams) => {
         const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
         if (result) {
-          // router.push(
-          //   `/user-page/${params.userNickname}/read-note/${params.noteId}`
-          // );
+          editQuotingNoteIds();
           window.location.replace(
             `/user-page/${params.userNickname}/read-note/${params.noteId}`
           );
@@ -104,6 +112,13 @@ export default function EditNote() {
           getSideList();
           getBookmarkList();
         }
+      };
+      // 노트 참조 목록 수정
+      const editQuotingNoteIds = async () => {
+        const result = await putQuotingNoteIdData(
+          parseInt(noteId),
+          quotingNoteIds
+        );
       };
       editNote(body);
     } else {

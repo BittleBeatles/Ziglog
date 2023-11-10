@@ -42,13 +42,15 @@ export async function getQuotingNoteIdData(
 
 // 내가 참조하는 노트 ID 목록 put 요청
 export async function putQuotingNoteIdData(
-  noteId: number
+  noteId: number,
+  body: number[]
 ): Promise<quotingNoteIdsList> {
   try {
     const res = await privateFetch<QuotingNoteIdsApiData>(
       `${API_URL}/quote/quoting/${noteId}`,
       {
         method: 'PUT',
+        body: { quotingNoteIds: body },
       }
     );
     return Promise.resolve(res.body.data);
