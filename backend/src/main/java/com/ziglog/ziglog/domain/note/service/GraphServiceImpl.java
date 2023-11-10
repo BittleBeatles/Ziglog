@@ -18,7 +18,7 @@ public class GraphServiceImpl implements GraphService {
     private final FolderRepository folderRepository;
 
     @Override
-    public GraphResponseDto retrieveFolder(Folder folder) throws FolderNotFoundException {
+    public GraphResponseDto retrieveParentChildOnly(Folder folder) throws FolderNotFoundException {
         Folder folderPersist = folderRepository.findById(folder.getId()).orElseThrow(FolderNotFoundException::new);
         return GraphResponseDto.toDto(folderPersist);
     }
