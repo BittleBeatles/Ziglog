@@ -1,10 +1,18 @@
 package com.ziglog.ziglog.domain.member.service;
 
+import com.ziglog.ziglog.domain.member.dto.request.ModifyUserRequestDto;
+import com.ziglog.ziglog.domain.member.dto.request.NicknameDto;
+import com.ziglog.ziglog.domain.member.dto.response.MyInfoResponseDto;
+import com.ziglog.ziglog.domain.member.dto.response.NicknameValidationResponseDto;
+import com.ziglog.ziglog.domain.member.dto.response.UserPublicInfoResponseDto;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.InvalidUserModificationRequestException;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Folder;
+import com.ziglog.ziglog.domain.note.entity.Note;
+import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
+import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +31,35 @@ public class MemberServiceImpl implements MemberService{
     private final FolderRepository folderRepository;
 
     @Override
+    public UserPublicInfoResponseDto modifyUserInfo(Member member, ModifyUserRequestDto modifyUserRequestDto)
+            throws UserNotFoundException, InvalidUserModificationRequestException {
+        Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
+        modifyUserNickname(memberPersist, modifyUserRequestDto.getNickname());
+        modifyUserProfile(memberPersist, modifyUserRequestDto.getProfileUrl());
+        return UserPublicInfoResponseDto.toDto(memberPersist);
+    }
+
+    @Override
+    public NicknameValidationResponseDto validateNickname(Member member, NicknameDto nicknameDto) {
+        return NicknameValidationResponseDto.toDto(isValidNickname(member, nicknameDto.getNickname()));
+    }
+
+    @Override
+    public UserPublicInfoResponseDto getUserPublicInfoByNickname(String nickname) throws UserNotFoundException {
+        return UserPublicInfoResponseDto.toDto(findUserByNickname(nickname));
+    }
+
+    @Override
+    public MyInfoResponseDto getLoginUserInfo(Member member) throws UserNotFoundException, FolderNotFoundException {
+        Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
+
+        for (Folder folder : memberPersist.getFolders()){
+            if (folder.getParent() == null) return MyInfoResponseDto.toDto(memberPersist, folder);
+        }
+        throw new FolderNotFoundException();
+    }
+
+    @Override
     public Member findUserByEmail(String email) throws UserNotFoundException {
         return memberRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
@@ -35,16 +72,12 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void modifyUserNickname(Member member, String nickname) throws UserNotFoundException, InvalidUserModificationRequestException {
         if (!isValidNickname(member, nickname)) throw new InvalidUserModificationRequestException();
-        memberRepository.findByEmail(member.getEmail())
-                        .orElseThrow(UserNotFoundException::new)
-                        .setNickname(nickname);
+        member.setNickname(nickname);
     }
 
     @Override
     public void modifyUserProfile(Member member, String profileUrl) throws UserNotFoundException{
-        memberRepository.findByEmail(member.getEmail())
-                        .orElseThrow(UserNotFoundException::new)
-                        .setProfileUrl(profileUrl);
+        member.setProfileUrl(profileUrl);
     }
 
     @Override
@@ -55,7 +88,7 @@ public class MemberServiceImpl implements MemberService{
         return isNotDuplicatedNickname(nickname);
     }
 
-    @Override
+    @Override //테스트에서만 사용됨
     public Member signUp(String email, String nickname) throws Exception{
         Member member = memberRepository.save(
                 Member.builder()

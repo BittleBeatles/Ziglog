@@ -31,7 +31,7 @@ public class FolderController {
     @PostMapping("")
     public ResponseDto<Void> createFolder(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody CreateFolderRequestDto createFolderRequestDto)
             throws FolderNotFoundException, InconsistentNoteOwnerException, UserNotFoundException {
-        noteService.createFolder(userDetails.member(), createFolderRequestDto.getFolderName(), createFolderRequestDto.getParentId());
+        noteService.createFolder(userDetails.member(), createFolderRequestDto);
         return ResponseDto.of(200, "success");
     }
 
@@ -40,7 +40,7 @@ public class FolderController {
     @PutMapping("")
     public ResponseDto<Void> modifyFolder(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ModifyFolderNameRequestDto modifyFolderNameRequestDto)
             throws InconsistentFolderOwnerException, FolderNotFoundException {
-        noteService.modifyFolder(userDetails.member(), modifyFolderNameRequestDto.toEntity());
+        noteService.modifyFolder(userDetails.member(), modifyFolderNameRequestDto);
         return ResponseDto.of(200, "success");
     }
 
