@@ -28,7 +28,7 @@ export default function QuotationModal({
   return (
     <div>
       <div
-        className={`${THEME_VARIANTS[theme]} w-80 h-fit rounded-md border p-2`}
+        className={`${THEME_VARIANTS[theme]} w-80 max-h-60 overflow-auto rounded-md border p-2`}
       >
         {bookmarks?.map((bookmark, index) => (
           <SingleQuotation
