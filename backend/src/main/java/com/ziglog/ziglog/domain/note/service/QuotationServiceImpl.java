@@ -51,7 +51,6 @@ public class QuotationServiceImpl implements QuotationService {
     @Override
     public List<Long> updateQuotations(Member member, Long noteId, UpdateQuotationsRequestDto requestDto)
             throws UserNotFoundException, NoteNotFoundException {
-
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         if (!note.getAuthor().getId().equals(member.getId())) throw new InconsistentNoteOwnerException();
 
