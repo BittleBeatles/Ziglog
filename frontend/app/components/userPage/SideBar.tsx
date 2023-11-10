@@ -125,7 +125,15 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       ref={sidebarRef}
     >
       <div className="profile flex justify-between items-center px-8">
-        <ProfileImage src={profileUrl} />
+        <div className="relative">
+          <ProfileImage src={profileUrl} size={80} />
+          <IconButton
+            onClick={() => openModal(true)}
+            theme={theme}
+            name="Setting"
+            className="absolute bottom-2 right-2 transform translate-x-1/2 translate-y-1/2"
+          />
+        </div>
         <Text
           type="p"
           className={`${theme === 'dark' ? 'text-white' : ''} ml-2 text-sm`}
@@ -232,11 +240,11 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
             color="charcol"
           />
         )}
-        {isLogin && isMine && (
+        {isLogin && (
           <IconButton
             onClick={() => openModal(true)}
             theme={theme}
-            name="Setting"
+            name="Notification"
           />
         )}
       </div>
