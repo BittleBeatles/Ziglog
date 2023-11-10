@@ -23,19 +23,16 @@ export default function NotificationModal({ theme }: NotificationModalProps) {
         <div className={`${THEME_VARIANTS[theme]} border-t my-2`}></div>
         <div className="flex justify-satrt gap-2 mb-2">
           <NotificationButton
-            theme={theme}
             label="전체"
             isSelected={selectedType === 'all'}
             onClick={() => handleTypeChange('all')}
           ></NotificationButton>
           <NotificationButton
-            theme={theme}
             label="북마크"
             isSelected={selectedType === 'bookmark'}
             onClick={() => handleTypeChange('bookmark')}
           ></NotificationButton>
           <NotificationButton
-            theme={theme}
             label="인용"
             isSelected={selectedType === 'quotation'}
             onClick={() => handleTypeChange('quotation')}
