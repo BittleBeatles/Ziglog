@@ -48,11 +48,13 @@ export default function SingleNotification({
   });
   return (
     <Link
-      href={`/user-page/${nickname}/read-note/${targetNoteId}`}
+      href={`/user-page/${
+        type === 'bookmark' ? nickname : userNickname
+      }/read-note/${targetNoteId}`}
       onClick={onClick}
     >
       <div
-        className={`${THEME_VARIANTS[theme]} ${
+        className={`shadow ${THEME_VARIANTS[theme]} ${
           !isChecked && HOVER_COLOR[theme]
         } w-120 px-4 h-20 rounded-md flex flex-row`}
       >
@@ -79,7 +81,7 @@ export default function SingleNotification({
             <div className="flex flex-row">
               <p
                 className={`truncate max-w-xxs ${
-                  isChecked ? 'text-gray-500' : ''
+                  isChecked ? 'text-gray-400' : ''
                 }`}
               >
                 {userNickname}
@@ -87,7 +89,7 @@ export default function SingleNotification({
               {type == 'bookmark' ? (
                 <p
                   className={`leading-4 py-1 ${
-                    isChecked ? 'text-gray-500' : ''
+                    isChecked ? 'text-gray-400' : ''
                   }`}
                 >
                   {'님이 나의 게시물을 북마크했습니다.'}
@@ -95,7 +97,7 @@ export default function SingleNotification({
               ) : (
                 <p
                   className={`leading-4 py-1 ${
-                    isChecked ? 'text-gray-500' : ''
+                    isChecked ? 'text-gray-400' : ''
                   }`}
                 >
                   {'님이 나의 게시물을 인용했습니다.'}
@@ -105,12 +107,12 @@ export default function SingleNotification({
             <div className="flex flex-row">
               <div
                 className={`h-4 w-1 ${
-                  isChecked ? 'bg-gray-500' : 'bg-blue-300'
+                  isChecked ? 'bg-gray-400' : 'bg-blue-300'
                 } mr-1`}
               ></div>
               <p
                 className={`leading-4 font-normal  ${
-                  isChecked ? 'text-gray-500' : ''
+                  isChecked ? 'text-gray-400' : ''
                 }`}
               >
                 {noteTitle}
@@ -125,7 +127,7 @@ export default function SingleNotification({
 
 const THEME_VARIANTS = {
   light: 'bg-light-background-layout',
-  dark: 'bg-dark-background-page text-white ',
+  dark: 'bg-charcol text-white ',
 };
 
 const HOVER_COLOR = {
