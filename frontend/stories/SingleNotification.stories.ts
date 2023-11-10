@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import SingleNotification from '@components/userPage/SingleNotification';
+import SingleNotification from '@components/userPage/Notification/SingleNotification';
 
 const meta: Meta<typeof SingleNotification> = {
-  title: 'components/userPage/SingleNotification',
+  title: 'components/userPage/Notification/SingleNotification',
   component: SingleNotification,
 } satisfies Meta<typeof SingleNotification>;
 
