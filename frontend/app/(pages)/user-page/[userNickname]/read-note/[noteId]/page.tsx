@@ -6,7 +6,8 @@ import BookmarkQuoteInfo from '@components/userPage/BookmarkQuoteInfo';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import QuotationListBox from '@components/userPage/QuotationListBox';
 import { NoteInfo } from '@api/note/types';
-import { deleteNote, getNoteInfo, getReferenceList } from '@api/note/note';
+import { deleteNote, getNoteInfo } from '@api/note/note';
+import { getQuoteData } from '@api/quote/quote';
 import { useEffect, useState, useContext } from 'react';
 import { useAppSelector } from '@store/store';
 import { NoteRefListInfo } from '@api/note/types';
@@ -26,7 +27,8 @@ export default function ReadNote() {
   const { theme, isLogin } = useAppSelector((state) => state.user);
   const userNickname = useAppSelector((state) => state.user.nickname);
   const [quotationInfo, setQuotationInfo] = useState<NoteRefListInfo>({
-    quotationList: [],
+    quotingNotes: [],
+    quotedNotes: [],
   });
   const params = useParams();
   const paramNoteId = decodeURIComponent(params.noteId as string);
@@ -45,9 +47,9 @@ export default function ReadNote() {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const { getBookmarkList, getSideList } = useContext(SideDataContext);
   const [isPublic, setIsPublic] = useState(false);
+  // [GET 참조 목록]
   const getQuotationList = async (noteId: number) => {
-    const result = await getReferenceList(noteId);
-    console.log('참조목록 리스트', result);
+    const result = await getQuoteData(noteId);
     if (result) {
       setQuotationInfo(result);
     }
