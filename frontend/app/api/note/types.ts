@@ -16,7 +16,6 @@ export interface NoteInfo {
 export interface EditNoteParams {
   title: string;
   content: string;
-  quotingNotes: number[];
 }
 
 export interface NotePublicStatus {
