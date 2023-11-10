@@ -46,10 +46,6 @@ public class NoteServiceImpl implements NoteService{
     private final NoteRepository noteRepository;
     private final QuotationRepository quotationRepository;
 
-    //TODO 결합도 높아짐 리팩토링 필요함
-    private final NotificationService notificationService;
-    private final EmitterService emitterService;
-
     @Override
     public void createNote(Member member, CreateNoteRequestDto requestDto)throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException{
         createNote(member, requestDto.getFolderId());
@@ -106,24 +102,6 @@ public class NoteServiceImpl implements NoteService{
         notePersist.setPreview(preview);//목록 프리뷰
         log.info("preview : {}", preview);
         notePersist.setEditDatetime(LocalDateTime.now());//수정일
-
-        List<Quotation> noteQuoting = note.getQuoting(); //새 노트가 인용하고 있는 노트의 리스트
-        List<Quotation> originQuoting = notePersist.getQuoting();
-
-        quotationRepository.deleteQuotationsByIdIn(originQuoting.stream().map(Quotation::getId).toList());
-        quotationRepository.saveAll(noteQuoting);
-        notePersist.setQuoting(noteQuoting);
-
-        //TODO 리팩토링 필요
-//        noteQuoting.stream().forEach(quotation -> {
-//            Note startNote = noteRepository.findNoteById(quotation.getStartNote().getId()).get();
-//            Notification notification = notificationService.saveQuotationNotification(member, Quotation.builder().startNote(startNote).build());
-//            try {
-//                emitterService.notifyEvent(startNote.getAuthor(), notification);
-//            } catch (Exception e){
-//               e.printStackTrace();
-//            }
-//        });
 
         return notePersist;
     }
@@ -238,7 +216,7 @@ public class NoteServiceImpl implements NoteService{
         TextCollectingVisitor textCollectingVisitor = new TextCollectingVisitor();
         String text = textCollectingVisitor.collectAndGetText(document);
 
-        text = text.substring(0, Integer.min(text.length(), 200));
+        text = text.substring(0, Integer.min(text.length(), 400));
         text = text.replace('\n', ' ');
 
         return text;
