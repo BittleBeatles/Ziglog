@@ -27,6 +27,7 @@ export interface DirectoryProps {
   >;
   folderName?: string;
   setFolderName?: Dispatch<SetStateAction<string>>;
+  isMine?: boolean;
 }
 
 export default function Directory({
@@ -37,6 +38,7 @@ export default function Directory({
   folderName,
   setFolderName,
   setShowInput,
+  isMine,
 }: DirectoryProps) {
   const params = useParams();
   const currentNoteId = Number(params.noteId);
@@ -103,7 +105,9 @@ export default function Directory({
   return (
     <div className="w-full">
       <div className="flex justify-between mb-2">
-        <Text type="b">워크스페이스</Text>
+        <Text type="b">
+          {isMine && isMine ? '내 워크스페이스' : '워크스페이스'}
+        </Text>
         <IconButton
           onClick={() => setModifyDelete(!isModifyDelete)}
           theme={theme}

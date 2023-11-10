@@ -184,6 +184,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         <div className="px-6">
           <div className="flex justify-start mt-5 mb-3">
             <Directory
+              isMine={isMine}
               parentId={parentId}
               setParentId={setParentId}
               theme={theme}
