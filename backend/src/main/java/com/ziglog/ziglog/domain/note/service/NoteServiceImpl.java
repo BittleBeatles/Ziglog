@@ -1,7 +1,6 @@
 package com.ziglog.ziglog.domain.note.service;
 
 import com.vladsch.flexmark.parser.Parser;
-import com.vladsch.flexmark.parser.PegdownExtensions;
 import com.vladsch.flexmark.profile.pegdown.Extensions;
 import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;
 import com.vladsch.flexmark.util.ast.Node;
@@ -11,6 +10,14 @@ import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
+import com.ziglog.ziglog.domain.note.dto.request.folder.CreateFolderRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.folder.ModifyFolderNameRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.CreateNoteRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.ModifyNoteRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.SetPublicRequestDto;
+import com.ziglog.ziglog.domain.note.dto.response.IsPublicResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.ReadNoteResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.RetrieveFolderResponseDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
@@ -18,7 +25,6 @@ import com.ziglog.ziglog.domain.note.exception.exceptions.*;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
-import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.service.EmitterService;
 import com.ziglog.ziglog.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +46,30 @@ public class NoteServiceImpl implements NoteService{
     private final NoteRepository noteRepository;
     private final QuotationRepository quotationRepository;
 
-    //TODO 결합도 높아짐 리팩토링 필요함
-    private final NotificationService notificationService;
-    private final EmitterService emitterService;
+    @Override
+    public void createNote(Member member, CreateNoteRequestDto requestDto)throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException{
+        createNote(member, requestDto.getFolderId());
+    }
+
+    @Override
+    public ReadNoteResponseDto read(Member member, Long noteId) throws NoteNotFoundException, NoAuthorizationToReadException{
+        return ReadNoteResponseDto.toDto(readNote(member, noteId));
+    }
+
+    @Override
+    public  IsPublicResponseDto setPublic(Member member, Long noteId, SetPublicRequestDto requestDto)  throws InconsistentFolderOwnerException, NoteNotFoundException{
+        return IsPublicResponseDto.toDto(setPublic(member, noteId, requestDto.getIsPublic()).isPublic());
+    }
+
+    @Override
+    public void modifyNote(Member member, Long noteId, ModifyNoteRequestDto requestDto) throws NoteNotFoundException, InconsistentFolderOwnerException{
+        modifyNote(member, requestDto.toEntity(noteId));
+    }
+
+    @Override
+    public RetrieveFolderResponseDto retrieveRootNote(String nickname) throws UserNotFoundException, NoteNotFoundException {
+        return RetrieveFolderResponseDto.toDto(getRootFolder(nickname));
+    }
 
     //Note
     @Override
@@ -75,24 +102,6 @@ public class NoteServiceImpl implements NoteService{
         notePersist.setPreview(preview);//목록 프리뷰
         log.info("preview : {}", preview);
         notePersist.setEditDatetime(LocalDateTime.now());//수정일
-
-        List<Quotation> noteQuoting = note.getQuoting(); //새 노트가 인용하고 있는 노트의 리스트
-        List<Quotation> originQuoting = notePersist.getQuoting();
-
-        quotationRepository.deleteQuotationsByIdIn(originQuoting.stream().map(Quotation::getId).toList());
-        quotationRepository.saveAll(noteQuoting);
-        notePersist.setQuoting(noteQuoting);
-
-        //TODO 리팩토링 필요
-//        noteQuoting.stream().forEach(quotation -> {
-//            Note startNote = noteRepository.findNoteById(quotation.getStartNote().getId()).get();
-//            Notification notification = notificationService.saveQuotationNotification(member, Quotation.builder().startNote(startNote).build());
-//            try {
-//                emitterService.notifyEvent(startNote.getAuthor(), notification);
-//            } catch (Exception e){
-//               e.printStackTrace();
-//            }
-//        });
 
         return notePersist;
     }
@@ -133,7 +142,9 @@ public class NoteServiceImpl implements NoteService{
 
     // Folder
     @Override
-    public Folder createFolder(Member member, String title, Long parentId) throws FolderNotFoundException, InconsistentNoteOwnerException, UserNotFoundException {
+    public Folder createFolder(Member member, CreateFolderRequestDto requestDto) throws FolderNotFoundException, InconsistentNoteOwnerException, UserNotFoundException {
+        Long parentId = requestDto.getParentId();
+        String title = requestDto.getFolderName();
         log.info("parentId : {}", parentId);
         Folder parent = folderRepository.findById(parentId).orElseThrow(FolderNotFoundException::new);
         checkOwner(member, parent);
@@ -151,12 +162,12 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Folder modifyFolder(Member member, Folder folder) throws InconsistentFolderOwnerException, FolderNotFoundException {
+    public Folder modifyFolder(Member member, ModifyFolderNameRequestDto requestDto) throws InconsistentFolderOwnerException, FolderNotFoundException {
         //JPA 영속성 컨테스트 내
-        Folder origin = folderRepository.findById(folder.getId()).orElseThrow(FolderNotFoundException::new);
+        Folder origin = folderRepository.findById(requestDto.getFolderId()).orElseThrow(FolderNotFoundException::new);
         checkOwner(member,origin);
 
-        origin.setTitle(folder.getTitle());
+        origin.setTitle(requestDto.getFolderName());
         return origin;
     }
 
@@ -205,7 +216,7 @@ public class NoteServiceImpl implements NoteService{
         TextCollectingVisitor textCollectingVisitor = new TextCollectingVisitor();
         String text = textCollectingVisitor.collectAndGetText(document);
 
-        text = text.substring(0, Integer.min(text.length(), 200));
+        text = text.substring(0, Integer.min(text.length(), 400));
         text = text.replace('\n', ' ');
 
         return text;

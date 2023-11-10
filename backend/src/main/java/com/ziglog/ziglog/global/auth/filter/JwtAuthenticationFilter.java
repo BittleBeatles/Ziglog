@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-
+        log.info("api : {}", request.getServletPath());
         if (request.getServletPath().equals(REFRESH_URL)){
             checkRefreshTokenAndReissueAccessToken(request, response, filterChain);
         }

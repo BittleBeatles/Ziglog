@@ -31,8 +31,8 @@ public class BookmarkController {
     @PostMapping("")
     public ResponseDto<Void> addBookmark(@AuthenticationPrincipal CustomUserDetails userDetails,
                                          @RequestBody AddBookmarkRequestDto addBookmarkRequestDto)
-            throws UserNotFoundException, NoteNotFoundException, BookmarkAlreadyExistsException, Exception {
-        bookmarkService.addBookmark(userDetails.member(), addBookmarkRequestDto.getNoteId());
+            throws UserNotFoundException, NoteNotFoundException, BookmarkAlreadyExistsException {
+        bookmarkService.addBookmark(userDetails.member(), addBookmarkRequestDto);
         return ResponseDto.of(200, "success");
     }
 
@@ -49,7 +49,7 @@ public class BookmarkController {
             description = "내 북마크 목록을 조회합니다.")
     @GetMapping("")
     public ResponseDto<BookmarkListDto> getLoginUserBookmarks(@AuthenticationPrincipal CustomUserDetails userDetails) throws UserNotFoundException {
-        return ResponseDto.of(BookmarkListDto.toDto(bookmarkService.getBookmarkedNotes(userDetails.member())));
+        return ResponseDto.of(bookmarkService.getBookmarkedNotes(userDetails.member()));
     }
 
     @Operation(summary = "북마크 확인",
@@ -57,7 +57,7 @@ public class BookmarkController {
     @GetMapping("/{noteId}")
     public ResponseDto<IsBookmarkedDto> checkIsBookmarked(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                           @PathVariable("noteId") Long noteId) throws UserNotFoundException {
-        return ResponseDto.of(new IsBookmarkedDto(bookmarkService.checkIsBookmarked(userDetails.member(), noteId)));
+        return ResponseDto.of(bookmarkService.checkIsBookmarked(userDetails.member(), noteId));
     }
 
 }

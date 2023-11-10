@@ -9,8 +9,7 @@ import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.InvalidUserModificationRequestException;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.service.MemberService;
-import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
-import com.ziglog.ziglog.domain.note.service.NoteService;
+import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,17 +27,15 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
-    private final NoteService noteService;
 
     @PutMapping("/modify")
     @Operation(summary = "현재 로그인한 회원 정보를 수정",
                 description = "현재 로그인한 회원의 닉네임과 프로필 사진을 변경 및 저장")
     public ResponseDto<UserPublicInfoResponseDto> modifyNickname(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                              ModifyUserRequestDto nickname) throws UserNotFoundException, InvalidUserModificationRequestException {
+                                                                 @RequestBody ModifyUserRequestDto modifyUserRequestDto)
+            throws UserNotFoundException, InvalidUserModificationRequestException {
         Member member = userDetails.member();
-        memberService.modifyUserNickname(member, nickname.getNickname());
-        memberService.modifyUserProfile(member, nickname.getProfileUrl());
-        return ResponseDto.of(UserPublicInfoResponseDto.toDto(member));
+        return ResponseDto.of(memberService.modifyUserInfo(member, modifyUserRequestDto));
     }
 
     @Operation(summary = "사용 가능한 닉네임인지 확인",
@@ -46,22 +43,21 @@ public class MemberController {
     @PostMapping("/check/nickname")
     public ResponseDto<NicknameValidationResponseDto> checkNicknameValidation(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                                               @RequestBody NicknameDto nickname){
-        return ResponseDto.of(NicknameValidationResponseDto.toDto(memberService.isValidNickname(userDetails.member(), nickname.getNickname())));
+        return ResponseDto.of(memberService.validateNickname(userDetails.member(), nickname));
     }
 
     @Operation(summary = "닉네임으로 공개 정보를 조회",
             description = "닉네임으로 해당 사용자의 닉네임과 프로필 이미지 주소를 조회")
     @GetMapping("/{nickname}")
     public ResponseDto<UserPublicInfoResponseDto> getUserPublicInfo(@PathVariable String nickname) throws UserNotFoundException {
-        return ResponseDto.of(UserPublicInfoResponseDto.toDto(memberService.findUserByNickname(nickname)));
+        return ResponseDto.of(memberService.getUserPublicInfoByNickname(nickname));
     }
 
     @Operation(summary = "현재 로그인한 회원의 공개 정보를 조회",
             description = "액세스 토큰을 기반으로 현재 로그인한 사용자의 닉네임과 프로필 이미지 주소를 조회")
     @GetMapping("/info")
-    public ResponseDto<MyInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws UserNotFoundException, NoteNotFoundException {
-        return ResponseDto.of(MyInfoResponseDto.toDto(memberService.findUserByEmail(userDetails.member().getEmail()),
-                noteService.getRootFolder(userDetails.member().getNickname())));
+    public ResponseDto<MyInfoResponseDto> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) throws UserNotFoundException, FolderNotFoundException {
+        return ResponseDto.of(memberService.getLoginUserInfo(userDetails.member()));
     }
 
     @GetMapping("/test")

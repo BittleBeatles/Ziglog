@@ -28,6 +28,6 @@ public class SearchController {
                                 @RequestParam("page") Integer page, @RequestParam("perPage") Integer perPage) throws Exception{
         //최근 글부터 보여줌
         PageRequest pageRequest = PageRequest.of(page, perPage, Sort.by("postDatetime").descending());
-        return ResponseDto.of(SearchResponseDto.toDto(searchService.searchNotes(keyword, nickname, pageRequest)));
+        return ResponseDto.of(searchService.searchNotes(keyword, nickname, pageRequest));
     }
 }

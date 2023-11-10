@@ -1,5 +1,8 @@
 package com.ziglog.ziglog.domain.bookmark.service;
 
+import com.ziglog.ziglog.domain.bookmark.dto.request.AddBookmarkRequestDto;
+import com.ziglog.ziglog.domain.bookmark.dto.response.BookmarkListDto;
+import com.ziglog.ziglog.domain.bookmark.dto.response.IsBookmarkedDto;
 import com.ziglog.ziglog.domain.bookmark.entity.Bookmark;
 import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkAlreadyExistsException;
 import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkNotFoundException;
@@ -23,6 +26,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class BookmarkServiceImpl implements BookmarkService {
 
     private final MemberRepository memberRepository;
@@ -30,9 +34,10 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final BookmarkRepository bookmarkRepository;
 
     @Override
-    public void addBookmark(Member member, Long noteId) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException {
+    public void addBookmark(Member member, AddBookmarkRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException {
+        Long noteId = requestDto.getNoteId();
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
-        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
+        Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
 
         List<Bookmark> bookmarkList = bookmarkRepository.findAllByMember(memberPersist);
         Bookmark checkExists = bookmarkList.stream().filter(bookmark -> bookmark.getNote().getId().equals(noteId)).findAny().orElse(null);
@@ -45,21 +50,13 @@ public class BookmarkServiceImpl implements BookmarkService {
 
         bookmark = bookmarkRepository.save(bookmark);
         memberPersist.getBookmarks().add(bookmark);
-
-//        Notification notification = notificationService.saveBookmarkNotification(note.getAuthor(), bookmark);
-//
-//        try {
-//            emitterService.notifyEvent(note.getAuthor(), notification);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Override
     public void deleteBookmark(Member member, Long noteId) throws NoteNotFoundException, UserNotFoundException, BookmarkNotFoundException{
         //persist
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
-        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
+        Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
         Bookmark bookmark = bookmarkRepository.findBookmarkByMemberAndNote(memberPersist, note).orElseThrow(BookmarkNotFoundException::new);
 
         memberPersist.getBookmarks().remove(bookmark);
@@ -67,15 +64,21 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public List<Note> getBookmarkedNotes(Member member) throws UserNotFoundException {
-        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
+    public BookmarkListDto getBookmarkedNotes(Member member) throws UserNotFoundException {
+        Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
         List<Note> bookmarkedNotes = memberPersist.getBookmarks().stream().map(Bookmark::getNote).toList() ;
-        return bookmarkedNotes;
+
+        return BookmarkListDto.toDto(bookmarkedNotes);
     }
 
     @Override
-    public Boolean checkIsBookmarked(Member member, Long noteId) throws UserNotFoundException {
-        Member memberPersist = memberRepository.findByEmail(member.getEmail()).orElseThrow(UserNotFoundException::new);
+    public IsBookmarkedDto checkIsBookmarked(Member member, Long noteId) throws UserNotFoundException{
+        return new IsBookmarkedDto(isBookmarked(member, noteId));
+    }
+
+    @Override
+    public Boolean isBookmarked(Member member, Long noteId) throws UserNotFoundException {
+        Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
         List<Bookmark> bookmarks = memberPersist.getBookmarks();
 
         for (Bookmark bookmark : bookmarks) {
