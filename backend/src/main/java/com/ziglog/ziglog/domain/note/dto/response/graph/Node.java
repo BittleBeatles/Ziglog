@@ -2,7 +2,15 @@ package com.ziglog.ziglog.domain.note.dto.response.graph;
 
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+
+@Builder
+@Getter
+@AllArgsConstructor
 public class Node {
     private final Long id;
     private final String name;
@@ -10,7 +18,7 @@ public class Node {
     private final String nickname;
     private final Long realId;
 
-    private Node(Long id, Folder folder) {
+    public Node(Long id, Folder folder) {
         this.id = id;
         this.name = folder.getTitle();
         this.type = "folder";
@@ -18,7 +26,7 @@ public class Node {
         this.realId = folder.getId();
     }
 
-    private Node(Long id, Note note){
+    public Node(Long id, Note note){
         this.id = id;
         this.name = note.getTitle();
         this.type = "note";
