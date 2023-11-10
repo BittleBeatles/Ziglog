@@ -6,6 +6,6 @@ import com.ziglog.ziglog.domain.note.entity.Folder;
 
 public interface GraphService {
 
-    GraphResponseDto retrieveFolder(Folder folder);
+    GraphResponseDto retrieveParentChildOnly(Folder folder);
 
 }
