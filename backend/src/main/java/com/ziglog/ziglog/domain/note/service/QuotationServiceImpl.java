@@ -59,6 +59,7 @@ public class QuotationServiceImpl implements QuotationService {
         List<Long> noteToNotify = requestDto.getQuotingNoteIds().stream().filter(id -> !prevQuotingId.contains(id)).toList();
 
         quotationRepository.deleteQuotationsByIdIn(note.getQuoting().stream().map(Quotation::getId).toList());
+
         List<Quotation>  newQuotationList = requestDto.getQuotingNoteIds().stream().map(id -> Quotation.builder()
                 .startNote(Note.builder().id(id).build())
                 .endNote(note)
