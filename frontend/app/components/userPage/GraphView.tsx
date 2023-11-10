@@ -4,10 +4,10 @@ import dynamic from 'next/dynamic';
 import colors from '@src/design/color';
 import { useParams, useRouter } from 'next/navigation';
 import { useGraph } from '@src/hooks/useGraph';
-import { GraphData, Link, Node } from '@api/graph/types';
+import { Node } from '@api/graph/types';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
-import Button from '@components/common/Button';
 import NodeSample from '@components/common/NodeSample';
+import GraphConverter from '@components/common/GraphConverter';
 
 const ForchGraph2D = dynamic(() => import('react-force-graph-2d'), {
   ssr: false,
@@ -27,19 +27,11 @@ export default function GraphView({ theme }: GraphViewProps) {
   const params = useParams();
   const nickname = decodeURIComponent(params.userNickname as string);
   const { graphData, getGraphData } = useContext(SideDataContext);
-  const [changeView, setChangeView] = useState<'2d' | '3d'>('2d');
+  const [changeView, setChangeView] = useState<'2d' | '3d' | 'note'>('2d');
 
   useEffect(() => {
     getGraphData();
   }, [nickname]);
-
-  const handleView = () => {
-    if (changeView === '2d') {
-      setChangeView('3d');
-    } else {
-      setChangeView('2d');
-    }
-  };
 
   const {
     highlightLinks,
@@ -63,6 +55,10 @@ export default function GraphView({ theme }: GraphViewProps) {
     }
   };
 
+  const onGraphChange = (current: '2d' | '3d' | 'note') => {
+    setChangeView(current);
+  };
+
   useEffect(() => {
     function updateSize() {
       if (containerRef.current) {
@@ -82,7 +78,7 @@ export default function GraphView({ theme }: GraphViewProps) {
       className="w-full h-full flex flex-col justify-center items-center relative"
       ref={containerRef}
     >
-      <div className="flex absolute top-0 left-0 p-4 z-10 items-center">
+      <div className="flex absolute top-0 left-0 p-3 z-10 items-center">
         <NodeSample theme={theme} type="folder" text="폴더" />
         {theme === 'light' ? (
           <NodeSample theme={theme} type="noteLight" text="노트" />
@@ -92,12 +88,8 @@ export default function GraphView({ theme }: GraphViewProps) {
 
         <NodeSample theme={theme} type="link" text="참조" />
       </div>
-      <div className="absolute top-0 right-0 p-4 z-10">
-        <Button
-          onClick={handleView}
-          label={changeView === '2d' ? '3D' : '2D'}
-          color="blue"
-        />
+      <div className="absolute top-0 right-0 p-3 z-10">
+        <GraphConverter current={changeView} onGraphChange={onGraphChange} />
       </div>
       {changeView === '2d' && (
         <ForchGraph2D
@@ -127,6 +119,14 @@ export default function GraphView({ theme }: GraphViewProps) {
           nodeColor={colors.black}
           nodeThreeObject={node3dPaint}
           linkColor={() => colors.grey}
+        />
+      )}
+
+      {changeView === 'note' && (
+        <ForchGraph2D
+          graphData={graphData}
+          width={dimensions.width - 30}
+          height={dimensions.height - 30}
         />
       )}
     </div>
