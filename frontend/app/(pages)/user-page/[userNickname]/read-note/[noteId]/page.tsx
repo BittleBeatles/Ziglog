@@ -1,13 +1,13 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
 import Text from '@components/common/Text';
+import SvgIcon from '@components/common/SvgIcon';
 import Button from '@components/common/Button';
 import BookmarkQuoteInfo from '@components/userPage/BookmarkQuoteInfo';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import QuotationListBox from '@components/userPage/QuotationListBox';
 import { NoteInfo } from '@api/note/types';
 import { deleteNote, getNoteInfo } from '@api/note/note';
-import { getQuoteData } from '@api/quote/quote';
 import { useEffect, useState, useContext } from 'react';
 import { useAppSelector } from '@store/store';
 import { NoteRefListInfo } from '@api/note/types';
@@ -21,12 +21,13 @@ import { showAlert } from '@src/util/alert';
 import SideDataContext from '../../SideDataContext';
 import { changeNotePublicStatusRequest } from '@api/note/editNote';
 import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
-
+import { getQuoteData } from '@api/quote/quote';
+import { quotingQuotedNotes } from '@api/quote/types';
 export default function ReadNote() {
   const router = useRouter();
   const { theme, isLogin } = useAppSelector((state) => state.user);
   const userNickname = useAppSelector((state) => state.user.nickname);
-  const [quotationInfo, setQuotationInfo] = useState<NoteRefListInfo>({
+  const [quotationInfo, setQuotationInfo] = useState<quotingQuotedNotes>({
     quotingNotes: [],
     quotedNotes: [],
   });
@@ -194,7 +195,7 @@ export default function ReadNote() {
                     color="blue"
                     label="수정"
                     size="text-xs"
-                  />
+                  ></Button>
                 </div>
                 <div className="ml-3">
                   <Button
@@ -202,7 +203,7 @@ export default function ReadNote() {
                     onClick={handleDelete}
                     label="삭제"
                     size="text-xs"
-                  />
+                  ></Button>
                 </div>
               </div>
             ) : (
@@ -215,27 +216,34 @@ export default function ReadNote() {
             <BookmarkQuoteInfo
               theme={theme}
               bookmarkCount={data.bookmarkCount}
-              quotedCount={quotationInfo.quotationList.length}
+              quotedCount={quotationInfo.quotedNotes.length}
               isBookmarked={isBookmarked}
               handleBookmarkChange={handleBookmarkChange}
               isLogin={isLogin}
-            />
+            ></BookmarkQuoteInfo>
           </div>
 
-          <div className="w-full mx-24">
+          <div data-color-mode={theme} className="w-full mx-24">
             <div className="wmde-markdown-var">
-              <MarkdownPreview
-                source={data.content}
-                wrapperElement={{ 'data-color-mode': theme }}
-              />
+              <MarkdownPreview source={data.content} />
             </div>
           </div>
         </div>
         <div className="mx-40 mt-10 mb-4">
           <QuotationListBox
+            userNickname={paramsNickname}
+            label="이 글을 참조한 노트들"
             theme={theme}
-            quotationList={quotationInfo.quotationList}
-          />
+            quotationList={quotationInfo.quotedNotes}
+          ></QuotationListBox>
+        </div>
+        <div className="mx-40 mt-10 mb-4">
+          <QuotationListBox
+            userNickname={paramsNickname}
+            label="이 글이 참조하는 노트들"
+            theme={theme}
+            quotationList={quotationInfo.quotingNotes}
+          ></QuotationListBox>
         </div>
       </div>
     )
