@@ -4,11 +4,14 @@ import SvgIcon from '@components/common/SvgIcon';
 import IconButton from '@components/common/IconButton';
 import { useState } from 'react';
 import colors from '@src/design/color';
-import Link from 'next/link';
-import { NoteRefListInfo } from '@api/note/types';
+import { quoteNote } from '@api/quote/types';
+import { useRouter } from 'next/navigation';
+import { showAlert } from '@src/util/alert';
 
-interface QuotationListBoxProps extends NoteRefListInfo {
+interface QuotationListBoxProps {
   theme: 'dark' | 'light';
+  quotationList: quoteNote[];
+  label: string;
 }
 
 const TEXT_COLOR = {
@@ -19,8 +22,10 @@ const TEXT_COLOR = {
 export default function QuotationListBox({
   theme,
   quotationList,
+  label,
 }: QuotationListBoxProps) {
   const [showList, setShowList] = useState(true);
+  const router = useRouter();
   return (
     <div
       className={`${THEME_VARIANTS[theme]} relative rounded-md p-5 flex flex-col gap-4`}
@@ -30,7 +35,7 @@ export default function QuotationListBox({
         <SvgIcon name="BookMarkFill" color={colors['main-100']} size={70} />
       </div>
       {/* 제목 */}
-      <Text type="h3">이 글을 참조한 글 목록</Text>
+      <Text type="h3">{label}</Text>
       {/* 목록 보기 */}
       <div className="flex flex-row gap-1 items-center">
         <IconButton
@@ -41,16 +46,25 @@ export default function QuotationListBox({
         />
         <Text>목록 보기</Text>
       </div>
-      {/* 목록 - 추후에 onClick 이벤트 추가하기*/}
+
       {showList && (
         <ul className="flex flex-col gap-1 ml-2">
           {quotationList.length > 0 ? (
             quotationList.map((item) => {
               return (
-                <Link
-                  href={`/user-page/${item.nickname}/read-note/${item.noteId}`}
+                <span
                   key={item.noteId}
+                  onClick={() => {
+                    if (item.isPublic) {
+                      router.push(
+                        `/user-page/${item.nickname}/read-note/${item.noteId}`
+                      );
+                    } else {
+                      showAlert('비공개 글 입니다.', 'info');
+                    }
+                  }}
                 >
+                  {!item.isPublic && <SvgIcon name="Private" />}
                   <Text
                     type="p"
                     className={`${TEXT_COLOR[theme]}`}
@@ -58,7 +72,7 @@ export default function QuotationListBox({
                   >
                     {item.nickname} : {item.title}
                   </Text>
-                </Link>
+                </span>
               );
             })
           ) : (

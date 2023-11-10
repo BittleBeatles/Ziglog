@@ -1,4 +1,4 @@
-interface quoteNote {
+export interface quoteNote {
   noteId: number;
   title: string;
   isPublic: boolean;
