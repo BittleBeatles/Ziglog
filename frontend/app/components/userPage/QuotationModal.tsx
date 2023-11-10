@@ -18,12 +18,14 @@ interface QuotationModalProps extends ButtonHTMLAttributes<HTMLButtonElement> {
       noteId: number;
     }>
   >;
+  userNickname: string;
 }
 
 export default function QuotationModal({
   theme,
   setQuotingNoteInfo,
   bookmarks,
+  userNickname,
 }: QuotationModalProps) {
   return (
     <div>
@@ -38,7 +40,7 @@ export default function QuotationModal({
             nickname={bookmark.nickname}
             isPublic={bookmark.isPublic}
             onClick={() => {
-              bookmark.isPublic
+              bookmark.isPublic || userNickname === bookmark.nickname
                 ? setQuotingNoteInfo({
                     title: bookmark.title,
                     nickname: bookmark.nickname,

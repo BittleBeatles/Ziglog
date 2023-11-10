@@ -12,6 +12,7 @@ interface QuotationListBoxProps {
   theme: 'dark' | 'light';
   quotationList: quoteNote[];
   label: string;
+  userNickname: string;
 }
 
 const TEXT_COLOR = {
@@ -23,6 +24,7 @@ export default function QuotationListBox({
   theme,
   quotationList,
   label,
+  userNickname,
 }: QuotationListBoxProps) {
   const [showList, setShowList] = useState(true);
   const router = useRouter();
@@ -53,9 +55,10 @@ export default function QuotationListBox({
             quotationList.map((item) => {
               return (
                 <span
+                  className="cursor-pointer"
                   key={item.noteId}
                   onClick={() => {
-                    if (item.isPublic) {
+                    if (item.isPublic || userNickname === item.nickname) {
                       router.push(
                         `/user-page/${item.nickname}/read-note/${item.noteId}`
                       );
@@ -64,14 +67,16 @@ export default function QuotationListBox({
                     }
                   }}
                 >
-                  {!item.isPublic && <SvgIcon name="Private" />}
-                  <Text
-                    type="p"
-                    className={`${TEXT_COLOR[theme]}`}
-                    key={item.noteId}
-                  >
-                    {item.nickname} : {item.title}
-                  </Text>
+                  <span className="flex flex-row gap-1">
+                    <Text
+                      type="p"
+                      className={`${TEXT_COLOR[theme]}`}
+                      key={item.noteId}
+                    >
+                      {item.nickname} : {item.title}
+                    </Text>
+                    {!item.isPublic && <SvgIcon name="Private" size={20} />}
+                  </span>
                 </span>
               );
             })
