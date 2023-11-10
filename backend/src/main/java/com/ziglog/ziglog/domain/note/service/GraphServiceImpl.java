@@ -1,7 +1,6 @@
 package com.ziglog.ziglog.domain.note.service;
 
 import com.ziglog.ziglog.domain.note.dto.response.GraphResponseDto;
-import com.ziglog.ziglog.domain.note.dto.response.graph.Graph;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
@@ -10,14 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Transactional
 @RequiredArgsConstructor
 @Service
 public class GraphServiceImpl implements GraphService {
 
-    private final NoteRepository noteRepository;
     private final FolderRepository folderRepository;
 
     @Override
