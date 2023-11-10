@@ -17,6 +17,8 @@ import { Note } from '@api/bookmark/types';
 import { showAlert } from '@src/util/alert';
 import { useRouter } from 'next/navigation';
 import SideDataContext from '../../SideDataContext';
+import BookmarkCheckBox from '@components/userPage/BookmarkCheckBox';
+import { getQuotingNoteIdData, putQuotingNoteIdData } from '@api/quote/quote';
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 });
@@ -39,6 +41,7 @@ export default function EditNote() {
   const [isPublic, setIsPublic] = useState(false);
   const [bookmarks, setBookmarks] = useState<Note[]>([]);
   const [hasAccess, setHasAccess] = useState(false);
+  const [quotingNoteIds, setQuotingNoteIds] = useState<number[]>([]);
   const [quotingNoteInfo, setQuotingNoteInfo] = useState({
     nickname: '',
     title: '',
@@ -46,7 +49,22 @@ export default function EditNote() {
   });
   const { getBookmarkList, getSideList } = useContext(SideDataContext);
   const router = useRouter();
-  // 노트 정보 불러오기 + 북마크 정보 가져오기
+  const [idChange, setIdChange] = useState(false);
+  // [마크다운용 북마크 가져오기]
+  const getMdBookmarkList = async () => {
+    const result = await getBookmark();
+    if (result) {
+      setBookmarks(result.notes);
+    }
+  };
+  // [참조 노트 ID 목록 가져오기]
+  const getQuotingNoteIdsList = async () => {
+    const result = await getQuotingNoteIdData(parseInt(noteId));
+    if (result) {
+      setQuotingNoteIds(result.quotingNoteIds);
+    }
+  };
+  // 노트 정보 불러오기 + 북마크 정보 가져오기 + 참조하는 노트 id 목록 가져오기
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -60,73 +78,35 @@ export default function EditNote() {
         setTitle(result.data.title);
         setContent(result.data.content);
         setIsPublic(result.data.isPublic);
+
+        getMdBookmarkList();
+        getQuotingNoteIdsList();
       } else {
         router.push(`/user-page/${nickname}`);
         showAlert(`${result.message}`, 'error');
       }
     };
-    // 마크다운용 북마크 가져오기
-    const getMdBookmarkList = async () => {
-      const result = await getBookmark();
-      if (result) {
-        setBookmarks(result.notes);
-      }
-    };
     getNoteInfoEditPage(parseInt(noteId));
-    getMdBookmarkList();
   }, []);
   // 노트 수정하기
   const handleNoteEdit = () => {
     if (
+      idChange ||
       (oldContent.content &&
         diffChars(oldContent.content, content).length !== 1) ||
       (oldContent.title && diffChars(oldContent.title, title).length !== 1) ||
       (!oldContent.content && content) ||
       (!oldContent.title && title)
     ) {
-      // 참조 목록 업데이트 하기
-      const regex = /\[(.*?)\]/g;
-      const matches = content.match(regex);
-      const extractedQuotingNotes: string[] = [];
-      if (matches) {
-        matches.forEach((match) => {
-          const extractedContent = match.slice(1, -1);
-          if (extractedContent && extractedContent.includes(':')) {
-            extractedQuotingNotes.push(extractedContent);
-          }
-        });
-      }
-      const splitQuotingNotes = extractedQuotingNotes.map((content) => {
-        const parts = content.split(':');
-        return {
-          nickname: parts[0].trim(),
-          title: parts[1].trim(),
-        };
-      });
-      const updatedQuotingList: number[] = [];
-      splitQuotingNotes.forEach((splitNote) => {
-        const matchingBookmark = bookmarks.find(
-          (bookmark) =>
-            bookmark.nickname === splitNote.nickname &&
-            bookmark.title === splitNote.title
-        );
-        if (matchingBookmark) {
-          if (!updatedQuotingList.includes(matchingBookmark.noteId)) {
-            updatedQuotingList.push(matchingBookmark.noteId);
-          }
-        }
-      });
       const body = {
         title: title,
         content: content,
-        quotingNotes: updatedQuotingList,
       };
+      // 노트 제목 + 내용 수정
       const editNote = async (body: EditNoteParams) => {
         const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
         if (result) {
-          // router.push(
-          //   `/user-page/${params.userNickname}/read-note/${params.noteId}`
-          // );
+          editQuotingNoteIds();
           window.location.replace(
             `/user-page/${params.userNickname}/read-note/${params.noteId}`
           );
@@ -134,6 +114,13 @@ export default function EditNote() {
           getSideList();
           getBookmarkList();
         }
+      };
+      // 노트 참조 목록 수정
+      const editQuotingNoteIds = async () => {
+        const result = await putQuotingNoteIdData(
+          parseInt(noteId),
+          quotingNoteIds
+        );
       };
       editNote(body);
     } else {
@@ -162,7 +149,7 @@ export default function EditNote() {
         <MDEditor
           className="relative"
           data-color-mode={theme}
-          height={600}
+          height={400}
           value={content}
           onChange={(v) => setContent(v || '')}
           preview={'live'}
@@ -193,6 +180,7 @@ export default function EditNote() {
                 return (
                   <div>
                     <QuotationModal
+                      userNickname={nickname}
                       theme={theme}
                       bookmarks={bookmarks}
                       setQuotingNoteInfo={setQuotingNoteInfo}
@@ -205,7 +193,6 @@ export default function EditNote() {
                 api: commands.TextAreaTextApi
               ) => {
                 if (quotingNoteInfo.noteId !== 0) {
-                  console.log('>>>>>>update>>>>>', state);
                   let modifyText = `[[${state.selectedText}]]`;
                   if (!state.selectedText) {
                     modifyText = `[${quotingNoteInfo.nickname} : ${quotingNoteInfo.title}](${process.env.NEXT_PUBLIC_BASE_URL}/user-page/${quotingNoteInfo.nickname}/read-note/${quotingNoteInfo.noteId})`;
@@ -218,6 +205,13 @@ export default function EditNote() {
             }),
           ]}
         ></MDEditor>
+        <BookmarkCheckBox
+          theme={theme}
+          bookmarkList={bookmarks}
+          quotingNoteIds={quotingNoteIds}
+          setQuotingNoteIds={setQuotingNoteIds}
+          setIdChange={setIdChange}
+        />
       </div>
     )
   );
