@@ -25,6 +25,6 @@ public class GraphController {
 
     @GetMapping("")
     public ResponseDto<GraphResponseDto> getGraphByNickname(@RequestParam("nickname") String nickname) throws Exception {
-        return ResponseDto.of(graphService.retrieveFolder(noteService.getRootFolder(nickname)));
+        return ResponseDto.of(graphService.retrieveParentChildOnly(noteService.getRootFolder(nickname)));
     }
 }

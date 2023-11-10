@@ -108,19 +108,6 @@ public class GraphResponseDto {
         Node node = new Node(nodeId, note);
         nodes.add(node);
 
-        for (Quotation quotation: note.getQuoted()){
-            Note child = quotation.getEndNote();
-            Node childAsNode = retrieve(child);
-            if (childAsNode != null) {
-                links.add(
-                        Link.builder()
-                                .source(node.getId())
-                                .target(childAsNode.getId())
-                                .type("quotation")
-                                .build()
-                );
-            }
-        }
         return node;
     }
 }
