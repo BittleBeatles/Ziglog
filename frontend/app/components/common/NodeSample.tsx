@@ -8,9 +8,11 @@ interface NodeSampleProps {
 
 export default function NodeSample({ type, text, theme }: NodeSampleProps) {
   return (
-    <div className={`flex items-center mr-2 ${THEME_VARIANTS[theme]}`}>
-      <div className={`w-5 h-5 rounded-full mr-1 ${COLOR_VAIANTS[type]}`} />
-      <Text>{text}</Text>
+    <div className={`flex items-center mr-1 ${THEME_VARIANTS[theme]} group`}>
+      <Text className="tooltip-text group-hover:scale-100 absolute top-full w-auto p-2 bg-gray-800 text-white text-xs rounded-md scale-0 transform transition-all">
+        {text}
+      </Text>
+      <div className={`w-5 h-5 rounded-full mr-1 ${COLOR_VAIANTS[type]}`}></div>
     </div>
   );
 }
