@@ -49,6 +49,7 @@ export default function EditNote() {
   });
   const { getBookmarkList, getSideList } = useContext(SideDataContext);
   const router = useRouter();
+  const [idChange, setIdChange] = useState(false);
   // [마크다운용 북마크 가져오기]
   const getMdBookmarkList = async () => {
     const result = await getBookmark();
@@ -90,6 +91,7 @@ export default function EditNote() {
   // 노트 수정하기
   const handleNoteEdit = () => {
     if (
+      idChange ||
       (oldContent.content &&
         diffChars(oldContent.content, content).length !== 1) ||
       (oldContent.title && diffChars(oldContent.title, title).length !== 1) ||
@@ -178,6 +180,7 @@ export default function EditNote() {
                 return (
                   <div>
                     <QuotationModal
+                      userNickname={nickname}
                       theme={theme}
                       bookmarks={bookmarks}
                       setQuotingNoteInfo={setQuotingNoteInfo}
@@ -207,6 +210,7 @@ export default function EditNote() {
           bookmarkList={bookmarks}
           quotingNoteIds={quotingNoteIds}
           setQuotingNoteIds={setQuotingNoteIds}
+          setIdChange={setIdChange}
         />
       </div>
     )
