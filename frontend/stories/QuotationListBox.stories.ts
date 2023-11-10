@@ -13,5 +13,6 @@ type Story = StoryObj<typeof meta>;
 export const QuotationListBoxExample = {
   args: {
     theme: 'light',
+    quotationList: [],
   },
 } satisfies Story;
