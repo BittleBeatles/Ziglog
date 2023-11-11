@@ -7,7 +7,7 @@ export type GraphApiResponse = ApiSuccessResponse<GraphData>;
 
 export async function getGraph(nickname: string) {
   return publicFetch<GraphApiResponse>(
-    `${API_URL}/graph?nickname=${nickname}`,
+    `${API_URL}/graph/folder?nickname=${nickname}`,
     {
       method: 'GET',
     }
