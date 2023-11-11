@@ -14,7 +14,7 @@ import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
-import com.ziglog.ziglog.domain.notification.service.EmitterService;
+import com.ziglog.ziglog.domain.notification.entity.NotificationType;
 import com.ziglog.ziglog.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +32,10 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final NotificationService notificationService;
 
     @Override
-    public void addBookmark(Member member, AddBookmarkRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException {
+    public void addBookmark(Member member, AddBookmarkRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException, Exception {
         Long noteId = requestDto.getNoteId();
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
@@ -47,9 +48,17 @@ public class BookmarkServiceImpl implements BookmarkService {
                             .member(memberPersist)
                             .note(note)
                             .build();
-
         bookmark = bookmarkRepository.save(bookmark);
         memberPersist.getBookmarks().add(bookmark);
+
+        Notification notification = Notification.builder()
+                .owner(note.getAuthor())
+                .type(NotificationType.BOOKMARK)
+                .isRead(false)
+                .message("구독했지롱")
+                .build();
+
+        notificationService.produceKafkaEvent(notification);
     }
 
     @Override

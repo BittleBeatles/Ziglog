@@ -6,10 +6,17 @@ import com.ziglog.ziglog.domain.note.entity.Quotation;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.exception.exceptions.AlreadyRemovedNotificationException;
 import com.ziglog.ziglog.domain.notification.exception.exceptions.InconsistentNotificationOwnerException;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
 public interface NotificationService {
+    SseEmitter subscribe(Member member, String lastEventId) throws Exception;
+    void sendMessage(Member member, String message) throws Exception;
+
+    void produceKafkaEvent(Notification notification) throws Exception;
+    void consumeKafkaEvent(String message) throws Exception;
+
     void delete(Member member, Long notificationId) throws AlreadyRemovedNotificationException, InconsistentNotificationOwnerException;
     List<Notification> getNotifications(Member member);
     Notification saveBookmarkNotification(Member member, Bookmark bookmark);
