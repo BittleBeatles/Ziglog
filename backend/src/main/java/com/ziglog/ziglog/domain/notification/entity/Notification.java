@@ -1,5 +1,7 @@
 package com.ziglog.ziglog.domain.notification.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.entity.Role;
 import jakarta.persistence.*;
@@ -42,5 +44,10 @@ public class Notification {
 
     public void read(){
         this.isRead = true;
+    }
+
+    public String serialize() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(this);
     }
 }
