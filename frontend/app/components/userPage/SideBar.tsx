@@ -17,6 +17,7 @@ import { setMyTheme } from '@store/modules/userSlice';
 import { Note } from '@api/bookmark/types';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import SocialLoginModal from '@components/common/SocialLoginModal';
+import NotificationModal from './Notification/NotificationModal';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -42,6 +43,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   // 폴더 상태 => 전역으로 관리가 필요함
   const [parentId, setParentId] = useState<number>(rootFolderId);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [notificationModal, setNotificationModal] = useState(false);
   const [folderName, setFolderName] = useState('');
   // const [bookmarkList, setBookmarkList] = useState<Note[]>([]);
 
@@ -63,6 +65,11 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   // 세팅모달 열기
   const openModal = (open: boolean) => {
     setModalOpen(open);
+  };
+
+  // 알림 모달 열기
+  const openNotification = (open: boolean) => {
+    setNotificationModal(open);
   };
 
   useEffect(() => {
@@ -125,7 +132,15 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       ref={sidebarRef}
     >
       <div className="profile flex justify-between items-center px-8">
-        <ProfileImage src={profileUrl} />
+        <div className="relative">
+          <ProfileImage src={profileUrl} size={80} />
+          <IconButton
+            onClick={() => openModal(true)}
+            theme={theme}
+            name="Setting"
+            className="absolute bottom-2 right-2 transform translate-x-1/2 translate-y-1/2"
+          />
+        </div>
         <Text
           type="p"
           className={`${theme === 'dark' ? 'text-white' : ''} ml-2 text-sm`}
@@ -232,13 +247,23 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
             color="charcol"
           />
         )}
-        {isLogin && isMine && (
+        <div className="flex justify-between relative">
           <IconButton
-            onClick={() => openModal(true)}
+            onClick={() => openNotification(true)}
             theme={theme}
-            name="Setting"
+            name="Notification"
           />
-        )}
+          {notificationModal && (
+            <div className="fixed inset-20 flex items-center justify-center z-40">
+              <div className="absolute top-1/4 left-1/3 transform -translate-x-3/4 -translate-y-7/8">
+                <NotificationModal
+                  theme={theme}
+                  openModal={openNotification}
+                ></NotificationModal>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       {isModalOpen && (
         <div className="fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-50">
