@@ -45,9 +45,4 @@ public class Notification {
     public void read(){
         this.isRead = true;
     }
-
-    public String serialize() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(this);
-    }
 }
