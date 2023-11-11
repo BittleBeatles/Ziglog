@@ -255,7 +255,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
           />
           {notificationModal && (
             <div className="fixed inset-20 flex items-center justify-center z-40">
-              <div className="absolute top-1/4 left-1/3 transform -translate-x-1/2 -translate-y-7/8">
+              <div className="absolute top-1/4 left-1/3 transform -translate-x-3/4 -translate-y-7/8">
                 <NotificationModal
                   theme={theme}
                   openModal={openNotification}
