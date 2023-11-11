@@ -53,7 +53,8 @@ export default function Folder({
       (item) => item.type === 'note' && (item as NoteProps).id === currentNoteId
     )
   );
-  const { getGraphData, getSideList } = useContext(SideDataContext);
+  const { getGraphData, getSideList, getNoteGraphData } =
+    useContext(SideDataContext);
 
   const handleFolder = () => {
     if (!isFolderOpen) {
@@ -86,6 +87,7 @@ export default function Folder({
         await createFolder(parentId, folderName);
         getSideList();
         getGraphData();
+        getNoteGraphData();
         setFolderName('');
         setShowInput({ show: false, type: 'folder' });
       } catch {
@@ -101,6 +103,7 @@ export default function Folder({
         await deleteFolder(id);
         getSideList();
         getGraphData();
+        getNoteGraphData();
       } catch {
         console.log('폴더가 삭제가 안됐음');
       }

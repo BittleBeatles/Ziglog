@@ -1,6 +1,6 @@
-import { LinkObject, NodeObject } from 'react-force-graph-2d';
+import { LinkObject, NodeObject as Node2DObject } from 'react-force-graph-2d';
 
-export interface Node extends NodeObject {
+export interface Node extends Node2DObject {
   id?: string | number;
   name?: string;
   type?: string;
@@ -11,8 +11,8 @@ export interface Node extends NodeObject {
 }
 
 export interface Link extends LinkObject {
-  source?: string | number | NodeObject;
-  target?: string | number | NodeObject;
+  source?: string | number | Node2DObject;
+  target?: string | number | Node2DObject;
 }
 
 export interface GraphData {
@@ -21,3 +21,10 @@ export interface GraphData {
   nodes: Node[];
   links: Link[];
 }
+
+export interface NoteGraphData {
+  nodes: Node[];
+  links: Link[];
+}
+
+export type Coords = { x: number; y: number; z: number };

@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useState, ReactNode, useCallback } from 'react';
-import { GraphData } from '@api/graph/types';
-import { getGraph } from '@api/graph/graph';
+import { GraphData, NoteGraphData } from '@api/graph/types';
+import { getGraph, getNoteGraph } from '@api/graph/graph';
 import { useParams } from 'next/navigation';
 import { getFolderList } from '@api/folder/folder';
 import { useAppSelector } from '@store/store';
@@ -10,23 +10,40 @@ import { getBookmark } from '@api/bookmark/bookmark';
 import { Note } from '@api/bookmark/types';
 
 export interface ISideDataContext {
+  // 그래프
   graphData: GraphData;
   setGraphData: (graphData: GraphData) => void;
   getGraphData: () => Promise<void>;
+
+  // 사이드 바 목록
   sideData: DirectoryItem[];
   getSideList: () => void;
+
+  // 북마크
   bookmarkList: Note[];
   getBookmarkList: () => void;
+
+  // 노트 그래프
+  noteGraphData: NoteGraphData;
+  setNoteGraphData: (noteGraphData: GraphData) => void;
+  getNoteGraphData: () => Promise<void>;
 }
 
 const defaultSideDataContext: ISideDataContext = {
+  // 그래프
   graphData: { folderSet: [], noteSet: [], nodes: [], links: [] },
   setGraphData: () => {},
   getGraphData: async () => {},
+  // 사이드 바 목록
   sideData: [],
   getSideList: async () => {},
+  // 북마크
   bookmarkList: [],
   getBookmarkList: async () => {},
+  // 노트 그래프
+  noteGraphData: { nodes: [], links: [] },
+  setNoteGraphData: () => {},
+  getNoteGraphData: async () => {},
 };
 
 const SideDataContext = createContext<ISideDataContext>(defaultSideDataContext);
@@ -47,6 +64,18 @@ export const SideDataProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // 노트 그래프 데이터
+  const [noteGraphData, setNoteGraphData] = useState<GraphData>(
+    defaultSideDataContext.noteGraphData
+  );
+
+  const getNoteGraphData = async () => {
+    const res = await getNoteGraph(paramsNickname);
+    if (res) {
+      setNoteGraphData(res);
+    }
+  };
+
   // 폴더 탐색기 데이터
   const [sideData, setSideData] = useState<DirectoryItem[]>([]);
   const getSideList = useCallback(async () => {
@@ -56,7 +85,7 @@ export const SideDataProvider = ({ children }: { children: ReactNode }) => {
         setSideData(res);
       }
     } catch (error) {
-      console.error('Failed to fetch directory list:', error);
+      console.error('폴더 리스트를 가져오는데 실패:', error);
     }
   }, [nickname]);
 
@@ -79,6 +108,9 @@ export const SideDataProvider = ({ children }: { children: ReactNode }) => {
         getSideList,
         bookmarkList,
         getBookmarkList,
+        noteGraphData,
+        setNoteGraphData,
+        getNoteGraphData,
       }}
     >
       {children}
