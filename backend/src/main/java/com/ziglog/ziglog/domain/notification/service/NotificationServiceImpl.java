@@ -3,7 +3,9 @@ package com.ziglog.ziglog.domain.notification.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ziglog.ziglog.domain.bookmark.entity.Bookmark;
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
+import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.exception.exceptions.AlreadyRemovedNotificationException;
 import com.ziglog.ziglog.domain.notification.exception.exceptions.InconsistentNotificationOwnerException;
@@ -30,7 +32,8 @@ public class NotificationServiceImpl implements NotificationService {
     //RDB에서의 알림 관리
     private final NotificationRdbRepository notificationRepository;
     private final EmitterRedisRepository emitterRepository;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, NotificationDto> kafkaTemplate;
+    private final MemberRepository memberRepository;
 
     @Value("${jwt.access.expiration}")
     private Long TIMEOUT;// 30분 => 따로 yml 파일에 넣기
@@ -38,21 +41,24 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public SseEmitter subscribe(Member member, String lastEventId) throws Exception {
         SseEmitter emitter = createEmitter(member);
-        sendMessage(member, "Event stream created");
+        sendMessage(member.getId(), "Event stream created");
         log.info("member nickname : {} subscribed for sse", member.getNickname());
         return emitter;
     }
 
     @Override
-    public void sendMessage(Member target, String event) throws Exception {
-        SseEmitter emitter = emitterRepository.findById(target.getId()).orElseThrow(Exception::new);
-
+    public void sendMessage(Long id, Object event) throws Exception {
+        SseEmitter emitter = emitterRepository.findById(id).orElseThrow(Exception::new);
         try {
             log.info("send event");
-            emitter.send(SseEmitter.event().id(String.valueOf(target.getId())).name("sse").data(event));
-
+            ObjectMapper objectMapper = new ObjectMapper();
+            String eventToSend = objectMapper.writeValueAsString(event);
+            emitter.send(SseEmitter.event()
+                    .id(String.valueOf(id))
+                    .name("sse")
+                    .data(eventToSend));
         } catch (Exception e){
-            emitterRepository.remove(target.getId());
+            emitterRepository.remove(id);
             emitter.completeWithError(new IOException("서버로부터 이벤트를 보낼 수 없습니다."));
         }
     }
@@ -80,16 +86,14 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void produceKafkaEvent(Notification notification) throws Exception{
-        log.info("produce KafkaEvent : {}", notification.serialize());
-        kafkaTemplate.send("sse", notification.serialize());
+        NotificationDto notificationDto = NotificationDto.toDto(notification);
+        kafkaTemplate.send("sse", notificationDto);
     }
 
     @Override
     @KafkaListener(topics="sse")
-    public void consumeKafkaEvent(String message) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        Notification notification = mapper.readValue(message, Notification.class);
-        sendMessage(notification.getOwner(), notification.getMessage());
+    public void consumeKafkaEvent(NotificationDto notification) throws Exception {
+        sendMessage(notification.getMemberId(), notification.getMessage());
     }
 
     @Override // 주어진 아이디의 알림을 DB에서 삭제

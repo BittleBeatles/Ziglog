@@ -2,17 +2,9 @@ spring:
   profiles:
     default:
       - local
-  kafka:
-    bootstrap-servers:
-      - http://ziglog.site:9092 #single
-    consumer:
-      group-id: testGroup
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      auto-offset-reset: earliest #제일 오래된 메시지부터 처리하겠음
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+kafka:
+  bootstrap: http://ziglog.site:9092 #single
 
 logging:
   level:
