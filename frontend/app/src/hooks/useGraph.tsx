@@ -35,7 +35,6 @@ export const useGraph = () => {
   const handleNodeHover = (node: Node | null, previousNode: Node | null) => {
     highlightLinks.clear();
     if (node && node.neighbors && node.links) {
-      // node.neighbors.forEach((neighbor) => highlightNodes.add(neighbor));
       node.links.forEach((link) => highlightLinks.add(link));
     }
     setHoverNode(node || null);
@@ -86,7 +85,9 @@ export const useGraph = () => {
                 node.x,
                 node.y,
                 2,
-                theme === 'light' ? colors.charcol : colors.white
+                theme === 'light'
+                  ? colors.charcol
+                  : colors['light-background-layout']
               );
               break;
             case 'link':
@@ -115,7 +116,10 @@ export const useGraph = () => {
             color = colors['main-75'];
             break;
           case 'note':
-            color = theme === 'light' ? colors.charcol : colors.white;
+            color =
+              theme === 'light'
+                ? colors.charcol
+                : colors['light-background-layout'];
             break;
           case 'link':
             color = colors['main-50'];
@@ -140,7 +144,8 @@ export const useGraph = () => {
       } else {
         sprite = new SpriteText(node.name);
       }
-      sprite.color = theme === 'light' ? colors.charcol : colors.white;
+      sprite.color =
+        theme === 'light' ? colors.charcol : colors['light-background-layout'];
       sprite.textHeight = 3;
       sprite.position.set(0, 10, 0);
       sprite.fontFace = 'Pretendard';
