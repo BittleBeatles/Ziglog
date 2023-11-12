@@ -38,7 +38,7 @@ public class NotificationDto {
                 .message(message)
                 .isRead(false)
                 .owner(owner)
-                .type(this.type)
+                .type(type)
                 .dateTime(dateTime)
                 .build();
     }
