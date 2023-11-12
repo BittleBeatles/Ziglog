@@ -43,7 +43,9 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public NotificationListDto getNotificationList(Member member){
-        return new NotificationListDto(getNotifications(member).stream().map(NotificationDto::toDto).toList());
+        return new NotificationListDto(getNotifications(member).stream().map(notification ->
+                new NotificationResponseDto(NotificationDto.toDto(notification)))
+                .toList());
     }
 
     @Override

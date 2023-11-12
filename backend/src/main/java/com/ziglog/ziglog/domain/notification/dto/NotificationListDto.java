@@ -10,5 +10,5 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class NotificationListDto {
-    private List<NotificationDto> nontificationList;
+    private List<NotificationResponseDto> nontificationList;
 }
