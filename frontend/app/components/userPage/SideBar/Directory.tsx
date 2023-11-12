@@ -48,7 +48,8 @@ export default function Directory({
   const [newFolderName, setNewFolderName] = useState('');
   const [editingFolderId, setEditingFolderId] = useState(-1);
   const [editingTitle, setEditingTitle] = useState('');
-  const { getGraphData, sideData, getSideList } = useContext(SideDataContext);
+  const { getGraphData, sideData, getSideList, getNoteGraphData } =
+    useContext(SideDataContext);
 
   // 폴더 입력했을 때 렌더링하기 위함
   const [keyDownCounter, setKeyDownCounter] = useState(0);
@@ -66,6 +67,7 @@ export default function Directory({
         await createFolder(rootId, folderName);
         getSideList();
         getGraphData();
+        getNoteGraphData();
         setKeyDownCounter(keyDownCounter + 1);
         setFolderName('');
         setShowInput({ show: false, type: 'folder' });
@@ -94,6 +96,7 @@ export default function Directory({
         await editFolder(editingFolderId, newFolderName);
         getSideList();
         getGraphData();
+        getNoteGraphData();
         setNewFolderName('');
         setFolderEdit(false);
       } catch {

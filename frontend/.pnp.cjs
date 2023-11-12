@@ -38,6 +38,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@storybook/react", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:7.5.0-alpha.7"],\
             ["@storybook/testing-library", "npm:0.2.2"],\
             ["@svgr/webpack", "npm:8.1.0"],\
+            ["@types/d3-force", "npm:3.0.9"],\
             ["@types/diff", "npm:5.0.7"],\
             ["@types/gtag.js", "npm:0.0.18"],\
             ["@types/node", "npm:20.8.6"],\
@@ -52,6 +53,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["autoprefixer", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:10.4.16"],\
             ["aws-sdk", "npm:2.1489.0"],\
             ["cypress", "npm:13.3.3"],\
+            ["d3-force", "npm:3.0.0"],\
             ["diff", "npm:5.1.0"],\
             ["eslint", "npm:8.51.0"],\
             ["eslint-config-next", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:13.5.4"],\
@@ -80,6 +82,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tailwind-scrollbar-hide", "npm:1.1.7"],\
             ["tailwindcss", "npm:3.3.3"],\
             ["three", "npm:0.157.0"],\
+            ["three-spritetext", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.8.1"],\
             ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
             ["webpack", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:5.89.0"]\
           ],\
@@ -6545,6 +6548,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/d3-force", [\
+        ["npm:3.0.9", {\
+          "packageLocation": "./.yarn/cache/@types-d3-force-npm-3.0.9-d31003d442-6ec16109b5.zip/node_modules/@types/d3-force/",\
+          "packageDependencies": [\
+            ["@types/d3-force", "npm:3.0.9"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/debug", [\
         ["npm:4.1.9", {\
           "packageLocation": "./.yarn/cache/@types-debug-npm-4.1.9-8e7cf27fbd-e88ee8b19d.zip/node_modules/@types/debug/",\
@@ -10298,6 +10310,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/d3-ease-npm-3.0.1-f8f3709dc7-06e2ee5326.zip/node_modules/d3-ease/",\
           "packageDependencies": [\
             ["d3-ease", "npm:3.0.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["d3-force", [\
+        ["npm:3.0.0", {\
+          "packageLocation": "./.yarn/cache/d3-force-npm-3.0.0-462e87e63b-6c7e96438c.zip/node_modules/d3-force/",\
+          "packageDependencies": [\
+            ["d3-force", "npm:3.0.0"],\
+            ["d3-dispatch", "npm:3.0.1"],\
+            ["d3-quadtree", "npm:3.0.1"],\
+            ["d3-timer", "npm:3.0.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -20832,6 +20856,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["three-spritetext", [\
+        ["npm:1.8.1", {\
+          "packageLocation": "./.yarn/cache/three-spritetext-npm-1.8.1-4eb6051d47-9173045851.zip/node_modules/three-spritetext/",\
+          "packageDependencies": [\
+            ["three-spritetext", "npm:1.8.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.8.1", {\
+          "packageLocation": "./.yarn/__virtual__/three-spritetext-virtual-b7bfdf8b2c/0/cache/three-spritetext-npm-1.8.1-4eb6051d47-9173045851.zip/node_modules/three-spritetext/",\
+          "packageDependencies": [\
+            ["three-spritetext", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.8.1"],\
+            ["@types/three", "npm:0.157.2"],\
+            ["three", "npm:0.157.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/three",\
+            "three"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["throttleit", [\
         ["npm:1.0.0", {\
           "packageLocation": "./.yarn/cache/throttleit-npm-1.0.0-6cbcfe7b7b-1b2db4d245.zip/node_modules/throttleit/",\
@@ -22404,6 +22450,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@storybook/react", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:7.5.0-alpha.7"],\
             ["@storybook/testing-library", "npm:0.2.2"],\
             ["@svgr/webpack", "npm:8.1.0"],\
+            ["@types/d3-force", "npm:3.0.9"],\
             ["@types/diff", "npm:5.0.7"],\
             ["@types/gtag.js", "npm:0.0.18"],\
             ["@types/node", "npm:20.8.6"],\
@@ -22418,6 +22465,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["autoprefixer", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:10.4.16"],\
             ["aws-sdk", "npm:2.1489.0"],\
             ["cypress", "npm:13.3.3"],\
+            ["d3-force", "npm:3.0.0"],\
             ["diff", "npm:5.1.0"],\
             ["eslint", "npm:8.51.0"],\
             ["eslint-config-next", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:13.5.4"],\
@@ -22446,6 +22494,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tailwind-scrollbar-hide", "npm:1.1.7"],\
             ["tailwindcss", "npm:3.3.3"],\
             ["three", "npm:0.157.0"],\
+            ["three-spritetext", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:1.8.1"],\
             ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
             ["webpack", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:5.89.0"]\
           ],\

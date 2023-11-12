@@ -1,8 +1,8 @@
 'use client';
-import GraphView from '@components/userPage/GraphView';
+import GraphViewWrapper from '@components/userPage/GraphViewWrapper';
 import { useAppSelector } from '@store/store';
 
 export default function UserPage() {
   const theme = useAppSelector((state) => state.user.theme);
-  return <GraphView theme={theme} />;
+  return <GraphViewWrapper theme={theme} />;
 }

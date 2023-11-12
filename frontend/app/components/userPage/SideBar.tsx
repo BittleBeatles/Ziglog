@@ -30,8 +30,13 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   );
   // 로그인 모달
   const [loginModalOpen, setLoginModalOpne] = useState(false);
-  const { getGraphData, getSideList, bookmarkList, getBookmarkList } =
-    useContext(SideDataContext);
+  const {
+    getGraphData,
+    getSideList,
+    bookmarkList,
+    getBookmarkList,
+    getNoteGraphData,
+  } = useContext(SideDataContext);
 
   // 주소 기반 닉네임 및 프로필 이미지
   const params = useParams();
@@ -112,6 +117,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       const result = await createNote(parentId);
       // 성공적으로 노트가 추가되면 sideList를 업데이트
       getGraphData();
+      getNoteGraphData();
       if (result === 200) {
         getSideList();
       } else {

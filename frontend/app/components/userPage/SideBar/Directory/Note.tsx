@@ -1,11 +1,10 @@
-'use client';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import SvgIcon from '@components/common/SvgIcon';
 import Text from '@components/common/Text';
 import colors from '@src/design/color';
 import { findFolderIdByNoteId } from '@src/util/findParentId';
 import { useAppSelector } from '@store/store';
-import Link from 'next/link';
+
 import { useParams, useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 
@@ -29,7 +28,6 @@ export default function Note({
   theme = 'light',
   currentNoteId,
   isPublic,
-  parentId,
   setParentId,
 }: NoteProps) {
   const param = useParams();

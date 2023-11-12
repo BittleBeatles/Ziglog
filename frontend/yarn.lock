@@ -4338,6 +4338,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/d3-force@npm:^3":
+  version: 3.0.9
+  resolution: "@types/d3-force@npm:3.0.9"
+  checksum: 6ec16109b5048cda0877931b5e60565436fee697ccbc223eae1562c4a8401dddacb25b0137da2babca2a810ad0471114444e08c8e395ce90758d768a05a23b4f
+  languageName: node
+  linkType: hard
+
 "@types/debug@npm:^4.0.0":
   version: 4.1.9
   resolution: "@types/debug@npm:4.1.9"
@@ -7418,6 +7425,17 @@ __metadata:
     d3-quadtree: 1 - 3
     d3-timer: 1 - 3
   checksum: 36426a752187236c1f8b901f2244f49e19955c6f281936f2d1508779081ef856b867510a1e0ecf9a62ba5f6e17caed21a20ed4fedbbdc1887e745261723569a4
+  languageName: node
+  linkType: hard
+
+"d3-force@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "d3-force@npm:3.0.0"
+  dependencies:
+    d3-dispatch: 1 - 3
+    d3-quadtree: 1 - 3
+    d3-timer: 1 - 3
+  checksum: 6c7e96438cab62fa32aeadb0ade3297b62b51f81b1b38b0a60a5ec9fd627d74090c1189654d92df2250775f31b06812342f089f1d5947de9960a635ee3581def
   languageName: node
   linkType: hard
 
@@ -16376,6 +16394,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"three-spritetext@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "three-spritetext@npm:1.8.1"
+  peerDependencies:
+    three: ">=0.86.0"
+  checksum: 9173045851ad38035e386cc0bf44c2163ea52d8dbb2d18d89ae2137c7f27b08073c155f89108bf5fb1c0dc69baa520b6ec7722a6e5f260c33e2f3a92d4e0c6f7
+  languageName: node
+  linkType: hard
+
 "three@npm:>=0.118 <1":
   version: 0.158.0
   resolution: "three@npm:0.158.0"
@@ -17694,6 +17721,7 @@ __metadata:
     "@storybook/react": 7.5.0-alpha.7
     "@storybook/testing-library": 0.2.2
     "@svgr/webpack": ^8.1.0
+    "@types/d3-force": ^3
     "@types/diff": ^5
     "@types/gtag.js": ^0.0.18
     "@types/node": ^20
@@ -17708,6 +17736,7 @@ __metadata:
     autoprefixer: ^10
     aws-sdk: ^2.1489.0
     cypress: ^13.3.3
+    d3-force: ^3.0.0
     diff: ^5.1.0
     eslint: ^8
     eslint-config-next: 13.5.4
@@ -17736,6 +17765,7 @@ __metadata:
     tailwind-scrollbar-hide: ^1.1.7
     tailwindcss: ^3
     three: ^0.157.0
+    three-spritetext: ^1.8.1
     typescript: ^5
     webpack: ^5.89.0
   languageName: unknown
