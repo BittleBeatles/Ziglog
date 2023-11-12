@@ -40,7 +40,8 @@ public class Notification {
     private NotificationType type;
 
     @Column(name = "date_time")
-    LocalDateTime dateTime;
+    @Builder.Default
+    private LocalDateTime dateTime = LocalDateTime.now();
 
     public void read(){
         this.isRead = true;
