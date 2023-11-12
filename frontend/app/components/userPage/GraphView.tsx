@@ -22,6 +22,7 @@ import ForchGraph3D, {
 } from 'react-force-graph-3d';
 import { NodeObject as Node3DObject } from 'react-force-graph-3d';
 import { forceManyBody } from 'd3-force';
+import { showAlert } from '@src/util/alert';
 
 interface GraphViewProps {
   theme: 'light' | 'dark';
@@ -63,10 +64,10 @@ export default function GraphView({ theme }: GraphViewProps) {
   } = useGraph();
 
   const handleClick = (node: Node) => {
-    if (node.type === 'note' || 'link') {
+    if (node.type === 'note' || node.type === 'link') {
       router.push(`/user-page/${nickname}/read-note/${node.realId}`);
     } else {
-      console.warn('존재하지 않는 노드입니다:', node.type);
+      showAlert('노트를 클릭해주세요', 'warning');
     }
   };
 
@@ -139,18 +140,16 @@ export default function GraphView({ theme }: GraphViewProps) {
         }
       } else if (clickCountRef.current === 2) {
         // 두 번째 클릭
-        if (node.type === 'note' || 'link') {
+        if (node.type === 'note' || node.type === 'link') {
           router.push(`/user-page/${nickname}/read-note/${node.realId}`);
         } else {
-          console.warn('존재하지 않는 노드입니다:', node.type);
+          showAlert('노트를 클릭해주세요', 'warning');
         }
         clickCountRef.current = 0;
       }
     },
     [fg3dref, router]
   );
-
-  // 결합 로직
 
   return (
     <div
@@ -221,8 +220,10 @@ export default function GraphView({ theme }: GraphViewProps) {
           onNodeHover={handleNodeHover}
           onLinkHover={handleLinkHover}
           linkColor={() => colors['main-25']}
-          linkWidth={(link) => (highlightLinks.has(link) ? 1 : 0.5)}
-          linkDirectionalArrowLength={3}
+          linkWidth={(link) => (highlightLinks.has(link) ? 0.7 : 0.5)}
+          linkDirectionalArrowLength={(link) =>
+            highlightLinks.has(link) ? 3 : 0
+          }
           linkDirectionalArrowRelPos={1}
           backgroundColor="rgba(255, 255, 255, 0)"
           nodeColor={colors.black}
@@ -241,8 +242,10 @@ export default function GraphView({ theme }: GraphViewProps) {
           onNodeHover={handleNodeHover}
           onLinkHover={handleLinkHover}
           linkColor={() => colors['main-25']}
-          linkWidth={(link) => (highlightLinks.has(link) ? 1 : 0.5)}
-          linkDirectionalArrowLength={3}
+          linkWidth={(link) => (highlightLinks.has(link) ? 0.7 : 0.5)}
+          linkDirectionalArrowLength={(link) =>
+            highlightLinks.has(link) ? 3 : 0
+          }
           linkDirectionalArrowRelPos={1}
           backgroundColor="rgba(255, 255, 255, 0)"
           nodeColor={colors.black}
