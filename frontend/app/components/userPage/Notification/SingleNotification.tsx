@@ -60,7 +60,7 @@ export default function SingleNotification({
       >
         <div className="grid place-content-center">
           <Link href={`/user-page/${userNickname}`}>
-            <ProfileImage alt="img" size={55} src={profileUrl} />
+            <ProfileImage size={55} src={profileUrl} />
           </Link>
         </div>
         <div className="flex flex-row">
