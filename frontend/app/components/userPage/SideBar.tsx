@@ -51,7 +51,6 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [notificationModal, setNotificationModal] = useState(false);
   const [folderName, setFolderName] = useState('');
-  // const [bookmarkList, setBookmarkList] = useState<Note[]>([]);
 
   //파일 추가 변수
   const [showInput, setShowInput] = useState<{

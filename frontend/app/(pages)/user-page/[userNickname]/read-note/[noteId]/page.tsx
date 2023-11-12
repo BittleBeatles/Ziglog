@@ -57,9 +57,11 @@ export default function ReadNote() {
     }
   };
   const getIsBookmarked = async (noteId: number) => {
-    const result = await isNoteBookmarked(noteId);
-    if (result) {
-      setIsBookmarked(result.bookmarked);
+    if (isLogin) {
+      const result = await isNoteBookmarked(noteId);
+      if (result) {
+        setIsBookmarked(result.bookmarked);
+      }
     }
   };
   useEffect(() => {
@@ -175,7 +177,7 @@ export default function ReadNote() {
                     color="blue"
                     label="수정"
                     size="text-xs"
-                  ></Button>
+                  />
                 </div>
                 <div className="ml-3">
                   <Button
@@ -183,7 +185,7 @@ export default function ReadNote() {
                     onClick={handleDelete}
                     label="삭제"
                     size="text-xs"
-                  ></Button>
+                  />
                 </div>
               </div>
             ) : (
@@ -200,7 +202,7 @@ export default function ReadNote() {
               isBookmarked={isBookmarked}
               handleBookmarkChange={handleBookmarkChange}
               isLogin={isLogin}
-            ></BookmarkQuoteInfo>
+            />
           </div>
 
           <div data-color-mode={theme} className="w-full mx-24">
@@ -215,7 +217,7 @@ export default function ReadNote() {
             label="이 글을 참조한 노트들"
             theme={theme}
             quotationList={quotationInfo.quotedNotes}
-          ></QuotationListBox>
+          />
         </div>
         <div className="mx-40 mt-10 mb-4">
           <QuotationListBox
@@ -223,7 +225,7 @@ export default function ReadNote() {
             label="이 글이 참조하는 노트들"
             theme={theme}
             quotationList={quotationInfo.quotingNotes}
-          ></QuotationListBox>
+          />
         </div>
       </div>
     )
