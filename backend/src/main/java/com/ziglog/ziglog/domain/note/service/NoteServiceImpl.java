@@ -10,8 +10,10 @@ import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
+import com.ziglog.ziglog.domain.note.dto.request.folder.ChangeFolderParentRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.folder.CreateFolderRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.folder.ModifyFolderNameRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.ChangeNoteParentRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.ModifyNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.SetPublicRequestDto;
@@ -199,8 +201,7 @@ public class NoteServiceImpl implements NoteService{
         }
     }
 
-
-    public String makePreview(String markdownDetail){
+    private String makePreview(String markdownDetail){
         DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(Extensions.ALL);
         MutableDataSet FORMAT_OPTIONS = new MutableDataSet();
         FORMAT_OPTIONS.set(Parser.EXTENSIONS, Parser.EXTENSIONS.get(OPTIONS));
@@ -215,5 +216,33 @@ public class NoteServiceImpl implements NoteService{
         text = text.replace('\n', ' ');
 
         return text;
+    }
+
+    @Override
+    public void changeNoteParent(Member member, ChangeNoteParentRequestDto requestDto)
+            throws UserNotFoundException, NoteNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException, InconsistentNoteOwnerException {
+        //있나?
+        Folder parentFolder = folderRepository.findById(requestDto.getParentId()).orElseThrow(FolderNotFoundException::new);
+        Note childNote = noteRepository.findNoteById(requestDto.getChildId()).orElseThrow(NoteNotFoundException::new);
+
+        //주인 확인
+        if (!parentFolder.getOwner().getId().equals(member.getId())) throw new InconsistentFolderOwnerException();
+        if (!childNote.getAuthor().getId().equals(member.getId())) throw new InconsistentNoteOwnerException();
+
+        childNote.changeParentFolder(parentFolder);
+    }
+
+
+    @Override
+    public void changeFolderParent(Member member, ChangeFolderParentRequestDto requestDto)
+            throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException {
+        Folder parentFolder = folderRepository.findById(requestDto.getParentId()).orElseThrow(FolderNotFoundException::new);
+        Folder childFolder = folderRepository.findById(requestDto.getChildId()).orElseThrow(FolderNotFoundException::new);
+
+        //주인 확인
+        if (!parentFolder.getOwner().getId().equals(member.getId())) throw new InconsistentFolderOwnerException();
+        if (!childFolder.getOwner().getId().equals(member.getId())) throw new InconsistentNoteOwnerException();
+
+        childFolder.changeParentFolder(parentFolder);
     }
 }

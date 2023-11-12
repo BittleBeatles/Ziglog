@@ -92,4 +92,8 @@ public class Note {
     public void setEditDatetime(LocalDateTime datetime){
         this.editDatetime= datetime;
     }
+
+    public void changeParentFolder(Folder folder) {
+        this.folder = folder;
+    }
 }
