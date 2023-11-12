@@ -17,11 +17,9 @@ public interface NotificationService {
 
     void produceKafkaEvent(Notification notification) throws Exception;
     void consumeKafkaEvent(NotificationDto notificationDto) throws Exception;
-
+    void saveKafkaEventIntoRDB(NotificationDto notification) throws Exception;
     void delete(Member member, Long notificationId) throws AlreadyRemovedNotificationException, InconsistentNotificationOwnerException;
     List<Notification> getNotifications(Member member);
-    Notification saveBookmarkNotification(Member member, Bookmark bookmark);
-    Notification saveQuotationNotification(Member member, Quotation quotation);
 
     void readNotification(Member member, Long notificationId) throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException;
 }

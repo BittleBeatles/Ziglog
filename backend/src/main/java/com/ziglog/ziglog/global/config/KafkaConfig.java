@@ -20,8 +20,14 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
 
-    @Value(value = "${kafka.bootstrap}")
+    @Value("${kafka.bootstrap}")
     private String bootstrapAddress;
+
+    @Value("${kafka.consumer.group.send}")
+    private String sseGroupId;
+
+    @Value("${kafka.consumer.group.save}")
+    private String rdbGroupId;
 
     @Bean
     public Map<String, Object> producerConfig(){
@@ -45,11 +51,10 @@ public class KafkaConfig {
     }
 
     @Bean
-    public Map<String, Object> consumerConfig(){
+    public Map<String, Object> sseConsumerConfig(){
         Map<String, Object> props = new HashMap<>();
-
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "testGroup");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, sseGroupId);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
@@ -57,22 +62,48 @@ public class KafkaConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.ziglog.ziglog.domain.notification.dto");
 
+        return props;
+    }
+
+    @Bean
+    public Map<String, Object> rdbConsumerConfig(){
+        Map<String, Object> props = new HashMap<>();
+
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, rdbGroupId);
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.ziglog.ziglog.domain.notification.dto");
 
         return props;
     }
 
     @Bean
-    public ConsumerFactory<String, NotificationDto> consumerFactory(){
-        return new DefaultKafkaConsumerFactory<>(consumerConfig());
+    public ConsumerFactory<String, NotificationDto> sseConsumerFactory(){
+        return new DefaultKafkaConsumerFactory<>(sseConsumerConfig());
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, NotificationDto> kafkaListenerContainerFactory(){
+    public ConsumerFactory<String, NotificationDto> rdbConsumerFactory(){
+        return new DefaultKafkaConsumerFactory<>(rdbConsumerConfig());
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, NotificationDto> kafkaEventListenerContainerFactorySse(){
         ConcurrentKafkaListenerContainerFactory<String, NotificationDto> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+        factory.setConsumerFactory(sseConsumerFactory());
         return factory;
     }
 
-
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, NotificationDto> kafkaEventListenerContainerFactoryRdb(){
+        ConcurrentKafkaListenerContainerFactory<String, NotificationDto> factory
+                = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(rdbConsumerFactory());
+        return factory;
+    }
 }

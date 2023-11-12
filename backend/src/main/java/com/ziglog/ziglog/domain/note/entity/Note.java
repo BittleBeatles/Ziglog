@@ -31,7 +31,7 @@ public class Note {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "preview")
+    @Column(name = "preview", columnDefinition = "varchar(512)")
     private String preview;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -92,10 +92,4 @@ public class Note {
     public void setEditDatetime(LocalDateTime datetime){
         this.editDatetime= datetime;
     }
-
-    public void setQuoting(List<Quotation> quoting){
-        this.quoting = quoting;
-    }
-
-
 }
