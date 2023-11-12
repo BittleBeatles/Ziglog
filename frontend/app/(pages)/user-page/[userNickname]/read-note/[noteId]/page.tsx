@@ -46,7 +46,8 @@ export default function ReadNote() {
     editTime: new Date('2023-10-31 00:00:00'),
   });
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const { getBookmarkList, getSideList } = useContext(SideDataContext);
+  const { getBookmarkList, getSideList, bookmarkList } =
+    useContext(SideDataContext);
   const [isPublic, setIsPublic] = useState(false);
   // [GET 참조 목록]
   const getQuotationList = async (noteId: number) => {
@@ -88,7 +89,7 @@ export default function ReadNote() {
     };
 
     getNoteReadPage(parseInt(paramNoteId));
-  }, []);
+  }, [bookmarkList]);
 
   // 북마크 추가, 취소하기
   const handleBookmarkChange = async () => {
