@@ -13,6 +13,6 @@ public interface NotificationRdbRepository extends JpaRepository<Notification, L
 
     //RDB에 들어감
     void deleteById(Long id);
-    List<Notification> findAllByOwner(Member owner);
+    List<Notification> findAllByReceiver(Member owner);
     Optional<Notification> findById(Long notificationId);
 }
