@@ -12,7 +12,7 @@ export default function GraphConverter({
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <Text className="text-black">노트</Text>
+        <Text>노트</Text>
         <button
           onClick={() => onGraphChange('note2d')}
           className={`note ${
@@ -31,7 +31,7 @@ export default function GraphConverter({
         </button>
       </div>
       <div className="flex items-center gap-2">
-        <Text className="text-black">폴더</Text>
+        <Text>폴더</Text>
         <button
           onClick={() => onGraphChange('2d')}
           className={`2d ${

@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useContext,
   useCallback,
+  useMemo,
 } from 'react';
 import colors from '@src/design/color';
 import { useParams, useRouter } from 'next/navigation';
@@ -20,7 +21,7 @@ import ForchGraph3D, {
   ForceGraphMethods as Force3DGraphMehods,
 } from 'react-force-graph-3d';
 import { NodeObject as Node3DObject } from 'react-force-graph-3d';
-import { forceLink, forceManyBody } from 'd3-force';
+import { forceManyBody } from 'd3-force';
 
 interface GraphViewProps {
   theme: 'light' | 'dark';
@@ -29,10 +30,13 @@ interface GraphViewProps {
 export default function GraphView({ theme }: GraphViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
-  // 크기 조절 변수
-  const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
   const params = useParams();
   const nickname = decodeURIComponent(params.userNickname as string);
+
+  // 크기 조절 변수
+  const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
+
+  // 그래프 변수
   const { graphData, getGraphData, noteGraphData, getNoteGraphData } =
     useContext(SideDataContext);
 
@@ -40,10 +44,6 @@ export default function GraphView({ theme }: GraphViewProps) {
   const fg3dref = useRef<Force3DGraphMehods>();
   const clickCountRef = useRef<number>(0);
   const lastClickedNodeRef = useRef<Node3DObject | null>(null);
-
-  const [changeView, setChangeView] = useState<
-    '2d' | '3d' | 'note2d' | 'note3d'
-  >('note2d');
 
   useEffect(() => {
     getGraphData();
@@ -63,14 +63,17 @@ export default function GraphView({ theme }: GraphViewProps) {
   } = useGraph();
 
   const handleClick = (node: Node) => {
-    if (node.type === 'note') {
-      router.push(`/user-page/${nickname}/read-note/${node.realId}`);
-    } else if (node.type === 'link') {
+    if (node.type === 'note' || 'link') {
       router.push(`/user-page/${nickname}/read-note/${node.realId}`);
     } else {
       console.warn('존재하지 않는 노드입니다:', node.type);
     }
   };
+
+  // 화면전환
+  const [changeView, setChangeView] = useState<
+    '2d' | '3d' | 'note2d' | 'note3d'
+  >('note2d');
 
   const onGraphChange = (current: '2d' | '3d' | 'note2d' | 'note3d') => {
     setChangeView(current);
@@ -89,8 +92,8 @@ export default function GraphView({ theme }: GraphViewProps) {
     window.addEventListener('resize', updateSize);
     return () => window.removeEventListener('resize', updateSize);
   }, []);
-  const chargeForce = forceManyBody().strength(-3);
 
+  const chargeForce = useMemo(() => forceManyBody().strength(-3), [changeView]);
   useEffect(() => {
     if (fg3dref.current) {
       fg3dref.current.cameraPosition({ x: 100, y: 100, z: 100 });
@@ -98,10 +101,11 @@ export default function GraphView({ theme }: GraphViewProps) {
       fg3dref.current.d3Force('charge', chargeForce);
     } else if (fg2dref.current) {
       fg2dref.current.zoom(5);
-      // 연결 힘 조정
+      // 반발력 조정
       fg2dref.current.d3Force('charge', chargeForce);
     }
   }, [changeView]);
+
   addNeighborsAndLinks(graphData);
   addNeighborsAndLinks(noteGraphData);
 
@@ -135,10 +139,8 @@ export default function GraphView({ theme }: GraphViewProps) {
         }
       } else if (clickCountRef.current === 2) {
         // 두 번째 클릭
-        if (node.type === 'note') {
+        if (node.type === 'note' || 'link') {
           router.push(`/user-page/${nickname}/read-note/${node.realId}`);
-        } else if (node.type === 'link') {
-          router.push(`/user-page/${nickname}/read-link/${node.realId}`);
         } else {
           console.warn('존재하지 않는 노드입니다:', node.type);
         }
@@ -147,6 +149,8 @@ export default function GraphView({ theme }: GraphViewProps) {
     },
     [fg3dref, router]
   );
+
+  // 결합 로직
 
   return (
     <div
@@ -173,30 +177,17 @@ export default function GraphView({ theme }: GraphViewProps) {
           width={dimensions.width - 30}
           height={dimensions.height - 30}
           onNodeClick={handleClick}
-          linkColor={colors.black}
-          linkWidth={(link) => (highlightLinks.has(link) ? 5 : 1)}
-          linkDirectionalParticles={3}
-          linkDirectionalParticleWidth={(link) =>
-            highlightLinks.has(link) ? 3 : 0
-          }
           onNodeHover={handleNodeHover}
           onLinkHover={handleLinkHover}
           nodeCanvasObject={nodePaint}
-        />
-      )}
-
-      {changeView === '3d' && (
-        <ForchGraph3D
-          ref={fg3dref}
-          graphData={graphData}
-          width={dimensions.width - 30}
-          height={dimensions.height - 30}
-          onNodeClick={zoomClick}
-          backgroundColor="rgba(255, 255, 255, 0)"
-          nodeColor={colors.black}
-          nodeThreeObject={node3dPaint}
-          linkColor={() => colors.grey}
-          showNavInfo={false}
+          nodeVal={0.2}
+          linkColor={() => colors['main-25']}
+          linkWidth={(link) => (highlightLinks.has(link) ? 3 : 1)}
+          linkDirectionalArrowLength={(link) =>
+            highlightLinks.has(link) ? 3 : 0
+          }
+          linkDirectionalArrowRelPos={1}
+          linkDirectionalArrowColor={() => colors['main-50']}
         />
       )}
 
@@ -207,15 +198,36 @@ export default function GraphView({ theme }: GraphViewProps) {
           width={dimensions.width - 30}
           height={dimensions.height - 30}
           onNodeClick={handleClick}
-          linkColor={colors.black}
-          linkWidth={(link) => (highlightLinks.has(link) ? 5 : 1)}
-          linkDirectionalParticles={3}
-          linkDirectionalParticleWidth={(link) =>
-            highlightLinks.has(link) ? 3 : 0
-          }
           onNodeHover={handleNodeHover}
           onLinkHover={handleLinkHover}
           nodeCanvasObject={nodePaint}
+          nodeVal={0.2}
+          linkColor={() => colors['main-25']}
+          linkWidth={(link) => (highlightLinks.has(link) ? 3 : 1)}
+          linkDirectionalArrowLength={(link) =>
+            highlightLinks.has(link) ? 3 : 0
+          }
+          linkDirectionalArrowRelPos={1}
+          linkDirectionalArrowColor={() => colors['main-50']}
+        />
+      )}
+      {changeView === '3d' && (
+        <ForchGraph3D
+          ref={fg3dref}
+          graphData={graphData}
+          width={dimensions.width - 30}
+          height={dimensions.height - 30}
+          onNodeClick={zoomClick}
+          onNodeHover={handleNodeHover}
+          onLinkHover={handleLinkHover}
+          linkColor={() => colors['main-25']}
+          linkWidth={(link) => (highlightLinks.has(link) ? 1 : 0.5)}
+          linkDirectionalArrowLength={3}
+          linkDirectionalArrowRelPos={1}
+          backgroundColor="rgba(255, 255, 255, 0)"
+          nodeColor={colors.black}
+          nodeThreeObject={node3dPaint}
+          showNavInfo={false}
         />
       )}
 
@@ -226,10 +238,15 @@ export default function GraphView({ theme }: GraphViewProps) {
           width={dimensions.width - 30}
           height={dimensions.height - 30}
           onNodeClick={zoomClick}
+          onNodeHover={handleNodeHover}
+          onLinkHover={handleLinkHover}
+          linkColor={() => colors['main-25']}
+          linkWidth={(link) => (highlightLinks.has(link) ? 1 : 0.5)}
+          linkDirectionalArrowLength={3}
+          linkDirectionalArrowRelPos={1}
           backgroundColor="rgba(255, 255, 255, 0)"
           nodeColor={colors.black}
           nodeThreeObject={node3dPaint}
-          linkColor={() => colors.grey}
           showNavInfo={false}
         />
       )}
