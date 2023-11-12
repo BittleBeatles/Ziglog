@@ -71,7 +71,7 @@ public class QuotationServiceImpl implements QuotationService {
                 .toList();
 
         quotationRepository.saveAll(newQuotationList);
-        sendQuotationEvent(member ,noteToNotify);
+        sendQuotationEvent(member, note, noteToNotify);
     }
 
     @Override
@@ -80,14 +80,16 @@ public class QuotationServiceImpl implements QuotationService {
         return QuotingIdListResponseDto.toDto(note.getQuoting().stream().map(Quotation::getStartNote).toList());
     }
 
-    private void sendQuotationEvent(Member member, List<Long> newlyAddedQuotings) throws NoteNotFoundException{
+    private void sendQuotationEvent(Member sender, Note quoted, List<Long> newlyAddedQuotings) throws NoteNotFoundException{
         newlyAddedQuotings.forEach((noteId) -> {
             Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
-            if (!note.getAuthor().getId().equals(member.getId())){//본인의 노트가 아닌 경우
+            if (!note.getAuthor().getId().equals(sender.getId())){//본인의 노트가 아닌 경우
                 Notification notification = Notification.builder()
                         .type(NotificationType.QUOTE)
-                        .message("인용")
-                        .owner(note.getAuthor())
+                        .receiver(note.getAuthor())
+                        .sender(sender)
+                        .note(quoted)
+                        .message(sender.getNickname() + "님이 내 게시물을 인용했습니다")
                         .build();
                 kafkaTemplate.send("sse", NotificationDto.toDto(notification));
             }

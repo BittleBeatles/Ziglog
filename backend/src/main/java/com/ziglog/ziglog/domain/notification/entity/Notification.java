@@ -1,9 +1,7 @@
 package com.ziglog.ziglog.domain.notification.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ziglog.ziglog.domain.member.entity.Member;
-import com.ziglog.ziglog.domain.member.entity.Role;
+import com.ziglog.ziglog.domain.note.entity.Note;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,8 +30,16 @@ public class Notification {
     private Boolean isRead = false;
 
     @ManyToOne(fetch = FetchType.LAZY)//이 알림이 갈 곳
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member owner;
+    @JoinColumn(name = "receiver_id", nullable = false)
+    private Member receiver;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id", nullable = false)
+    private Member sender;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "note_id")
+    private Note note;
 
     @Column (name = "type")
     @Enumerated(EnumType.STRING)
@@ -42,7 +48,6 @@ public class Notification {
     @Column(name = "date_time")
     @Builder.Default
     private LocalDateTime dateTime = LocalDateTime.now();
-
     public void read(){
         this.isRead = true;
     }

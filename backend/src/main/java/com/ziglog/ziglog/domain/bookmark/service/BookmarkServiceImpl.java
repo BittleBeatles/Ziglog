@@ -57,17 +57,7 @@ public class BookmarkServiceImpl implements BookmarkService {
         bookmark = bookmarkRepository.save(bookmark);
         memberPersist.getBookmarks().add(bookmark);
 
-        Notification notification = Notification.builder()
-                .owner(note.getAuthor())
-                .type(NotificationType.BOOKMARK)
-                .isRead(false)
-                .message("구독했지롱")
-                .build();
-
-        log.info("뭐지");
-
-        notificationRepository.save(notification);
-        kafkaTemplate.send("sse", NotificationDto.toDto(notification));
+        sendBookmarkNotification(memberPersist, note);
     }
 
     @Override
@@ -105,5 +95,19 @@ public class BookmarkServiceImpl implements BookmarkService {
             }
         }
         return false;
+    }
+
+    private void sendBookmarkNotification(Member sender, Note note){
+        if (note.getAuthor().getId().equals(sender.getId())) return;
+
+        Notification notification = Notification.builder()
+                .receiver(note.getAuthor())
+                .sender(sender)
+                .type(NotificationType.BOOKMARK)
+                .isRead(false)
+                .message(sender.getNickname() + "님이 내 게시물을 북마크했습니다.")
+                .build();
+
+        kafkaTemplate.send("sse", NotificationDto.toDto(notification));
     }
 }

@@ -1,11 +1,14 @@
 package com.ziglog.ziglog.domain.notification.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ziglog.ziglog.domain.bookmark.entity.Bookmark;
+import com.nimbusds.jose.shaded.gson.Gson;
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
-import com.ziglog.ziglog.domain.note.entity.Quotation;
+import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
+import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
+import com.ziglog.ziglog.domain.notification.dto.NotificationListDto;
+import com.ziglog.ziglog.domain.notification.dto.NotificationResponseDto;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.exception.exceptions.AlreadyRemovedNotificationException;
 import com.ziglog.ziglog.domain.notification.exception.exceptions.InconsistentNotificationOwnerException;
@@ -26,17 +29,22 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
 public class NotificationServiceImpl implements NotificationService {
 
     //RDB에서의 알림 관리
     private final NotificationRdbRepository notificationRepository;
+    private final NoteRepository noteRepository;
     private final EmitterRedisRepository emitterRepository;
     private final KafkaTemplate<String, NotificationDto> kafkaTemplate;
     private final MemberRepository memberRepository;
 
     @Value("${jwt.access.expiration}")
     private Long TIMEOUT;// 30분 => 따로 yml 파일에 넣기
+
+    @Override
+    public NotificationListDto getNotificationList(Member member){
+        return new NotificationListDto(getNotifications(member).stream().map(NotificationDto::toDto).toList());
+    }
 
     @Override
     public SseEmitter subscribe(Member member, String lastEventId) throws Exception {
@@ -51,8 +59,9 @@ public class NotificationServiceImpl implements NotificationService {
         SseEmitter emitter = emitterRepository.findById(id).orElseThrow(Exception::new);
         try {
             log.info("send event");
-            ObjectMapper objectMapper = new ObjectMapper();
-            String eventToSend = objectMapper.writeValueAsString(event);
+            Gson gson = new Gson();
+            String eventToSend = gson.toJson(event);
+            log.info("eventToSend: {}", eventToSend);
             emitter.send(SseEmitter.event()
                     .id(String.valueOf(id))
                     .name("sse")
@@ -85,43 +94,52 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void produceKafkaEvent(Notification notification) throws Exception{
-        NotificationDto notificationDto = NotificationDto.toDto(notification);
-        kafkaTemplate.send("sse", notificationDto);
-    }
-
-    @Override
     @KafkaListener(topics="sse", groupId = "${kafka.consumer.group.send}", containerFactory = "kafkaEventListenerContainerFactorySse")
     public void consumeKafkaEvent(NotificationDto notification) throws Exception {
         sendMessage(notification.getMemberId(), notification.getMessage());
     }
 
     @Override
-    @KafkaListener(topics="sse", groupId = "${kafka.consumer.group.save}", containerFactory = "kafkaEventListenerContainerFactoryRdb")
+    @KafkaListener(topics="rdb", groupId = "${kafka.consumer.group.save}", containerFactory = "kafkaEventListenerContainerFactoryRdb")
     public void saveKafkaEventIntoRDB(NotificationDto notification) throws Exception {
-        notificationRepository.save(notification.toEntity(memberRepository.findById(notification.getMemberId()).orElseThrow(Exception::new)));
+        Notification notificationEntity = Notification.builder()
+                .receiver(memberRepository.findById(notification.getMemberId()).orElseThrow(UserNotFoundException::new))
+                .sender(memberRepository.findByNickname(notification.getSenderNickname()).orElseThrow(UserNotFoundException::new))
+                .message(notification.getMessage())
+                .type(notification.getType())
+                .isRead(notification.getIsRead())
+                .note(noteRepository.findById(notification.getNoteId()).orElseThrow(NoteNotFoundException::new))
+                .dateTime(notification.getDateTime())
+                .build();
+
+        notificationRepository.save(notificationEntity);
     }
 
     @Override // 주어진 아이디의 알림을 DB에서 삭제
+    @Transactional
     public void delete(Member member, Long notificationId) throws AlreadyRemovedNotificationException, InconsistentNotificationOwnerException {
         Notification notification = getVerified(member, notificationId);
         notificationRepository.delete(notification);
     }
 
     @Override //현재 로그인한 사용자의 모든 알림을 조회
+    @Transactional
     public List<Notification> getNotifications (Member member) {
-        return notificationRepository.findAllByOwner(member);
+        return notificationRepository.findAllByReceiver(member);
     }
 
     @Override
+    @Transactional
     public void readNotification(Member member, Long notificationId) throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException{
         Notification notification = getVerified(member, notificationId);
         notification.read();
     }
 
-    private Notification getVerified(Member member, Long notificationId) throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException {
+    @Override
+    @Transactional
+    public Notification getVerified(Member member, Long notificationId) throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException {
         Notification notification = notificationRepository.findById(notificationId).orElseThrow(AlreadyRemovedNotificationException::new);
-        if (!notification.getOwner().getId().equals(member.getId())) throw new InconsistentNotificationOwnerException();
+        if (!notification.getReceiver().getId().equals(member.getId())) throw new InconsistentNotificationOwnerException();
         return notification;
     }
 }
