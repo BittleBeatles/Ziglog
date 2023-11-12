@@ -2,8 +2,10 @@ package com.ziglog.ziglog.domain.note.service;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
+import com.ziglog.ziglog.domain.note.dto.request.folder.ChangeFolderParentRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.folder.CreateFolderRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.folder.ModifyFolderNameRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.ChangeNoteParentRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.ModifyNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.SetPublicRequestDto;
@@ -25,6 +27,9 @@ public interface NoteService {
     IsPublicResponseDto setPublic(Member member, Long noteId, SetPublicRequestDto requestDto)  throws InconsistentFolderOwnerException, NoteNotFoundException;
     void modifyNote(Member member, Long noteId, ModifyNoteRequestDto requestDto) throws NoteNotFoundException, InconsistentFolderOwnerException;
     RetrieveFolderResponseDto retrieveRootNote(String nickname) throws UserNotFoundException, NoteNotFoundException;
+
+    void changeNoteParent(Member member, ChangeNoteParentRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException, InconsistentNoteOwnerException;
+    void changeFolderParent(Member member, ChangeFolderParentRequestDto requestDto) throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException;
 
     // 노트
     void checkOwner(Member member, Note note) throws InconsistentNoteOwnerException;
