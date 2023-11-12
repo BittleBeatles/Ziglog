@@ -18,6 +18,7 @@ import { Note } from '@api/bookmark/types';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import SocialLoginModal from '@components/common/SocialLoginModal';
 import NotificationModal from './Notification/NotificationModal';
+import { showAlert } from '@src/util/alert';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -50,7 +51,6 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [notificationModal, setNotificationModal] = useState(false);
   const [folderName, setFolderName] = useState('');
-  // const [bookmarkList, setBookmarkList] = useState<Note[]>([]);
 
   //파일 추가 변수
   const [showInput, setShowInput] = useState<{
@@ -116,12 +116,12 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       // 노트 생성 API 호출 및 결과 대기
       const result = await createNote(parentId);
       // 성공적으로 노트가 추가되면 sideList를 업데이트
-      getGraphData();
-      getNoteGraphData();
       if (result === 200) {
         getSideList();
+        getGraphData();
+        getNoteGraphData();
       } else {
-        console.error(result);
+        showAlert('노트 추가에 실패했습니다', 'error');
       }
     } catch (error) {
       console.error(error);

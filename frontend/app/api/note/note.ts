@@ -16,8 +16,14 @@ export async function getNoteInfo(
       const res = await privateFetch<NoteApiData>(`${API_URL}/note/${noteId}`, {
         method: 'GET',
       });
-      return await Promise.resolve(res.body);
+      if (res.body.statusCode === 200) {
+        return await Promise.resolve(res.body);
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+        return await Promise.resolve(res.body);
+      }
     } catch (err) {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
       throw err;
     }
   } else {
@@ -25,8 +31,14 @@ export async function getNoteInfo(
       const res = await publicFetch<NoteApiData>(`${API_URL}/note/${noteId}`, {
         method: 'GET',
       });
-      return await Promise.resolve(res.body);
+      if (res.body.statusCode === 200) {
+        return await Promise.resolve(res.body);
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+        return await Promise.resolve(res.body);
+      }
     } catch (err) {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
       throw err;
     }
   }
@@ -41,7 +53,7 @@ export async function createNote(folderId: number) {
       return res.status;
     })
     .catch((err) => {
-      return console.log(err);
+      return;
     });
 }
 
@@ -53,8 +65,12 @@ export async function deleteNote(noteId: number, nickname: string) {
     }
   )
     .then((res) => {
-      showAlert('성공적으로 삭제되었습니다. ', 'success');
-      return;
+      if (res.body.statusCode === 200) {
+        showAlert('성공적으로 삭제되었습니다. ', 'success');
+        return;
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      }
     })
     .catch((err) => {
       throw err;

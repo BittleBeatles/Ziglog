@@ -2,8 +2,10 @@ import { ApiSuccessResponse } from '@api/types';
 import { privateFetch, publicFetch } from '..';
 import { API_URL } from '@api/constants';
 import { DirectoryItem, FolderListResponse } from './types';
+import { showAlert } from '@src/util/alert';
 
 export type CreateFolderApiResponse = ApiSuccessResponse<null>;
+export type EditFolderApiResponse = ApiSuccessResponse<null>;
 export type SideBarListResponse = ApiSuccessResponse<FolderListResponse>;
 export type DeleteFolderApiResponse = ApiSuccessResponse<null>;
 
@@ -13,9 +15,14 @@ export async function createFolder(parentId: number, title: string) {
     body: { parentId: parentId, folderName: title },
   })
     .then((res) => {
-      return console.log(`${parentId}에 폴더가 생성되었습니다.`);
+      if (res.body.statusCode === 200) {
+        return;
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      }
     })
     .catch((err) => {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
       throw err;
     });
 }
@@ -30,8 +37,14 @@ export async function getFolderList(
         method: 'GET',
       }
     );
-    return res.body.data.folderList;
+    if (res.body.statusCode === 200) {
+      return res.body.data.folderList;
+    } else {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      return res.body.data.folderList;
+    }
   } catch (err) {
+    showAlert('예상치 못한 오류가 발생했습니다', 'error');
     throw err;
   }
 }
@@ -44,15 +57,20 @@ export async function deleteFolder(folderId: number) {
     }
   )
     .then((res) => {
-      return console.log(`${folderId}번째 폴더가 삭제되었습니다`);
+      if (res.body.statusCode === 200) {
+        return;
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      }
     })
     .catch((err) => {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
       throw err;
     });
 }
 
 export async function editFolder(folderId: number, folderName: string) {
-  return privateFetch(`${API_URL}/folder`, {
+  return privateFetch<EditFolderApiResponse>(`${API_URL}/folder`, {
     method: 'PUT',
     body: {
       folderId,
@@ -60,10 +78,14 @@ export async function editFolder(folderId: number, folderName: string) {
     },
   })
     .then((res) => {
-      console.log(res);
-      return;
+      if (res.body.statusCode === 200) {
+        return;
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      }
     })
     .catch((err) => {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
       throw err;
     });
 }

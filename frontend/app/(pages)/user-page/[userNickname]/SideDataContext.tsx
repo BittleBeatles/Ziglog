@@ -51,6 +51,7 @@ const SideDataContext = createContext<ISideDataContext>(defaultSideDataContext);
 export const SideDataProvider = ({ children }: { children: ReactNode }) => {
   const params = useParams();
   const paramsNickname = decodeURIComponent(params.userNickname as string);
+  const isLogin = useAppSelector((state) => state.user.isLogin);
   // 그래프 데이터
   const [graphData, setGraphData] = useState<GraphData>(
     defaultSideDataContext.graphData
@@ -92,9 +93,13 @@ export const SideDataProvider = ({ children }: { children: ReactNode }) => {
   // 북마크 데이터
   const [bookmarkList, setBookmarkList] = useState<Note[]>([]);
   const getBookmarkList = async () => {
-    const result = await getBookmark();
-    if (result) {
-      setBookmarkList(result.notes);
+    if (isLogin) {
+      const result = await getBookmark();
+      if (result) {
+        setBookmarkList(result.notes);
+      }
+    } else {
+      return;
     }
   };
 

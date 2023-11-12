@@ -2,6 +2,7 @@ import { API_URL } from '@api/constants';
 import { publicFetch } from '..';
 import { ApiSuccessResponse } from '../types';
 import { GraphData, NoteGraphData } from './types';
+import { showAlert } from '@src/util/alert';
 
 // 폴더 그래프 요청
 export type GraphApiResponse = ApiSuccessResponse<GraphData>;
@@ -14,9 +15,14 @@ export async function getGraph(nickname: string) {
     }
   )
     .then((res) => {
-      return res.body.data;
+      if (res.body.statusCode === 200) {
+        return res.body.data;
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      }
     })
     .catch((err) => {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
       throw err;
     });
 }
@@ -32,9 +38,14 @@ export async function getNoteGraph(nickname: string) {
     }
   )
     .then((res) => {
-      return res.body.data;
+      if (res.body.statusCode === 200) {
+        return res.body.data;
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      }
     })
     .catch((err) => {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
       throw err;
     });
 }

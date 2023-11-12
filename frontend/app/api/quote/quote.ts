@@ -2,6 +2,7 @@ import { privateFetch, publicFetch } from '..';
 import { API_URL } from '@api/constants';
 import { ApiSuccessResponse } from '@api/types';
 import { quotingQuotedNotes, quotingNoteIdsList } from './types';
+import { showAlert } from '@src/util/alert';
 
 export type QuoteApiData = ApiSuccessResponse<quotingQuotedNotes>;
 export type QuotingNoteIdsApiData = ApiSuccessResponse<quotingNoteIdsList>;
@@ -17,8 +18,14 @@ export async function getQuoteData(
         method: 'GET',
       }
     );
-    return await Promise.resolve(res.body.data);
+    if (res.body.statusCode === 200) {
+      return await Promise.resolve(res.body.data);
+    } else {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      return await Promise.resolve(res.body.data);
+    }
   } catch (error) {
+    showAlert('예상치 못한 오류가 발생했습니다', 'error');
     throw error;
   }
 }
@@ -34,8 +41,14 @@ export async function getQuotingNoteIdData(
         method: 'GET',
       }
     );
-    return Promise.resolve(res.body.data);
+    if (res.body.statusCode === 200) {
+      return await Promise.resolve(res.body.data);
+    } else {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      return await Promise.resolve(res.body.data);
+    }
   } catch (error) {
+    showAlert('예상치 못한 오류가 발생했습니다', 'error');
     throw error;
   }
 }
@@ -53,8 +66,14 @@ export async function putQuotingNoteIdData(
         body: { quotingNoteIds: body },
       }
     );
-    return Promise.resolve(res.body.data);
+    if (res.body.statusCode === 200) {
+      return await Promise.resolve(res.body.data);
+    } else {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      return await Promise.resolve(res.body.data);
+    }
   } catch (error) {
+    showAlert('예상치 못한 오류가 발생했습니다', 'error');
     throw error;
   }
 }
