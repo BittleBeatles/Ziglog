@@ -2,6 +2,7 @@ import { ApiSuccessResponse } from '@api/types';
 import { privateFetch } from '..';
 import { API_URL } from '@api/constants';
 import { Note, IsBookmarked } from './types';
+import { showAlert } from '@src/util/alert';
 
 export type AddBookmarkApiResponse = ApiSuccessResponse<null>;
 export type GetBookmarkResponse = ApiSuccessResponse<{ notes: Note[] }>;
@@ -13,9 +14,14 @@ export async function addBookmark(noteId: number) {
     body: { noteId },
   })
     .then((res) => {
-      return res.body;
+      if (res.body.statusCode === 200) {
+        return res.body;
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      }
     })
     .catch((err) => {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
       throw err;
     });
 }
@@ -25,9 +31,14 @@ export async function deleteBookmark(noteId: number) {
     method: 'DELETE',
   })
     .then((res) => {
-      return res.body;
+      if (res.body.statusCode === 200) {
+        return res.body;
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      }
     })
     .catch((err) => {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
       throw err;
     });
 }
@@ -37,8 +48,14 @@ export async function getBookmark(): Promise<{ notes: Note[] }> {
     const res = await privateFetch<GetBookmarkResponse>(`${API_URL}/bookmark`, {
       method: 'GET',
     });
-    return res.body.data;
+    if (res.body.statusCode === 200) {
+      return res.body.data;
+    } else {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      return res.body.data;
+    }
   } catch (err) {
+    showAlert('예상치 못한 오류가 발생했습니다', 'error');
     throw err;
   }
 }
@@ -51,8 +68,14 @@ export async function isNoteBookmarked(noteId: number): Promise<IsBookmarked> {
         method: 'GET',
       }
     );
-    return res.body.data;
+    if (res.body.statusCode === 200) {
+      return res.body.data;
+    } else {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      return res.body.data;
+    }
   } catch (error) {
+    showAlert('예상치 못한 오류가 발생했습니다', 'error');
     throw error;
   }
 }

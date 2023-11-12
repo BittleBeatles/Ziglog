@@ -16,6 +16,7 @@ import IconButton from '@components/common/IconButton';
 import Text from '@components/common/Text';
 import EditInput from '@components/common/EditInput';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
+import { showAlert } from '@src/util/alert';
 
 export interface DirectoryProps {
   theme?: 'light' | 'dark';
@@ -72,7 +73,7 @@ export default function Directory({
         setFolderName('');
         setShowInput({ show: false, type: 'folder' });
       } catch {
-        console.log('폴더가 생성안됬어요');
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
       }
     }
   };
@@ -100,7 +101,7 @@ export default function Directory({
         setNewFolderName('');
         setFolderEdit(false);
       } catch {
-        console.log('수정에 실패했습니다');
+        showAlert('수정에 실패했습니다', 'error');
       }
     }
   };

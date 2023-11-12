@@ -2,6 +2,7 @@ import { privateFetch } from '..';
 import { API_URL } from '@api/constants';
 import { FolderNoteList } from './types';
 import { ApiSuccessResponse } from '@api/types';
+import { showAlert } from '@src/util/alert';
 
 export type SideBarNoteList = ApiSuccessResponse<FolderNoteList>;
 
@@ -11,9 +12,14 @@ export async function getNote(nickname: string) {
     body: { nickname },
   })
     .then((res) => {
-      return res.body.data.folder;
+      if (res.body.statusCode === 200) {
+        return res.body.data.folder;
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      }
     })
     .catch((err) => {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
       throw err;
     });
 }

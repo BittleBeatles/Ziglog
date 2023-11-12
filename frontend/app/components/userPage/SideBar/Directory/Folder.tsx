@@ -9,6 +9,7 @@ import { DirectoryItem } from '@api/folder/types';
 import { createFolder, deleteFolder } from '@api/folder/folder';
 import IconButton from '@components/common/IconButton';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
+import { showAlert } from '@src/util/alert';
 
 export interface FolderProps {
   type?: 'folder';
@@ -91,7 +92,7 @@ export default function Folder({
         setFolderName('');
         setShowInput({ show: false, type: 'folder' });
       } catch {
-        console.log('폴더가 생성안됬어요');
+        showAlert('폴더 생성에 실패했습니다', 'error');
       }
     }
   };
@@ -105,7 +106,7 @@ export default function Folder({
         getGraphData();
         getNoteGraphData();
       } catch {
-        console.log('폴더가 삭제가 안됐음');
+        showAlert('폴더 삭제에 실패했습니다', 'error');
       }
     }
   };

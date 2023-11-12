@@ -18,7 +18,12 @@ export async function getMyInfo(): Promise<MyInfo> {
     const res = await privateFetch<MyApiData>(`${API_URL}/user/info`, {
       method: 'GET',
     });
-    return res.body.data;
+    if (res.body.statusCode === 200) {
+      return res.body.data;
+    } else {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      return res.body.data;
+    }
   } catch (error) {
     throw error;
   }
@@ -30,7 +35,12 @@ export async function getUserInfo(nickname: string): Promise<UserInfo> {
     const res = await publicFetch<UserApiData>(`${API_URL}/user/${nickname}`, {
       method: 'GET',
     });
-    return res.body.data;
+    if (res.body.statusCode === 200) {
+      return res.body.data;
+    } else {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      return res.body.data;
+    }
   } catch (error) {
     throw error;
   }
@@ -56,13 +66,16 @@ export async function ReissueToken() {
     method: 'GET',
   })
     .then((res) => {
-      store.dispatch(setUserToken({ ...res.body.data, grantType: 'Bearer' }));
-      // console.log('[received new accessToken from reissue request]');
-      return res.body.data;
+      if (res.body.statusCode === 200) {
+        store.dispatch(setUserToken({ ...res.body.data, grantType: 'Bearer' }));
+        return res.body.data;
+      } else {
+        showAlert('사용자 인증에 실패했습니다', 'error');
+      }
     })
     .catch((err) => {
       if (!err.response.body || !err.config) {
-        console.log('[token reissue]:Unknown error');
+        showAlert('사용자 인증에 실패했습니다', 'error');
       }
       return Promise.reject(err);
     });
@@ -75,7 +88,12 @@ export async function checkNickname(
     method: 'POST',
     body: { nickname: newNickname },
   }).then((res) => {
-    return res.body.data;
+    if (res.body.statusCode === 200) {
+      return res.body.data;
+    } else {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      return res.body.data;
+    }
   });
 }
 
@@ -91,8 +109,13 @@ export async function modifyUserInfo(
         body: { nickname, profileUrl },
       }
     );
-    return await Promise.resolve('[user info modified]');
+    if ((await res).body.statusCode === 200) {
+      return await Promise.resolve('[user info modified]');
+    } else {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+    }
   } catch (err) {
+    showAlert('예상치 못한 오류가 발생했습니다', 'error');
     throw err;
   }
 }
