@@ -91,9 +91,15 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    @KafkaListener(topics="sse")
+    @KafkaListener(topics="sse", groupId = "${kafka.consumer.group.send}", containerFactory = "kafkaEventListenerContainerFactorySse")
     public void consumeKafkaEvent(NotificationDto notification) throws Exception {
         sendMessage(notification.getMemberId(), notification.getMessage());
+    }
+
+    @Override
+    @KafkaListener(topics="sse", groupId = "${kafka.consumer.group.save}", containerFactory = "kafkaEventListenerContainerFactoryRdb")
+    public void saveKafkaEventIntoRDB(NotificationDto notification) throws Exception {
+        notificationRepository.save(notification.toEntity(memberRepository.findById(notification.getMemberId()).orElseThrow(Exception::new)));
     }
 
     @Override // 주어진 아이디의 알림을 DB에서 삭제
@@ -105,27 +111,6 @@ public class NotificationServiceImpl implements NotificationService {
     @Override //현재 로그인한 사용자의 모든 알림을 조회
     public List<Notification> getNotifications (Member member) {
         return notificationRepository.findAllByOwner(member);
-    }
-
-    @Override
-    public Notification saveBookmarkNotification(Member member, Bookmark bookmark) {
-        if (bookmark.getMember().getId().equals(member.getId())) return null; //자기 자신의 글을 북마크 한 경우에는 알림을 발생시키지 않음
-        Notification notification = Notification.builder()
-                .owner(bookmark.getMember())
-                .message(member.getNickname() + "님이 회원님의 글을 북마크했습니다.")
-                .build();
-
-        return notificationRepository.save(notification);
-    }
-
-    @Override
-    public Notification saveQuotationNotification(Member member, Quotation quotation){
-        if (quotation.getEndNote().getAuthor().getId().equals(member.getId())) return null; //내 자신의 글을 인용한 경우에는 알림 발생시키지 않음
-        Notification notification = Notification.builder()
-                .owner(quotation.getStartNote().getAuthor())
-                .message(member.getNickname() + "님이 회원님의 글을 인용했습니다.")
-                .build();
-        return notificationRepository.save(notification);
     }
 
     @Override

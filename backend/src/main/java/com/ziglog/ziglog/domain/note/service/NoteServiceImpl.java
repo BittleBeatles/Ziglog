@@ -88,7 +88,6 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Note modifyNote(Member member, Note note) throws NoteNotFoundException, InconsistentFolderOwnerException {
-        //TODO 코드 다시 보니까 개판이라서 다시 짜야 됨. 인용하고 있는 노트 번호들에 대한 검증이 필요함
         Note notePersist = noteRepository.findNoteById(note.getId()).orElseThrow(NoteNotFoundException::new);
         checkOwner(member, notePersist);
 

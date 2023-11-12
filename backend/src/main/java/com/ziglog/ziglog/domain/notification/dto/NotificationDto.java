@@ -1,5 +1,6 @@
 package com.ziglog.ziglog.domain.notification.dto;
 
+import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.entity.NotificationType;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,16 @@ public class NotificationDto {
                 .memberId(notification.getOwner().getId())
                 .type(notification.getType())
                 .dateTime(notification.getDateTime())
+                .build();
+    }
+
+    public Notification toEntity(Member owner){
+        return Notification.builder()
+                .message(message)
+                .isRead(false)
+                .owner(owner)
+                .type(this.type)
+                .dateTime(dateTime)
                 .build();
     }
 }
