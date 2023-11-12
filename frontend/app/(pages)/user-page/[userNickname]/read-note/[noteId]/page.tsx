@@ -82,7 +82,6 @@ export default function ReadNote() {
         });
         setIsPublic(result.data.isPublic);
         getQuotationList(parseInt(paramNoteId));
-        getIsBookmarked(parseInt(paramNoteId));
       } else {
         router.push(`/user-page/${paramsNickname}`);
         showAlert(`${result.message}`, 'error');
@@ -90,6 +89,10 @@ export default function ReadNote() {
     };
 
     getNoteReadPage(parseInt(paramNoteId));
+  }, []);
+
+  useEffect(() => {
+    getIsBookmarked(parseInt(paramNoteId));
   }, [bookmarkList]);
 
   // 북마크 추가, 취소하기
