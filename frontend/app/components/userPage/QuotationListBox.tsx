@@ -30,7 +30,7 @@ export default function QuotationListBox({
   const router = useRouter();
   return (
     <div
-      className={`${THEME_VARIANTS[theme]} relative rounded-md p-5 flex flex-col gap-4`}
+      className={`${THEME_VARIANTS[theme]} relative rounded-md p-5 flex flex-col gap-4 w-full`}
     >
       {/* 북마크 아이콘  */}
       <div className="absolute -top-3 right-24">
