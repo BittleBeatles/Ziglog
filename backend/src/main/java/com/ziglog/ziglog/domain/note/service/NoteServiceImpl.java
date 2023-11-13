@@ -18,6 +18,7 @@ import com.ziglog.ziglog.domain.note.dto.request.note.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.ModifyNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.SetPublicRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.IsPublicResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.ListFolderResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.ReadNoteResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.RetrieveFolderResponseDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -244,5 +246,11 @@ public class NoteServiceImpl implements NoteService{
         if (!childFolder.getOwner().getId().equals(member.getId())) throw new InconsistentNoteOwnerException();
 
         childFolder.changeParentFolder(parentFolder);
+    }
+
+
+    @Override
+    public ListFolderResponseDto listFolders(Member member) throws UserNotFoundException, FolderNotFoundException {
+        return ListFolderResponseDto.toDto(folderRepository.findAllByOwner(member));
     }
 }
