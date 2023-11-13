@@ -5,33 +5,36 @@ import { HTMLAttributes, useEffect, useState } from 'react';
 
 interface SingleNotificationProps extends HTMLAttributes<HTMLDivElement> {
   theme: 'light' | 'dark';
+  senderNickname: string;
+  senderProfileUrl: string;
+  noteId: number;
+  title: string;
   isRead: boolean;
-  type: 'bookmark' | 'quotation';
-  noteTitle: string;
-  userNickname: string;
-  date: Date;
-  targetNoteId: number;
+  type: string;
+  dateTime: Date;
 }
 
 export default function SingleNotification({
   theme,
   isRead,
   type,
-  noteTitle,
-  userNickname,
-  date,
-  targetNoteId,
+  title,
+  senderNickname,
+  senderProfileUrl,
+  dateTime,
+  noteId,
+  ...rest
 }: SingleNotificationProps) {
-  const [profileUrl, setProfileUrl] = useState('');
-  useEffect(() => {
-    const getUserInformation = async () => {
-      const result = await getUserInfo(userNickname);
-      if (result) {
-        setProfileUrl(result.profileUrl);
-      }
-    };
-    getUserInformation();
-  }, []);
+  // const [profileUrl, setProfileUrl] = useState('');
+  // useEffect(() => {
+  //   const getUserInformation = async () => {
+  //     const result = await getUserInfo(senderNickname);
+  //     if (result) {
+  //       setProfileUrl(result.profileUrl);
+  //     }
+  //   };
+  //   getUserInformation();
+  // }, []);
   const [isChecked, setIsClicked] = useState(isRead);
   const onClick = () => {
     setIsClicked(true);
@@ -48,20 +51,21 @@ export default function SingleNotification({
   });
   return (
     <Link
-      key={targetNoteId}
+      key={noteId}
       href={`/user-page/${
-        type === 'bookmark' ? nickname : userNickname
-      }/read-note/${targetNoteId}`}
+        type === 'bookmark' ? nickname : senderNickname
+      }/read-note/${noteId}`}
       onClick={onClick}
     >
       <div
+        {...rest}
         className={`shadow ${THEME_VARIANTS[theme]} ${
           !isChecked && HOVER_COLOR[theme]
         } w-120 px-4 h-20 rounded-md flex flex-row`}
       >
         <div className="grid place-content-center">
           {/* <Link href={`/user-page/${userNickname}`}> */}
-          <ProfileImage size={55} src={profileUrl} />
+          <ProfileImage size={55} src={senderProfileUrl} />
           {/* </Link> */}
         </div>
         <div className="flex flex-row">
@@ -71,7 +75,7 @@ export default function SingleNotification({
           ></div>
           <div className="grid place-content-center">
             <p className={`text-xs ${isChecked ? 'text-gray-500' : ''}`}>
-              {date.toLocaleString('ko-KR', {
+              {dateTime.toLocaleString('ko-KR', {
                 year: '2-digit',
                 month: '2-digit',
                 day: '2-digit',
@@ -85,7 +89,7 @@ export default function SingleNotification({
                   isChecked ? 'text-gray-400' : ''
                 }`}
               >
-                {userNickname}
+                {senderNickname}
               </p>
               {type === 'bookmark' ? (
                 <p
@@ -116,7 +120,7 @@ export default function SingleNotification({
                   isChecked ? 'text-gray-400' : ''
                 }`}
               >
-                {noteTitle}
+                {title}
               </p>
             </div>
           </div>

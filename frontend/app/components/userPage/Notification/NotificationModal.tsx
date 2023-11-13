@@ -2,8 +2,15 @@ import ModalLayout from '@components/common/ModalLayout';
 import Text from '@components/common/Text';
 import NotificationButton from '@components/userPage/Notification/NotificationButton';
 import SingleNotification from './SingleNotification';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IconButton from '@components/common/IconButton';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getNotificationList,
+  putNotification,
+} from '@api/notification/notification';
+import { RootState } from '@store/store';
+import { NotificationList } from '@api/notification/types';
 
 interface NotificationModalProps {
   theme: 'light' | 'dark';
@@ -20,6 +27,52 @@ export default function NotificationModal({
   const handleTypeChange = (newType: 'all' | 'bookmark' | 'quotation') => {
     setSelectedType(newType);
   };
+  // RootState에서 알림 목록 가져오기
+  const storedNotifications = useSelector(
+    (state: RootState) => state.user.notifications
+  );
+
+  //알림 목록 조회
+  const dispatch = useDispatch();
+  const [notifications, setNotifications] = useState<NotificationList>({
+    nontificationList: [],
+  });
+  // 알림 읽기 핸들러
+  const handleNotificationRead = async (notificationId: number) => {
+    try {
+      await putNotification(notificationId);
+      // 여기에서 새로운 알림 목록을 가져옴.
+      const updatedNotifications: NotificationList =
+        await getNotificationList();
+      setNotifications(updatedNotifications);
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
+  };
+
+  useEffect(() => {
+    // 최초 마운트 시에 알림 목록을 가져옴
+    const fetchData = async () => {
+      try {
+        // 알림 목록 조회
+        const initialNotifications = await getNotificationList();
+        setNotifications(initialNotifications);
+
+        // SSE 연결 설정
+        // subscribe();
+      } catch (error) {
+        console.error('Error fetching initial data:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // 컴포넌트가 마운트될 때 한 번만 실행
+
+  // storedNotifications가 변경될 때마다 업데이트
+  useEffect(() => {
+    setNotifications(storedNotifications);
+  }, [storedNotifications]);
+
   return (
     <ModalLayout classname={`${THEME_VARIANTS[theme]} px-6 py-8`}>
       <div className="">
@@ -50,26 +103,22 @@ export default function NotificationModal({
           ></NotificationButton>
         </div>
         <div className="">
-          <div className="mb-2">
-            <SingleNotification
-              theme={theme}
-              isRead={false}
-              type="bookmark"
-              noteTitle="비타오백"
-              userNickname="리락쿠마"
-              date={new Date('2023-10-06 06:32:30.619203')}
-              targetNoteId={2}
-            />
-          </div>
-          <SingleNotification
-            theme={theme}
-            isRead={false}
-            type="quotation"
-            noteTitle="비타오백"
-            userNickname="리락쿠마"
-            date={new Date('2023-10-06 06:32:30.619203')}
-            targetNoteId={2}
-          />
+          {notifications.nontificationList.map((notification) => (
+            <div key={notification.id} className="mb-2">
+              <SingleNotification
+                theme={theme}
+                // id={notification.id}
+                senderNickname={notification.senderNickname}
+                senderProfileUrl={notification.senderProfileUrl}
+                noteId={notification.noteId}
+                title={notification.title}
+                isRead={notification.isRead}
+                type={notification.type}
+                dateTime={notification.dateTime}
+                onClick={() => handleNotificationRead(notification.id)}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </ModalLayout>

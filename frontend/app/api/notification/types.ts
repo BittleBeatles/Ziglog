@@ -25,7 +25,7 @@ export interface NotificationResult {
   senderNickname: string;
   senderProfileUrl: string;
   noteId: number;
-  message: string;
+  title: string;
   isRead: boolean;
   type: string;
   dateTime: Date;
