@@ -3,7 +3,7 @@ package com.ziglog.ziglog.domain.note.service;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
-import com.ziglog.ziglog.domain.note.dto.response.GraphResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.graph.GraphResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.graph.Link;
 import com.ziglog.ziglog.domain.note.dto.response.graph.Node;
 import com.ziglog.ziglog.domain.note.entity.Folder;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Transactional

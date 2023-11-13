@@ -1,6 +1,6 @@
 package com.ziglog.ziglog.domain.note.controller;
 
-import com.ziglog.ziglog.domain.note.dto.response.GraphResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.graph.GraphResponseDto;
 import com.ziglog.ziglog.domain.note.service.GraphService;
 import com.ziglog.ziglog.domain.note.service.NoteService;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
@@ -28,6 +28,7 @@ public class GraphController {
     public ResponseDto<GraphResponseDto> retrieveNotesOf(@RequestParam("nickname") String nickname) throws Exception {
         return ResponseDto.of(graphService.retrieveNotesOf(nickname));
     }
+
     @Operation(summary = "사용자 폴더 구조 그래프 조회",
             description = "닉네임으로 사용자가 소유한 폴더 및 노트의 트리 그래프를 조회")
     @GetMapping("/folder")

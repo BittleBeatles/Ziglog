@@ -1,11 +1,9 @@
-package com.ziglog.ziglog.domain.note.dto.response;
+package com.ziglog.ziglog.domain.note.dto.response.note;
 
 import com.ziglog.ziglog.domain.note.entity.Note;
 import lombok.Builder;
 import lombok.Getter;
-import org.apache.kafka.common.protocol.types.Field;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder

@@ -1,6 +1,6 @@
 package com.ziglog.ziglog.domain.note.service;
 
-import com.ziglog.ziglog.domain.note.dto.response.SearchResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.folder.SearchResponseDto;
 import org.springframework.data.domain.Pageable;
 
 

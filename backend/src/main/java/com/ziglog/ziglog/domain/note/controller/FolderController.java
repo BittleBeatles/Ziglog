@@ -4,7 +4,7 @@ import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundExceptio
 import com.ziglog.ziglog.domain.note.dto.request.folder.ChangeFolderParentRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.folder.CreateFolderRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.folder.ModifyFolderNameRequestDto;
-import com.ziglog.ziglog.domain.note.dto.request.note.ChangeNoteParentRequestDto;
+import com.ziglog.ziglog.domain.note.dto.response.folder.RetrieveFolderOnlyResponseDto;
 import com.ziglog.ziglog.domain.note.exception.exceptions.CannotRemoveRootFolderException;
 import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
 import com.ziglog.ziglog.domain.note.exception.exceptions.InconsistentFolderOwnerException;
@@ -62,5 +62,12 @@ public class FolderController {
                                                 @RequestBody ChangeFolderParentRequestDto requestDto) {
         noteService.changeFolderParent(userDetails.member(), requestDto);
         return ResponseDto.of(200, "success");
+    }
+
+    @Operation(summary = "회원의 모든 폴더 리스트를 반환",
+            description = "로그인한 회원의 폴더 리스트를 보여줌")
+    @GetMapping("")
+    public ResponseDto<RetrieveFolderOnlyResponseDto> searchAllFolder(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseDto.of(noteService.listFolders(userDetails.member().getNickname()));
     }
 }
