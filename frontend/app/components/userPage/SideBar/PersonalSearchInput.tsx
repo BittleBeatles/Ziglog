@@ -139,7 +139,7 @@ const PersonalSearchInput = forwardRef<
         onChange={handleInputChange}
       />
       {isSearchModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-10">
+        <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-20">
           <PersonalSearchModal
             theme={theme}
             nickname={nickname}
