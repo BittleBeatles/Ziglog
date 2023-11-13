@@ -3,11 +3,11 @@ import { store } from '@store/store';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { NotificationEvent, NotificationData } from './types';
 
+const accessToken = store.getState().user.accessToken;
+const grantType = store.getState().user.grantType;
+
 export async function subscribe() {
   try {
-    const accessToken = store.getState().user.accessToken;
-    const grantType = store.getState().user.grantType;
-
     const eventSource = new EventSourcePolyfill(
       `${API_URL}/notification/subscribe`,
       {

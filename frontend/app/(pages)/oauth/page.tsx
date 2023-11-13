@@ -3,6 +3,7 @@ import { useAppDispatch } from '@store/store';
 import { useEffect } from 'react';
 import { setMyInfo, setUserToken } from '@store/modules/userSlice';
 import { getMyInfo } from '@api/user/user';
+import { subscribe } from '@api/notification/subscribe';
 export default function OauthPage() {
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -15,6 +16,8 @@ export default function OauthPage() {
       const result = await getMyInfo();
       if (result) {
         dispatch(setMyInfo(result));
+        // SSE 연결 설정
+        subscribe();
         window.location.replace(`/user-page/${result.nickname}`);
       } else {
         window.location.replace('/');
