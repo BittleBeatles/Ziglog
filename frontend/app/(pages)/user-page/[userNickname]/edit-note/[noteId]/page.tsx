@@ -130,7 +130,7 @@ export default function EditNote() {
 
   return (
     hasAccess && (
-      <div>
+      <div id="sidebar-scroll" className="max-h-full overflow-y-auto px-5">
         <div className="flex flex-row justify-between items-center mb-3">
           <NoteTitleInput
             ref={titleRef}
@@ -149,7 +149,7 @@ export default function EditNote() {
         <MDEditor
           className="relative"
           data-color-mode={theme}
-          height={400}
+          height={550}
           value={content}
           onChange={(v) => setContent(v || '')}
           preview={'live'}

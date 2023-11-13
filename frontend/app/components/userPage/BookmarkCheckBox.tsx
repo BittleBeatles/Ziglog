@@ -44,7 +44,10 @@ export default function BookmarkCheckBox({
       {/* 제목 */}
       <Text type="h4">이 노트가 참조하고 있는 노트들을 선택해주세요.</Text>
       {/* 북마크 목록 - 스크롤로 */}
-      <div className="flex flex-col gap-2 h-32 overflow-auto">
+      <div
+        id="sidebar-scroll"
+        className="flex flex-col gap-2 h-32 overflow-y-auto"
+      >
         {bookmarkList.length > 0 ? (
           bookmarkList.map((bookmark) => {
             let isFill = false;
@@ -53,10 +56,14 @@ export default function BookmarkCheckBox({
             }
 
             return (
-              <div key={bookmark.noteId} className="flex flex-row gap-3">
+              <div
+                key={bookmark.noteId}
+                className="flex flex-row gap-3 items-center"
+              >
                 <SvgIcon
                   onClick={() => handleChangeCheck(bookmark.noteId)}
                   name={isFill ? 'CheckBoxFill' : 'CheckBoxBlank'}
+                  color={theme === 'dark' ? 'white' : 'black'}
                 />
                 <span>
                   {bookmark.nickname} : {bookmark.title}
