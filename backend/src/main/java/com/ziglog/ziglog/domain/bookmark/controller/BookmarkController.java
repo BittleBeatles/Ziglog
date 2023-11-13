@@ -61,5 +61,4 @@ public class BookmarkController {
                                                           @PathVariable("noteId") Long noteId) throws UserNotFoundException {
         return ResponseDto.of(bookmarkService.checkIsBookmarked(userDetails.member(), noteId));
     }
-
 }

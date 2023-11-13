@@ -1,7 +1,6 @@
-package com.ziglog.ziglog.domain.note.dto.response;
+package com.ziglog.ziglog.domain.note.dto.response.note;
 
 import com.ziglog.ziglog.domain.note.entity.Note;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;

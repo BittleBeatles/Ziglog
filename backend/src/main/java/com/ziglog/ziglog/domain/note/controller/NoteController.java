@@ -5,10 +5,9 @@ import com.ziglog.ziglog.domain.note.dto.request.note.ChangeNoteParentRequestDto
 import com.ziglog.ziglog.domain.note.dto.request.note.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.ModifyNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.SetPublicRequestDto;
-import com.ziglog.ziglog.domain.note.dto.response.IsPublicResponseDto;
-import com.ziglog.ziglog.domain.note.dto.response.QuotationListResponseDto;
-import com.ziglog.ziglog.domain.note.dto.response.ReadNoteResponseDto;
-import com.ziglog.ziglog.domain.note.dto.response.RetrieveFolderResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.note.IsPublicResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.note.ReadNoteResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.folder.RetrieveFolderResponseDto;
 import com.ziglog.ziglog.domain.note.exception.exceptions.*;
 import com.ziglog.ziglog.domain.note.service.NoteService;
 import com.ziglog.ziglog.domain.note.service.QuotationService;
