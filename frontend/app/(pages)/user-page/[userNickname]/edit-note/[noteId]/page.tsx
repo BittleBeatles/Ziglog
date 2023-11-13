@@ -47,16 +47,11 @@ export default function EditNote() {
     title: '',
     noteId: 0,
   });
-  const { getBookmarkList, getSideList } = useContext(SideDataContext);
+  const { getBookmarkList, getSideList, bookmarkList } =
+    useContext(SideDataContext);
   const router = useRouter();
   const [idChange, setIdChange] = useState(false);
-  // [마크다운용 북마크 가져오기]
-  const getMdBookmarkList = async () => {
-    const result = await getBookmark();
-    if (result) {
-      setBookmarks(result.notes);
-    }
-  };
+
   // [참조 노트 ID 목록 가져오기]
   const getQuotingNoteIdsList = async () => {
     const result = await getQuotingNoteIdData(parseInt(noteId));
@@ -64,7 +59,11 @@ export default function EditNote() {
       setQuotingNoteIds(result.quotingNoteIds);
     }
   };
-  // 노트 정보 불러오기 + 북마크 정보 가져오기 + 참조하는 노트 id 목록 가져오기
+  // [context에서 북마크 정보 가져오기]
+  useEffect(() => {
+    setBookmarks(bookmarkList);
+  }, [bookmarkList]);
+  // 노트 정보 불러오기 +  참조하는 노트 id 목록 가져오기
   useEffect(() => {
     const getNoteInfoEditPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -79,7 +78,6 @@ export default function EditNote() {
         setContent(result.data.content);
         setIsPublic(result.data.isPublic);
 
-        getMdBookmarkList();
         getQuotingNoteIdsList();
       } else {
         router.push(`/user-page/${nickname}`);
@@ -130,7 +128,7 @@ export default function EditNote() {
 
   return (
     hasAccess && (
-      <div>
+      <div id="sidebar-scroll" className="max-h-full overflow-y-auto px-5">
         <div className="flex flex-row justify-between items-center mb-3">
           <NoteTitleInput
             ref={titleRef}
@@ -149,7 +147,7 @@ export default function EditNote() {
         <MDEditor
           className="relative"
           data-color-mode={theme}
-          height={400}
+          height={550}
           value={content}
           onChange={(v) => setContent(v || '')}
           preview={'live'}

@@ -214,15 +214,14 @@ export default function ReadNote() {
             </div>
           </div>
         </div>
-        <div className="mx-40 mt-10 mb-4">
+        <div className="flex flex-row gap-3 mx-40 my-5">
           <QuotationListBox
             userNickname={paramsNickname}
             label="이 글을 참조한 노트들"
             theme={theme}
             quotationList={quotationInfo.quotedNotes}
           />
-        </div>
-        <div className="mx-40 mt-10 mb-4">
+
           <QuotationListBox
             userNickname={paramsNickname}
             label="이 글이 참조하는 노트들"
