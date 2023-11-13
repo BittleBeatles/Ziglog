@@ -31,6 +31,10 @@ import More from '@public/icons/more.svg';
 import Loading from '@public/icons/loading.svg';
 import NoteDescription from '@public/icons/noteDescription.svg';
 import Quote from '@public/icons/quote.svg';
+import CheckBoxFill from '@public/icons/checkBoxFill.svg';
+import CheckBoxBlank from '@public/icons/checkBoxBlank.svg';
+import Notification from '@public/icons/notification.svg';
+
 export {
   AddFolder,
   AddNote,
@@ -65,4 +69,7 @@ export {
   Loading,
   NoteDescription,
   Quote,
+  CheckBoxFill,
+  CheckBoxBlank,
+  Notification,
 };

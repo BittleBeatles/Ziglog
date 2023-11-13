@@ -31,9 +31,14 @@ const config: Config = {
         'modal-border': '#BDBDBD',
       },
       spacing: {
+        modal: '10rem',
         '108': '27rem',
         '120': '30rem',
         '132': '33rem',
+      },
+      maxWidth: {
+        xxs: '7rem',
+        noti: '10rem',
       },
       animation: {
         'draw-line': 'drawLine 3s forwards infinite',

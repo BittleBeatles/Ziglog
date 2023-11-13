@@ -16,6 +16,7 @@ import IconButton from '@components/common/IconButton';
 import Text from '@components/common/Text';
 import EditInput from '@components/common/EditInput';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
+import { showAlert } from '@src/util/alert';
 
 export interface DirectoryProps {
   theme?: 'light' | 'dark';
@@ -48,7 +49,8 @@ export default function Directory({
   const [newFolderName, setNewFolderName] = useState('');
   const [editingFolderId, setEditingFolderId] = useState(-1);
   const [editingTitle, setEditingTitle] = useState('');
-  const { getGraphData, sideData, getSideList } = useContext(SideDataContext);
+  const { getGraphData, sideData, getSideList, getNoteGraphData } =
+    useContext(SideDataContext);
 
   // 폴더 입력했을 때 렌더링하기 위함
   const [keyDownCounter, setKeyDownCounter] = useState(0);
@@ -66,11 +68,12 @@ export default function Directory({
         await createFolder(rootId, folderName);
         getSideList();
         getGraphData();
+        getNoteGraphData();
         setKeyDownCounter(keyDownCounter + 1);
         setFolderName('');
         setShowInput({ show: false, type: 'folder' });
       } catch {
-        console.log('폴더가 생성안됬어요');
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
       }
     }
   };
@@ -94,10 +97,11 @@ export default function Directory({
         await editFolder(editingFolderId, newFolderName);
         getSideList();
         getGraphData();
+        getNoteGraphData();
         setNewFolderName('');
         setFolderEdit(false);
       } catch {
-        console.log('수정에 실패했습니다');
+        showAlert('수정에 실패했습니다', 'error');
       }
     }
   };
@@ -108,11 +112,13 @@ export default function Directory({
         <Text type="b">
           {isMine && isMine ? '내 워크스페이스' : '워크스페이스'}
         </Text>
-        <IconButton
-          onClick={() => setModifyDelete(!isModifyDelete)}
-          theme={theme}
-          name="More"
-        />
+        {isMine && (
+          <IconButton
+            onClick={() => setModifyDelete(!isModifyDelete)}
+            theme={theme}
+            name="More"
+          />
+        )}
       </div>
       {sideData &&
         sideData.map((item) =>

@@ -77,7 +77,6 @@ export default function Search() {
             notes: [...(prevData?.notes || []), ...(newData?.notes || [])],
           }));
         } else {
-          console.error('No notes data in the response.');
           setHasMore(false);
         }
       } catch (error) {

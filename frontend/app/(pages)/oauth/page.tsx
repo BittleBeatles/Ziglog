@@ -18,7 +18,6 @@ export default function OauthPage() {
         window.location.replace(`/user-page/${result.nickname}`);
       } else {
         window.location.replace('/');
-        console.log('[login error]');
       }
     };
     oauthLogin();

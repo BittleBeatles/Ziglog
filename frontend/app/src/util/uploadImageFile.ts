@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk';
+import { showAlert } from './alert';
 AWS.config.update({
   accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY,
   secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
@@ -17,7 +18,7 @@ export const uploadImageFile = (selectFile: any, setProfileUrl: any) => {
 
   myBucket.putObject(params).send((err) => {
     if (err) {
-      console.log('image upload error', err);
+      showAlert('이미지 업로드에 실패했습니다', 'error');
     } else {
       const imageUrl = `https://${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}.s3-${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/${params.Key}`;
       setProfileUrl(imageUrl);

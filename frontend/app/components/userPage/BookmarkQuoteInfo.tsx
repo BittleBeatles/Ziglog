@@ -2,6 +2,7 @@ import { ButtonHTMLAttributes } from 'react';
 import SvgIcon from '../common/SvgIcon';
 import Text from '../common/Text';
 import { showAlert } from '@src/util/alert';
+import IconButton from '@components/common/IconButton';
 interface BookmarkQuoteInfoProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   theme: 'light' | 'dark';
@@ -31,10 +32,10 @@ export default function BookmarkQuoteInfo({
     <div
       className={`${THEME_VARIANTS[theme]} w-16 h-44 rounded-full py-6 grid place-items-center`}
     >
-      <SvgIcon
+      <IconButton
         onClick={handleClick}
         name={isBookmarked ? 'BookMarkFill' : 'BookMark'}
-        color={theme == 'light' ? 'black' : 'white'}
+        theme={theme}
         size={28}
       />
 

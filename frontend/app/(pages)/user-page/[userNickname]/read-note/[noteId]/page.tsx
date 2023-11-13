@@ -7,7 +7,7 @@ import BookmarkQuoteInfo from '@components/userPage/BookmarkQuoteInfo';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import QuotationListBox from '@components/userPage/QuotationListBox';
 import { NoteInfo } from '@api/note/types';
-import { deleteNote, getNoteInfo, getReferenceList } from '@api/note/note';
+import { deleteNote, getNoteInfo } from '@api/note/note';
 import { useEffect, useState, useContext } from 'react';
 import { useAppSelector } from '@store/store';
 import { NoteRefListInfo } from '@api/note/types';
@@ -21,13 +21,15 @@ import { showAlert } from '@src/util/alert';
 import SideDataContext from '../../SideDataContext';
 import { changeNotePublicStatusRequest } from '@api/note/editNote';
 import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
-
+import { getQuoteData } from '@api/quote/quote';
+import { quotingQuotedNotes } from '@api/quote/types';
 export default function ReadNote() {
   const router = useRouter();
   const { theme, isLogin } = useAppSelector((state) => state.user);
   const userNickname = useAppSelector((state) => state.user.nickname);
-  const [quotationInfo, setQuotationInfo] = useState<NoteRefListInfo>({
-    quotationList: [],
+  const [quotationInfo, setQuotationInfo] = useState<quotingQuotedNotes>({
+    quotingNotes: [],
+    quotedNotes: [],
   });
   const params = useParams();
   const paramNoteId = decodeURIComponent(params.noteId as string);
@@ -44,8 +46,24 @@ export default function ReadNote() {
     editTime: new Date('2023-10-31 00:00:00'),
   });
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const { getBookmarkList, getSideList } = useContext(SideDataContext);
+  const { getBookmarkList, getSideList, bookmarkList } =
+    useContext(SideDataContext);
   const [isPublic, setIsPublic] = useState(false);
+  // [GET 참조 목록]
+  const getQuotationList = async (noteId: number) => {
+    const result = await getQuoteData(noteId);
+    if (result) {
+      setQuotationInfo(result);
+    }
+  };
+  const getIsBookmarked = async (noteId: number) => {
+    if (isLogin) {
+      const result = await isNoteBookmarked(noteId);
+      if (result) {
+        setIsBookmarked(result.bookmarked);
+      }
+    }
+  };
   useEffect(() => {
     const getNoteReadPage = async (noteId: number) => {
       const result = await getNoteInfo(noteId, isLogin);
@@ -69,21 +87,13 @@ export default function ReadNote() {
         showAlert(`${result.message}`, 'error');
       }
     };
-    const getQuotationList = async (noteId: number) => {
-      const result = await getReferenceList(noteId);
-      if (result) {
-        setQuotationInfo(result);
-        getIsBookmarked(noteId);
-      }
-    };
-    const getIsBookmarked = async (noteId: number) => {
-      const result = await isNoteBookmarked(noteId);
-      if (result) {
-        setIsBookmarked(result.bookmarked);
-      }
-    };
+
     getNoteReadPage(parseInt(paramNoteId));
   }, []);
+
+  useEffect(() => {
+    getIsBookmarked(parseInt(paramNoteId));
+  }, [bookmarkList]);
 
   // 북마크 추가, 취소하기
   const handleBookmarkChange = async () => {
@@ -132,26 +142,6 @@ export default function ReadNote() {
 
   const isMine = isLogin && userNickname === data.nickname;
 
-  //검색페이지에서 왔을 때 뒤로 가기 검색 유지
-  // const handleGoBack = (event: { preventDefault: () => void }) => {
-  //   event.preventDefault();
-  //   const currentQueryString = new URLSearchParams(window.location.search).get(
-  //     'keyword'
-  //   );
-  //   console.log('키워드 있어?', currentQueryString);
-  //   if (currentQueryString) {
-  //     router.push(`/search?keyword=${encodeURIComponent(currentQueryString)}`);
-  //   } else {
-  //     router.back();
-  //   }
-  // };
-  // useEffect(() => {
-  //   window.addEventListener('popstate', handleGoBack);
-  //   return () => {
-  //     window.removeEventListener('popstate', handleGoBack);
-  //   };
-  // }, []);
-
   return (
     hasAccess && (
       <div id="sidebar-scroll" className="overflow-y-auto h-full">
@@ -190,7 +180,7 @@ export default function ReadNote() {
                     color="blue"
                     label="수정"
                     size="text-xs"
-                  ></Button>
+                  />
                 </div>
                 <div className="ml-3">
                   <Button
@@ -198,7 +188,7 @@ export default function ReadNote() {
                     onClick={handleDelete}
                     label="삭제"
                     size="text-xs"
-                  ></Button>
+                  />
                 </div>
               </div>
             ) : (
@@ -211,11 +201,11 @@ export default function ReadNote() {
             <BookmarkQuoteInfo
               theme={theme}
               bookmarkCount={data.bookmarkCount}
-              quotedCount={quotationInfo.quotationList.length}
+              quotedCount={quotationInfo.quotedNotes.length}
               isBookmarked={isBookmarked}
               handleBookmarkChange={handleBookmarkChange}
               isLogin={isLogin}
-            ></BookmarkQuoteInfo>
+            />
           </div>
 
           <div data-color-mode={theme} className="w-full mx-24">
@@ -226,9 +216,19 @@ export default function ReadNote() {
         </div>
         <div className="mx-40 mt-10 mb-4">
           <QuotationListBox
+            userNickname={paramsNickname}
+            label="이 글을 참조한 노트들"
             theme={theme}
-            quotationList={quotationInfo.quotationList}
-          ></QuotationListBox>
+            quotationList={quotationInfo.quotedNotes}
+          />
+        </div>
+        <div className="mx-40 mt-10 mb-4">
+          <QuotationListBox
+            userNickname={paramsNickname}
+            label="이 글이 참조하는 노트들"
+            theme={theme}
+            quotationList={quotationInfo.quotingNotes}
+          />
         </div>
       </div>
     )
