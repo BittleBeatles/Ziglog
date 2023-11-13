@@ -6,6 +6,7 @@ import { showAlert } from '@src/util/alert';
 export type NoteApiData = ApiSuccessResponse<NoteInfo>;
 export type CreateNoteApiResponse = ApiSuccessResponse<null>;
 export type QuotationListApiResponse = ApiSuccessResponse<NoteRefListInfo>;
+export type ChangeNoteRouteApiResponse = ApiSuccessResponse<null>;
 
 export async function getNoteInfo(
   noteId: number,
@@ -74,5 +75,25 @@ export async function deleteNote(noteId: number, nickname: string) {
     })
     .catch((err) => {
       throw err;
+    });
+}
+
+export async function changeNoteRoute(parentId: number, childId: number) {
+  return privateFetch<ChangeNoteRouteApiResponse>(`${API_URL}/note/parent`, {
+    method: 'PUT',
+    body: {
+      parentId,
+      childId,
+    },
+  })
+    .then((res) => {
+      if (res.body.statusCode === 200) {
+        return;
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      }
+    })
+    .catch((err) => {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
     });
 }

@@ -17,6 +17,7 @@ import Text from '@components/common/Text';
 import EditInput from '@components/userPage/SideBar/Directory/EditInput';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import { showAlert } from '@src/util/alert';
+import EditNoteRoute from './Directory/EditNoteRoute';
 
 export interface DirectoryProps {
   theme?: 'light' | 'dark';
@@ -46,9 +47,12 @@ export default function Directory({
   const rootId = useAppSelector((state) => state.user.rootFolderId);
   const [isModifyDelete, setModifyDelete] = useState(false);
   const [showFolderEdit, setFolderEdit] = useState(false);
+  const [showNoteEdit, setNoteEdit] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
   const [editingFolderId, setEditingFolderId] = useState(rootId);
+  const [editingNoteId, setEditingNoteId] = useState(rootId);
   const [editingTitle, setEditingTitle] = useState('');
+  const [editingNoteTitle, setEditingNoteTitle] = useState('');
   const { getGraphData, sideData, getSideList, getNoteGraphData } =
     useContext(SideDataContext);
 
@@ -82,6 +86,12 @@ export default function Directory({
     setEditingFolderId(folderId);
     setFolderEdit(!showFolderEdit);
     setEditingTitle(title);
+  };
+
+  const onNoteEdit = (editingNoteId: number, title: string) => {
+    setEditingNoteTitle(title);
+    setEditingNoteId(editingNoteId);
+    setNoteEdit(!showNoteEdit);
   };
 
   useEffect(() => {
@@ -134,6 +144,7 @@ export default function Directory({
               setParentId={setParentId}
               currentNoteId={currentNoteId}
               isModifyDelete={isModifyDelete}
+              onNoteEdit={onNoteEdit}
             />
           ) : (
             <Folder
@@ -153,6 +164,7 @@ export default function Directory({
               setFolderName={setFolderName}
               isModifyDelete={isModifyDelete}
               onEdit={onEdit}
+              onNoteEdit={onNoteEdit}
             />
           )
         )}
@@ -162,6 +174,7 @@ export default function Directory({
         showInput.type === 'folder' && (
           <CreateFile
             theme={theme}
+            placeholder="폴더이름"
             onChange={(e) => setFolderName && setFolderName(e.target.value)}
             onKeyDown={(e) => handleKeyDown(e)}
             type="folder"
@@ -175,8 +188,18 @@ export default function Directory({
           defaultValue={`${editingTitle}`}
           setFolderEdit={setFolderEdit}
           editingFolderId={editingFolderId}
+          editingTitle={editingTitle}
           onChange={(e) => setNewFolderName(e.target.value)}
           onKeyDown={handleEditKeyDown}
+        />
+      )}
+
+      {showNoteEdit && (
+        <EditNoteRoute
+          theme={theme}
+          editingNoteId={editingNoteId}
+          editingNoteTitle={editingNoteTitle}
+          setNoteEdit={setNoteEdit}
         />
       )}
     </div>

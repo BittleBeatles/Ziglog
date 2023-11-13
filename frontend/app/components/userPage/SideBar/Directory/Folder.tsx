@@ -31,6 +31,7 @@ export interface FolderProps {
   folderName?: string;
   setFolderName?: Dispatch<SetStateAction<string>>;
   isModifyDelete?: boolean;
+  onNoteEdit: (editingNoteId: number, title: string) => void;
 }
 
 export default function Folder({
@@ -48,6 +49,7 @@ export default function Folder({
   setFolderName,
   isModifyDelete,
   onEdit,
+  onNoteEdit,
 }: FolderProps) {
   const paddingLeft = `${depth * 1.25}rem`;
   const [isFolderOpen, setFolderOpen] = useState(
@@ -198,6 +200,7 @@ export default function Folder({
                   setParentId={setParentId}
                   currentNoteId={currentNoteId}
                   isModifyDelete={isModifyDelete}
+                  onNoteEdit={onNoteEdit}
                 />
               ) : (
                 <Folder
@@ -217,6 +220,7 @@ export default function Folder({
                   setFolderName={setFolderName}
                   isModifyDelete={isModifyDelete}
                   onEdit={onEdit}
+                  onNoteEdit={onNoteEdit}
                 />
               )
             )}
@@ -229,6 +233,7 @@ export default function Folder({
           <div style={{ paddingLeft: '1.25rem' }}>
             <CreateFile
               theme={theme}
+              placeholder="폴더이름"
               onChange={(e) => setFolderName && setFolderName(e.target.value)}
               onKeyDown={(e) => handleKeyDown && handleKeyDown(e)}
               type="folder"

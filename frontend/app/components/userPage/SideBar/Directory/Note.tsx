@@ -20,6 +20,7 @@ export interface NoteProps {
   isModifyDelete?: boolean;
   parentId?: number;
   setParentId?: Dispatch<SetStateAction<number>>;
+  onNoteEdit: (editingNoteId: number, title: string) => void;
 }
 
 export default function Note({
@@ -31,6 +32,7 @@ export default function Note({
   isPublic,
   setParentId,
   isModifyDelete,
+  onNoteEdit,
 }: NoteProps) {
   const param = useParams();
   const paramsNickname = decodeURIComponent(param.userNickname as string);
@@ -44,6 +46,13 @@ export default function Note({
       setParentId(findId);
     }
     router.push(`/user-page/${paramsNickname}/read-note/${id}`);
+  };
+
+  // 노트 아이디 상위로 전달
+  const handleEdit = (editingNoteId: number, title: string) => {
+    if (onNoteEdit) {
+      onNoteEdit(editingNoteId, title);
+    }
   };
 
   return (
@@ -71,7 +80,12 @@ export default function Note({
       </div>
       {isModifyDelete && (
         <div className="flex items-center ml-2">
-          <IconButton size={18} theme={theme} name="Edit" />
+          <IconButton
+            size={18}
+            theme={theme}
+            name="Edit"
+            onClick={() => handleEdit(id, title)}
+          />
         </div>
       )}
     </div>
