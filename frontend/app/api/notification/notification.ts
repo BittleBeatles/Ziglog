@@ -7,26 +7,29 @@ import { API_URL } from '@api/constants';
 export type NotificationApiData = ApiSuccessResponse<NotificationList>;
 export type NotificationReadApi = ApiSuccessResponse<[]>;
 
-export function getNotificationList(): Promise<NotificationList> {
-  return privateFetch<NotificationApiData>(`${API_URL}/notification`, {
-    method: 'GET',
-  })
-    .then((res) => {
-      if (res.body.statusCode === 200) {
-        return Promise.resolve(res.body.data);
-      } else {
-        showAlert('예상치 못한 오류가 발생했습니다', 'error');
-        return Promise.resolve(res.body.data);
+// 전체 알림 목록 조회
+export async function getNotificationList(): Promise<NotificationList> {
+  try {
+    const res = await privateFetch<NotificationApiData>(
+      `${API_URL}/notification`,
+      {
+        method: 'GET',
       }
-    })
-    .catch((err) => {
+    );
+    if (res.body.statusCode === 200) {
+      return await Promise.resolve(res.body.data);
+    } else {
       showAlert('예상치 못한 오류가 발생했습니다', 'error');
-      throw err;
-    });
+      return res.body.data;
+    }
+  } catch (err) {
+    showAlert('예상치 못한 오류가 발생했습니다', 'error');
+    throw err;
+  }
 }
 
-export function putNotification(): Promise<[]> {
-  notificationId: Number;
+// 알림을 읽기 처리
+export async function putNotification(notificationId: number): Promise<[]> {
   return privateFetch<NotificationReadApi>(
     `${API_URL}/notification/read/${notificationId}`,
     {
@@ -43,6 +46,27 @@ export function putNotification(): Promise<[]> {
     })
     .catch((err) => {
       showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      throw err;
+    });
+}
+
+// 해당 알림을 목록에서 삭제
+export async function deleteNotification(notificationId: number) {
+  return privateFetch<NotificationReadApi>(
+    `${API_URL}/notification/delete/${notificationId}`,
+    {
+      method: 'DELETE',
+    }
+  )
+    .then((res) => {
+      if (res.body.statusCode === 200) {
+        showAlert('성공적으로 삭제되었습니다. ', 'success');
+        return;
+      } else {
+        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      }
+    })
+    .catch((err) => {
       throw err;
     });
 }
