@@ -63,4 +63,14 @@ public class FolderController {
         noteService.changeFolderParent(userDetails.member(), requestDto);
         return ResponseDto.of(200, "success");
     }
+
+    @Operation(summary = "회원의 모든 폴더 리스트를 반환",
+            description = "로그인한 회원의 폴더 리스트를 보여줌")
+    @GetMapping("")
+    public ResponseDto<Void> searchAllFolder(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        return ResponseDto.of(200, "success");
+    }
+
+
 }
