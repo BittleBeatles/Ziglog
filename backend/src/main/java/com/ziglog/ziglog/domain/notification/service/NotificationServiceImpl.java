@@ -4,6 +4,7 @@ import com.nimbusds.jose.shaded.gson.Gson;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
+import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
@@ -18,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -35,7 +35,6 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRdbRepository notificationRepository;
     private final NoteRepository noteRepository;
     private final EmitterRedisRepository emitterRepository;
-    private final KafkaTemplate<String, NotificationDto> kafkaTemplate;
     private final MemberRepository memberRepository;
 
     @Value("${jwt.access.expiration}")
@@ -61,7 +60,6 @@ public class NotificationServiceImpl implements NotificationService {
     public void sendMessage(Long id, Object event) throws Exception {
         SseEmitter emitter = emitterRepository.findById(id).orElseThrow(Exception::new);
         try {
-            log.info("send event");
             Gson gson = new Gson();
             String eventToSend = gson.toJson(event);
             log.info("eventToSend: {}", eventToSend);
@@ -69,6 +67,7 @@ public class NotificationServiceImpl implements NotificationService {
                     .id(String.valueOf(id))
                     .name("sse")
                     .data(eventToSend));
+            log.info("sent");
         } catch (Exception e){
             emitterRepository.remove(id);
             emitter.completeWithError(new IOException("서버로부터 이벤트를 보낼 수 없습니다."));
@@ -99,23 +98,27 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @KafkaListener(topics="sse", groupId = "${kafka.consumer.group.send}", containerFactory = "kafkaEventListenerContainerFactorySse")
     public void consumeKafkaEvent(NotificationDto notification) throws Exception {
+        log.info("ConsumeKafkaEvent");
         sendMessage(notification.getMemberId(), notification.getMessage());
     }
 
-    @Override
-    @KafkaListener(topics="rdb", groupId = "${kafka.consumer.group.save}", containerFactory = "kafkaEventListenerContainerFactoryRdb")
+     @Override
+    @KafkaListener(topics="sse", groupId = "${kafka.consumer.group.save}", containerFactory = "kafkaEventListenerContainerFactoryRdb")
     public void saveKafkaEventIntoRDB(NotificationDto notification) throws Exception {
+        log.info("SaveKafkaEventIntoRDB");
+        sendMessage(notification.getMemberId(), notification.getMessage());
         Notification notificationEntity = Notification.builder()
                 .receiver(memberRepository.findById(notification.getMemberId()).orElseThrow(UserNotFoundException::new))
                 .sender(memberRepository.findByNickname(notification.getSenderNickname()).orElseThrow(UserNotFoundException::new))
                 .message(notification.getMessage())
                 .type(notification.getType())
                 .isRead(notification.getIsRead())
-                .note(noteRepository.findById(notification.getNoteId()).orElseThrow(NoteNotFoundException::new))
+                .note(notification.getNoteId() == null? null : noteRepository.findNoteById(notification.getNoteId()).orElse(null))
                 .dateTime(notification.getDateTime())
                 .build();
 
         notificationRepository.save(notificationEntity);
+        log.info("SaveKafkaEventIntoRDB : success");
     }
 
     @Override // 주어진 아이디의 알림을 DB에서 삭제
