@@ -95,6 +95,7 @@ public class QuotationServiceImpl implements QuotationService {
                         .note(quoted)
                         .message(sender.getNickname() + "님이 내 게시물을 인용했습니다")
                         .build();
+
                 kafkaTemplate.send("sse", NotificationDto.toDto(notification));
             }
         });
