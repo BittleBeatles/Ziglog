@@ -48,6 +48,7 @@ export default function SingleNotification({
   });
   return (
     <Link
+      key={targetNoteId}
       href={`/user-page/${
         type === 'bookmark' ? nickname : userNickname
       }/read-note/${targetNoteId}`}
@@ -59,9 +60,9 @@ export default function SingleNotification({
         } w-120 px-4 h-20 rounded-md flex flex-row`}
       >
         <div className="grid place-content-center">
-          <Link href={`/user-page/${userNickname}`}>
-            <ProfileImage size={55} src={profileUrl} />
-          </Link>
+          {/* <Link href={`/user-page/${userNickname}`}> */}
+          <ProfileImage size={55} src={profileUrl} />
+          {/* </Link> */}
         </div>
         <div className="flex flex-row">
           <div
@@ -86,7 +87,7 @@ export default function SingleNotification({
               >
                 {userNickname}
               </p>
-              {type == 'bookmark' ? (
+              {type === 'bookmark' ? (
                 <p
                   className={`leading-4 py-1 ${
                     isChecked ? 'text-gray-400' : ''
