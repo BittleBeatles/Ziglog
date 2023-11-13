@@ -1,4 +1,5 @@
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
+import IconButton from '@components/common/IconButton';
 import SvgIcon from '@components/common/SvgIcon';
 import Text from '@components/common/Text';
 import colors from '@src/design/color';
@@ -29,6 +30,7 @@ export default function Note({
   currentNoteId,
   isPublic,
   setParentId,
+  isModifyDelete,
 }: NoteProps) {
   const param = useParams();
   const paramsNickname = decodeURIComponent(param.userNickname as string);
@@ -67,6 +69,11 @@ export default function Note({
           />
         )}
       </div>
+      {isModifyDelete && (
+        <div className="flex items-center ml-2">
+          <IconButton size={18} theme={theme} name="Edit" />
+        </div>
+      )}
     </div>
   );
 }

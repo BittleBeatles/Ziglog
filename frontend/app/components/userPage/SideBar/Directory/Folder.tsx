@@ -10,6 +10,7 @@ import { createFolder, deleteFolder } from '@api/folder/folder';
 import IconButton from '@components/common/IconButton';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import { showAlert } from '@src/util/alert';
+import Swal from 'sweetalert2';
 
 export interface FolderProps {
   type?: 'folder';
@@ -98,17 +99,39 @@ export default function Folder({
   };
 
   // 폴더 삭제
-  const handleDelete = async () => {
-    if (getSideList) {
-      try {
-        await deleteFolder(id);
-        getSideList();
-        getGraphData();
-        getNoteGraphData();
-      } catch {
-        showAlert('폴더 삭제에 실패했습니다', 'error');
+  const handleDelete = async (title: string) => {
+    const textColor = theme === 'light' ? 'black' : 'white';
+    Swal.fire({
+      html: `${title} 폴더를<br/>삭제하시겠습니까?`,
+      showCloseButton: true,
+      width: 300,
+      background:
+        theme === 'light' ? colors.modal : colors['dark-background-page'],
+      color: textColor,
+      confirmButtonText: '삭제하기',
+      confirmButtonColor: colors.warn,
+      showClass: {
+        backdrop: 'swal2-noanimation',
+        popup: '',
+        icon: '',
+      },
+      hideClass: {
+        popup: '',
+      },
+    }).then(async (res) => {
+      if (res.isConfirmed) {
+        if (getSideList) {
+          try {
+            await deleteFolder(id);
+            getSideList();
+            getGraphData();
+            getNoteGraphData();
+          } catch {
+            showAlert('폴더 삭제에 실패했습니다', 'error');
+          }
+        }
       }
-    }
+    });
   };
 
   // 폴더아이디 상위로 전달
@@ -151,7 +174,7 @@ export default function Folder({
             />
             <IconButton
               size={18}
-              onClick={handleDelete}
+              onClick={() => handleDelete(title)}
               theme={theme}
               name="Remove"
             />
