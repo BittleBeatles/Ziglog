@@ -9,7 +9,6 @@ import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.InvalidUserModificationRequestException;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
-import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 
 public interface MemberService {
 
