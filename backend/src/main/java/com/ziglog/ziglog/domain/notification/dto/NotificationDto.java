@@ -1,6 +1,5 @@
 package com.ziglog.ziglog.domain.notification.dto;
 
-import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.entity.NotificationType;
 import lombok.AllArgsConstructor;

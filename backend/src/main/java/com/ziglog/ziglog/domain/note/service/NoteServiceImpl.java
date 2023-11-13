@@ -18,10 +18,10 @@ import com.ziglog.ziglog.domain.note.dto.request.note.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.ModifyNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.SetPublicRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.folder.FolderBriefDto;
-import com.ziglog.ziglog.domain.note.dto.response.note.IsPublicResponseDto;
-import com.ziglog.ziglog.domain.note.dto.response.note.ReadNoteResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.folder.RetrieveFolderOnlyResponseDto;
 import com.ziglog.ziglog.domain.note.dto.response.folder.RetrieveFolderResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.note.IsPublicResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.note.ReadNoteResponseDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.*;
@@ -36,7 +36,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.WeakHashMap;
 
 @RequiredArgsConstructor
 @Transactional

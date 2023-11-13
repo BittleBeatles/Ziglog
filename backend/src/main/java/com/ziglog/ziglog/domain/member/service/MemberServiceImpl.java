@@ -10,9 +10,7 @@ import com.ziglog.ziglog.domain.member.exception.exceptions.InvalidUserModificat
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Folder;
-import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
-import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,6 @@
 package com.ziglog.ziglog.domain.notification.service;
 
-import com.ziglog.ziglog.domain.bookmark.entity.Bookmark;
 import com.ziglog.ziglog.domain.member.entity.Member;
-import com.ziglog.ziglog.domain.note.entity.Quotation;
 import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
 import com.ziglog.ziglog.domain.notification.dto.NotificationListDto;
 import com.ziglog.ziglog.domain.notification.entity.Notification;

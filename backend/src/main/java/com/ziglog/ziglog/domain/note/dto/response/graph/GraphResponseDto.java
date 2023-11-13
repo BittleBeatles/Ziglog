@@ -1,7 +1,5 @@
 package com.ziglog.ziglog.domain.note.dto.response.graph;
 
-import com.ziglog.ziglog.domain.note.dto.response.graph.Link;
-import com.ziglog.ziglog.domain.note.dto.response.graph.Node;
 import lombok.Getter;
 
 import java.util.Set;

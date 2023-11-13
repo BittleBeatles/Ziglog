@@ -1,6 +1,5 @@
 package com.ziglog.ziglog.domain.bookmark.dto.response;
 
-import com.ziglog.ziglog.domain.bookmark.entity.Bookmark;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import lombok.Getter;
 

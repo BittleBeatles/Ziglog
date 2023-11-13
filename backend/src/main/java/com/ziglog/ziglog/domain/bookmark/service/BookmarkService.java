@@ -3,16 +3,11 @@ package com.ziglog.ziglog.domain.bookmark.service;
 import com.ziglog.ziglog.domain.bookmark.dto.request.AddBookmarkRequestDto;
 import com.ziglog.ziglog.domain.bookmark.dto.response.BookmarkListDto;
 import com.ziglog.ziglog.domain.bookmark.dto.response.IsBookmarkedDto;
-import com.ziglog.ziglog.domain.bookmark.entity.Bookmark;
 import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkAlreadyExistsException;
 import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkNotFoundException;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
-import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
-import com.ziglog.ziglog.domain.notification.entity.Notification;
-
-import java.util.List;
 
 public interface BookmarkService {
 

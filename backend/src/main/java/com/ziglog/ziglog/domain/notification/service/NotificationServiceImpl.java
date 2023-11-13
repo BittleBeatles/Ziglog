@@ -42,6 +42,7 @@ public class NotificationServiceImpl implements NotificationService {
     private Long TIMEOUT;// 30분 => 따로 yml 파일에 넣기
 
     @Override
+    @Transactional
     public NotificationListDto getNotificationList(Member member){
         return new NotificationListDto(getNotifications(member).stream().map(notification ->
                 new NotificationResponseDto(NotificationDto.toDto(notification)))
