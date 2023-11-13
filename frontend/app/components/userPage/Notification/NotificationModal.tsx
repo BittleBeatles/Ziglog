@@ -21,10 +21,10 @@ export default function NotificationModal({
     setSelectedType(newType);
   };
   return (
-    <ModalLayout classname={`${THEME_VARIANTS[theme]} px-10`}>
+    <ModalLayout classname={`${THEME_VARIANTS[theme]} px-6 py-8`}>
       <div className="">
         <Text type="h4">{'알림'}</Text>
-        <div className="absolute inset-y-0 right-0">
+        <div className="absolute inset-y-5 right-5">
           <IconButton
             onClick={() => openModal(false)}
             theme={theme}

@@ -138,15 +138,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       ref={sidebarRef}
     >
       <div className="profile flex justify-between items-center px-8">
-        <div className="relative">
-          <ProfileImage src={profileUrl} size={80} />
-          <IconButton
-            onClick={() => openModal(true)}
-            theme={theme}
-            name="Setting"
-            className="absolute bottom-2 right-2 transform translate-x-1/2 translate-y-1/2"
-          />
-        </div>
+        <ProfileImage src={profileUrl} />
         <Text
           type="p"
           className={`${theme === 'dark' ? 'text-white' : ''} ml-2 text-sm`}
@@ -249,7 +241,6 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         {isLogin && isMine && (
           <Button onClick={() => Logout()} label="로그아웃" color="charcol" />
         )}
-
         {isLogin && !isMine && (
           <Button
             onClick={() => router.push(`/user-page/${nickname}`)}
@@ -257,24 +248,31 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
             color="charcol"
           />
         )}
-        <div className="flex justify-between relative">
+        {isLogin && isMine && (
+          <IconButton
+            onClick={() => openModal(true)}
+            theme={theme}
+            name="Setting"
+          />
+        )}
+      </div>
+      <div className="fixed bottom-8 right-8 z-20">
+        <div className="flex items-center justify-center rounded-full bg-blue-400 p-2 h-10 w-10">
           <IconButton
             onClick={() => openNotification(true)}
             theme={theme}
             name="Notification"
           />
-          {notificationModal && (
-            <div className="fixed inset-20 flex items-center justify-center z-40">
-              <div className="absolute top-1/4 left-1/3 transform -translate-x-3/4 -translate-y-7/8">
-                <NotificationModal
-                  theme={theme}
-                  openModal={openNotification}
-                ></NotificationModal>
-              </div>
-            </div>
-          )}
         </div>
       </div>
+      {notificationModal && (
+        <div className="fixed bottom-20 right-10 z-20">
+          <NotificationModal
+            theme={theme}
+            openModal={openNotification}
+          ></NotificationModal>
+        </div>
+      )}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40">
           <ChangeUserInfoBox theme={theme} openModal={openModal} />
