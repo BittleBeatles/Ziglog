@@ -17,6 +17,7 @@ import { JustFolder } from '@api/folder/types';
 import { changeFolderList, getJustFolderList } from '@api/folder/folder';
 import SvgIcon from '../../../common/SvgIcon';
 import { isIdInRoot } from '@src/util/findParentId';
+import colors from '@src/design/color';
 
 interface EditInputProps extends InputHTMLAttributes<HTMLInputElement> {
   theme?: 'light' | 'dark';
@@ -114,7 +115,10 @@ const EditInput = forwardRef<HTMLInputElement, EditInputProps>(
                   className="mb-1 cursor-pointer opacity-100 hover:opacity-60 transition-opacity duration-300"
                 >
                   <div className="flex items-center ">
-                    <SvgIcon name="Folder" />
+                    <SvgIcon
+                      name="Folder"
+                      color={theme === 'light' ? colors.black : colors.white}
+                    />
                     <Text className="text-lg ml-1">{nickname}</Text>
                     <Text className="text-main-100 text-lg">/</Text>
                   </div>
@@ -150,7 +154,12 @@ const EditInput = forwardRef<HTMLInputElement, EditInputProps>(
                   >
                     {folder.id !== editingFolderId && (
                       <div className="flex items-center ">
-                        <SvgIcon name="Folder" />
+                        <SvgIcon
+                          name="Folder"
+                          color={
+                            theme === 'light' ? colors.black : colors.white
+                          }
+                        />
                         <Text className="text-lg ml-1">{folderParts}</Text>
                         {hoverStatus[folder.id] && (
                           <Text className="text-lg ml-1">

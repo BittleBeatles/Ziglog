@@ -18,6 +18,7 @@ import { JustFolder } from '@api/folder/types';
 import { getJustFolderList } from '@api/folder/folder';
 import { isIdInRoot } from '@src/util/findParentId';
 import { changeNoteRoute } from '@api/note/note';
+import colors from '@src/design/color';
 
 interface EditNoteRouteProps extends InputHTMLAttributes<HTMLInputElement> {
   theme?: 'light' | 'dark';
@@ -106,7 +107,10 @@ function EditNoteRoute({
                 className="mb-1 cursor-pointer opacity-100 hover:opacity-60 transition-opacity duration-300"
               >
                 <div className="flex items-center ">
-                  <SvgIcon name="Folder" />
+                  <SvgIcon
+                    name="Folder"
+                    color={theme === 'light' ? colors.black : colors.white}
+                  />
                   <Text className="text-lg ml-1">{nickname}</Text>
                   <Text className="text-main-100 text-lg">/</Text>
                 </div>
@@ -142,7 +146,10 @@ function EditNoteRoute({
                 >
                   {folder.id !== editingNoteId && (
                     <div className="flex items-center">
-                      <SvgIcon name="Folder" />
+                      <SvgIcon
+                        name="Folder"
+                        color={theme === 'light' ? colors.black : colors.white}
+                      />
                       <Text className="text-lg ml-1">{folderParts}</Text>
                       {hoverStatus[folder.id] && (
                         <Text className="text-lg ml-1">
