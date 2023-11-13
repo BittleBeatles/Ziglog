@@ -1,4 +1,3 @@
-import Text from '@components/common/Text';
 import { HTMLAttributes } from 'react';
 import PersonalSearchResult from './Search/PersonalSearchResult';
 import Link from 'next/link';
@@ -28,28 +27,34 @@ export default function PersonalSearchModal({
     <div
       className={`${THEME_VARIANTS[theme]} w-132 shadow-md border text-center rounded-md justify-center px-3`}
     >
-      <div id="sidebar-scroll" className="h-screen overflow-y-auto my-3">
-        {SearchResults?.map((searchResult, index) => (
-          <div key={index} className="mb-3">
-            <Link
-              key={index}
-              href={{
-                pathname: `/user-page/${nickname}/read-note/${searchResult.noteId}`,
-                query: { keyword: keyword },
-              }}
-            >
-              <PersonalSearchResult
+      {SearchResults?.length == 0 ? (
+        <div className="h-96 my-3">
+          <p>검색 결과가 없습니다</p>
+        </div>
+      ) : (
+        <div id="sidebar-scroll" className="h-96 overflow-y-auto my-3">
+          {SearchResults?.map((searchResult, index) => (
+            <div key={index}>
+              <Link
                 key={index}
-                theme={theme}
-                title={searchResult.title}
-                preview={searchResult.preview}
-                postTime={searchResult.postTime}
-                bookmarkCount={searchResult.bookmarkCount}
-              ></PersonalSearchResult>
-            </Link>
-          </div>
-        ))}
-      </div>
+                href={{
+                  pathname: `/user-page/${nickname}/read-note/${searchResult.noteId}`,
+                  query: { keyword: keyword },
+                }}
+              >
+                <PersonalSearchResult
+                  key={index}
+                  theme={theme}
+                  title={searchResult.title}
+                  preview={searchResult.preview}
+                  postTime={searchResult.postTime}
+                  bookmarkCount={searchResult.bookmarkCount}
+                ></PersonalSearchResult>
+              </Link>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
