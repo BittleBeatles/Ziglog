@@ -16,6 +16,7 @@ import com.ziglog.ziglog.domain.note.dto.response.note.ReadNoteResponseDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 public interface NoteService {
 
@@ -26,7 +27,7 @@ public interface NoteService {
     RetrieveFolderResponseDto retrieveRootNote(String nickname) throws UserNotFoundException, NoteNotFoundException;
 
     void changeNoteParent(Member member, ChangeNoteParentRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException, InconsistentNoteOwnerException;
-    void changeFolderParent(Member member, ChangeFolderParentRequestDto requestDto) throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException;
+    void changeFolderParent(Member member, ChangeFolderParentRequestDto requestDto) throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException, HttpClientErrorException;
 
     // 노트
     void checkOwner(Member member, Note note) throws InconsistentNoteOwnerException;
