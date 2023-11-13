@@ -1,23 +1,12 @@
 import { HTMLAttributes, useEffect, useState } from 'react';
 import PersonalSearchResult from './Search/PersonalSearchResult';
 import Link from 'next/link';
-import { getPersonalSearchInfo } from '@api/search/search';
 import { SearchInfo } from '@api/search/types';
-import { useScrollObserver } from '@src/hooks/useScrollObserve';
 import IconButton from '@components/common/IconButton';
-
-// interface SearchResult {
-//   noteId: number;
-//   title: string;
-//   preview: string;
-//   postTime: Date;
-//   bookmarkCount: number;
-// }
 
 interface PersonalSearchModalProps extends HTMLAttributes<HTMLDivElement> {
   theme: 'light' | 'dark';
   nickname: string;
-  keyword: string;
   openModal: (open: boolean) => void;
   searchData: SearchInfo | null;
   setKeyword: (keyword: string) => void;
@@ -26,7 +15,6 @@ interface PersonalSearchModalProps extends HTMLAttributes<HTMLDivElement> {
 export default function PersonalSearchModal({
   theme,
   nickname,
-  keyword,
   openModal,
   searchData,
   setKeyword,

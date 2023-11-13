@@ -142,7 +142,6 @@ const PersonalSearchInput = forwardRef<
         <div className="fixed inset-0 flex items-center justify-center z-10">
           <PersonalSearchModal
             theme={theme}
-            keyword={keyword}
             nickname={nickname}
             openModal={setSearchModalOpen}
             searchData={searchData}
