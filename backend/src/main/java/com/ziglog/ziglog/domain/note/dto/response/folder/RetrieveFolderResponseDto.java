@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.domain.note.dto.response;
+package com.ziglog.ziglog.domain.note.dto.response.folder;
 
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;

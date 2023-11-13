@@ -1,7 +1,6 @@
 package com.ziglog.ziglog.domain.note.controller;
 
-import com.ziglog.ziglog.domain.note.dto.response.SearchResponseDto;
-import com.ziglog.ziglog.domain.note.service.NoteService;
+import com.ziglog.ziglog.domain.note.dto.response.folder.SearchResponseDto;
 import com.ziglog.ziglog.domain.note.service.SearchService;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;

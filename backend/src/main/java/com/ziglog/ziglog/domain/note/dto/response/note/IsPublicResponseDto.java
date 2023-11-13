@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.domain.note.dto.response;
+package com.ziglog.ziglog.domain.note.dto.response.note;
 
 import lombok.Getter;
 
