@@ -54,14 +54,25 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
           name={theme === 'light' ? 'LightMode' : 'DarkMode'}
           theme={theme}
           size={24}
+          aria-label="Theme"
         />
         {isLogin && (
-          <Link className="flex items-center" href={`/user-page/${nickname}`}>
-            <IconButton name="MyPage" theme={theme} size={24} />
+          <Link
+            className="flex items-center"
+            href={`/user-page/${nickname}`}
+            aria-label="Move to user-page"
+          >
+            <IconButton name="MyPage" theme={theme} size={24} id="MyPage" />
           </Link>
         )}
         <Link className="flex items-center" href={`/search`}>
-          <IconButton name="Search" theme={theme} size={24} />
+          <IconButton
+            name="Search"
+            theme={theme}
+            size={24}
+            id="Search"
+            aria-label="Move to search-page"
+          />
         </Link>
         {isLogin ? (
           <Button
@@ -71,6 +82,7 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
             }}
             label="로그아웃"
             color="charcol"
+            id="Logout"
           />
         ) : (
           <Button
@@ -78,6 +90,7 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
             onClick={() => openLoginModal(true)}
             label="로그인"
             color="charcol"
+            id="Login"
           />
         )}
       </div>
