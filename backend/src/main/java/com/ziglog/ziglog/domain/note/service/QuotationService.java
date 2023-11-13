@@ -16,7 +16,7 @@ public interface QuotationService {
     // 인용
     List<Note> getNotesQuotingThis(Note note) throws NoteNotFoundException;
     List<Note> getNotesQuotedByThis(Note note) throws NoteNotFoundException;
-    List<Long> updateQuotations(Member member, Long noteId, UpdateQuotationsRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException;
+    void updateQuotations(Member member, Long noteId, UpdateQuotationsRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException;
 
     QuotingIdListResponseDto getQuotingNoteIds(Long noteId) throws NoteNotFoundException;
 }

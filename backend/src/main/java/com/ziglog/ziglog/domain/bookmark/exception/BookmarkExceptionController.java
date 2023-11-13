@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class BookmarkExceptionController {
 
     @ExceptionHandler(BookmarkNotFoundException.class)
-    public ResponseDto<String> handleBookmarkNotFoundException (BookmarkExceptionCode err){
+    public ResponseDto<String> handleBookmarkNotFoundException (BookmarkNotFoundException err){
         return toResponseDto(BookmarkExceptionCode.BOOKMARK_NOT_FOUND_EXCEPTION);
     }
 

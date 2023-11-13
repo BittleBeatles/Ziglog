@@ -9,11 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface NotificationRepository extends JpaRepository<Notification, Long> {
+public interface NotificationRdbRepository extends JpaRepository<Notification, Long> {
 
     //RDB에 들어감
     void deleteById(Long id);
-    List<Notification> findAllByOwner(Member owner);
-
+    List<Notification> findAllByReceiver(Member owner);
     Optional<Notification> findById(Long notificationId);
 }
