@@ -267,7 +267,7 @@ public class NoteServiceImpl implements NoteService{
                     String title = prefix + "/" + f.getTitle();
                     FolderBriefDto dto = FolderBriefDto.builder()
                             .id(f.getId())
-                            .title(prefix + "/" + f.getTitle())
+                            .title(title)
                             .build();
                     folderList.add(dto);
                     recursivelyRetrieve(folderList, f, title);

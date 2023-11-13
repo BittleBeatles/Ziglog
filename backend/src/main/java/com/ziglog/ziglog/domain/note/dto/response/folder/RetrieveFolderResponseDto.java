@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -33,8 +34,8 @@ public class RetrieveFolderResponseDto {
             this.id = folder.getId();
             this.title = folder.getTitle();
             this.isPublic = true;
-            List<Node> children = new ArrayList<>(folder.getChildren().stream().map(Node::new).toList());
-            List<Node> subNotes = new ArrayList<>(folder.getNotes().stream().map(Node::new).toList());
+            List<Node> children = new ArrayList<>(folder.getChildren().stream().sorted((Comparator.comparing(Folder::getTitle))).map(Node::new).toList());
+            List<Node> subNotes = new ArrayList<>(folder.getNotes().stream().sorted((Comparator.comparing(Note::getTitle))).map(Node::new).toList());
             children.addAll(subNotes);
             this.notes = children;
         }
