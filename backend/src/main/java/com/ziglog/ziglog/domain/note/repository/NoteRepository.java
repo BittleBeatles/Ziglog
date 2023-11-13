@@ -1,15 +1,10 @@
 package com.ziglog.ziglog.domain.note.repository;
 
 import com.ziglog.ziglog.domain.member.entity.Member;
-import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
-import com.ziglog.ziglog.domain.note.dto.request.note.ChangeNoteParentRequestDto;
 import com.ziglog.ziglog.domain.note.entity.Note;
-import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
-import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;

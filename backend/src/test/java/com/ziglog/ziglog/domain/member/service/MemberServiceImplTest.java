@@ -2,7 +2,6 @@ package com.ziglog.ziglog.domain.member.service;
 
 import com.ziglog.ziglog.ZiglogApplication;
 import com.ziglog.ziglog.domain.member.entity.Member;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

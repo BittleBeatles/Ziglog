@@ -1,6 +1,5 @@
 package com.ziglog.ziglog.domain.bookmark.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ziglog.ziglog.domain.bookmark.dto.request.AddBookmarkRequestDto;
 import com.ziglog.ziglog.domain.bookmark.dto.response.BookmarkListDto;
 import com.ziglog.ziglog.domain.bookmark.dto.response.IsBookmarkedDto;
@@ -18,10 +17,8 @@ import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.entity.NotificationType;
 import com.ziglog.ziglog.domain.notification.repository.NotificationRdbRepository;
-import com.ziglog.ziglog.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
