@@ -133,5 +133,5 @@ const THEME_VARIANTS = {
 
 const HOVER_COLOR = {
   light: 'hover:bg-input-grey',
-  dark: 'hover:bg-dark-background-layout',
+  dark: 'hover:bg-dark-background-page',
 };

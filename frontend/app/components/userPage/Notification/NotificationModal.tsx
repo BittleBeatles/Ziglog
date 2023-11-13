@@ -78,5 +78,5 @@ export default function NotificationModal({
 
 const THEME_VARIANTS = {
   light: 'bg-modal',
-  dark: 'bg-dark-background-page text-white',
+  dark: 'bg-dark-background-layout text-white',
 };

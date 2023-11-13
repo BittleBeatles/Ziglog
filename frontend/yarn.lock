@@ -4430,6 +4430,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/event-source-polyfill@npm:^1":
+  version: 1.0.4
+  resolution: "@types/event-source-polyfill@npm:1.0.4"
+  checksum: fbb2197ccab6eec3a3b412b269ded3bc9617d5ce358c2d71d978dfb913dbca74d0ef66da3e9f0c4c6a8bcd5ab35237f36f3191ba3717bb3ca4314ccc6afc0e3d
+  languageName: node
+  linkType: hard
+
 "@types/express-serve-static-core@npm:^4.17.33":
   version: 4.17.37
   resolution: "@types/express-serve-static-core@npm:4.17.37"
@@ -8884,6 +8891,13 @@ __metadata:
   version: 1.8.1
   resolution: "etag@npm:1.8.1"
   checksum: 571aeb3dbe0f2bbd4e4fadbdb44f325fc75335cd5f6f6b6a091e6a06a9f25ed5392f0863c5442acb0646787446e816f13cbfc6edce5b07658541dff573cab1ff
+  languageName: node
+  linkType: hard
+
+"event-source-polyfill@npm:^1.0.31":
+  version: 1.0.31
+  resolution: "event-source-polyfill@npm:1.0.31"
+  checksum: 973f226404e2a1b14ed7ef15c718b89e213b41d7cfeeb1c10937fd09229f13904f3d7c3075ab28ccf858c213007559908eecdd577577330352f53a351383dd75
   languageName: node
   linkType: hard
 
@@ -17723,6 +17737,7 @@ __metadata:
     "@svgr/webpack": ^8.1.0
     "@types/d3-force": ^3
     "@types/diff": ^5
+    "@types/event-source-polyfill": ^1
     "@types/gtag.js": ^0.0.18
     "@types/node": ^20
     "@types/react": ^18
@@ -17744,6 +17759,7 @@ __metadata:
     eslint-plugin-cypress: ^2.15.1
     eslint-plugin-prettier: ^5.0.1
     eslint-plugin-storybook: ^0.6.15
+    event-source-polyfill: ^1.0.31
     fork-ts-checker-webpack-plugin: ^9.0.0
     next: 13.5.4
     next-redux-wrapper: ^8.1.0

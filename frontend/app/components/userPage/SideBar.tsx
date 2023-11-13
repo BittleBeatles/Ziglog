@@ -138,7 +138,9 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       ref={sidebarRef}
     >
       <div className="profile flex justify-between items-center px-8">
-        <ProfileImage src={profileUrl} />
+        <div>
+          <ProfileImage src={profileUrl} />
+        </div>
         <Text
           type="p"
           className={`${theme === 'dark' ? 'text-white' : ''} ml-2 text-sm`}
