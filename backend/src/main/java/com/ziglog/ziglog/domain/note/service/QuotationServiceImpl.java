@@ -5,9 +5,9 @@ import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundExceptio
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.dto.request.quotation.AddQuotationRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.quotation.DeleteQuotationRequestDto;
-import com.ziglog.ziglog.domain.note.dto.response.note.QuotingIdListResponseDto;
 import com.ziglog.ziglog.domain.note.dto.request.quotation.UpdateQuotationsRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.note.QuotationListResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.note.QuotingIdListResponseDto;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
 import com.ziglog.ziglog.domain.note.exception.exceptions.InconsistentNoteOwnerException;
@@ -95,6 +95,7 @@ public class QuotationServiceImpl implements QuotationService {
                         .note(quoted)
                         .message(sender.getNickname() + "님이 내 게시물을 인용했습니다")
                         .build();
+
                 kafkaTemplate.send("sse", NotificationDto.toDto(notification));
             }
         });
