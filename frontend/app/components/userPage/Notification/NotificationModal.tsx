@@ -29,7 +29,7 @@ export default function NotificationModal({
   };
   // RootState에서 알림 목록 가져오기
   const storedNotifications = useSelector(
-    (state: RootState) => state.user.notifications
+    (state: RootState) => state.user.notifications.nontificationList
   );
 
   //알림 목록 조회
@@ -70,7 +70,10 @@ export default function NotificationModal({
 
   // storedNotifications가 변경될 때마다 업데이트
   useEffect(() => {
-    setNotifications(storedNotifications);
+    setNotifications((prevState) => ({
+      ...prevState,
+      notificationList: storedNotifications,
+    }));
   }, [storedNotifications]);
 
   return (
