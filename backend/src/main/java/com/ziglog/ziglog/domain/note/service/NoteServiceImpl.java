@@ -17,23 +17,26 @@ import com.ziglog.ziglog.domain.note.dto.request.note.ChangeNoteParentRequestDto
 import com.ziglog.ziglog.domain.note.dto.request.note.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.ModifyNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.SetPublicRequestDto;
-import com.ziglog.ziglog.domain.note.dto.response.IsPublicResponseDto;
-import com.ziglog.ziglog.domain.note.dto.response.ListFolderResponseDto;
-import com.ziglog.ziglog.domain.note.dto.response.ReadNoteResponseDto;
-import com.ziglog.ziglog.domain.note.dto.response.RetrieveFolderResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.folder.FolderBriefDto;
+import com.ziglog.ziglog.domain.note.dto.response.note.IsPublicResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.note.ReadNoteResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.folder.RetrieveFolderOnlyResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.folder.RetrieveFolderResponseDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.*;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
-import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.WeakHashMap;
 
 @RequiredArgsConstructor
 @Transactional
@@ -44,7 +47,6 @@ public class NoteServiceImpl implements NoteService{
     private final MemberRepository memberRepository;
     private final FolderRepository folderRepository;
     private final NoteRepository noteRepository;
-    private final QuotationRepository quotationRepository;
 
     @Override
     public void createNote(Member member, CreateNoteRequestDto requestDto)throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException{
@@ -248,9 +250,27 @@ public class NoteServiceImpl implements NoteService{
         childFolder.changeParentFolder(parentFolder);
     }
 
-
     @Override
-    public ListFolderResponseDto listFolders(Member member) throws UserNotFoundException, FolderNotFoundException {
-        return ListFolderResponseDto.toDto(folderRepository.findAllByOwner(member));
+    public RetrieveFolderOnlyResponseDto listFolders(String nickname) throws UserNotFoundException, NoteNotFoundException {
+        Folder root = getRootFolder(nickname);
+        List<FolderBriefDto> folders = new ArrayList<>();
+        recursivelyRetrieve(folders, root, "");
+
+        return new RetrieveFolderOnlyResponseDto(folders);
+    }
+
+    private void recursivelyRetrieve(List<FolderBriefDto> folderList, Folder folder, String prefix){
+        List<Folder> children =  folder.getChildren();
+        children.stream()
+                .sorted(Comparator.comparing(Folder::getTitle))
+                .forEach(f -> {
+                    String title = prefix + "/" + f.getTitle();
+                    FolderBriefDto dto = FolderBriefDto.builder()
+                            .id(f.getId())
+                            .title(prefix + "/" + f.getTitle())
+                            .build();
+                    folderList.add(dto);
+                    recursivelyRetrieve(folderList, f, title);
+                });
     }
 }

@@ -3,7 +3,7 @@ package com.ziglog.ziglog.domain.note.service;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
-import com.ziglog.ziglog.domain.note.dto.response.SearchResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.folder.SearchResponseDto;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

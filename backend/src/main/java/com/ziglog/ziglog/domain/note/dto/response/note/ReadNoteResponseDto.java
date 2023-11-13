@@ -1,4 +1,4 @@
-package com.ziglog.ziglog.domain.note.dto.response;
+package com.ziglog.ziglog.domain.note.dto.response.note;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ziglog.ziglog.domain.note.entity.Note;

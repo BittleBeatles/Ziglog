@@ -9,17 +9,13 @@ import com.ziglog.ziglog.domain.note.dto.request.note.ChangeNoteParentRequestDto
 import com.ziglog.ziglog.domain.note.dto.request.note.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.ModifyNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.SetPublicRequestDto;
-import com.ziglog.ziglog.domain.note.dto.response.IsPublicResponseDto;
-import com.ziglog.ziglog.domain.note.dto.response.ListFolderResponseDto;
-import com.ziglog.ziglog.domain.note.dto.response.ReadNoteResponseDto;
-import com.ziglog.ziglog.domain.note.dto.response.RetrieveFolderResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.note.IsPublicResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.note.ReadNoteResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.folder.RetrieveFolderOnlyResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.folder.RetrieveFolderResponseDto;
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.*;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-
-import java.util.List;
 
 public interface NoteService {
 
@@ -47,7 +43,5 @@ public interface NoteService {
     void deleteFolder(Member member, Long folderId) throws FolderNotFoundException, UserNotFoundException,
             InconsistentFolderOwnerException, CannotRemoveRootFolderException; //해당 id의 폴더를 삭제
     Folder getRootFolder(String nickname) throws UserNotFoundException, FolderNotFoundException; //해당 사용자의 모든 디렉토리를 반환
-
-    ListFolderResponseDto listFolders(Member member) throws UserNotFoundException, FolderNotFoundException;
-
+    RetrieveFolderOnlyResponseDto listFolders(String nickname) throws UserNotFoundException, FolderNotFoundException;
 }

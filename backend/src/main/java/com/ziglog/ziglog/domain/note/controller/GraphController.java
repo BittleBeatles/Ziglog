@@ -1,6 +1,6 @@
 package com.ziglog.ziglog.domain.note.controller;
 
-import com.ziglog.ziglog.domain.note.dto.response.GraphResponseDto;
+import com.ziglog.ziglog.domain.note.dto.response.graph.GraphResponseDto;
 import com.ziglog.ziglog.domain.note.service.GraphService;
 import com.ziglog.ziglog.domain.note.service.NoteService;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
