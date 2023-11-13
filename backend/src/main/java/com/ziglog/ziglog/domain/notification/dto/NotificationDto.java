@@ -17,10 +17,10 @@ public class NotificationDto {
 
     private Long id;
     private Long memberId;
+    private String title;
     private String senderNickname;
     private String senderProfileUrl;
     private Long noteId;
-    private String message;
     private Boolean isRead = false;
     private NotificationType type;
     private LocalDateTime dateTime;
@@ -32,7 +32,7 @@ public class NotificationDto {
                 .senderNickname(notification.getSender().getNickname())
                 .senderProfileUrl(notification.getSender().getProfileUrl())
                 .noteId(notification.getId())
-                .message(notification.getMessage())
+                .title(notification.getTitle())
                 .isRead(notification.getIsRead())
                 .type(notification.getType())
                 .dateTime(notification.getDateTime())

@@ -250,26 +250,28 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public RetrieveFolderOnlyResponseDto listFolders(String nickname) throws UserNotFoundException, NoteNotFoundException {
+    public RetrieveFolderOnlyResponseDto listFolders(String nickname, Long folderId) throws UserNotFoundException, NoteNotFoundException {
         Folder root = getRootFolder(nickname);
         List<FolderBriefDto> folders = new ArrayList<>();
-        recursivelyRetrieve(folders, root, "");
+        recursivelyRetrieve(folders, root, folderId, "");
 
         return new RetrieveFolderOnlyResponseDto(folders);
     }
 
-    private void recursivelyRetrieve(List<FolderBriefDto> folderList, Folder folder, String prefix){
+    private void recursivelyRetrieve(List<FolderBriefDto> folderList, Folder folder, Long targetFolderId, String prefix){
         List<Folder> children =  folder.getChildren();
         children.stream()
                 .sorted(Comparator.comparing(Folder::getTitle))
                 .forEach(f -> {
-                    String title = prefix + "/" + f.getTitle();
-                    FolderBriefDto dto = FolderBriefDto.builder()
-                            .id(f.getId())
-                            .title(title)
-                            .build();
-                    folderList.add(dto);
-                    recursivelyRetrieve(folderList, f, title);
+                    if (!f.getId().equals(targetFolderId)) {
+                        String title = prefix + "/" + f.getTitle();
+                        FolderBriefDto dto = FolderBriefDto.builder()
+                                .id(f.getId())
+                                .title(title)
+                                .build();
+                        folderList.add(dto);
+                        recursivelyRetrieve(folderList, f, targetFolderId, title);
+                    }
                 });
     }
 }

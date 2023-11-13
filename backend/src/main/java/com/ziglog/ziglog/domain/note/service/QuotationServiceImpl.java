@@ -18,6 +18,7 @@ import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
 import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.entity.NotificationType;
+import com.ziglog.ziglog.domain.notification.repository.NotificationRdbRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -35,6 +36,7 @@ public class QuotationServiceImpl implements QuotationService {
     private final QuotationRepository quotationRepository;
     private final NoteRepository noteRepository;
     private final MemberRepository memberRepository;
+    private final NotificationRdbRepository notificationRepository;
     private final KafkaTemplate<String, NotificationDto> kafkaTemplate;
 
     @Override
@@ -93,9 +95,12 @@ public class QuotationServiceImpl implements QuotationService {
                         .receiver(note.getAuthor())
                         .sender(sender)
                         .note(quoted)
-                        .message(sender.getNickname() + "님이 내 게시물을 인용했습니다")
+                        .title(quoted.getTitle())
+                        .isRead(false)
                         .build();
 
+
+                notification = notificationRepository.save(notification);
                 kafkaTemplate.send("sse", NotificationDto.toDto(notification));
             }
         });

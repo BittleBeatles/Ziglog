@@ -11,7 +11,7 @@ public class NotificationResponseDto {
     private String senderNickname;
     private String senderProfileUrl;
     private Long noteId;
-    private String message;
+    private String title;
     private Boolean isRead = false;
     private String type;
     private String dateTime;
@@ -21,7 +21,7 @@ public class NotificationResponseDto {
         this.senderNickname = notificationDto.getSenderNickname();
         this.senderProfileUrl = notificationDto.getSenderProfileUrl();
         this.noteId = notificationDto.getNoteId();
-        this.message = notificationDto.getMessage();
+        this.title = notificationDto.getTitle();
         this.isRead = notificationDto.getIsRead();
         this.type = notificationDto.getType().name();
         this.dateTime = notificationDto.getDateTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM));
