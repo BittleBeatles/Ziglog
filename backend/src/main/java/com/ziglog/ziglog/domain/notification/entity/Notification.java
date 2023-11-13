@@ -22,8 +22,8 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "message")//메시지
-    private String message;
+    @Column(name = "title")//메시지
+    private String title;
 
     @Column(name = "is_read")
     @Builder.Default

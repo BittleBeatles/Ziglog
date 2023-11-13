@@ -43,5 +43,5 @@ public interface NoteService {
     void deleteFolder(Member member, Long folderId) throws FolderNotFoundException, UserNotFoundException,
             InconsistentFolderOwnerException, CannotRemoveRootFolderException; //해당 id의 폴더를 삭제
     Folder getRootFolder(String nickname) throws UserNotFoundException, FolderNotFoundException; //해당 사용자의 모든 디렉토리를 반환
-    RetrieveFolderOnlyResponseDto listFolders(String nickname) throws UserNotFoundException, FolderNotFoundException;
+    RetrieveFolderOnlyResponseDto listFolders(String nickname, Long folderId) throws UserNotFoundException, FolderNotFoundException;
 }

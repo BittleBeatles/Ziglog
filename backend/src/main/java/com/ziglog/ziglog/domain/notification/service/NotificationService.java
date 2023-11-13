@@ -20,7 +20,6 @@ public interface NotificationService {
     List<Notification> getNotifications(Member member);
     void readNotification(Member member, Long notificationId) throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException;
     Notification getVerified(Member member, Long notificationId) throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException;
-
     void consumeKafkaEvent(NotificationDto notificationDto) throws Exception;
-    void saveKafkaEventIntoRDB(NotificationDto notification) throws Exception;
+//    void saveKafkaEventIntoRDB(NotificationDto notification) throws Exception;
 }

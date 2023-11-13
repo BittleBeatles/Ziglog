@@ -34,6 +34,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final NotificationRdbRepository notificationRepository;
     private final KafkaTemplate<String, NotificationDto> kafkaTemplate;
 
     @Override
@@ -94,17 +95,20 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     private void sendBookmarkNotification(Member sender, Note note){
-        //if (note.getAuthor().getId().equals(sender.getId())) return;
+        if (note.getAuthor().getId().equals(sender.getId())) return;
 
         log.info("sendBookmarkNotification");
+
         Notification notification = Notification.builder()
                 .type(NotificationType.BOOKMARK)
                 .receiver(note.getAuthor())
                 .sender(sender)
+                .note(note)
+                .title(note.getTitle())
                 .isRead(false)
-                .message(sender.getNickname() + "님이 내 게시물을 북마크했습니다.")
                 .build();
 
+        notification = notificationRepository.save(notification);
         kafkaTemplate.send("sse", NotificationDto.toDto(notification));
         log.info("sendKafka");
     }

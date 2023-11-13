@@ -66,8 +66,9 @@ public class FolderController {
 
     @Operation(summary = "회원의 모든 폴더 리스트를 반환",
             description = "로그인한 회원의 폴더 리스트를 보여줌")
-    @GetMapping("")
-    public ResponseDto<RetrieveFolderOnlyResponseDto> searchAllFolder(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return ResponseDto.of(noteService.listFolders(userDetails.member().getNickname()));
+    @GetMapping("/{folderId}")
+    public ResponseDto<RetrieveFolderOnlyResponseDto> searchAllFolder(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                      @PathVariable Long folderId) {
+        return ResponseDto.of(noteService.listFolders(userDetails.member().getNickname(), folderId));
     }
 }
