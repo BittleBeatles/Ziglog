@@ -109,7 +109,7 @@ export async function getJustFolderList() {
     });
 }
 
-export async function chageFolderList(parentId: number, childId: number) {
+export async function changeFolderList(parentId: number, childId: number) {
   return privateFetch<ChangeFolderApiResponse>(`${API_URL}/folder/parent`, {
     method: 'PUT',
     body: {
