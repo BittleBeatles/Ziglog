@@ -1,6 +1,7 @@
 package com.ziglog.ziglog.domain.note.controller;
 
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
+import com.ziglog.ziglog.domain.note.dto.request.note.ChangeNoteParentRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.CreateNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.ModifyNoteRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.note.SetPublicRequestDto;
@@ -82,4 +83,14 @@ public class NoteController {
             throws InconsistentFolderOwnerException, NoteNotFoundException{
         return ResponseDto.of(noteService.setPublic(userDetails.member(), noteId, setPublicRequestDto));
     }
+
+    @Operation(summary = "노트가 속한 폴더를 변경",
+            description = "노트의 부모 폴더를 변경")
+    @PutMapping("/parent")
+    public ResponseDto<Void> changeParentFolder(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                @RequestBody ChangeNoteParentRequestDto requestDto) {
+        noteService.changeNoteParent(userDetails.member(), requestDto);
+        return ResponseDto.of(200, "success");
+    }
+
 }

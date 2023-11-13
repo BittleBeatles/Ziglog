@@ -44,4 +44,8 @@ public class Folder {
     public void setTitle(String title){
         this.title = title;
     }
+
+    public void changeParentFolder(Folder folder) {
+        this.parent = folder;
+    }
 }

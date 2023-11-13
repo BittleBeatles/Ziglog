@@ -3,6 +3,8 @@ package com.ziglog.ziglog.domain.note.service;
 import com.ziglog.ziglog.domain.member.entity.Member;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
+import com.ziglog.ziglog.domain.note.dto.request.quotation.AddQuotationRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.quotation.DeleteQuotationRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.QuotingIdListResponseDto;
 import com.ziglog.ziglog.domain.note.dto.request.quotation.UpdateQuotationsRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.QuotationListResponseDto;
@@ -10,6 +12,7 @@ import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.entity.Quotation;
 import com.ziglog.ziglog.domain.note.exception.exceptions.InconsistentNoteOwnerException;
 import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
+import com.ziglog.ziglog.domain.note.exception.exceptions.QuotationNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
 import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
@@ -31,6 +34,7 @@ public class QuotationServiceImpl implements QuotationService {
 
     private final QuotationRepository quotationRepository;
     private final NoteRepository noteRepository;
+    private final MemberRepository memberRepository;
     private final KafkaTemplate<String, NotificationDto> kafkaTemplate;
 
     @Override
@@ -94,6 +98,34 @@ public class QuotationServiceImpl implements QuotationService {
                 kafkaTemplate.send("sse", NotificationDto.toDto(notification));
             }
         });
+    }
 
+    @Override
+    public void addQuotation(Member member, AddQuotationRequestDto requestDto) throws NoteNotFoundException, UserNotFoundException{
+        Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
+        Note startNote = noteRepository.findNoteById(requestDto.getStartNoteIdx()).orElseThrow(NoteNotFoundException::new);
+        Note endNote = noteRepository.findNoteById(requestDto.getEndNoteIdx()).orElseThrow(NoteNotFoundException::new);
+
+        Quotation quotation = quotationRepository.findByStartNoteAndEndNoteAndOwner(startNote, endNote, memberPersist).orElse(null);
+        if (quotation != null) return;
+
+        Quotation newQuotation = Quotation.builder()
+                                    .owner(memberPersist)
+                                    .startNote(startNote)
+                                    .endNote(endNote)
+                                .build();
+        quotationRepository.save(newQuotation);
+    }
+
+
+    @Override
+    public void deleteQuotation(Member member, DeleteQuotationRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException, QuotationNotFoundException{
+        Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
+        Note startNote = noteRepository.findNoteById(requestDto.getStartNoteIdx()).orElseThrow(NoteNotFoundException::new);
+        Note endNote = noteRepository.findNoteById(requestDto.getEndNoteIdx()).orElseThrow(NoteNotFoundException::new);
+
+        Quotation quotation = quotationRepository.findByStartNoteAndEndNoteAndOwner(startNote, endNote, memberPersist)
+                                                .orElseThrow(QuotationNotFoundException::new);
+        quotationRepository.delete(quotation);
     }
 }
