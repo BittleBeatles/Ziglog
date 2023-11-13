@@ -32,13 +32,13 @@ export function getSearchInfo(
 }
 
 export function getPersonalSearchInfo(
-  debouncedKeyword: string,
+  keyword: string,
   nickname: string,
   page: number,
   perPage: number
 ): Promise<SearchInfo> {
   return publicFetch<SearchApiData>(
-    `${API_URL}/search?keyword=${debouncedKeyword}&nickname=${nickname}&page=${page}&perPage=${perPage}`,
+    `${API_URL}/search?keyword=${keyword}&nickname=${nickname}&page=${page}&perPage=${perPage}`,
     {
       method: 'GET',
     }

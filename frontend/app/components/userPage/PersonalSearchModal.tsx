@@ -1,58 +1,90 @@
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, useEffect, useState } from 'react';
 import PersonalSearchResult from './Search/PersonalSearchResult';
 import Link from 'next/link';
+import { getPersonalSearchInfo } from '@api/search/search';
+import { SearchInfo } from '@api/search/types';
+import { useScrollObserver } from '@src/hooks/useScrollObserve';
+import IconButton from '@components/common/IconButton';
 
-interface SearchResult {
-  noteId: number;
-  title: string;
-  preview: string;
-  postTime: Date;
-  bookmarkCount: number;
-}
+// interface SearchResult {
+//   noteId: number;
+//   title: string;
+//   preview: string;
+//   postTime: Date;
+//   bookmarkCount: number;
+// }
 
 interface PersonalSearchModalProps extends HTMLAttributes<HTMLDivElement> {
   theme: 'light' | 'dark';
-  SearchResults?: SearchResult[];
-  nickname?: string;
-  keyword?: string;
+  nickname: string;
+  keyword: string;
+  openModal: (open: boolean) => void;
+  searchData: SearchInfo | null;
+  setKeyword: (keyword: string) => void;
 }
 
 export default function PersonalSearchModal({
   theme,
-  SearchResults,
   nickname,
   keyword,
+  openModal,
+  searchData,
+  setKeyword,
 }: PersonalSearchModalProps) {
   return (
     <div
       className={`${THEME_VARIANTS[theme]} w-132 shadow-md border text-center rounded-md justify-center px-3`}
     >
-      {SearchResults?.length == 0 ? (
-        <div className="h-96 my-3">
-          <p>검색 결과가 없습니다</p>
-        </div>
-      ) : (
-        <div id="sidebar-scroll" className="h-96 overflow-y-auto my-3">
-          {SearchResults?.map((searchResult, index) => (
-            <div key={index}>
-              <Link
+      {searchData && searchData.notes.length > 0 ? (
+        <div>
+          <div className="grid justify-items-end mt-3">
+            <IconButton
+              onClick={() => {
+                openModal(false);
+                setKeyword('');
+              }}
+              theme={theme}
+              name="Close"
+            />
+          </div>
+          <div id="sidebar-scroll" className="h-96 overflow-y-auto mb-3">
+            {searchData.notes.map((searchResult, index) => (
+              <div
                 key={index}
-                href={{
-                  pathname: `/user-page/${nickname}/read-note/${searchResult.noteId}`,
-                  query: { keyword: keyword },
+                onClick={() => {
+                  openModal(false);
+                  setKeyword('');
                 }}
               >
-                <PersonalSearchResult
+                <Link
                   key={index}
-                  theme={theme}
-                  title={searchResult.title}
-                  preview={searchResult.preview}
-                  postTime={searchResult.postTime}
-                  bookmarkCount={searchResult.bookmarkCount}
-                ></PersonalSearchResult>
-              </Link>
-            </div>
-          ))}
+                  href={{
+                    pathname: `/user-page/${nickname}/read-note/${searchResult.noteId}`,
+                  }}
+                >
+                  <PersonalSearchResult
+                    key={index}
+                    theme={theme}
+                    title={searchResult.title}
+                    preview={searchResult.preview}
+                    postTime={searchResult.postTime}
+                    bookmarkCount={searchResult.bookmarkCount}
+                  ></PersonalSearchResult>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="h-96 my-3">
+          <div className="grid justify-items-end">
+            <IconButton
+              onClick={() => openModal(false)}
+              theme={theme}
+              name="Close"
+            />
+          </div>
+          <p>검색 결과가 없습니다</p>
         </div>
       )}
     </div>

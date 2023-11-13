@@ -195,7 +195,11 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       </div>
 
       <div className="flex justify-center mt-5 px-8">
-        <PersonalSearchInput theme={theme} placeholder="노트 검색" />
+        <PersonalSearchInput
+          theme={theme}
+          placeholder="노트 검색"
+          paramsNickname={paramsNickname}
+        />
       </div>
 
       <div
