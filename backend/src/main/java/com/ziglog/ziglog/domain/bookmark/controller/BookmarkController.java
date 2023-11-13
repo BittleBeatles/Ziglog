@@ -8,6 +8,7 @@ import com.ziglog.ziglog.domain.bookmark.exception.exceptions.BookmarkNotFoundEx
 import com.ziglog.ziglog.domain.bookmark.service.BookmarkService;
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
+import com.ziglog.ziglog.domain.notification.service.NotificationService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,13 +26,14 @@ import org.springframework.web.bind.annotation.*;
 public class BookmarkController {
 
     private final BookmarkService bookmarkService;
+    private final NotificationService notificationService;
 
     @Operation(summary = "해당 글을 내 북마크에 추가",
             description = "해당 노트를 내 북마크에 추가합니다.")
     @PostMapping("")
     public ResponseDto<Void> addBookmark(@AuthenticationPrincipal CustomUserDetails userDetails,
                                          @RequestBody AddBookmarkRequestDto addBookmarkRequestDto)
-            throws UserNotFoundException, NoteNotFoundException, BookmarkAlreadyExistsException {
+            throws UserNotFoundException, NoteNotFoundException, BookmarkAlreadyExistsException, Exception {
         bookmarkService.addBookmark(userDetails.member(), addBookmarkRequestDto);
         return ResponseDto.of(200, "success");
     }

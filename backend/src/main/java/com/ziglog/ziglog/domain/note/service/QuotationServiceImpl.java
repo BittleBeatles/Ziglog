@@ -12,8 +12,12 @@ import com.ziglog.ziglog.domain.note.exception.exceptions.InconsistentNoteOwnerE
 import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
+import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
+import com.ziglog.ziglog.domain.notification.entity.Notification;
+import com.ziglog.ziglog.domain.notification.entity.NotificationType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +31,7 @@ public class QuotationServiceImpl implements QuotationService {
 
     private final QuotationRepository quotationRepository;
     private final NoteRepository noteRepository;
-    private final MemberRepository memberRepository;
+    private final KafkaTemplate<String, NotificationDto> kafkaTemplate;
 
     @Override
     public QuotationListResponseDto getQuotationLists(Long noteId) throws NoteNotFoundException {
@@ -49,7 +53,7 @@ public class QuotationServiceImpl implements QuotationService {
     }
 
     @Override
-    public List<Long> updateQuotations(Member member, Long noteId, UpdateQuotationsRequestDto requestDto)
+    public void updateQuotations(Member member, Long noteId, UpdateQuotationsRequestDto requestDto)
             throws UserNotFoundException, NoteNotFoundException {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         if (!note.getAuthor().getId().equals(member.getId())) throw new InconsistentNoteOwnerException();
@@ -67,12 +71,29 @@ public class QuotationServiceImpl implements QuotationService {
                 .toList();
 
         quotationRepository.saveAll(newQuotationList);
-        return noteToNotify;
+        sendQuotationEvent(member, note, noteToNotify);
     }
 
     @Override
     public QuotingIdListResponseDto getQuotingNoteIds(Long noteId) throws NoteNotFoundException {
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         return QuotingIdListResponseDto.toDto(note.getQuoting().stream().map(Quotation::getStartNote).toList());
+    }
+
+    private void sendQuotationEvent(Member sender, Note quoted, List<Long> newlyAddedQuotings) throws NoteNotFoundException{
+        newlyAddedQuotings.forEach((noteId) -> {
+            Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
+            if (!note.getAuthor().getId().equals(sender.getId())){//본인의 노트가 아닌 경우
+                Notification notification = Notification.builder()
+                        .type(NotificationType.QUOTE)
+                        .receiver(note.getAuthor())
+                        .sender(sender)
+                        .note(quoted)
+                        .message(sender.getNickname() + "님이 내 게시물을 인용했습니다")
+                        .build();
+                kafkaTemplate.send("sse", NotificationDto.toDto(notification));
+            }
+        });
+
     }
 }

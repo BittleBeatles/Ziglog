@@ -1,5 +1,6 @@
 package com.ziglog.ziglog.domain.bookmark.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ziglog.ziglog.domain.bookmark.dto.request.AddBookmarkRequestDto;
 import com.ziglog.ziglog.domain.bookmark.dto.response.BookmarkListDto;
 import com.ziglog.ziglog.domain.bookmark.dto.response.IsBookmarkedDto;
@@ -13,11 +14,15 @@ import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
+import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
-import com.ziglog.ziglog.domain.notification.service.EmitterService;
+import com.ziglog.ziglog.domain.notification.entity.NotificationType;
+import com.ziglog.ziglog.domain.notification.repository.NotificationRdbRepository;
 import com.ziglog.ziglog.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Not;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,9 +37,11 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final NotificationRdbRepository notificationRepository;
+    private final KafkaTemplate<String, NotificationDto> kafkaTemplate;
 
     @Override
-    public void addBookmark(Member member, AddBookmarkRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException {
+    public void addBookmark(Member member, AddBookmarkRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException, Exception {
         Long noteId = requestDto.getNoteId();
         Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
         Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
@@ -47,9 +54,10 @@ public class BookmarkServiceImpl implements BookmarkService {
                             .member(memberPersist)
                             .note(note)
                             .build();
-
         bookmark = bookmarkRepository.save(bookmark);
         memberPersist.getBookmarks().add(bookmark);
+
+        sendBookmarkNotification(memberPersist, note);
     }
 
     @Override
@@ -87,5 +95,19 @@ public class BookmarkServiceImpl implements BookmarkService {
             }
         }
         return false;
+    }
+
+    private void sendBookmarkNotification(Member sender, Note note){
+        if (note.getAuthor().getId().equals(sender.getId())) return;
+
+        Notification notification = Notification.builder()
+                .receiver(note.getAuthor())
+                .sender(sender)
+                .type(NotificationType.BOOKMARK)
+                .isRead(false)
+                .message(sender.getNickname() + "님이 내 게시물을 북마크했습니다.")
+                .build();
+
+        kafkaTemplate.send("sse", NotificationDto.toDto(notification));
     }
 }
