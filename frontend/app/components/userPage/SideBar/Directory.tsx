@@ -14,7 +14,7 @@ import { useParams } from 'next/navigation';
 import { useAppSelector } from '@store/store';
 import IconButton from '@components/common/IconButton';
 import Text from '@components/common/Text';
-import EditInput from '@components/common/EditInput';
+import EditInput from '@components/userPage/SideBar/Directory/EditInput';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import { showAlert } from '@src/util/alert';
 
@@ -47,7 +47,7 @@ export default function Directory({
   const [isModifyDelete, setModifyDelete] = useState(false);
   const [showFolderEdit, setFolderEdit] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
-  const [editingFolderId, setEditingFolderId] = useState(-1);
+  const [editingFolderId, setEditingFolderId] = useState(rootId);
   const [editingTitle, setEditingTitle] = useState('');
   const { getGraphData, sideData, getSideList, getNoteGraphData } =
     useContext(SideDataContext);
@@ -174,6 +174,7 @@ export default function Directory({
           placeholder="폴더명 수정"
           defaultValue={`${editingTitle}`}
           setFolderEdit={setFolderEdit}
+          editingFolderId={editingFolderId}
           onChange={(e) => setNewFolderName(e.target.value)}
           onKeyDown={handleEditKeyDown}
         />

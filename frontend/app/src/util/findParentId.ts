@@ -39,3 +39,45 @@ export function findFolderIdByNoteId(list: DirectoryItem[], noteId: number) {
   }
   return rootid;
 }
+
+export function isIdInRoot(data: DirectoryItem[], id: number) {
+  for (const item of data) {
+    if (item.id === id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function getAllSubFolderIds(folderId: number, folders: DirectoryItem[]) {
+  const subFolderIds: number[] = [];
+
+  function findSubFolders(currentFolderId: number) {
+    folders.forEach((folder) => {
+      if (
+        folder.type === 'folder' &&
+        folder.id === currentFolderId &&
+        folder.notes
+      ) {
+        folder.notes.forEach((note) => {
+          if (note.type === 'folder') {
+            subFolderIds.push(note.id);
+            findSubFolders(note.id);
+          }
+        });
+      }
+    });
+  }
+
+  findSubFolders(folderId);
+  return subFolderIds;
+}
+
+export function canMoveFolder(
+  targetFolderId: number,
+  destinationFolderId: number,
+  folders: DirectoryItem[]
+) {
+  const subFolders = getAllSubFolderIds(targetFolderId, folders);
+  return !subFolders.includes(destinationFolderId);
+}

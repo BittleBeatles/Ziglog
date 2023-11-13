@@ -8,3 +8,12 @@ export interface FolderListResponse {
 export type DirectoryItem = (NoteProps | FolderProps) & {
   type: 'note' | 'folder';
 };
+
+export interface JustFolderResponse {
+  folderList: JustFolder[];
+}
+
+export interface JustFolder {
+  id: number;
+  title: string;
+}
