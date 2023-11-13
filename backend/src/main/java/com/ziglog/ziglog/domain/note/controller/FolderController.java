@@ -1,8 +1,10 @@
 package com.ziglog.ziglog.domain.note.controller;
 
 import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
+import com.ziglog.ziglog.domain.note.dto.request.folder.ChangeFolderParentRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.folder.CreateFolderRequestDto;
 import com.ziglog.ziglog.domain.note.dto.request.folder.ModifyFolderNameRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.note.ChangeNoteParentRequestDto;
 import com.ziglog.ziglog.domain.note.exception.exceptions.CannotRemoveRootFolderException;
 import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
 import com.ziglog.ziglog.domain.note.exception.exceptions.InconsistentFolderOwnerException;
@@ -50,6 +52,15 @@ public class FolderController {
     public ResponseDto<Void> deleteFolder(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("folderId") Long folderId)
             throws FolderNotFoundException, UserNotFoundException, InconsistentFolderOwnerException, CannotRemoveRootFolderException {
         noteService.deleteFolder(userDetails.member(), folderId);
+        return ResponseDto.of(200, "success");
+    }
+
+    @Operation(summary = "폴더의 부모를 변경",
+            description = "폴더의 부모를 변경함")
+    @PutMapping("/parent")
+    public ResponseDto<Void> changeParentFolder(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                @RequestBody ChangeFolderParentRequestDto requestDto) {
+        noteService.changeFolderParent(userDetails.member(), requestDto);
         return ResponseDto.of(200, "success");
     }
 }

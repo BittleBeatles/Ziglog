@@ -1,8 +1,12 @@
 package com.ziglog.ziglog.domain.note.controller;
 
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
+import com.ziglog.ziglog.domain.note.dto.request.quotation.AddQuotationRequestDto;
+import com.ziglog.ziglog.domain.note.dto.request.quotation.DeleteQuotationRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.QuotingIdListResponseDto;
 import com.ziglog.ziglog.domain.note.dto.request.quotation.UpdateQuotationsRequestDto;
 import com.ziglog.ziglog.domain.note.dto.response.QuotationListResponseDto;
+import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.service.QuotationService;
 import com.ziglog.ziglog.global.auth.entity.CustomUserDetails;
@@ -44,6 +48,24 @@ public class QuotationController {
     @GetMapping("/quoting/{noteId}")
     public ResponseDto<QuotingIdListResponseDto> getQuotingNoteIds(@PathVariable("noteId") Long noteId) throws NoteNotFoundException {
         return ResponseDto.of(quotationService.getQuotingNoteIds(noteId));
+    }
+
+    @Operation(summary = "두 노트 사이의 인용 관계를 추가",
+            description = "startNote -> endNote로의 인용 관계를 추가")
+    @PutMapping("")
+    public ResponseDto<Void> addQuotation(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                          @RequestBody AddQuotationRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException {
+        quotationService.addQuotation(userDetails.member(), requestDto);
+        return ResponseDto.of(200, "success");
+    }
+
+    @Operation(summary = "두 노트 사이의 인용 관계를 삭제",
+            description = "start -> endNote의 인용 관계를 삭제")
+    @DeleteMapping("")
+    public ResponseDto<Void> deleteQuotation(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                             @RequestBody DeleteQuotationRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException{
+        quotationService.deleteQuotation(userDetails.member(), requestDto);
+        return ResponseDto.of(200, "success");
     }
 
 
