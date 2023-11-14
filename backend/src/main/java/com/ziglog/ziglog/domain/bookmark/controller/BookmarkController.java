@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 public class BookmarkController {
 
     private final BookmarkService bookmarkService;
-    private final NotificationService notificationService;
 
     @Operation(summary = "해당 글을 내 북마크에 추가",
             description = "해당 노트를 내 북마크에 추가합니다.")

@@ -280,8 +280,7 @@ public class NoteServiceImpl implements NoteService{
                 });
     }
 
-    // checked가 target 아래에 있는지를 확인
-    private Boolean isUnderTargetFolder(Folder target, Folder checked){
+    private Boolean isUnderTargetFolder(Folder target, Folder checked){// checked가 target 아래에 있는지를 확인
         List<Folder> children = target.getChildren();
 
         for (Folder child : children) {
