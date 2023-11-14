@@ -82,6 +82,6 @@ export const PersonalSearchModalExample = {
     //     bookmarkCount: 15,
     //   },
     // ],
-    nickname: '탈퇴한회원',
+    paramsNickname: '탈퇴한회원',
   },
 } satisfies Story;
