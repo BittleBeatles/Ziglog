@@ -69,44 +69,32 @@ public class GraphServiceImpl implements GraphService {
         List<Note> notes = noteRepository.findAllByAuthor(member);
         //notes를 모두 노드화하고
         //각 노드에서 나가는 간선들을 모두 붙여줌
-        Map<Long, Long> noteToNode = new HashMap<>();
-
         Set<Node> nodeSet = new HashSet<>();
         Set<Link> linkSet = new HashSet<>();
 
         notes.forEach(note -> {
-            Long idx = noteToNode.size() + 1L;
-            noteToNode.put(note.getId(), idx);
-            nodeSet.add(new Node(idx, note));
+            nodeSet.add(new Node(note.getId(), note));
         });
 
         //각 노트들과 이어진 다른 노트들과의 관계를 본다
         notes.forEach(note -> {
             List<Note> prev = note.getQuoting().stream().map(Quotation::getStartNote).toList();
             for (Note startNote : prev) {
-                if (!noteToNode.containsKey(startNote.getId())) {
-                    Long idx = noteToNode.size() + 1L;
-                    noteToNode.put(startNote.getId(), idx);
-                    nodeSet.add(new Node(idx, startNote));
-                }
-                Long source = noteToNode.get(startNote.getId());
-                Long target = noteToNode.get(note.getId());
+                if (!startNote.getAuthor().getId().equals(member.getId())) nodeSet.add(new Node(startNote.getId(), startNote, "link"));
+                else nodeSet.add(new Node(startNote.getId(), startNote));
+                Long source = startNote.getId();
+                Long target = note.getId();
+                linkSet.add(new Link(source, target, "quotation"));
+            }
 
-                linkSet.add(new Link(source, target, "link"));
-
-                List<Note> next = note.getQuoted().stream().map(Quotation::getEndNote).toList();
-
-                for (Note endNote : next) {
-                    if (!noteToNode.containsKey(endNote.getId())) {
-                        Long idx = noteToNode.size() + 1L;
-                        noteToNode.put(endNote.getId(), idx);
-                        nodeSet.add(new Node(idx, note));
-                    }
-                    source = noteToNode.get(note.getId());
-                    target = noteToNode.get(endNote.getId());
-
-                    linkSet.add(new Link(source, target, "link"));
-                }
+            List<Note> next = note.getQuoted().stream().map(Quotation::getEndNote).toList();
+            for (Note endNote : next) {
+                if (!endNote.getAuthor().getId().equals(member.getId())) nodeSet.add(new Node(endNote.getId(), endNote, "link"));
+                else nodeSet.add(new Node(endNote.getId(), endNote));
+                nodeSet.add(new Node(note.getId(), note));
+                Long source = note.getId();
+                Long target = endNote.getId();
+                linkSet.add(new Link(source, target, "quotation"));
             }
         });
         return new GraphResponseDto(nodeSet, linkSet);
