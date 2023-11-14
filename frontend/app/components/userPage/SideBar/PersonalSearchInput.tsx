@@ -30,9 +30,6 @@ const PersonalSearchInput = forwardRef<
     return THEME_VARIANTS[theme];
   }
 
-  const params = useParams();
-  const nickname = decodeURIComponent(params.userNickname as string);
-
   const themeClass = getThemeVariant({ isFocused, theme });
 
   const [keyword, setKeyword] = useState('');
@@ -57,58 +54,6 @@ const PersonalSearchInput = forwardRef<
   const openSearchModal = (open: boolean) => {
     setSearchModalOpen(true);
   };
-
-  const [searchData, setSearchData] = useState<SearchInfo | null>({
-    notes: [],
-  });
-  const [page, setPage] = useState(0); // 페이지 번호
-  const [hasMore, setHasMore] = useState(true); // 더 많은 페이지가 있는지 여부
-  const perPage = 5;
-
-  // 스크롤 이벤트 핸들러
-  const handleScroll = () => {
-    if (hasMore) {
-      setPage(page + 1);
-    }
-  };
-
-  //스크롤 감지 훅
-  useScrollObserver(handleScroll);
-
-  useEffect(() => {
-    async function fetchMoreData(keyword: string, page: number) {
-      try {
-        const response = await getPersonalSearchInfo(
-          encodeURIComponent(keyword),
-          encodeURIComponent(paramsNickname),
-          page,
-          perPage
-        );
-        const newData = response;
-
-        if (newData && newData.notes.length > 0) {
-          setSearchData({
-            notes: newData?.notes,
-          });
-        } else {
-          console.error('No notes data in the response.');
-          setHasMore(false);
-        }
-      } catch (error) {
-        console.error('Error fetching more data:', error);
-      } finally {
-      }
-    }
-
-    // 검색어 없을 시 초기화 상태.
-    if (!keyword) {
-      setPage(0);
-      setSearchData({ notes: [] });
-    } else {
-      setHasMore(true);
-      fetchMoreData(keyword, page);
-    }
-  }, [keyword, page]);
 
   return (
     <div
@@ -142,9 +87,9 @@ const PersonalSearchInput = forwardRef<
         <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-20">
           <PersonalSearchModal
             theme={theme}
-            nickname={nickname}
+            paramsNickname={paramsNickname}
             openModal={setSearchModalOpen}
-            searchData={searchData}
+            keyword={keyword}
             setKeyword={setKeyword}
           ></PersonalSearchModal>
         </div>

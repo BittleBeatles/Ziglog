@@ -3,22 +3,71 @@ import PersonalSearchResult from './Search/PersonalSearchResult';
 import Link from 'next/link';
 import { SearchInfo } from '@api/search/types';
 import IconButton from '@components/common/IconButton';
+import { getPersonalSearchInfo } from '@api/search/search';
+import { useScroll } from '@src/hooks/useScroll';
 
 interface PersonalSearchModalProps extends HTMLAttributes<HTMLDivElement> {
   theme: 'light' | 'dark';
-  nickname: string;
+  paramsNickname: string;
   openModal: (open: boolean) => void;
-  searchData: SearchInfo | null;
+  keyword: string;
   setKeyword: (keyword: string) => void;
 }
 
 export default function PersonalSearchModal({
   theme,
-  nickname,
+  paramsNickname,
   openModal,
-  searchData,
+  keyword,
   setKeyword,
 }: PersonalSearchModalProps) {
+  const [searchData, setSearchData] = useState<SearchInfo | null>({
+    notes: [],
+  });
+  const [page, setPage] = useState(0); // 페이지 번호
+  const [hasMore, setHasMore] = useState(true); // 더 많은 페이지가 있는지 여부
+  const perPage = 8;
+
+  // 스크롤 이벤트 핸들러
+  const handleScroll = () => {
+    if (hasMore) {
+      setPage(page + 1);
+    }
+  };
+
+  //스크롤 감지 훅
+  useScroll(handleScroll);
+
+  useEffect(() => {
+    async function fetchMoreData(keyword: string, page: number) {
+      try {
+        const response = await getPersonalSearchInfo(
+          encodeURIComponent(keyword),
+          encodeURIComponent(paramsNickname),
+          page,
+          perPage
+        );
+        const newData = response;
+
+        if (newData && newData.notes.length > 0) {
+          setSearchData((prevData) => ({
+            notes:
+              prevData?.notes.length == newData?.notes.length
+                ? newData?.notes || []
+                : [...(prevData?.notes || []), ...(newData?.notes || [])],
+          }));
+        } else {
+          setHasMore(false);
+        }
+      } catch (error) {
+        console.error('Error fetching more data:', error);
+      } finally {
+      }
+    }
+
+    setHasMore(true);
+    fetchMoreData(keyword, page);
+  }, [keyword, page]);
   return (
     <div
       className={`${THEME_VARIANTS[theme]} w-132 shadow-md border text-center rounded-md justify-center px-3`}
@@ -47,7 +96,7 @@ export default function PersonalSearchModal({
                 <Link
                   key={index}
                   href={{
-                    pathname: `/user-page/${nickname}/read-note/${searchResult.noteId}`,
+                    pathname: `/user-page/${paramsNickname}/read-note/${searchResult.noteId}`,
                   }}
                 >
                   <PersonalSearchResult
