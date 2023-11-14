@@ -116,7 +116,7 @@ const EditInput = forwardRef<HTMLInputElement, EditInputProps>(
                 >
                   <div className="flex items-center ">
                     <SvgIcon
-                      name="Folder"
+                      name="FileMove"
                       color={theme === 'light' ? colors.black : colors.white}
                     />
                     <Text className="text-lg ml-1">{nickname}</Text>
@@ -155,7 +155,7 @@ const EditInput = forwardRef<HTMLInputElement, EditInputProps>(
                     {folder.id !== editingFolderId && (
                       <div className="flex items-center ">
                         <SvgIcon
-                          name="Folder"
+                          name="FileMove"
                           color={
                             theme === 'light' ? colors.black : colors.white
                           }
