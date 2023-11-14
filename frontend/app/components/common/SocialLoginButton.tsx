@@ -1,9 +1,9 @@
 import React from 'react';
 import { ButtonHTMLAttributes } from 'react';
-import Image from 'next/image';
 import GoogleLoginButtonLogo from '@public/images/GoogleLoginButtonLogo_small.png';
 import KakaoLoginButtonLogo from '@public/images/KakaoLoginButtonLogo_small.png';
 import { API_URL } from '@api/constants';
+import Image from 'next/image';
 interface SocialLoginButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   name: 'google' | 'kakao';
@@ -20,11 +20,13 @@ export default function SocialLoginButton({
   return (
     <a className="w-fit" href={`${API_URL}/auth/oauth2/authorization/${name}`}>
       <Image
+        className=" opacity-100 hover:opacity-60 transition-opacity duration-300"
         src={imageSrc}
-        width={150}
-        height={50}
+        width={0}
+        height={0}
         alt={altText}
         priority={true}
+        style={{ width: 200, height: 50 }}
       />
     </a>
   );

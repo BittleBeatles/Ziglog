@@ -28,7 +28,7 @@ export default function UserLayout({ children }: { children: ReactNode }) {
             name="DoubleArrowRight"
           />
         )}
-        <div className="p-4 w-full h-screen">
+        <div className={`p-4 h-screen ${isSideBarOpen ? 'w-5/6' : 'w-full'}`}>
           <Box theme={theme}>{children}</Box>
         </div>
       </SideDataProvider>

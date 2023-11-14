@@ -15,7 +15,7 @@ export default function SocialLoginModal({
   openLoginModal,
 }: SocialLoginModalProps) {
   return (
-    <ModalLayout classname={`${THEME_VARIANTS[theme]}`}>
+    <ModalLayout classname={`rounded-lg ${THEME_VARIANTS[theme]}`}>
       <div className="flex flex-col justify-center items-center mb-4">
         <div className="flex flex-row place-content-end w-full">
           <IconButton
@@ -24,8 +24,8 @@ export default function SocialLoginModal({
             name="Close"
           />
         </div>
-        <div className="px-16 gap-4 mb-4 flex flex-col justify-center items-center">
-          <Text type="b">{'소셜 계정으로 로그인 '}</Text>
+        <div className="px-12 gap-4 mb-4 flex flex-col justify-center items-center">
+          <Text type="h4">{'소셜계정으로 로그인'}</Text>
           <SocialLoginButton name="google" />
           <SocialLoginButton name="kakao" />
         </div>
