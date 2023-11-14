@@ -28,7 +28,12 @@ export default function CreateFile({
       ) : (
         <div className={`flex mt-2 mb-2 ${THEME_VARIANTS[theme]}`}>
           <SvgIcon name="Folder" color={colors.grey} />
-          <input className="w-full" ref={inputRef} {...rest} type="text" />
+          <input
+            className="w-2/3 ml-1 p-1 outline-none"
+            ref={inputRef}
+            {...rest}
+            type="text"
+          />
         </div>
       )}
     </div>

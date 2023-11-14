@@ -30,7 +30,7 @@ export default function QuotationListBox({
   const router = useRouter();
   return (
     <div
-      className={`${THEME_VARIANTS[theme]} relative rounded-md p-5 flex flex-col gap-4`}
+      className={`${THEME_VARIANTS[theme]} relative rounded-md p-5 flex flex-col gap-4 w-full`}
     >
       {/* 북마크 아이콘  */}
       <div className="absolute -top-3 right-24">
@@ -67,7 +67,7 @@ export default function QuotationListBox({
                     }
                   }}
                 >
-                  <span className="flex flex-row gap-1">
+                  <span className="flex flex-row gap-1 items-center">
                     <Text
                       type="p"
                       className={`${TEXT_COLOR[theme]}`}
@@ -75,7 +75,13 @@ export default function QuotationListBox({
                     >
                       {item.nickname} : {item.title}
                     </Text>
-                    {!item.isPublic && <SvgIcon name="Private" size={20} />}
+                    {!item.isPublic && (
+                      <SvgIcon
+                        name="Private"
+                        size={20}
+                        color={theme === 'dark' ? 'white' : 'black'}
+                      />
+                    )}
                   </span>
                 </span>
               );

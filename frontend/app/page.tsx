@@ -6,7 +6,7 @@ import titleImg from '@public/images/main/titleImg.png';
 import readNotePage from '@public/images/main/readNotePage.png';
 import graphPage from '@public/images/main/graphPage.png';
 import searchPage from '@public/images/main/searchPage.png';
-
+import pointerLeftGirl from '@public/images/main/pointerLeftGirl.png';
 import pointerGirl from '@public/images/main/pointerGirl.png';
 import pointerBoy from '@public/images/main/pointerBoy.png';
 import Description from '@components/main/Description';
@@ -62,6 +62,7 @@ export default function Home() {
         <div className="flex flex-col items-center mt-10">
           <Image src={titleImg} alt={'타이틀이미지'} width={682} height={366} />
           <Image
+            priority
             className="rounded-lg border border-solid shadow-xl"
             src={readNotePage}
             alt={'글읽기 페이지'}
@@ -74,25 +75,35 @@ export default function Home() {
             모든 작업들을 한눈에 확인할 수 있어요
           </Text>
         </div>
-
         <Description
-          title="📈 그래프"
+          title="📈 그래프 : 노트 관계"
           content={
-            '어떤 문서들이 위치해 있는지 탐색하기 어려웠죠?\nZiglog를 이용하면 I am 척척박사에요'
+            '노트 그래프 뷰에서 노트들 간 관계를 한 눈에 파악할 수 있어요.\n\n글 작성 시, 다른 노트를 참조하면 그래프에서 두 노트가 간선으로 연결됩니다.'
           }
           pointer={pointerGirl}
           page={graphPage}
           drawLocation={'top-1/4 left-2'}
+          direction="left"
         />
-
+        <Description
+          title="📈 그래프 : 폴더 구조"
+          content={
+            '폴더 그래프 뷰에서 내 폴더와 노트 구조를 한 눈에 파악할 수 있어요.\n\n 중첩되고 복잡한 폴더 구조를 2d, 3d 그래프로 관리해보세요. '
+          }
+          pointer={pointerLeftGirl}
+          page={graphPage}
+          drawLocation={'top-1/4 left-2'}
+          direction="right"
+        />
         <Description
           title="🔍 검색"
           content={
-            '내 친구가 쓴 글을 보고싶다고요?\nZiglog를 이용하면 I am 척척박사'
+            '다른 사용자들의 글을 검색할 수 있어요.\n\n글 검색을 통해 다른 사람들의 그래프를 구경하고 마음에 드는 글을 북마크 해보세요.'
           }
           pointer={pointerBoy}
           page={searchPage}
           drawLocation={'top-3/4 left-1/4'}
+          direction="left"
         />
       </div>
     </div>
