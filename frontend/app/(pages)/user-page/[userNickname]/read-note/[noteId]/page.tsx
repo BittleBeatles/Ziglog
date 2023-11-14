@@ -1,7 +1,6 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
 import Text from '@components/common/Text';
-import SvgIcon from '@components/common/SvgIcon';
 import Button from '@components/common/Button';
 import BookmarkQuoteInfo from '@components/userPage/BookmarkQuoteInfo';
 import MarkdownPreview from '@uiw/react-markdown-preview';
@@ -10,7 +9,6 @@ import { NoteInfo } from '@api/note/types';
 import { deleteNote, getNoteInfo } from '@api/note/note';
 import { useEffect, useState, useContext } from 'react';
 import { useAppSelector } from '@store/store';
-import { NoteRefListInfo } from '@api/note/types';
 import {
   isNoteBookmarked,
   addBookmark,
