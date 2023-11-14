@@ -13,26 +13,26 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotificationDto {
+public class NotificationKafkaDto {
 
-    private Long id;
+    private String id;
     private Long memberId;
+    private String title;
     private String senderNickname;
     private String senderProfileUrl;
     private Long noteId;
-    private String message;
     private Boolean isRead = false;
     private NotificationType type;
     private LocalDateTime dateTime;
 
-    public static NotificationDto toDto(Notification notification){
-        return NotificationDto.builder()
+    public static NotificationKafkaDto toDto(Notification notification){
+        return NotificationKafkaDto.builder()
                 .id(notification.getId())
                 .memberId(notification.getReceiver().getId())
                 .senderNickname(notification.getSender().getNickname())
                 .senderProfileUrl(notification.getSender().getProfileUrl())
-                .noteId(notification.getId())
-                .message(notification.getMessage())
+                .noteId(notification.getNote().getId())
+                .title(notification.getTitle())
                 .isRead(notification.getIsRead())
                 .type(notification.getType())
                 .dateTime(notification.getDateTime())

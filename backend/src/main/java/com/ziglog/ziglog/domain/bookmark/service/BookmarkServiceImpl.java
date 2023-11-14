@@ -13,7 +13,7 @@ import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
-import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
+import com.ziglog.ziglog.domain.notification.dto.NotificationKafkaDto;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.entity.NotificationType;
 import com.ziglog.ziglog.domain.notification.repository.NotificationRdbRepository;
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
     private final BookmarkRepository bookmarkRepository;
-    private final KafkaTemplate<String, NotificationDto> kafkaTemplate;
+    private final KafkaTemplate<String, NotificationKafkaDto> kafkaTemplate;
 
     @Override
     public void addBookmark(Member member, AddBookmarkRequestDto requestDto) throws UserNotFoundException, NoteNotFoundException,BookmarkAlreadyExistsException{
@@ -94,18 +95,22 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     private void sendBookmarkNotification(Member sender, Note note){
-        //if (note.getAuthor().getId().equals(sender.getId())) return;
+        if (note.getAuthor().getId().equals(sender.getId())) return;
 
-        log.info("sendBookmarkNotification");
+//        String id = sender.getId() + "_" + note.getAuthor().getId() + "_" + UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
+
         Notification notification = Notification.builder()
+                .id(id)
                 .type(NotificationType.BOOKMARK)
                 .receiver(note.getAuthor())
                 .sender(sender)
+                .note(note)
+                .title(note.getTitle())
                 .isRead(false)
-                .message(sender.getNickname() + "님이 내 게시물을 북마크했습니다.")
                 .build();
 
-        kafkaTemplate.send("sse", NotificationDto.toDto(notification));
-        log.info("sendKafka");
+        //받아짐
+        kafkaTemplate.send("sse", NotificationKafkaDto.toDto(notification));
     }
 }
