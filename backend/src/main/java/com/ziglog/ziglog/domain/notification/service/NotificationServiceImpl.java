@@ -56,7 +56,9 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void sendMessage(Long id, Object event) throws Exception {
-        SseEmitter emitter = emitterRepository.findById(id).orElseThrow(Exception::new);
+        SseEmitter emitter = emitterRepository.findById(id).orElse(null);
+        if (emitter == null) return;//연결되지 않은 상태면 그냥 리턴
+
         try {
             Gson gson = new Gson();
             String eventToSend = gson.toJson(event);

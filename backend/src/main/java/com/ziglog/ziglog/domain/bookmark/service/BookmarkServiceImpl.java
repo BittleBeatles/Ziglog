@@ -97,9 +97,9 @@ public class BookmarkServiceImpl implements BookmarkService {
     private void sendBookmarkNotification(Member sender, Note note){
         if (note.getAuthor().getId().equals(sender.getId())) return;
 
-//        String id = sender.getId() + "_" + note.getAuthor().getId() + "_" + UUID.randomUUID();
-        String id = UUID.randomUUID().toString();
+        String id = sender.getId() + "_" + note.getAuthor().getId() + "_" + UUID.randomUUID();
 
+        log.info("make Bookmark Notification");
         Notification notification = Notification.builder()
                 .id(id)
                 .type(NotificationType.BOOKMARK)
@@ -112,5 +112,6 @@ public class BookmarkServiceImpl implements BookmarkService {
 
         //받아짐
         kafkaTemplate.send("sse", NotificationKafkaDto.toDto(notification));
+        log.info("sent kafka message");
     }
 }
