@@ -39,3 +39,12 @@ export function findFolderIdByNoteId(list: DirectoryItem[], noteId: number) {
   }
   return rootid;
 }
+
+export function isIdInRoot(data: DirectoryItem[], id: number) {
+  for (const item of data) {
+    if (item.id === id) {
+      return true;
+    }
+  }
+  return false;
+}

@@ -18,8 +18,8 @@ export interface BookmarkListProps {
 }
 
 const THEME_VARIANTS = {
-  light: '#F6F6F6',
-  dark: '#3A3A3C',
+  light: colors.modal,
+  dark: colors['dark-background-page'],
 };
 
 export default function BookmarkList({
@@ -44,7 +44,7 @@ export default function BookmarkList({
       background: bg,
       color: textColor,
       confirmButtonText: '해제하기',
-      confirmButtonColor: '#3D4EFE',
+      confirmButtonColor: colors['main-100'],
     }).then(async (res) => {
       if (res.isConfirmed) {
         const res = deleteBookmark(noteId);
