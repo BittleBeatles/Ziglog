@@ -21,6 +21,7 @@ import { changeNotePublicStatusRequest } from '@api/note/editNote';
 import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
 import { getQuoteData } from '@api/quote/quote';
 import { quotingQuotedNotes } from '@api/quote/types';
+import MDEditor from '@uiw/react-md-editor';
 export default function ReadNote() {
   const router = useRouter();
   const { theme, isLogin } = useAppSelector((state) => state.user);
@@ -206,9 +207,12 @@ export default function ReadNote() {
             />
           </div>
 
-          <div data-color-mode={theme} className="w-full mx-24">
+          <div data-color-mode={theme} className="mx-24">
             <div className="wmde-markdown-var">
-              <MarkdownPreview source={data.content} />
+              <MarkdownPreview
+                source={data.content}
+                style={{ width: '900px' }}
+              />
             </div>
           </div>
         </div>
