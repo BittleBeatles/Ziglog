@@ -209,6 +209,7 @@ export default function EditNote() {
           quotingNoteIds={quotingNoteIds}
           setQuotingNoteIds={setQuotingNoteIds}
           setIdChange={setIdChange}
+          paramsId={parseInt(noteId)}
         />
       </div>
     )
