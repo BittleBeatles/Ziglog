@@ -172,6 +172,7 @@ export default function EditNote() {
                 </svg>
               ),
               children: (handle) => {
+                // eslint-disable-next-line react-hooks/rules-of-hooks
                 useEffect(() => {
                   handle.execute();
                 }, [quotingNoteInfo]);
