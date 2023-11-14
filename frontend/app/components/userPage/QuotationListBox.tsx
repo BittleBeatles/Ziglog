@@ -33,7 +33,7 @@ export default function QuotationListBox({
       className={`${THEME_VARIANTS[theme]} relative rounded-md p-5 flex flex-col gap-4 w-full`}
     >
       {/* 북마크 아이콘  */}
-      <div className="absolute -top-3 right-24">
+      <div className="absolute -top-3 right-20">
         <SvgIcon name="BookMarkFill" color={colors['main-100']} size={70} />
       </div>
       {/* 제목 */}
