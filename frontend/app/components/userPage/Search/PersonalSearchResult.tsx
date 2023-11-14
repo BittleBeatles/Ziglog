@@ -32,10 +32,10 @@ export default function PersonalSearchResult({
           <div className="h-4 w-1 mr-1 bg-blue-300"></div>
         </div>
         <div className="mr-2">
-          <p className="font-bold truncate max-w-noti">{title}</p>
+          <Text className="font-bold truncate max-w-noti">{title}</Text>
         </div>
         <div className="w-fit">
-          <Text type="p" className="line-clamp-1">
+          <Text type="p" className="truncate w-96">
             {preview}
           </Text>
         </div>

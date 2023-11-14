@@ -40,7 +40,9 @@ export default function ChangeUserInfoBox({
   const handleClick = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
       const selectFile = e.target.files ? e.target.files[0] : null;
-      uploadImageFile(selectFile, setProfileUrl);
+      if (selectFile) {
+        uploadImageFile(selectFile, setProfileUrl);
+      }
     } catch (error) {}
   };
 

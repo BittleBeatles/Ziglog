@@ -1,7 +1,6 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
 import Text from '@components/common/Text';
-import SvgIcon from '@components/common/SvgIcon';
 import Button from '@components/common/Button';
 import BookmarkQuoteInfo from '@components/userPage/BookmarkQuoteInfo';
 import MarkdownPreview from '@uiw/react-markdown-preview';
@@ -10,7 +9,6 @@ import { NoteInfo } from '@api/note/types';
 import { deleteNote, getNoteInfo } from '@api/note/note';
 import { useEffect, useState, useContext } from 'react';
 import { useAppSelector } from '@store/store';
-import { NoteRefListInfo } from '@api/note/types';
 import {
   isNoteBookmarked,
   addBookmark,
@@ -23,6 +21,7 @@ import { changeNotePublicStatusRequest } from '@api/note/editNote';
 import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
 import { getQuoteData } from '@api/quote/quote';
 import { quotingQuotedNotes } from '@api/quote/types';
+import MDEditor from '@uiw/react-md-editor';
 export default function ReadNote() {
   const router = useRouter();
   const { theme, isLogin } = useAppSelector((state) => state.user);
@@ -208,7 +207,7 @@ export default function ReadNote() {
             />
           </div>
 
-          <div data-color-mode={theme} className="w-full mx-24">
+          <div data-color-mode={theme} className="mx-24">
             <div className="wmde-markdown-var">
               <MarkdownPreview source={data.content} />
             </div>

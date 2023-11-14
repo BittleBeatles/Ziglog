@@ -29,7 +29,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const { isLogin, nickname, rootFolderId } = useAppSelector(
     (state) => state.user
   );
-  // 로그인 모달
+  //  모달
   const [loginModalOpen, setLoginModalOpne] = useState(false);
   const {
     getGraphData,
@@ -195,7 +195,11 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       </div>
 
       <div className="flex justify-center mt-5 px-8">
-        <PersonalSearchInput theme={theme} placeholder="노트 검색" />
+        <PersonalSearchInput
+          theme={theme}
+          placeholder="노트 검색"
+          paramsNickname={paramsNickname}
+        />
       </div>
 
       <div
@@ -226,7 +230,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         </div>
       </div>
 
-      <div className="flex justify-between px-8">
+      <div className="flex justify-between px-8 mt-3">
         <IconButton
           onClick={() =>
             dispatch(setMyTheme(theme === 'light' ? 'dark' : 'light'))

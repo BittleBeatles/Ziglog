@@ -30,6 +30,7 @@ export default function QuotationModal({
   return (
     <div>
       <div
+        id="sidebar-scroll"
         className={`${THEME_VARIANTS[theme]} w-80 max-h-60 overflow-auto rounded-md border p-2`}
       >
         {bookmarks?.map((bookmark, index) => (
@@ -39,6 +40,7 @@ export default function QuotationModal({
             title={bookmark.title}
             nickname={bookmark.nickname}
             isPublic={bookmark.isPublic}
+            isMine={userNickname === bookmark.nickname}
             onClick={() => {
               bookmark.isPublic || userNickname === bookmark.nickname
                 ? setQuotingNoteInfo({

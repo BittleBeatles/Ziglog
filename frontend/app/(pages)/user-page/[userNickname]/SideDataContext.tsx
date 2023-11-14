@@ -2,7 +2,7 @@
 import { createContext, useState, ReactNode, useCallback } from 'react';
 import { GraphData, NoteGraphData } from '@api/graph/types';
 import { getGraph, getNoteGraph } from '@api/graph/graph';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { getFolderList } from '@api/folder/folder';
 import { useAppSelector } from '@store/store';
 import { DirectoryItem } from '@api/folder/types';
@@ -50,6 +50,7 @@ const SideDataContext = createContext<ISideDataContext>(defaultSideDataContext);
 
 export const SideDataProvider = ({ children }: { children: ReactNode }) => {
   const params = useParams();
+  const router = useRouter();
   const paramsNickname = decodeURIComponent(params.userNickname as string);
   const isLogin = useAppSelector((state) => state.user.isLogin);
   // 그래프 데이터
@@ -86,7 +87,7 @@ export const SideDataProvider = ({ children }: { children: ReactNode }) => {
         setSideData(res);
       }
     } catch (error) {
-      console.error('폴더 리스트를 가져오는데 실패:', error);
+      router.push('/not-found');
     }
   }, [nickname]);
 
