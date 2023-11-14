@@ -17,7 +17,7 @@ export async function getNotificationList(): Promise<NotificationList> {
       }
     );
     if (res.body.statusCode === 200) {
-      console.log('전체 알리 목록:', res.body.data);
+      console.log('전체 알림 목록:', res.body.data);
       return await Promise.resolve(res.body.data);
     } else {
       showAlert('예상치 못한 오류가 발생했습니다', 'error');
@@ -30,7 +30,7 @@ export async function getNotificationList(): Promise<NotificationList> {
 }
 
 // 알림을 읽기 처리
-export async function putNotification(notificationId: number): Promise<[]> {
+export async function putNotification(notificationId: string): Promise<[]> {
   console.log('읽기 처리:', notificationId);
   return privateFetch<NotificationReadApi>(
     `${API_URL}/notification/read/${notificationId}`,
@@ -53,7 +53,7 @@ export async function putNotification(notificationId: number): Promise<[]> {
 }
 
 // 해당 알림을 목록에서 삭제
-export async function deleteNotification(notificationId: number) {
+export async function deleteNotification(notificationId: string) {
   console.log('삭제 처리:', notificationId);
   return privateFetch<NotificationReadApi>(
     `${API_URL}/notification/delete/${notificationId}`,

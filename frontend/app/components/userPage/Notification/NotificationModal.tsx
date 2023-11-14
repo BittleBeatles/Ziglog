@@ -11,6 +11,7 @@ import {
 } from '@api/notification/notification';
 import { RootState } from '@store/store';
 import { NotificationList } from '@api/notification/types';
+import { subscribe } from '@api/notification/subscribe';
 
 interface NotificationModalProps {
   theme: 'light' | 'dark';
@@ -22,9 +23,9 @@ export default function NotificationModal({
   openModal,
 }: NotificationModalProps) {
   const [selectedType, setSelectedType] = useState<
-    'all' | 'bookmark' | 'quotation'
+    'all' | 'BOOKMARK' | 'QUOTATION'
   >('all');
-  const handleTypeChange = (newType: 'all' | 'bookmark' | 'quotation') => {
+  const handleTypeChange = (newType: 'all' | 'BOOKMARK' | 'QUOTATION') => {
     setSelectedType(newType);
   };
 
@@ -39,7 +40,7 @@ export default function NotificationModal({
     nontificationList: [],
   });
   // 알림 읽기 핸들러
-  const handleNotificationRead = async (notificationId: number) => {
+  const handleNotificationRead = async (notificationId: string) => {
     try {
       await putNotification(notificationId);
       // 여기에서 새로운 알림 목록을 가져옴.
@@ -57,10 +58,20 @@ export default function NotificationModal({
       try {
         // 알림 목록 조회
         const initialNotifications = await getNotificationList();
+        console.log('알림 목록:', initialNotifications);
         setNotifications(initialNotifications);
 
         // SSE 연결 설정
-        // subscribe();
+        subscribe((newNotification) => {
+          // 새로운 알림이 도착하면 알림 목록 업데이트
+          setNotifications((prevNotifications) => ({
+            ...prevNotifications,
+            notificationList: [
+              ...prevNotifications.nontificationList,
+              newNotification,
+            ],
+          }));
+        });
       } catch (error) {
         console.error('Error fetching initial data:', error);
       }
@@ -78,7 +89,7 @@ export default function NotificationModal({
   }, [storedNotifications]);
 
   // 버튼 필터 (북마크 / 인용)
-  const filteredNotifications = notifications.nontificationList.filter(
+  const filteredNotifications = (notifications?.nontificationList || []).filter(
     (notification) => {
       if (selectedType === 'all') {
         return true;
@@ -108,13 +119,13 @@ export default function NotificationModal({
           ></NotificationButton>
           <NotificationButton
             label="북마크"
-            isSelected={selectedType === 'bookmark'}
-            onClick={() => handleTypeChange('bookmark')}
+            isSelected={selectedType === 'BOOKMARK'}
+            onClick={() => handleTypeChange('BOOKMARK')}
           ></NotificationButton>
           <NotificationButton
             label="인용"
-            isSelected={selectedType === 'quotation'}
-            onClick={() => handleTypeChange('quotation')}
+            isSelected={selectedType === 'QUOTATION'}
+            onClick={() => handleTypeChange('QUOTATION')}
           ></NotificationButton>
         </div>
         <div className="">
@@ -122,7 +133,7 @@ export default function NotificationModal({
             <div key={notification.id} className="mb-2">
               <SingleNotification
                 theme={theme}
-                // id={notification.id}
+                id={notification.id}
                 senderNickname={notification.senderNickname}
                 senderProfileUrl={notification.senderProfileUrl}
                 noteId={notification.noteId}
