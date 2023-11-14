@@ -226,7 +226,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         </div>
       </div>
 
-      <div className="flex justify-between px-8">
+      <div className="flex justify-between px-8 mt-3">
         <IconButton
           onClick={() =>
             dispatch(setMyTheme(theme === 'light' ? 'dark' : 'light'))

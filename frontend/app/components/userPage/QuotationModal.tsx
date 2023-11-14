@@ -39,6 +39,7 @@ export default function QuotationModal({
             title={bookmark.title}
             nickname={bookmark.nickname}
             isPublic={bookmark.isPublic}
+            isMine={userNickname === bookmark.nickname}
             onClick={() => {
               bookmark.isPublic || userNickname === bookmark.nickname
                 ? setQuotingNoteInfo({

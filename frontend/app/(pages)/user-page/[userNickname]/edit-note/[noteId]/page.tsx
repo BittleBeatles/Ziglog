@@ -1,6 +1,5 @@
 'use client';
 import { useParams } from 'next/navigation';
-
 import Button from '@components/common/Button';
 import { useContext, useEffect, useRef, useState } from 'react';
 import NoteTitleInput from '@components/userPage/NoteTitleInput';
@@ -12,7 +11,6 @@ import { diffChars } from 'diff';
 import dynamic from 'next/dynamic';
 import { useAppSelector } from '@store/store';
 import * as commands from '@uiw/react-md-editor/lib/commands';
-import { getBookmark } from '@api/bookmark/bookmark';
 import { Note } from '@api/bookmark/types';
 import { showAlert } from '@src/util/alert';
 import { useRouter } from 'next/navigation';
@@ -172,6 +170,7 @@ export default function EditNote() {
                 </svg>
               ),
               children: (handle) => {
+                // eslint-disable-next-line react-hooks/rules-of-hooks
                 useEffect(() => {
                   handle.execute();
                 }, [quotingNoteInfo]);
@@ -209,6 +208,7 @@ export default function EditNote() {
           quotingNoteIds={quotingNoteIds}
           setQuotingNoteIds={setQuotingNoteIds}
           setIdChange={setIdChange}
+          paramsId={parseInt(noteId)}
         />
       </div>
     )

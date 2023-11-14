@@ -11,6 +11,7 @@ interface BookmarkCheckBoxProps {
   quotingNoteIds: number[];
   setQuotingNoteIds: Dispatch<SetStateAction<number[]>>;
   setIdChange: Dispatch<SetStateAction<boolean>>;
+  paramsId: number;
 }
 
 const TEXT_COLOR = {
@@ -24,6 +25,7 @@ export default function BookmarkCheckBox({
   quotingNoteIds,
   setQuotingNoteIds,
   setIdChange,
+  paramsId,
 }: BookmarkCheckBoxProps) {
   const handleChangeCheck = (noteId: number) => {
     if (quotingNoteIds.includes(noteId)) {
@@ -33,6 +35,9 @@ export default function BookmarkCheckBox({
     }
     setIdChange(true);
   };
+  const newBookmarkList = bookmarkList.filter(
+    (value) => value.noteId !== paramsId
+  );
   return (
     <div
       className={`${THEME_VARIANTS[theme]} relative rounded-md p-5 flex flex-col gap-4 mt-3`}
@@ -46,10 +51,10 @@ export default function BookmarkCheckBox({
       {/* 북마크 목록 - 스크롤로 */}
       <div
         id="sidebar-scroll"
-        className="flex flex-col gap-2 h-48 overflow-y-auto"
+        className="flex flex-col gap-2 max-h-48 overflow-y-auto"
       >
-        {bookmarkList.length > 0 ? (
-          bookmarkList.map((bookmark) => {
+        {newBookmarkList.length > 0 ? (
+          newBookmarkList.map((bookmark) => {
             let isFill = false;
             if (quotingNoteIds.includes(bookmark.noteId)) {
               isFill = true;

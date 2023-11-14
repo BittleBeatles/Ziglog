@@ -27,8 +27,7 @@ export default function BookmarkList({
   theme = 'light',
 }: BookmarkListProps) {
   const router = useRouter();
-  const [showAll, setShowAll] = useState(false);
-  const displayedNotes = showAll ? noteList : noteList.slice(0, 5);
+  const [showAll, setShowAll] = useState(true);
   const { getBookmarkList } = useContext(SideDataContext);
   const { nickname } = useAppSelector((state) => state.user);
   const params = useParams();
@@ -78,7 +77,7 @@ export default function BookmarkList({
             내 북마크
           </Text>
         </div>
-        {noteList.length > 5 && !showAll && (
+        {!showAll && (
           <IconButton
             theme={theme}
             onClick={() => setShowAll(true)}
@@ -94,37 +93,38 @@ export default function BookmarkList({
         )}
       </div>
       <div className="mt-5">
-        {displayedNotes.map((note) => {
-          return (
-            <div
-              key={note.noteId}
-              className="flex items-center mb-3 opacity-100 "
-            >
-              <span className=" cursor-pointer hover:opacity-60 transition-opacity duration-300">
-                <SvgIcon
-                  onClick={() => handleUndoBookmark(note.noteId, theme)}
-                  name="BookMarkFill"
-                  color={theme === 'light' ? colors.black : colors.white}
-                />
-              </span>
-              <span
-                onClick={() =>
-                  handleTitleClick(note.nickname, note.noteId, note.isPublic)
-                }
-                className={`px-1 truncate ${THEME_VARINTS[theme]} cursor-pointer hover:opacity-60 transition-opacity duration-300`}
+        {showAll &&
+          noteList.map((note) => {
+            return (
+              <div
+                key={note.noteId}
+                className="flex items-center mb-3 opacity-100 "
               >
-                {note.title}
-              </span>
-              {!note.isPublic && (
-                <SvgIcon
-                  name="Private"
-                  color={theme === 'dark' ? 'white' : 'black'}
-                  size={20}
-                />
-              )}
-            </div>
-          );
-        })}
+                <span className=" cursor-pointer hover:opacity-60 transition-opacity duration-300">
+                  <SvgIcon
+                    onClick={() => handleUndoBookmark(note.noteId, theme)}
+                    name="BookMarkFill"
+                    color={theme === 'light' ? colors.black : colors.white}
+                  />
+                </span>
+                <span
+                  onClick={() =>
+                    handleTitleClick(note.nickname, note.noteId, note.isPublic)
+                  }
+                  className={`px-1 truncate ${THEME_VARINTS[theme]} cursor-pointer hover:opacity-60 transition-opacity duration-300`}
+                >
+                  {note.title}
+                </span>
+                {!note.isPublic && (
+                  <SvgIcon
+                    name="Private"
+                    color={theme === 'dark' ? 'white' : 'black'}
+                    size={20}
+                  />
+                )}
+              </div>
+            );
+          })}
       </div>
     </div>
   );
