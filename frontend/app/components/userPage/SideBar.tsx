@@ -29,7 +29,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   const { isLogin, nickname, rootFolderId } = useAppSelector(
     (state) => state.user
   );
-  // 로그인 모달
+  //  모달
   const [loginModalOpen, setLoginModalOpne] = useState(false);
   const {
     getGraphData,
