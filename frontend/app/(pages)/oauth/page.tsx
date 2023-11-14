@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { setMyInfo, setUserToken } from '@store/modules/userSlice';
 import { getMyInfo } from '@api/user/user';
 import { subscribe } from '@api/notification/subscribe';
+import { SseNotification } from '@api/notification/types';
+
 export default function OauthPage() {
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -17,7 +19,9 @@ export default function OauthPage() {
       if (result) {
         dispatch(setMyInfo(result));
         // SSE 연결 설정
-        subscribe();
+        subscribe((notification: SseNotification) => {
+          console.log('Received SSE notification:', notification);
+        });
         window.location.replace(`/user-page/${result.nickname}`);
       } else {
         window.location.replace('/');
