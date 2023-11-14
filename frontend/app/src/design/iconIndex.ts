@@ -35,6 +35,7 @@ import CheckBoxFill from '@public/icons/checkBoxFill.svg';
 import CheckBoxBlank from '@public/icons/checkBoxBlank.svg';
 import Notification from '@public/icons/notification.svg';
 import FileMove from '@public/icons/fileMove.svg';
+import Warning from '@public/icons/warning.svg';
 
 export {
   AddFolder,
@@ -74,4 +75,5 @@ export {
   CheckBoxBlank,
   Notification,
   FileMove,
+  Warning,
 };
