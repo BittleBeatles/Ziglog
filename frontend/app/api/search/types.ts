@@ -5,7 +5,7 @@ export interface SearchInfo {
 export interface SearchResult {
   noteId: number;
   title: string;
-  preview: string | null;
+  preview: string;
   nickname: string;
   profileUrl: string;
   isPublic: boolean;

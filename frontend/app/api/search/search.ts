@@ -1,4 +1,4 @@
-import { publicFetch } from '..';
+import { privateFetch, publicFetch } from '..';
 import { API_URL } from '@api/constants';
 import { SearchInfo } from './types';
 import { ApiSuccessResponse } from '@api/types';
@@ -32,13 +32,13 @@ export function getSearchInfo(
 }
 
 export function getPersonalSearchInfo(
-  debouncedKeyword: string,
+  keyword: string,
   nickname: string,
   page: number,
   perPage: number
 ): Promise<SearchInfo> {
-  return publicFetch<SearchApiData>(
-    `${API_URL}/search?keyword=${debouncedKeyword}&nickname=${nickname}&page=${page}&perPage=${perPage}`,
+  return privateFetch<SearchApiData>(
+    `${API_URL}/search?keyword=${keyword}&nickname=${nickname}&page=${page}&perPage=${perPage}`,
     {
       method: 'GET',
     }
