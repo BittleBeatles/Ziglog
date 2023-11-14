@@ -27,6 +27,7 @@ export default function NotificationModal({
   const handleTypeChange = (newType: 'all' | 'bookmark' | 'quotation') => {
     setSelectedType(newType);
   };
+
   // RootState에서 알림 목록 가져오기
   const storedNotifications = useSelector(
     (state: RootState) => state.user.notifications.nontificationList
@@ -76,6 +77,17 @@ export default function NotificationModal({
     }));
   }, [storedNotifications]);
 
+  // 버튼 필터 (북마크 / 인용)
+  const filteredNotifications = notifications.nontificationList.filter(
+    (notification) => {
+      if (selectedType === 'all') {
+        return true;
+      } else {
+        return notification.type === selectedType;
+      }
+    }
+  );
+
   return (
     <ModalLayout classname={`${THEME_VARIANTS[theme]} px-6 py-8`}>
       <div className="">
@@ -106,7 +118,7 @@ export default function NotificationModal({
           ></NotificationButton>
         </div>
         <div className="">
-          {notifications.nontificationList.map((notification) => (
+          {filteredNotifications.map((notification) => (
             <div key={notification.id} className="mb-2">
               <SingleNotification
                 theme={theme}
