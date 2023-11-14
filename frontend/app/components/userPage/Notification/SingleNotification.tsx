@@ -112,7 +112,7 @@ export default function SingleNotification({
         {...rest}
         className={`shadow ${THEME_VARIANTS[theme]} ${
           !isChecked && HOVER_COLOR[theme]
-        } w-120 px-4 h-20 rounded-md flex flex-row`}
+        } w-108 px-4 h-20 rounded-md flex flex-row`}
       >
         <div className="absolute top-3 right-20 mt-2 mr-2">
           <IconButton onClick={handleDeleteClick} theme={theme} name="Close" />

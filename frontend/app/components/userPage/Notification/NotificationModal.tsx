@@ -23,9 +23,9 @@ export default function NotificationModal({
   openModal,
 }: NotificationModalProps) {
   const [selectedType, setSelectedType] = useState<
-    'all' | 'BOOKMARK' | 'QUOTATION'
+    'all' | 'BOOKMARK' | 'QUOTE'
   >('all');
-  const handleTypeChange = (newType: 'all' | 'BOOKMARK' | 'QUOTATION') => {
+  const handleTypeChange = (newType: 'all' | 'BOOKMARK' | 'QUOTE') => {
     setSelectedType(newType);
   };
 
@@ -47,6 +47,7 @@ export default function NotificationModal({
       const updatedNotifications: NotificationList =
         await getNotificationList();
       setNotifications(updatedNotifications);
+      console.log('읽기 잘되니?:', updatedNotifications);
     } catch (error) {
       console.error('Error marking notification as read:', error);
     }
@@ -124,27 +125,35 @@ export default function NotificationModal({
           ></NotificationButton>
           <NotificationButton
             label="인용"
-            isSelected={selectedType === 'QUOTATION'}
-            onClick={() => handleTypeChange('QUOTATION')}
+            isSelected={selectedType === 'QUOTE'}
+            onClick={() => handleTypeChange('QUOTE')}
           ></NotificationButton>
         </div>
         <div className="">
-          {filteredNotifications.map((notification) => (
-            <div key={notification.id} className="mb-2">
-              <SingleNotification
-                theme={theme}
-                id={notification.id}
-                senderNickname={notification.senderNickname}
-                senderProfileUrl={notification.senderProfileUrl}
-                noteId={notification.noteId}
-                title={notification.title}
-                isRead={notification.isRead}
-                type={notification.type}
-                dateTime={notification.dateTime}
-                onClick={() => handleNotificationRead(notification.id)}
-              />
+          {filteredNotifications.length === 0 ? (
+            <div className="w-108 p-3 h-20">
+              <p> 알림이 없습니다.</p>
             </div>
-          ))}
+          ) : (
+            <div>
+              {filteredNotifications.map((notification) => (
+                <div key={notification.id} className="mb-2">
+                  <SingleNotification
+                    theme={theme}
+                    id={notification.id}
+                    senderNickname={notification.senderNickname}
+                    senderProfileUrl={notification.senderProfileUrl}
+                    noteId={notification.noteId}
+                    title={notification.title}
+                    isRead={notification.isRead}
+                    type={notification.type}
+                    dateTime={notification.dateTime}
+                    onClick={() => handleNotificationRead(notification.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </ModalLayout>
