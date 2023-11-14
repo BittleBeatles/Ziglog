@@ -51,7 +51,7 @@ export default function BookmarkCheckBox({
       {/* 북마크 목록 - 스크롤로 */}
       <div
         id="sidebar-scroll"
-        className="flex flex-col gap-2 h-48 overflow-y-auto"
+        className="flex flex-col gap-2 max-h-48 overflow-y-auto"
       >
         {newBookmarkList.length > 0 ? (
           newBookmarkList.map((bookmark) => {
