@@ -15,11 +15,11 @@ export const useScroll = (onScroll: () => void, threshold = 1) => {
 
   useEffect(() => {
     const modal = document.getElementById('sidebar-scroll');
-    modal!.addEventListener('scroll', scrollHandler);
+    modal?.addEventListener('scroll', scrollHandler);
 
     return () => {
       const modal = document.getElementById('sidebar-scroll');
-      modal!.removeEventListener('scroll', scrollHandler);
+      modal?.removeEventListener('scroll', scrollHandler);
     };
   }, [onScroll, threshold]);
 };

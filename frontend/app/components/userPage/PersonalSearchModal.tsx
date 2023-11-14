@@ -106,7 +106,7 @@ export default function PersonalSearchModal({
                     preview={searchResult.preview}
                     postTime={searchResult.postTime}
                     bookmarkCount={searchResult.bookmarkCount}
-                  ></PersonalSearchResult>
+                  />
                 </Link>
               </div>
             ))}

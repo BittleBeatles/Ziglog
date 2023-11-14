@@ -209,10 +209,7 @@ export default function ReadNote() {
 
           <div data-color-mode={theme} className="mx-24">
             <div className="wmde-markdown-var">
-              <MarkdownPreview
-                source={data.content}
-                style={{ width: '900px' }}
-              />
+              <MarkdownPreview source={data.content} />
             </div>
           </div>
         </div>
