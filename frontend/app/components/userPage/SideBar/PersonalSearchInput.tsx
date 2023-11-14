@@ -3,11 +3,7 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import SvgIcon from '@components/common/SvgIcon';
 import { InputHTMLAttributes } from 'react';
 import colors from '@src/design/color';
-import { useParams, useRouter } from 'next/navigation';
 import PersonalSearchModal from '../PersonalSearchModal';
-import { useScrollObserver } from '@src/hooks/useScrollObserve';
-import { getPersonalSearchInfo } from '@api/search/search';
-import { SearchInfo } from '@api/search/types';
 
 interface PersonalSearchInputProps
   extends InputHTMLAttributes<HTMLInputElement> {
