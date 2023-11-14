@@ -19,6 +19,7 @@ import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import SocialLoginModal from '@components/common/SocialLoginModal';
 import NotificationModal from './Notification/NotificationModal';
 import { showAlert } from '@src/util/alert';
+import NotificationIconButton from './Notification/NotificationIconButton';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -260,13 +261,10 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       </div>
       {isLogin && isMine && (
         <div className="fixed bottom-8 right-8 z-20">
-          <div className="flex items-center justify-center rounded-full bg-blue-400 p-2 h-10 w-10">
-            <IconButton
-              onClick={() => openNotification(true)}
-              theme={theme}
-              name="Notification"
-            />
-          </div>
+          <NotificationIconButton
+            theme={theme}
+            onClick={() => openNotification(true)}
+          ></NotificationIconButton>
         </div>
       )}
       {notificationModal && (
