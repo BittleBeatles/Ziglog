@@ -7,6 +7,7 @@ interface SingleQuotationProps extends HTMLAttributes<HTMLDivElement> {
   title?: string;
   nickname: string;
   isPublic: boolean;
+  isMine: boolean;
 }
 
 export default function SingleQuotation({
@@ -15,20 +16,24 @@ export default function SingleQuotation({
   nickname,
   theme,
   isPublic,
+  isMine,
   ...rest
 }: SingleQuotationProps) {
   return (
     <div
       {...rest}
       className={`${THEME_VARIANTS[theme]} ${
-        isPublic && HOVER_COLOR[theme]
-      } h-12 rounded-md flex flex-row `}
+        (isPublic || isMine) && HOVER_COLOR[theme]
+      } h-12 rounded-md flex flex-row gap-1 items-center`}
     >
       <div className="w-8 h-12 grid place-content-center">
         {isPublic ? (
           <SvgIcon name="BookMarkFill" color="blue" />
         ) : (
-          <SvgIcon name="Private" color="black" />
+          <SvgIcon
+            name="Private"
+            color={theme === 'dark' ? 'white' : 'black'}
+          />
         )}
       </div>
       <div className="grid place-content-center">
