@@ -2,9 +2,10 @@ package com.ziglog.ziglog.domain.notification.service;
 
 import com.nimbusds.jose.shaded.gson.Gson;
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.member.exception.exceptions.UserNotFoundException;
 import com.ziglog.ziglog.domain.member.repository.MemberRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
-import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
+import com.ziglog.ziglog.domain.notification.dto.NotificationKafkaDto;
 import com.ziglog.ziglog.domain.notification.dto.NotificationListDto;
 import com.ziglog.ziglog.domain.notification.dto.NotificationResponseDto;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
@@ -31,6 +32,8 @@ public class NotificationServiceImpl implements NotificationService {
     //RDB에서의 알림 관리
     private final NotificationRdbRepository notificationRepository;
     private final EmitterRedisRepository emitterRepository;
+    private final MemberRepository memberRepository;
+    private final NoteRepository noteRepository;
 
     @Value("${jwt.access.expiration}")
     private Long TIMEOUT;// 30분 => 따로 yml 파일에 넣기
@@ -39,7 +42,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public NotificationListDto getNotificationList(Member member){
         return new NotificationListDto(getNotifications(member).stream().map(notification ->
-                new NotificationResponseDto(NotificationDto.toDto(notification)))
+                new NotificationResponseDto(NotificationKafkaDto.toDto(notification)))
                 .toList());
     }
 
@@ -92,29 +95,28 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @KafkaListener(topics="sse", groupId = "${kafka.consumer.group.send}", containerFactory = "kafkaEventListenerContainerFactorySse")
-    public void consumeKafkaEvent(NotificationDto notification) throws Exception {
+    public void consumeKafkaEvent(NotificationKafkaDto notification) throws Exception {
         log.info("ConsumeKafkaEvent");
         sendMessage(notification.getMemberId(), new NotificationResponseDto(notification));
     }
 
-//     @Override
-//    @KafkaListener(topics="sse", groupId = "${kafka.consumer.group.save}", containerFactory = "kafkaEventListenerContainerFactoryRdb")
-//    public void saveKafkaEventIntoRDB(NotificationDto notification) throws Exception {
-//        log.info("SaveKafkaEventIntoRDB");
-//        sendMessage(notification.getMemberId(), notification.getTitle());
-//        Notification notificationEntity = Notification.builder()
-//                .receiver(memberRepository.findById(notification.getMemberId()).orElseThrow(UserNotFoundException::new))
-//                .sender(memberRepository.findByNickname(notification.getSenderNickname()).orElseThrow(UserNotFoundException::new))
-//                .title(notification.getTitle())
-//                .type(notification.getType())
-//                .isRead(notification.getIsRead())
-//                .note(noteRepository.findNoteById(notification.getNoteId()).orElse(null))
-//                .dateTime(notification.getDateTime())
-//                .build();
-//
-//        notificationRepository.save(notificationEntity);
-//        log.info("SaveKafkaEventIntoRDB : success");
-//    }
+    @Override
+    @KafkaListener(topics="sse", groupId = "${kafka.consumer.group.save}", containerFactory = "kafkaEventListenerContainerFactoryRdb")
+    public void saveKafkaEventIntoRDB(NotificationKafkaDto notification) throws Exception {
+        log.info("SaveKafkaEventIntoRDB");
+        Notification notificationEntity = Notification.builder()
+                .id(notification.getId())
+                .receiver(memberRepository.findById(notification.getMemberId()).orElseThrow(UserNotFoundException::new))
+                .sender(memberRepository.findByNickname(notification.getSenderNickname()).orElseThrow(UserNotFoundException::new))
+                .title(notification.getTitle())
+                .type(notification.getType())
+                .isRead(notification.getIsRead())
+                .note(noteRepository.findNoteById(notification.getNoteId()).orElse(null))
+                .dateTime(notification.getDateTime())
+                .build();
+
+        notificationRepository.save(notificationEntity);
+    }
 
     @Override // 주어진 아이디의 알림을 DB에서 삭제
     @Transactional

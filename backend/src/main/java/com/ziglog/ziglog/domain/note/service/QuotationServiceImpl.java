@@ -15,7 +15,7 @@ import com.ziglog.ziglog.domain.note.exception.exceptions.NoteNotFoundException;
 import com.ziglog.ziglog.domain.note.exception.exceptions.QuotationNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
-import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
+import com.ziglog.ziglog.domain.notification.dto.NotificationKafkaDto;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.entity.NotificationType;
 import com.ziglog.ziglog.domain.notification.repository.NotificationRdbRepository;
@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -37,7 +38,7 @@ public class QuotationServiceImpl implements QuotationService {
     private final NoteRepository noteRepository;
     private final MemberRepository memberRepository;
     private final NotificationRdbRepository notificationRepository;
-    private final KafkaTemplate<String, NotificationDto> kafkaTemplate;
+    private final KafkaTemplate<String, NotificationKafkaDto> kafkaTemplate;
 
     @Override
     public QuotationListResponseDto getQuotationLists(Long noteId) throws NoteNotFoundException {
@@ -90,7 +91,11 @@ public class QuotationServiceImpl implements QuotationService {
         newlyAddedQuotings.forEach((noteId) -> {
             Note note = noteRepository.findNoteById(noteId).orElseThrow(NoteNotFoundException::new);
             if (!note.getAuthor().getId().equals(sender.getId())){//본인의 노트가 아닌 경우
+
+                String id = sender.getId() + "_" + note.getAuthor().getId() + "_" + UUID.randomUUID();
+
                 Notification notification = Notification.builder()
+                        .id(id)
                         .type(NotificationType.QUOTE)
                         .receiver(note.getAuthor())
                         .sender(sender)
@@ -99,9 +104,7 @@ public class QuotationServiceImpl implements QuotationService {
                         .isRead(false)
                         .build();
 
-
-                notification = notificationRepository.save(notification);
-                kafkaTemplate.send("sse", NotificationDto.toDto(notification));
+                kafkaTemplate.send("sse", NotificationKafkaDto.toDto(notification));
             }
         });
     }

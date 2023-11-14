@@ -1,6 +1,6 @@
 package com.ziglog.ziglog.global.config;
 
-import com.ziglog.ziglog.domain.notification.dto.NotificationDto;
+import com.ziglog.ziglog.domain.notification.dto.NotificationKafkaDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,12 +40,12 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ProducerFactory<String, NotificationDto> producerFactory(){
+    public ProducerFactory<String, NotificationKafkaDto> producerFactory(){
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
 
     @Bean
-    public KafkaTemplate<String, NotificationDto> kafkaTemplate(){
+    public KafkaTemplate<String, NotificationKafkaDto> kafkaTemplate(){
         return new KafkaTemplate<>(producerFactory());
     }
 
@@ -81,26 +81,26 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, NotificationDto> sseConsumerFactory(){
+    public ConsumerFactory<String, NotificationKafkaDto> sseConsumerFactory(){
         return new DefaultKafkaConsumerFactory<>(sseConsumerConfig());
     }
 
     @Bean
-    public ConsumerFactory<String, NotificationDto> rdbConsumerFactory(){
+    public ConsumerFactory<String, NotificationKafkaDto> rdbConsumerFactory(){
         return new DefaultKafkaConsumerFactory<>(rdbConsumerConfig());
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, NotificationDto> kafkaEventListenerContainerFactorySse(){
-        ConcurrentKafkaListenerContainerFactory<String, NotificationDto> factory
+    public ConcurrentKafkaListenerContainerFactory<String, NotificationKafkaDto> kafkaEventListenerContainerFactorySse(){
+        ConcurrentKafkaListenerContainerFactory<String, NotificationKafkaDto> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(sseConsumerFactory());
         return factory;
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, NotificationDto> kafkaEventListenerContainerFactoryRdb(){
-        ConcurrentKafkaListenerContainerFactory<String, NotificationDto> factory
+    public ConcurrentKafkaListenerContainerFactory<String, NotificationKafkaDto> kafkaEventListenerContainerFactoryRdb(){
+        ConcurrentKafkaListenerContainerFactory<String, NotificationKafkaDto> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(rdbConsumerFactory());
         return factory;
