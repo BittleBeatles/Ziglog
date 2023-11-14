@@ -29,8 +29,10 @@ import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -238,7 +240,7 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public void changeFolderParent(Member member, ChangeFolderParentRequestDto requestDto)
-            throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException {
+            throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException, HttpClientErrorException{
         Folder parentFolder = folderRepository.findById(requestDto.getParentId()).orElseThrow(FolderNotFoundException::new);
         Folder childFolder = folderRepository.findById(requestDto.getChildId()).orElseThrow(FolderNotFoundException::new);
 
@@ -246,30 +248,46 @@ public class NoteServiceImpl implements NoteService{
         if (!parentFolder.getOwner().getId().equals(member.getId())) throw new InconsistentFolderOwnerException();
         if (!childFolder.getOwner().getId().equals(member.getId())) throw new InconsistentNoteOwnerException();
 
+        //자식 아래에 넣으려는 건 아닌지 확인
+        if (isUnderTargetFolder(childFolder, parentFolder)) throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+
         childFolder.changeParentFolder(parentFolder);
     }
 
     @Override
-    public RetrieveFolderOnlyResponseDto listFolders(String nickname) throws UserNotFoundException, NoteNotFoundException {
+    public RetrieveFolderOnlyResponseDto listFolders(String nickname, Long folderId) throws UserNotFoundException, NoteNotFoundException {
         Folder root = getRootFolder(nickname);
         List<FolderBriefDto> folders = new ArrayList<>();
-        recursivelyRetrieve(folders, root, "");
+        recursivelyRetrieveFolderAndAddToFolderList(folders, root, folderId, "");
 
         return new RetrieveFolderOnlyResponseDto(folders);
     }
 
-    private void recursivelyRetrieve(List<FolderBriefDto> folderList, Folder folder, String prefix){
+    private void recursivelyRetrieveFolderAndAddToFolderList(List<FolderBriefDto> folderList, Folder folder, Long targetFolderId, String prefix){
         List<Folder> children =  folder.getChildren();
         children.stream()
                 .sorted(Comparator.comparing(Folder::getTitle))
                 .forEach(f -> {
-                    String title = prefix + "/" + f.getTitle();
-                    FolderBriefDto dto = FolderBriefDto.builder()
-                            .id(f.getId())
-                            .title(title)
-                            .build();
-                    folderList.add(dto);
-                    recursivelyRetrieve(folderList, f, title);
+                    if (!f.getId().equals(targetFolderId)) {
+                        String title = prefix + "/" + f.getTitle();
+                        FolderBriefDto dto = FolderBriefDto.builder()
+                                .id(f.getId())
+                                .title(title)
+                                .build();
+                        folderList.add(dto);
+                        recursivelyRetrieveFolderAndAddToFolderList(folderList, f, targetFolderId, title);
+                    }
                 });
     }
+
+    private Boolean isUnderTargetFolder(Folder target, Folder checked){// checked가 target 아래에 있는지를 확인
+        List<Folder> children = target.getChildren();
+
+        for (Folder child : children) {
+            if (child.getId().equals(checked.getId())) return true;
+        }
+
+        return false;
+    }
+
 }

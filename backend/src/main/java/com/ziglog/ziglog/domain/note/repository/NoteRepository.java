@@ -15,8 +15,6 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     List<Note> findAllByAuthor(Member author);
     void removeNoteById(Long noteId);
 
-
-    //TODO : QueryDSL를 이용해서 최적화할 필요가 있음. 글 내용으로 검색할 수도 있어야 함
     Slice<Note> findAllByTitleContainingAndAuthor(String keyword, Member author, Pageable pageable);
-    Slice<Note> findAllByTitleContaining(String keyword, Pageable pageable);
+    Slice<Note> findAllByTitleContainingAndIsPublic(String keyword, Pageable pageable, Boolean isPublic);
 }
