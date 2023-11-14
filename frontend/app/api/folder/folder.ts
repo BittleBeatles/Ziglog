@@ -92,10 +92,13 @@ export async function editFolder(folderId: number, folderName: string) {
     });
 }
 
-export async function getJustFolderList() {
-  return privateFetch<GetJustFolderApiResponse>(`${API_URL}/folder`, {
-    method: 'GET',
-  })
+export async function getForFolderRouterFolderList(folderId: number) {
+  return privateFetch<GetJustFolderApiResponse>(
+    `${API_URL}/folder/${folderId}`,
+    {
+      method: 'GET',
+    }
+  )
     .then((res) => {
       if (res.body.statusCode === 200) {
         return res.body.data.folderList;

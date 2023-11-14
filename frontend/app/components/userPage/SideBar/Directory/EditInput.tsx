@@ -14,7 +14,10 @@ import Text from '../../../common/Text';
 import { useAppSelector } from '@store/store';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import { JustFolder } from '@api/folder/types';
-import { changeFolderList, getJustFolderList } from '@api/folder/folder';
+import {
+  changeFolderList,
+  getForFolderRouterFolderList,
+} from '@api/folder/folder';
 import SvgIcon from '../../../common/SvgIcon';
 import { isIdInRoot } from '@src/util/findParentId';
 import colors from '@src/design/color';
@@ -60,7 +63,7 @@ const EditInput = forwardRef<HTMLInputElement, EditInputProps>(
     };
 
     const getFolderList = async () => {
-      const res = await getJustFolderList();
+      const res = await getForFolderRouterFolderList(editingFolderId);
       if (res) {
         setJustFolderList(res);
       }

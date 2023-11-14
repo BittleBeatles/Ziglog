@@ -15,7 +15,7 @@ import { useAppSelector } from '@store/store';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 
 import { JustFolder } from '@api/folder/types';
-import { getJustFolderList } from '@api/folder/folder';
+import { getForFolderRouterFolderList } from '@api/folder/folder';
 import { isIdInRoot } from '@src/util/findParentId';
 import { changeNoteRoute } from '@api/note/note';
 import colors from '@src/design/color';
@@ -76,7 +76,7 @@ function EditNoteRoute({
   }, [editingNoteId]);
 
   const getFolderList = async () => {
-    const res = await getJustFolderList();
+    const res = await getForFolderRouterFolderList(-1);
     if (res) {
       setJustFolderList(res);
     }
