@@ -106,6 +106,7 @@ export default function PersonalSearchModal({
                     preview={searchResult.preview}
                     postTime={searchResult.postTime}
                     bookmarkCount={searchResult.bookmarkCount}
+                    isPublic={searchResult.isPublic}
                   />
                 </Link>
               </div>

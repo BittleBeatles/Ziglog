@@ -7,6 +7,7 @@ interface PersonalSearchResultProps extends HTMLAttributes<HTMLDivElement> {
   preview: string;
   postTime: Date;
   bookmarkCount: number;
+  isPublic: boolean;
 }
 
 export default function PersonalSearchResult({
@@ -15,6 +16,7 @@ export default function PersonalSearchResult({
   preview,
   postTime,
   bookmarkCount,
+  isPublic,
 }: PersonalSearchResultProps) {
   const PostTime: Date = new Date(postTime);
   PostTime.setUTCHours(PostTime.getUTCHours() + 9);
@@ -42,7 +44,7 @@ export default function PersonalSearchResult({
       </div>
       <div className="mt-1 flex flex-row">
         <Text type="p" className="text-xs text-grey ">
-          {formattedDate}
+          {isPublic ? formattedDate : '비공개 글입니다'}
         </Text>
         <Text type="p" className="ml-2 text-xs text-grey">
           {`북마크 ${bookmarkCount}`}
