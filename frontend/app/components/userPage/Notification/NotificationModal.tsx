@@ -3,7 +3,6 @@ import Text from '@components/common/Text';
 import NotificationButton from '@components/userPage/Notification/NotificationButton';
 import SingleNotification from './SingleNotification';
 import { useEffect, useRef, useState } from 'react';
-import IconButton from '@components/common/IconButton';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getNotificationList,
@@ -28,15 +27,6 @@ export default function NotificationModal({
   const handleTypeChange = (newType: 'all' | 'BOOKMARK' | 'QUOTE') => {
     setSelectedType(newType);
   };
-  // 백그라운드 클릭 시 모달 닫힘
-  const modalRef = useRef(null);
-  // 모달 외부를 클릭했을 때 모달을 닫음
-  // const handleOutsideClick = (event) => {
-  //   if (modalRef.current && !modalRef.current.contains(event.target)) {
-  //     openModal(false);
-  //   }
-  // };
-
   // RootState에서 알림 목록 가져오기
   const storedNotifications = useSelector(
     (state: RootState) => state.user.notifications.nontificationList
@@ -109,19 +99,9 @@ export default function NotificationModal({
   );
 
   return (
-    <ModalLayout
-      // ref={modalRef}
-      classname={`${THEME_VARIANTS[theme]} px-6 py-8`}
-    >
+    <ModalLayout classname={`${THEME_VARIANTS[theme]} px-6 py-8`}>
       <div className="max-h-120">
         <Text type="h4">{'알림'}</Text>
-        {/* <div className="absolute inset-y-5 right-5">
-          <IconButton
-            onClick={() => openModal(false)}
-            theme={theme}
-            name="Close"
-          />
-        </div> */}
         <div className={`${THEME_VARIANTS[theme]} border-t my-2`}></div>
         <div className="flex justify-satrt gap-2 mb-2">
           <NotificationButton

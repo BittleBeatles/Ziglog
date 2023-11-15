@@ -73,10 +73,26 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
     setModalOpen(open);
   };
 
-  // 알림 모달 열기
-  const openNotification = (open: boolean) => {
-    setNotificationModal(open);
+  // 알림 모달 상태를 열림/닫힘으로 토글
+  const toggleNotificationModal = () => {
+    setNotificationModal(!notificationModal);
   };
+  // 알림 모달 영역 밖 클릭 시 모달 닫힘
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      const modalElement = document.getElementById('notification-modal');
+      if (modalElement && !modalElement.contains(event.target as Node)) {
+        toggleNotificationModal();
+      }
+    }
+
+    // 클릭 이벤트를 document에 추가
+    document.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [notificationModal]);
 
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
@@ -263,15 +279,15 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         <div className="fixed bottom-8 right-8 z-20">
           <NotificationIconButton
             theme={theme}
-            onClick={() => openNotification(true)}
+            onClick={toggleNotificationModal}
           ></NotificationIconButton>
         </div>
       )}
       {notificationModal && (
-        <div className="fixed bottom-20 right-10 z-20">
+        <div id="notification-modal" className="fixed bottom-20 right-10 z-20">
           <NotificationModal
             theme={theme}
-            openModal={openNotification}
+            openModal={toggleNotificationModal}
           ></NotificationModal>
         </div>
       )}
