@@ -201,7 +201,7 @@ export default function EditNote() {
               buttonProps: { 'aria-label': 'See Bookmark List' },
             }),
           ]}
-        ></MDEditor>
+        />
         <BookmarkCheckBox
           theme={theme}
           bookmarkList={bookmarks}

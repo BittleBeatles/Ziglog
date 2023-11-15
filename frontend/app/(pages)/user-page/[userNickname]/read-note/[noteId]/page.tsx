@@ -21,7 +21,6 @@ import { changeNotePublicStatusRequest } from '@api/note/editNote';
 import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
 import { getQuoteData } from '@api/quote/quote';
 import { quotingQuotedNotes } from '@api/quote/types';
-import MDEditor from '@uiw/react-md-editor';
 export default function ReadNote() {
   const router = useRouter();
   const { theme, isLogin } = useAppSelector((state) => state.user);
@@ -88,7 +87,7 @@ export default function ReadNote() {
     };
 
     getNoteReadPage(parseInt(paramNoteId));
-  }, []);
+  }, [isPublic]);
 
   useEffect(() => {
     getIsBookmarked(parseInt(paramNoteId));
@@ -168,11 +167,19 @@ export default function ReadNote() {
   return (
     hasAccess && (
       <div id="sidebar-scroll" className="overflow-y-auto h-full">
-        <div className="mx-40 my-12">
-          <div className="flex gap-2 items-center">
-            <Text className="w-5/6" type="h1">
-              {data.title}
-            </Text>
+        <div className="absolute mt-36 ml-10">
+          <BookmarkQuoteInfo
+            theme={theme}
+            bookmarkCount={data.bookmarkCount}
+            quotedCount={quotationInfo.quotedNotes.length}
+            isBookmarked={isBookmarked}
+            handleBookmarkChange={handleBookmarkChange}
+            isLogin={isLogin}
+          />
+        </div>
+        <div className="px-32 py-10">
+          <div className="flex gap-2 items-center mb-3">
+            <Text type="h1">{data.title}</Text>
             {isMine && (
               <PublicPrivateToggle
                 onClick={() => handlePublicPrivateButton()}
@@ -182,19 +189,22 @@ export default function ReadNote() {
             )}
           </div>
 
-          <div className="flex flex-row place-items-center my-4">
+          <div className="flex items-center mb-5">
             <span
-              className=" cursor-pointer font-bold"
+              className="cursor-pointer font-bold"
               onClick={handleNicknameClick}
             >
               {data.nickname}
             </span>
-            <Text className="ml-3" type="p">
-              {data.postTime && formattedDate}
-            </Text>
+
+            {data.postTime && (
+              <Text className="ml-3" type="p">
+                {data.postTime.toLocaleString('ko-KR')}
+              </Text>
+            )}
 
             {isMine ? (
-              <div className="flex flex-row">
+              <div className="flex">
                 <div className="ml-3">
                   <Button
                     onClick={() =>
@@ -216,43 +226,28 @@ export default function ReadNote() {
                   />
                 </div>
               </div>
-            ) : (
-              <div></div>
-            )}
+            ) : null}
           </div>
-        </div>
-        <div className="flex flex-row mx-16">
-          <div className="absolute">
-            <BookmarkQuoteInfo
+
+          <div data-color-mode={theme} className="w-full mb-5">
+            <MarkdownPreview source={data.content} />
+          </div>
+
+          <div className="flex gap-3">
+            <QuotationListBox
+              userNickname={paramsNickname}
+              label="이 글을 참조한 노트들"
               theme={theme}
-              bookmarkCount={data.bookmarkCount}
-              quotedCount={quotationInfo.quotedNotes.length}
-              isBookmarked={isBookmarked}
-              handleBookmarkChange={handleBookmarkChange}
-              isLogin={isLogin}
+              quotationList={quotationInfo.quotedNotes}
+            />
+
+            <QuotationListBox
+              userNickname={paramsNickname}
+              label="이 글이 참조하는 노트들"
+              theme={theme}
+              quotationList={quotationInfo.quotingNotes}
             />
           </div>
-
-          <div data-color-mode={theme} className="mx-24">
-            <div className="wmde-markdown-var">
-              <MarkdownPreview source={data.content} />
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-row gap-3 mx-40 my-5">
-          <QuotationListBox
-            userNickname={paramsNickname}
-            label="이 글을 참조한 노트들"
-            theme={theme}
-            quotationList={quotationInfo.quotedNotes}
-          />
-
-          <QuotationListBox
-            userNickname={paramsNickname}
-            label="이 글이 참조하는 노트들"
-            theme={theme}
-            quotationList={quotationInfo.quotingNotes}
-          />
         </div>
       </div>
     )
