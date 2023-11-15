@@ -21,6 +21,8 @@ public class NotificationKafkaDto {
     private String senderNickname;
     private String senderProfileUrl;
     private Long noteId;
+
+    @Builder.Default
     private Boolean isRead = false;
     private NotificationType type;
     private LocalDateTime dateTime;
