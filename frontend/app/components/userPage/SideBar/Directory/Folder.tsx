@@ -51,12 +51,12 @@ export default function Folder({
   onEdit,
   onNoteEdit,
 }: FolderProps) {
-  const paddingLeft = `${depth * 1.25}rem`;
   const [isFolderOpen, setFolderOpen] = useState(
     notes?.some(
       (item) => item.type === 'note' && (item as NoteProps).id === currentNoteId
     )
   );
+
   const { getGraphData, getSideList, getNoteGraphData } =
     useContext(SideDataContext);
 
@@ -144,11 +144,13 @@ export default function Folder({
   };
 
   return (
-    <div className="folder mb-2" style={{ paddingLeft }}>
+    <div className={`folder mb-2 ${depth > 0 ? 'pl-5' : ''}`}>
       <div className="flex items-center">
         <div
           onClick={handleFolder}
-          className={`flex items-center cursor-pointer hover:opacity-60 transition-opacity duration-300`}
+          className={`flex items-center cursor-pointer hover:opacity-60 transition-opacity duration-300 ${
+            isFolderOpen ? 'mb-2' : ''
+          }`}
         >
           {isFolderOpen ? (
             <SvgIcon

@@ -30,7 +30,7 @@ export default function QuotationListBox({
   const router = useRouter();
   return (
     <div
-      className={`${THEME_VARIANTS[theme]} relative rounded-md p-5 flex flex-col gap-4 w-full`}
+      className={`${THEME_VARIANTS[theme]} relative rounded-md p-5 flex flex-col gap-4 w-1/2`}
     >
       {/* 북마크 아이콘  */}
       <div className="absolute -top-3 right-20">
@@ -55,7 +55,7 @@ export default function QuotationListBox({
             quotationList.map((item) => {
               return (
                 <span
-                  className="cursor-pointer"
+                  className="cursor-pointer flex flex-row gap-1 items-center truncate"
                   key={item.noteId}
                   onClick={() => {
                     if (item.isPublic || userNickname === item.nickname) {
@@ -67,22 +67,20 @@ export default function QuotationListBox({
                     }
                   }}
                 >
-                  <span className="flex flex-row gap-1 items-center">
-                    <Text
-                      type="p"
-                      className={`${TEXT_COLOR[theme]}`}
-                      key={item.noteId}
-                    >
-                      {item.nickname} : {item.title}
-                    </Text>
-                    {!item.isPublic && (
-                      <SvgIcon
-                        name="Private"
-                        size={20}
-                        color={theme === 'dark' ? 'white' : 'black'}
-                      />
-                    )}
-                  </span>
+                  <Text
+                    type="p"
+                    className={`${TEXT_COLOR[theme]}`}
+                    key={item.noteId}
+                  >
+                    {item.nickname} : {item.title}
+                  </Text>
+                  {!item.isPublic && (
+                    <SvgIcon
+                      name="Private"
+                      size={20}
+                      color={theme === 'dark' ? 'white' : 'black'}
+                    />
+                  )}
                 </span>
               );
             })
