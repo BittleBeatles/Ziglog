@@ -38,8 +38,13 @@ export default function GraphView({ theme }: GraphViewProps) {
   const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
 
   // 그래프 변수
-  const { graphData, getGraphData, noteGraphData, getNoteGraphData } =
-    useContext(SideDataContext);
+  const {
+    graphData,
+    getGraphData,
+    noteGraphData,
+    getNoteGraphData,
+    getSideList,
+  } = useContext(SideDataContext);
 
   const fg2dref = useRef<Force2DGraphMehods>();
   const fg3dref = useRef<Force3DGraphMehods>();
@@ -65,7 +70,7 @@ export default function GraphView({ theme }: GraphViewProps) {
 
   const handleClick = (node: Node) => {
     if (node.type === 'note' || node.type === 'link') {
-      router.push(`/user-page/${nickname}/read-note/${node.realId}`);
+      router.push(`/user-page/${node.nickname}/read-note/${node.realId}`);
     } else {
       showAlert('노트를 클릭해주세요', 'warning');
     }
@@ -140,7 +145,7 @@ export default function GraphView({ theme }: GraphViewProps) {
       } else if (clickCountRef.current === 2) {
         // 두 번째 클릭
         if (node.type === 'note' || node.type === 'link') {
-          router.push(`/user-page/${nickname}/read-note/${node.realId}`);
+          router.push(`/user-page/${node.nickname}/read-note/${node.realId}`);
         } else {
           showAlert('노트를 클릭해주세요', 'warning');
         }
