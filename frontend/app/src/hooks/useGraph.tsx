@@ -72,7 +72,14 @@ export const useGraph = () => {
 
       if (node.x && node.y && node.name && node.nickname) {
         if (node.type === 'folder' && node.name === 'root') {
-          drawCircle(node.nickname, 5, node.x, node.y, 2, colors['main-100']);
+          drawCircle(
+            node.nickname,
+            5.5,
+            node.x,
+            node.y,
+            2.5,
+            colors['root-node']
+          );
         } else {
           switch (node.type) {
             case 'folder':
@@ -109,7 +116,7 @@ export const useGraph = () => {
       let color;
 
       if (node.name === 'root') {
-        color = colors['main-100'];
+        color = colors['root-node'];
       } else {
         switch (node.type) {
           case 'folder':

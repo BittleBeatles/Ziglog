@@ -223,7 +223,9 @@ export default function GraphView({ theme }: GraphViewProps) {
           onNodeClick={zoomClick}
           onNodeHover={handleNodeHover}
           onLinkHover={handleLinkHover}
-          linkColor={() => colors['main-100']}
+          linkColor={() =>
+            theme === 'light' ? colors['main-100'] : colors.white
+          }
           linkWidth={(link) => (highlightLinks.has(link) ? 0.7 : 0.5)}
           linkDirectionalArrowLength={(link) =>
             highlightLinks.has(link) ? 3 : 0
@@ -245,7 +247,9 @@ export default function GraphView({ theme }: GraphViewProps) {
           onNodeClick={zoomClick}
           onNodeHover={handleNodeHover}
           onLinkHover={handleLinkHover}
-          linkColor={() => colors['main-100']}
+          linkColor={() =>
+            theme === 'light' ? colors['main-100'] : colors.white
+          }
           linkWidth={(link) => (highlightLinks.has(link) ? 0.7 : 0.5)}
           linkDirectionalArrowLength={(link) =>
             highlightLinks.has(link) ? 3 : 0
