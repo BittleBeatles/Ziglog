@@ -82,7 +82,11 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/graph/note", "GET")).permitAll()//get
                         .requestMatchers(new AntPathRequestMatcher("/graph/folder", "GET")).permitAll()//get
                         .requestMatchers(new AntPathRequestMatcher("/auth/refresh", "GET")).permitAll()//get
-                        .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**", "GET")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/swagger-resources/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/logout")).permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .oauth2Login((oauth2login) ->
