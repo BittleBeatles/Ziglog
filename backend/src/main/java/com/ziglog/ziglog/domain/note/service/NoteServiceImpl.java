@@ -27,6 +27,7 @@ import com.ziglog.ziglog.domain.note.entity.Note;
 import com.ziglog.ziglog.domain.note.exception.exceptions.*;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
+import com.ziglog.ziglog.global.util.AlphanumericComparator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -265,8 +266,9 @@ public class NoteServiceImpl implements NoteService{
 
     private void recursivelyRetrieveFolderAndAddToFolderList(List<FolderBriefDto> folderList, Folder folder, Long targetFolderId, String prefix){
         List<Folder> children =  folder.getChildren();
+        Comparator<String> comparator = new AlphanumericComparator();
         children.stream()
-                .sorted(Comparator.comparing(Folder::getTitle))
+                .sorted((o1, o2) -> comparator.compare(o1.getTitle(), o2.getTitle()))
                 .forEach(f -> {
                     if (!f.getId().equals(targetFolderId)) {
                         String title = prefix + "/" + f.getTitle();

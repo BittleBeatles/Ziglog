@@ -2,6 +2,7 @@ package com.ziglog.ziglog.domain.note.dto.response.folder;
 
 import com.ziglog.ziglog.domain.note.entity.Folder;
 import com.ziglog.ziglog.domain.note.entity.Note;
+import com.ziglog.ziglog.global.util.AlphanumericComparator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,8 @@ public class RetrieveFolderResponseDto {
     @Getter
     @AllArgsConstructor
     private static class Node {
+
+        private Comparator<String> comparator = new AlphanumericComparator();
         private String type;
         private Long id;
         private String title;
@@ -34,8 +37,8 @@ public class RetrieveFolderResponseDto {
             this.id = folder.getId();
             this.title = folder.getTitle();
             this.isPublic = true;
-            List<Node> children = new ArrayList<>(folder.getChildren().stream().sorted((Comparator.comparing(Folder::getTitle))).map(Node::new).toList());
-            List<Node> subNotes = new ArrayList<>(folder.getNotes().stream().sorted((Comparator.comparing(Note::getTitle))).map(Node::new).toList());
+            List<Node> children = new ArrayList<>(folder.getChildren().stream().sorted((o1, o2) -> comparator.compare(o1.getTitle(), o2.getTitle())).map(Node::new).toList());
+            List<Node> subNotes = new ArrayList<>(folder.getNotes().stream().sorted((o1, o2) -> comparator.compare(o1.getTitle(), o2.getTitle())).map(Node::new).toList());
             children.addAll(subNotes);
             this.notes = children;
         }
