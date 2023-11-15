@@ -32,6 +32,7 @@ const config: Config = {
         'root-node': '#F9B572',
       },
       spacing: {
+        '1/5': '20%',
         modal: '10rem',
         '108': '27rem',
         '120': '30rem',
