@@ -29,6 +29,7 @@ const config: Config = {
         'dark-background-page': '#3A3A3C',
         modal: '#F6F6F6',
         'modal-border': '#BDBDBD',
+        'root-node': '#F9B572',
       },
       spacing: {
         modal: '10rem',

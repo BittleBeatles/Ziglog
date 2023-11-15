@@ -18,7 +18,7 @@ export default function NodeSample({ type, text, theme }: NodeSampleProps) {
 }
 
 const COLOR_VAIANTS = {
-  root: 'bg-main-100',
+  root: 'bg-root-node',
   folder: 'bg-main-75',
   noteDark: 'bg-light-background-layout',
   noteLight: 'bg-charcol',
