@@ -69,7 +69,7 @@ public class NotificationServiceImpl implements NotificationService {
             log.info("eventToSend: {}", eventToSend);
             emitter.send(SseEmitter.event()
                     .id(String.valueOf(id))
-                    .name("message")
+                    .name("sse")
                     .data(eventToSend));
             log.info("sent");
         } catch (Exception e){
