@@ -1,14 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TokenInfo, MyInfo } from '@api/user/types';
-import { NotificationList } from '@api/notification/types';
 
 type userSliceInfo = TokenInfo &
   MyInfo & {
     isLogin: boolean;
     theme: 'dark' | 'light';
     rootFolderId: number;
-    // 알림 추가
-    notifications: NotificationList;
   };
 
 const initialState: userSliceInfo = {
@@ -19,8 +16,6 @@ const initialState: userSliceInfo = {
   profileUrl: '',
   theme: 'light',
   rootFolderId: 0,
-  //알림 추가
-  notifications: { nontificationList: [] },
 };
 
 export const user = createSlice({
@@ -55,10 +50,6 @@ export const user = createSlice({
     setMyProfileImage: (state, action: PayloadAction<string>) => {
       state.profileUrl = action.payload;
     },
-    // 알림 추가
-    setNotifications: (state, action: PayloadAction<NotificationList>) => {
-      state.notifications = action.payload;
-    },
   },
 });
 
@@ -69,7 +60,5 @@ export const {
   setMyTheme,
   setMyNickname,
   setMyProfileImage,
-  // 알림추가
-  setNotifications,
 } = user.actions;
 export default user.reducer;

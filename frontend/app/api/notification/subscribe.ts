@@ -18,14 +18,19 @@ export async function subscribe(callback: (data: SseNotification) => void) {
         heartbeatTimeout: 30 * 60 * 1000,
       }
     );
-
+    console.log('Last-Event-Id');
     eventSource.addEventListener('sse', (e) => {
+      console.log('e', e);
       console.log(e.data);
       const sseData: SseNotification = JSON.parse(e.data);
       callback(sseData);
       console.log('sse데이터를 보자:', sseData);
     });
+    eventSource.addEventListener('error', (error) => {
+      console.error('EventSource error:', error);
+    });
   } catch (error) {
+    console.error('Error during subscription:', error);
     throw error;
   }
 }

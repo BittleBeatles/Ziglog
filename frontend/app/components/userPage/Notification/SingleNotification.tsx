@@ -3,11 +3,8 @@ import { NotificationList } from '@api/notification/types';
 import { getMyInfo } from '@api/user/user';
 import IconButton from '@components/common/IconButton';
 import ProfileImage from '@components/common/ProfileImage';
-import { setNotifications } from '@store/modules/userSlice';
-import { RootState } from '@store/store';
 import Link from 'next/link';
 import { HTMLAttributes, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 interface SingleNotificationProps extends HTMLAttributes<HTMLDivElement> {
   theme: 'light' | 'dark';
@@ -33,16 +30,6 @@ export default function SingleNotification({
   noteId,
   ...rest
 }: SingleNotificationProps) {
-  // const [profileUrl, setProfileUrl] = useState('');
-  // useEffect(() => {
-  //   const getUserInformation = async () => {
-  //     const result = await getUserInfo(senderNickname);
-  //     if (result) {
-  //       setProfileUrl(result.profileUrl);
-  //     }
-  //   };
-  //   getUserInformation();
-  // }, []);
   const [isChecked, setIsClicked] = useState(isRead);
   const onClick = () => {
     setIsClicked(true);
@@ -57,19 +44,17 @@ export default function SingleNotification({
     };
     getMyInformation();
   });
-  // RootState에서 알림 목록 가져오기
-  const storedNotifications = useSelector(
-    (state: RootState) => state.user.notifications.nontificationList
-  );
-  const dispatch = useDispatch();
+
   const [notifications, setNotifications] = useState<NotificationList>({
     nontificationList: [],
   });
 
   // 알림 삭제 함수
-  const handleDeleteClick = async () => {
+  const handleDeleteClick = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     try {
-      // event.preventDefault();
+      event.preventDefault();
       // 알림 삭제 API 호출
       await deleteNotification(id);
 
@@ -79,39 +64,27 @@ export default function SingleNotification({
           (notification) => notification.id !== id
         ),
       }));
-      // 성공적으로 삭제된 알림을 리덕스 스토어에서 갱신
-      // dispatch(
-      //   setNotifications({
-      //     nontificationList: storedNotifications.filter(
-      //       (notification) => notification.id !== id
-      //     ),
-      //   })
-      // );
 
       console.log('알림이 성공적으로 삭제되었습니다!');
     } catch (error) {
       console.error('알림 삭제 중 오류 발생:', error);
     }
   };
-  // storedNotifications가 변경될 때마다 업데이트
-  useEffect(() => {
-    setNotifications((prevState) => ({
-      ...prevState,
-      nontificationList: storedNotifications,
-    }));
-  }, [storedNotifications]);
 
   const formattedDateTime = useMemo(() => {
     const koreanDate = new Date(dateTime);
-    koreanDate.setHours(koreanDate.getHours() + 9); // Adding 9 hours for Korean time
+    koreanDate.setHours(koreanDate.getHours() + 9);
+    const formatTwoDigit = (value: number) => value.toString().padStart(2, '0');
 
-    return koreanDate.toLocaleString('ko-KR', {
-      year: '2-digit',
-      month: '2-digit',
-      day: '2-digit',
-      hour: 'numeric',
-      minute: '2-digit',
-    });
+    return koreanDate
+      .toLocaleString('ko-KR', {
+        year: '2-digit',
+        month: '2-digit',
+        day: '2-digit',
+        hour: 'numeric',
+        minute: '2-digit',
+      })
+      .replace(/\d+/g, (match) => formatTwoDigit(parseInt(match)));
   }, [dateTime]);
   return (
     <Link
@@ -185,7 +158,7 @@ export default function SingleNotification({
             </div>
           </div>
         </div>
-        <div className="grid justify-end flex items-start mt-3">
+        <div className="grid justify-end items-start mt-1 p-2">
           <IconButton
             onClick={handleDeleteClick}
             size={20}

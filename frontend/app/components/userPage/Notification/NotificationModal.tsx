@@ -8,7 +8,6 @@ import {
   getNotificationList,
   putNotification,
 } from '@api/notification/notification';
-import { RootState } from '@store/store';
 import { NotificationList } from '@api/notification/types';
 import { subscribe } from '@api/notification/subscribe';
 
@@ -27,13 +26,8 @@ export default function NotificationModal({
   const handleTypeChange = (newType: 'all' | 'BOOKMARK' | 'QUOTE') => {
     setSelectedType(newType);
   };
-  // RootState에서 알림 목록 가져오기
-  const storedNotifications = useSelector(
-    (state: RootState) => state.user.notifications.nontificationList
-  );
 
   //알림 목록 조회
-  const dispatch = useDispatch();
   const [notifications, setNotifications] = useState<NotificationList>({
     nontificationList: [],
   });
@@ -41,7 +35,7 @@ export default function NotificationModal({
   const handleNotificationRead = async (notificationId: string) => {
     try {
       await putNotification(notificationId);
-      // 여기에서 새로운 알림 목록을 가져옴.
+      // 여기에서 새로운 알림 목록을 가져옴.(보류)
       const updatedNotifications: NotificationList =
         await getNotificationList();
       setNotifications(updatedNotifications);
@@ -66,7 +60,7 @@ export default function NotificationModal({
           // 새로운 알림이 도착하면 알림 목록 업데이트
           setNotifications((prevNotifications) => ({
             ...prevNotifications,
-            notificationList: [
+            nontificationList: [
               ...prevNotifications.nontificationList,
               newNotification,
             ],
@@ -78,26 +72,24 @@ export default function NotificationModal({
     };
 
     fetchData();
-  }, []); // 컴포넌트가 마운트될 때 한 번만 실행
-
-  // storedNotifications가 변경될 때마다 업데이트
-  useEffect(() => {
-    setNotifications((prevState) => ({
-      ...prevState,
-      notificationList: storedNotifications,
-    }));
-  }, [storedNotifications]);
+  }, []);
 
   // 버튼 필터 (북마크 / 인용)
-  const filteredNotifications = (notifications?.nontificationList || []).filter(
-    (notification) => {
+  const filteredNotifications = (notifications?.nontificationList || [])
+    .filter((notification) => {
       if (selectedType === 'all') {
         return true;
       } else {
         return notification.type === selectedType;
       }
-    }
-  );
+    })
+    .sort((a, b) => {
+      // 최신 순으로 정렬 (기준은 dateTime)
+      const dateA = new Date(a.dateTime);
+      const dateB = new Date(b.dateTime);
+
+      return dateB - dateA;
+    });
 
   return (
     <ModalLayout classname={`${THEME_VARIANTS[theme]} px-6 py-8`}>
