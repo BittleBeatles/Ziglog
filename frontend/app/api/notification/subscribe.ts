@@ -20,8 +20,7 @@ export async function subscribe(callback: (data: SseNotification) => void) {
     );
 
     eventSource.addEventListener('sse', (e) => {
-      console.log(e.data);
-      const sseData: SseNotification = JSON.parse(e.data);
+      const sseData: SseNotification = JSON.parse((e as MessageEvent).data);
       callback(sseData);
       console.log('sse데이터를 보자:', sseData);
     });
