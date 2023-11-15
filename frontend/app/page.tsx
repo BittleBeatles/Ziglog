@@ -60,7 +60,13 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col items-center mt-10">
-          <Image src={titleImg} alt={'타이틀이미지'} width={682} height={366} />
+          <Image
+            priority
+            src={titleImg}
+            alt={'타이틀이미지'}
+            width={682}
+            height={366}
+          />
           <Image
             priority
             className="rounded-lg border border-solid shadow-xl"
