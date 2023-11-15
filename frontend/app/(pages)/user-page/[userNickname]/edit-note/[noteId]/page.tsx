@@ -103,7 +103,7 @@ export default function EditNote() {
         const result = await sendEditNoteInfoRequest(parseInt(noteId), body);
         if (result) {
           editQuotingNoteIds();
-          window.location.replace(
+          router.push(
             `/user-page/${params.userNickname}/read-note/${params.noteId}`
           );
           showAlert('수정되었습니다', 'success');

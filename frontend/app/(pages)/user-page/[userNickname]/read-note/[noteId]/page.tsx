@@ -14,13 +14,13 @@ import {
   addBookmark,
   deleteBookmark,
 } from '@api/bookmark/bookmark';
-import './page.css';
 import { showAlert } from '@src/util/alert';
 import SideDataContext from '../../SideDataContext';
 import { changeNotePublicStatusRequest } from '@api/note/editNote';
 import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
 import { getQuoteData } from '@api/quote/quote';
 import { quotingQuotedNotes } from '@api/quote/types';
+import colors from '@src/design/color';
 export default function ReadNote() {
   const router = useRouter();
   const { theme, isLogin } = useAppSelector((state) => state.user);
@@ -124,7 +124,6 @@ export default function ReadNote() {
   };
 
   // 공개/비공개 여부 수정하기
-
   const handlePublicPrivateButton = () => {
     const changePublicStatus = async (noteId: number, isPublic: boolean) => {
       const body = { isPublic: !isPublic };
@@ -167,7 +166,7 @@ export default function ReadNote() {
   return (
     hasAccess && (
       <div id="sidebar-scroll" className="overflow-y-auto h-full">
-        <div className="absolute mt-36 ml-10">
+        <div className="absolute mt-40 ml-10">
           <BookmarkQuoteInfo
             theme={theme}
             bookmarkCount={data.bookmarkCount}
@@ -189,7 +188,7 @@ export default function ReadNote() {
             )}
           </div>
 
-          <div className="flex items-center mb-5">
+          <div className="flex items-center mb-12">
             <span
               className="cursor-pointer font-bold"
               onClick={handleNicknameClick}
@@ -229,8 +228,17 @@ export default function ReadNote() {
             ) : null}
           </div>
 
-          <div data-color-mode={theme} className="w-full mb-5">
-            <MarkdownPreview source={data.content} />
+          <div className="w-full mb-5">
+            <MarkdownPreview
+              source={data.content}
+              style={{
+                backgroundColor:
+                  theme === 'light'
+                    ? colors.white
+                    : colors['dark-background-page'],
+                color: theme === 'light' ? colors.black : colors.white,
+              }}
+            />
           </div>
 
           <div className="flex gap-3">
