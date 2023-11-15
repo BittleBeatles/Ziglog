@@ -46,7 +46,7 @@ public class NotificationController {
             description = "로그인한 회원의 알림 목록 중 선택된 것을 삭제")
     @DeleteMapping("/delete/{notificationId}")
     public ResponseDto<Void> deleteNotification(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                 @PathVariable Long notificationId)
+                                                 @PathVariable String notificationId)
             throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException {
         notificationService.delete(userDetails.member(), notificationId);
         return ResponseDto.of(200, "success");
@@ -56,7 +56,7 @@ public class NotificationController {
             description = "선택된 알림을 읽기처리 함")
     @PutMapping("/read/{notificationId}")
     public ResponseDto<Void> readNotification(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                              @PathVariable Long notificationId)
+                                              @PathVariable String notificationId)
             throws InconsistentNotificationOwnerException, AlreadyRemovedNotificationException {
         notificationService.readNotification(userDetails.member(), notificationId);
         return ResponseDto.of(200, "success");

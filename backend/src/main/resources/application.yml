@@ -4,7 +4,6 @@ spring:
       - local
 
 kafka:
-  bootstrap: ziglog.site:9092 #single
   consumer:
     group:
       send: sendNotification
