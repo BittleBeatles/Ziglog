@@ -85,8 +85,8 @@ export default function NotificationModal({
     })
     .sort((a, b) => {
       // 최신 순으로 정렬 (기준은 dateTime)
-      const dateA = new Date(a.dateTime);
-      const dateB = new Date(b.dateTime);
+      const dateA = new Date(a.dateTime).getTime();
+      const dateB = new Date(b.dateTime).getTime();
 
       return dateB - dateA;
     });

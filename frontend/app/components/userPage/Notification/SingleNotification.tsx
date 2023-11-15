@@ -76,15 +76,19 @@ export default function SingleNotification({
     koreanDate.setHours(koreanDate.getHours() + 9);
     const formatTwoDigit = (value: number) => value.toString().padStart(2, '0');
 
-    return koreanDate
-      .toLocaleString('ko-KR', {
-        year: '2-digit',
-        month: '2-digit',
-        day: '2-digit',
-        hour: 'numeric',
-        minute: '2-digit',
-      })
-      .replace(/\d+/g, (match) => formatTwoDigit(parseInt(match)));
+    let formattedHour = koreanDate.getHours();
+    const ampm = formattedHour >= 12 ? '오후' : '오전';
+
+    // 만약 formattedHour가 0이면 12로 설정
+    formattedHour = formattedHour % 12 || 12;
+
+    return `${koreanDate.toLocaleString('ko-KR', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })}, ${ampm} ${formatTwoDigit(
+      formattedHour === 12 ? 0 : formattedHour
+    )}:${formatTwoDigit(koreanDate.getMinutes())}`;
   }, [dateTime]);
   return (
     <Link
