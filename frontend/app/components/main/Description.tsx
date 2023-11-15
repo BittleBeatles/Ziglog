@@ -40,8 +40,9 @@ export default function Description({
               className="rounded-lg border border-solid shadow-xl"
               src={page}
               alt={'페이지'}
-              width={1067}
-              height={690}
+              width={0}
+              height={0}
+              style={{ width: 1034, height: 668 }}
             />
             <div className={`absolute z-10 ${drawLocation}`}>
               <Drawing classColor="text-main-100" />

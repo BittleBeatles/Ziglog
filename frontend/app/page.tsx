@@ -5,11 +5,12 @@ import Image from 'next/image';
 import titleImg from '@public/images/main/titleImg.png';
 import readNotePage from '@public/images/main/readNotePage.png';
 import graphPage from '@public/images/main/graphPage.png';
-import searchPage from '@public/images/main/searchPage.png';
-import pointerLeftGirl from '@public/images/main/pointerLeftGirl.png';
-import pointerGirl from '@public/images/main/pointerGirl.png';
-import pointerBoy from '@public/images/main/pointerBoy.png';
+import pointerLeftGirl from '@public/images/main/pointerLeftGirl.webp';
+import pointerGirl from '@public/images/main/pointerGirl.webp';
+import pointerBoy from '@public/images/main/pointerBoy.webp';
 import Description from '@components/main/Description';
+import searchLight from '@public/images/main/search_light.webp';
+import searchDark from '@public/images/main/search_dark.webp';
 import { useAppSelector } from '@store/store';
 import { useEffect, useState } from 'react';
 
@@ -107,8 +108,8 @@ export default function Home() {
             '다른 사용자들의 글을 검색할 수 있어요.\n\n글 검색을 통해 다른 사람들의 그래프를 구경하고 마음에 드는 글을 북마크 해보세요.'
           }
           pointer={pointerBoy}
-          page={searchPage}
-          drawLocation={'top-3/4 left-1/4'}
+          page={theme === 'light' ? searchLight : searchDark}
+          drawLocation={'top-1/4 left-1/5'}
           direction="left"
         />
       </div>
