@@ -198,7 +198,7 @@ export default function ReadNote() {
 
             {data.postTime && (
               <Text className="ml-3" type="p">
-                {data.postTime.toLocaleString('ko-KR')}
+                {formattedDate}
               </Text>
             )}
 
