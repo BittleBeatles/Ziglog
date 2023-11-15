@@ -49,11 +49,15 @@ public class NoteRepositoryImpl implements NoteRepositoryCustom {
 
     private BooleanExpression isOwner(Member member, String nickname){
         //공개만 가져온다
-        if (member == null || !member.getNickname().equals(nickname)){
-            return note.isPublic;
+        if (nickname == null){
+            return note.isPublic;//전체 검색
+
+        }
+        else if (member == null || !member.getNickname().equals(nickname)){
+            return note.isPublic.and(note.author.nickname.eq(nickname));//타인의 개인 페이지 검색
         }
         else {
-            return null;
+            return note.author.nickname.eq(nickname);//자신의 개인 페이지 검색
         }
     }
 
