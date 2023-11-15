@@ -14,6 +14,7 @@ export default function NicknameInput({
     <input
       {...rest}
       type="text"
+      maxLength={18}
       defaultValue={nickname}
       className={`${THEME_VARIANTS[theme]}  w-60 h-12 p-2 text-base rounded `}
     />
