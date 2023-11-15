@@ -141,7 +141,7 @@ export default function SingleNotification({
                       isChecked ? 'text-gray-400' : ''
                     }`}
                   >
-                    {'님이 나의 게시물을 인용했습니다.'}
+                    {'님이 나의 게시물을 참조했습니다.'}
                   </p>
                 )}
               </div>

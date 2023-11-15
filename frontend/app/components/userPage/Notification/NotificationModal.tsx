@@ -2,8 +2,7 @@ import ModalLayout from '@components/common/ModalLayout';
 import Text from '@components/common/Text';
 import NotificationButton from '@components/userPage/Notification/NotificationButton';
 import SingleNotification from './SingleNotification';
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import {
   getNotificationList,
   putNotification,
@@ -56,7 +55,6 @@ export default function NotificationModal({
 
         // SSE 연결 설정
         subscribe((newNotification) => {
-          console.log('new', newNotification);
           // 새로운 알림이 도착하면 알림 목록 업데이트
           setNotifications((prevNotifications) => ({
             ...prevNotifications,
@@ -108,7 +106,7 @@ export default function NotificationModal({
             onClick={() => handleTypeChange('BOOKMARK')}
           ></NotificationButton>
           <NotificationButton
-            label="인용"
+            label="참조"
             isSelected={selectedType === 'QUOTE'}
             onClick={() => handleTypeChange('QUOTE')}
           ></NotificationButton>
@@ -123,20 +121,23 @@ export default function NotificationModal({
               id="sidebar-scroll"
               className="max-h-100 overflow-y-auto scroll-bar"
             >
-              {filteredNotifications.map((notification) => (
-                <div key={notification.id} className="mb-2">
-                  <SingleNotification
-                    theme={theme}
-                    id={notification.id}
-                    senderNickname={notification.senderNickname}
-                    senderProfileUrl={notification.senderProfileUrl}
-                    noteId={notification.noteId}
-                    title={notification.title}
-                    isRead={notification.isRead}
-                    type={notification.type}
-                    dateTime={notification.dateTime}
-                    onClick={() => handleNotificationRead(notification.id)}
-                  />
+              {filteredNotifications.map((notification, index) => (
+                <div key={`${notification.id}_${index}`} className="mb-2">
+                  {notification.senderNickname !== undefined &&
+                    notification.noteId !== undefined && (
+                      <SingleNotification
+                        theme={theme}
+                        id={notification.id}
+                        senderNickname={notification.senderNickname}
+                        senderProfileUrl={notification.senderProfileUrl}
+                        noteId={notification.noteId}
+                        title={notification.title}
+                        isRead={notification.isRead}
+                        type={notification.type}
+                        dateTime={notification.dateTime}
+                        onClick={() => handleNotificationRead(notification.id)}
+                      />
+                    )}
                 </div>
               ))}
             </div>
