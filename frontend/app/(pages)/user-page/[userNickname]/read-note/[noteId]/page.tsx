@@ -178,7 +178,7 @@ export default function ReadNote() {
           />
         </div>
         <div className="px-32 py-10">
-          <div className="flex gap-2 items-center mb-3">
+          <div className="flex gap-2 items-center mb-3 flex-wrap">
             <Text type="h1">{data.title}</Text>
             {isMine && (
               <PublicPrivateToggle
