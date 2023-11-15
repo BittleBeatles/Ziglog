@@ -10,7 +10,8 @@ const pretendard = localFont({
 
 export const metadata: Metadata = {
   title: 'Ziglog : 지식 그래프 노트 필기 웹 서비스',
-  description: '특화A407',
+  description:
+    '나만의 지식을 담을 그래프를 만드는 지그로거가 되어보세요. 마크다운 노트 필기, 그래프 보기, 전체 노트 검색, 이 모든 기능이 한 곳에. Copyright. 비틀비틀즈(임수형, 박영서, 김하늘, 김성용, 이정민, 정현아) ',
   icons: {
     icon: '/favicon.ico',
   },
