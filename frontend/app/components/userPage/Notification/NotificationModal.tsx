@@ -82,7 +82,14 @@ export default function NotificationModal({
       }
     })
     .sort((a, b) => {
-      // 최신 순으로 정렬 (기준은 dateTime)
+      // isRead 속성을 숫자로 변환 후 뺄셈 연산
+      const unreadComparison = Number(a.isRead) - Number(b.isRead);
+
+      if (unreadComparison !== 0) {
+        return unreadComparison;
+      }
+
+      // 읽은 상태가 같다면 dateTime으로 정렬
       const dateA = new Date(a.dateTime).getTime();
       const dateB = new Date(b.dateTime).getTime();
 
