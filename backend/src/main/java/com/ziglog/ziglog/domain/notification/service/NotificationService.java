@@ -6,7 +6,6 @@ import com.ziglog.ziglog.domain.notification.dto.NotificationListDto;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.exception.exceptions.AlreadyRemovedNotificationException;
 import com.ziglog.ziglog.domain.notification.exception.exceptions.InconsistentNotificationOwnerException;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
