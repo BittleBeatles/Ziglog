@@ -22,10 +22,6 @@ public class SearchServiceImpl implements SearchService {
 
     // 검색
     public SearchResponseDto searchNotes(Member member, String keyword, String nickname, Pageable pageable) throws Exception{
-        if (nickname != null) {
-            Member author = memberRepository.findByNickname(nickname).orElseThrow(UserNotFoundException::new);
-            return SearchResponseDto.toDto(noteRepository.findAllByTitleContainingAndAuthor(keyword, author, pageable));
-        }
-        return SearchResponseDto.toDto(noteRepository.findAllByTitleContainingAndIsPublic(keyword, pageable, true));
+        return SearchResponseDto.toDto(noteRepository.searchByKeyword(keyword, member, nickname, pageable));
     }
 }
