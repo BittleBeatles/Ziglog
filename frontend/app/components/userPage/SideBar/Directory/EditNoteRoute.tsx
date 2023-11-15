@@ -35,7 +35,7 @@ function EditNoteRoute({
 }: EditNoteRouteProps) {
   const [justFolderList, setJustFolderList] = useState<JustFolder[]>([]);
   const { nickname, rootFolderId } = useAppSelector((state) => state.user);
-  const { getSideList, sideData } = useContext(SideDataContext);
+  const { getSideList, sideData, getGraphData } = useContext(SideDataContext);
 
   const changeNote = async (parentId: number) => {
     await changeNoteRoute(parentId, editingNoteId);
@@ -43,6 +43,7 @@ function EditNoteRoute({
       setNoteEdit(false);
     }
     getSideList();
+    getGraphData();
   };
 
   const title = useMemo(() => {
