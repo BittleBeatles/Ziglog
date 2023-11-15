@@ -72,6 +72,9 @@ server:
   servlet:
     context-path: /api
 
+kafka:
+  bootstrap: ziglog.site:9083 #single
+
 base-url:
   frontend: http://localhost:3000
   backend: http://localhost:8080

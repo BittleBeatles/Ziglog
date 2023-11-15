@@ -58,6 +58,9 @@ spring:
       password:
       port: 6379
 
+kafka:
+  bootstrap: ziglog.site:9092 #single
+
 server:
   port: 8080
   servlet:
