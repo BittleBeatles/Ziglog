@@ -42,6 +42,9 @@ const config: Config = {
         xxs: '7rem',
         noti: '10rem',
       },
+      maxHeight: {
+        '100': '26rem',
+      },
       animation: {
         'draw-line': 'drawLine 3s forwards infinite',
       },
