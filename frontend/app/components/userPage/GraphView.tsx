@@ -94,12 +94,11 @@ export default function GraphView({ theme }: GraphViewProps) {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  const chargeForce = useMemo(() => forceManyBody().strength(-3), [changeView]);
+  const chargeForce = useMemo(() => forceManyBody().strength(-6), [changeView]);
+
   useEffect(() => {
     if (fg3dref.current) {
       fg3dref.current.cameraPosition({ x: 100, y: 100, z: 100 });
-
-      fg3dref.current.d3Force('charge', chargeForce);
     } else if (fg2dref.current) {
       fg2dref.current.zoom(5);
       // 반발력 조정
@@ -219,7 +218,7 @@ export default function GraphView({ theme }: GraphViewProps) {
           onNodeClick={zoomClick}
           onNodeHover={handleNodeHover}
           onLinkHover={handleLinkHover}
-          linkColor={() => colors['main-25']}
+          linkColor={() => colors['main-100']}
           linkWidth={(link) => (highlightLinks.has(link) ? 0.7 : 0.5)}
           linkDirectionalArrowLength={(link) =>
             highlightLinks.has(link) ? 3 : 0
@@ -241,7 +240,7 @@ export default function GraphView({ theme }: GraphViewProps) {
           onNodeClick={zoomClick}
           onNodeHover={handleNodeHover}
           onLinkHover={handleLinkHover}
-          linkColor={() => colors['main-25']}
+          linkColor={() => colors['main-100']}
           linkWidth={(link) => (highlightLinks.has(link) ? 0.7 : 0.5)}
           linkDirectionalArrowLength={(link) =>
             highlightLinks.has(link) ? 3 : 0
