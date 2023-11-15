@@ -61,7 +61,7 @@ export default function Note({
         onClick={noteNavigate}
         className={`${
           depth !== 0 ? 'pl-5' : ''
-        } cursor-pointer flex items-center mt-2 mb-2 hover:opacity-60 transition-opacity duration-300  ${
+        } cursor-pointer flex items-center mb-2 hover:opacity-60 transition-opacity duration-300  ${
           id === currentNoteId ? 'text-main-75' : ''
         }`}
       >
