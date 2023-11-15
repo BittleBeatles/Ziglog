@@ -4,10 +4,11 @@ import { useEffect } from 'react';
 import { setMyInfo, setUserToken } from '@store/modules/userSlice';
 import { getMyInfo } from '@api/user/user';
 import { subscribe } from '@api/notification/subscribe';
-import { SseNotification } from '@api/notification/types';
+import { useRouter } from 'next/navigation';
 
 export default function OauthPage() {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   useEffect(() => {
     const oauthLogin = async () => {
       // [TOKEN] 가져오기
@@ -19,10 +20,10 @@ export default function OauthPage() {
       if (result) {
         dispatch(setMyInfo(result));
         // SSE 연결 설정
-        subscribe((notification: SseNotification) => {
-          console.log('Received SSE notification:', notification);
+        subscribe((newNotification) => {
+          console.log('New notification received:', newNotification);
         });
-        window.location.replace(`/user-page/${result.nickname}`);
+        router.push(`/user-page/${result.nickname}`);
       } else {
         window.location.replace('/');
       }

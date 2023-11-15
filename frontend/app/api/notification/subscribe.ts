@@ -3,9 +3,7 @@ import { store } from '@store/store';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { SseNotification } from './types';
 
-export async function subscribe(
-  onNotification: (notification: SseNotification) => void
-) {
+export async function subscribe(callback: (data: SseNotification) => void) {
   try {
     const accessToken = store.getState().user.accessToken;
     const grantType = store.getState().user.grantType;
@@ -17,20 +15,17 @@ export async function subscribe(
           Authorization: `${grantType} ${accessToken}`,
         },
         lastEventIdQueryParameterName: 'Last-Event-Id',
+        heartbeatTimeout: 30 * 60 * 1000,
       }
     );
 
-    eventSource.addEventListener('message', (event) => {
-      try {
-        const notification: SseNotification = JSON.parse(event.data);
-        console.log('sse:', notification);
-        onNotification(notification);
-      } catch (error) {
-        console.error('SSE 메시지 파싱 중 에러 발생:', error);
-      }
+    eventSource.addEventListener('sse', (e) => {
+      console.log(e.data);
+      const sseData: SseNotification = JSON.parse(e.data);
+      callback(sseData);
+      console.log('sse데이터를 보자:', sseData);
     });
   } catch (error) {
-    console.error('subscribe 함수에서 에러 발생:', error);
     throw error;
   }
 }

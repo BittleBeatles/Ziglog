@@ -62,6 +62,7 @@ export default function NotificationModal({
 
         // SSE 연결 설정
         subscribe((newNotification) => {
+          console.log('new', newNotification);
           // 새로운 알림이 도착하면 알림 목록 업데이트
           setNotifications((prevNotifications) => ({
             ...prevNotifications,

@@ -18,7 +18,7 @@ interface SingleNotificationProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
   isRead: boolean;
   type: string;
-  dateTime: string;
+  dateTime: string | Date;
 }
 
 export default function SingleNotification({
@@ -97,7 +97,7 @@ export default function SingleNotification({
   useEffect(() => {
     setNotifications((prevState) => ({
       ...prevState,
-      notificationList: storedNotifications,
+      nontificationList: storedNotifications,
     }));
   }, [storedNotifications]);
 
