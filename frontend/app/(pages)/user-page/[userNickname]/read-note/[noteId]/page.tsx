@@ -141,6 +141,36 @@ export default function ReadNote() {
 
   const isMine = isLogin && userNickname === data.nickname;
 
+  // const addHours = (date: Date, hours: number) => {
+  //   date.setTime(date.valueOf() + hours * 60 * 60 * 1000);
+
+  //   return date;
+  // };
+
+  const PostTime: Date = new Date(data.postTime!);
+  PostTime.setUTCHours(PostTime.getUTCHours() + 9);
+
+  const year: number = PostTime.getFullYear();
+  const month: number = PostTime.getMonth() + 1;
+  const day: number = PostTime.getDate();
+  const hour: number = PostTime.getHours();
+  const minute: number = PostTime.getMinutes();
+  const formattedDate =
+    hour >= 12
+      ? `${year}년 ${String(month).padStart(2, '0')}월 ${String(day).padStart(
+          2,
+          '0'
+        )}일 오후 ${String(hour - 12).padStart(2, '0')}:${String(
+          minute
+        ).padStart(2, '0')}`
+      : `${year}년 ${String(month).padStart(2, '0')}월 ${String(day).padStart(
+          2,
+          '0'
+        )}일 오전 ${String(hour).padStart(2, '0')}:${String(minute).padStart(
+          2,
+          '0'
+        )}`;
+
   return (
     hasAccess && (
       <div id="sidebar-scroll" className="overflow-y-auto h-full">
@@ -166,7 +196,7 @@ export default function ReadNote() {
               {data.nickname}
             </span>
             <Text className="ml-3" type="p">
-              {data.postTime && data.postTime.toLocaleString('ko-KR')}
+              {data.postTime && formattedDate}
             </Text>
 
             {isMine ? (
