@@ -21,11 +21,16 @@ export async function subscribe(
     );
 
     eventSource.addEventListener('message', (event) => {
-      const notification: SseNotification = JSON.parse(event.data);
-      console.log('sse:', notification);
-      onNotification(notification);
+      try {
+        const notification: SseNotification = JSON.parse(event.data);
+        console.log('sse:', notification);
+        onNotification(notification);
+      } catch (error) {
+        console.error('SSE 메시지 파싱 중 에러 발생:', error);
+      }
     });
   } catch (error) {
+    console.error('subscribe 함수에서 에러 발생:', error);
     throw error;
   }
 }

@@ -22,7 +22,7 @@ export interface SseNotification {
   title: string;
   isRead: boolean;
   type: string;
-  dateTime: Date;
+  dateTime: string;
 }
 
 // Notification List

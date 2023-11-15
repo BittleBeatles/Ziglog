@@ -6,7 +6,7 @@ import ProfileImage from '@components/common/ProfileImage';
 import { setNotifications } from '@store/modules/userSlice';
 import { RootState } from '@store/store';
 import Link from 'next/link';
-import { HTMLAttributes, useEffect, useState } from 'react';
+import { HTMLAttributes, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 interface SingleNotificationProps extends HTMLAttributes<HTMLDivElement> {
@@ -18,7 +18,7 @@ interface SingleNotificationProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
   isRead: boolean;
   type: string;
-  dateTime: Date;
+  dateTime: string;
 }
 
 export default function SingleNotification({
@@ -69,6 +69,7 @@ export default function SingleNotification({
   // 알림 삭제 함수
   const handleDeleteClick = async () => {
     try {
+      // event.preventDefault();
       // 알림 삭제 API 호출
       await deleteNotification(id);
 
@@ -100,6 +101,18 @@ export default function SingleNotification({
     }));
   }, [storedNotifications]);
 
+  const formattedDateTime = useMemo(() => {
+    const koreanDate = new Date(dateTime);
+    koreanDate.setHours(koreanDate.getHours() + 9); // Adding 9 hours for Korean time
+
+    return koreanDate.toLocaleString('ko-KR', {
+      year: '2-digit',
+      month: '2-digit',
+      day: '2-digit',
+      hour: 'numeric',
+      minute: '2-digit',
+    });
+  }, [dateTime]);
   return (
     <Link
       key={noteId}
@@ -127,15 +140,7 @@ export default function SingleNotification({
             ></div>
             <div className="grid place-content-center">
               <p className={`text-xs ${isChecked ? 'text-gray-500' : ''}`}>
-                {dateTime instanceof Date
-                  ? dateTime.toLocaleString('ko-KR', {
-                      year: '2-digit',
-                      month: '2-digit',
-                      day: '2-digit',
-                      hour: 'numeric',
-                      minute: '2-digit',
-                    })
-                  : ''}
+                {formattedDateTime}
               </p>
               <div className="flex flex-row">
                 <p
