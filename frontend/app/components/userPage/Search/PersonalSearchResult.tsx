@@ -28,7 +28,7 @@ export default function PersonalSearchResult({
     day
   ).padStart(2, '0')}일`;
   return (
-    <div className={`${THEME_VARIANTS[theme]} w-fit rounded-md p-2`}>
+    <div className={`${THEME_VARIANTS[theme]} w-full rounded-md p-2`}>
       <div className="flex flex-row place-items-center">
         <div>
           <div className="h-4 w-1 mr-1 bg-blue-300"></div>
