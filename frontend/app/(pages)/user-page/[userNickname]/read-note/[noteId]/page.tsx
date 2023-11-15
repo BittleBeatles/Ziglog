@@ -141,12 +141,6 @@ export default function ReadNote() {
 
   const isMine = isLogin && userNickname === data.nickname;
 
-  // const addHours = (date: Date, hours: number) => {
-  //   date.setTime(date.valueOf() + hours * 60 * 60 * 1000);
-
-  //   return date;
-  // };
-
   const PostTime: Date = new Date(data.postTime!);
   PostTime.setUTCHours(PostTime.getUTCHours() + 9);
 
