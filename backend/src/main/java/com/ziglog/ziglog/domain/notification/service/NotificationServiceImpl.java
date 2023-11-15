@@ -15,8 +15,8 @@ import com.ziglog.ziglog.domain.notification.repository.EmitterRedisRepository;
 import com.ziglog.ziglog.domain.notification.repository.NotificationRdbRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.List;
+
 
 @Service
 @Slf4j
@@ -99,7 +100,9 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    @KafkaListener(topics="sse", groupId = "${kafka.consumer.group.send}", containerFactory = "kafkaEventListenerContainerFactorySse")
+    @KafkaListener(topics="${kafka.topic.name}", groupId = "${kafka.consumer.group.send}",
+            properties = {ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + ":earliest"},
+            containerFactory = "kafkaEventListenerContainerFactorySse")
     public void consumeKafkaEvent(NotificationKafkaDto notification, Acknowledgment ack) throws Exception {
         log.info("ConsumeKafkaEvent");
         sendMessage(notification.getMemberId(), new NotificationResponseDto(notification));
@@ -107,7 +110,9 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    @KafkaListener(topics="sse", groupId = "${kafka.consumer.group.save}", containerFactory = "kafkaEventListenerContainerFactoryRdb")
+    @KafkaListener(topics="${kafka.topic.name}", groupId = "${kafka.consumer.group.save}",
+            properties = {ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + ":earliest"},
+            containerFactory = "kafkaEventListenerContainerFactoryRdb")
     public void saveKafkaEventIntoRDB(NotificationKafkaDto notification, Acknowledgment ack) throws Exception {
         log.info("SaveKafkaEventIntoRDB");
         Notification notificationEntity = Notification.builder()
