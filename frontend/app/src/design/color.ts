@@ -14,6 +14,7 @@ const colors = {
   modal: '#F6F6F6',
   'modal-border': '#BDBDBD',
   black: '#000000',
+  'root-node': '#F9B572',
 };
 
 export default colors;

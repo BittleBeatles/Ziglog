@@ -61,15 +61,19 @@ export default function Note({
         onClick={noteNavigate}
         className={`${
           depth !== 0 ? 'pl-5' : ''
-        } cursor-pointer flex items-center mb-2 hover:opacity-60 transition-opacity duration-300  ${
-          id === currentNoteId ? 'text-main-75' : ''
-        }`}
+        } cursor-pointer flex items-center mb-2 hover:opacity-60 transition-opacity duration-300`}
       >
         <SvgIcon
           name="NoteDescription"
           color={theme === 'light' ? colors.black : colors.white}
         />
-        <Text className={`pl-1 truncate ${THEME_VARINTS[theme]}`}>{title}</Text>
+        <Text
+          className={`pl-1 truncate  ${
+            id === currentNoteId ? 'text-main-75' : ''
+          }`}
+        >
+          {title}
+        </Text>
         {!isPublic && !isMine && (
           <SvgIcon
             size={18}
@@ -91,8 +95,3 @@ export default function Note({
     </div>
   );
 }
-
-const THEME_VARINTS = {
-  light: '',
-  dark: 'text-white',
-};

@@ -161,6 +161,7 @@ export default function GraphView({ theme }: GraphViewProps) {
       ref={containerRef}
     >
       <div className="flex absolute top-0 left-0 p-3 z-10 items-center">
+        <NodeSample theme={theme} type="root" text={nickname} />
         <NodeSample theme={theme} type="folder" text="폴더" />
         {theme === 'light' ? (
           <NodeSample theme={theme} type="noteLight" text="노트" />
@@ -223,7 +224,9 @@ export default function GraphView({ theme }: GraphViewProps) {
           onNodeClick={zoomClick}
           onNodeHover={handleNodeHover}
           onLinkHover={handleLinkHover}
-          linkColor={() => colors['main-100']}
+          linkColor={() =>
+            theme === 'light' ? colors['main-100'] : colors.white
+          }
           linkWidth={(link) => (highlightLinks.has(link) ? 0.7 : 0.5)}
           linkDirectionalArrowLength={(link) =>
             highlightLinks.has(link) ? 3 : 0
@@ -245,7 +248,9 @@ export default function GraphView({ theme }: GraphViewProps) {
           onNodeClick={zoomClick}
           onNodeHover={handleNodeHover}
           onLinkHover={handleLinkHover}
-          linkColor={() => colors['main-100']}
+          linkColor={() =>
+            theme === 'light' ? colors['main-100'] : colors.white
+          }
           linkWidth={(link) => (highlightLinks.has(link) ? 0.7 : 0.5)}
           linkDirectionalArrowLength={(link) =>
             highlightLinks.has(link) ? 3 : 0
