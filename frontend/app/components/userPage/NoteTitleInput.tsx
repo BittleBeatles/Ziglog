@@ -11,7 +11,7 @@ const NoteTitleInput = forwardRef<HTMLInputElement, NoteTitleInputProps>(
     return (
       <input
         ref={ref}
-        className={`w-fit outline-none text-3xl font-bold ${
+        className={`w-5/6 outline-none text-3xl font-bold ${
           theme === 'light' ? 'bg-white' : 'bg-dark-background-page text=white'
         }`}
         {...rest}

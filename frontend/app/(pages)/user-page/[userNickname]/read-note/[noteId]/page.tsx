@@ -146,7 +146,9 @@ export default function ReadNote() {
       <div id="sidebar-scroll" className="overflow-y-auto h-full">
         <div className="mx-40 my-12">
           <div className="flex gap-2 items-center">
-            <Text type="h1">{data.title}</Text>
+            <Text className="w-5/6" type="h1">
+              {data.title}
+            </Text>
             {isMine && (
               <PublicPrivateToggle
                 onClick={() => handlePublicPrivateButton()}
