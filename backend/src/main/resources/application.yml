@@ -4,6 +4,11 @@ spring:
       - local
 
 kafka:
+  topic:
+    name: sse
+    partition-count: 2
+    replicas: 1
+
   consumer:
     group:
       send: sendNotification
