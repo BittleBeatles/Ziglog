@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 public class RetrieveFolderResponseDto {
     private List<Node> folderList;
+    private static Comparator<String> comparator = new AlphanumericComparator();
 
     private RetrieveFolderResponseDto(Folder folder){
         Node root = new Node(folder);
@@ -25,8 +26,6 @@ public class RetrieveFolderResponseDto {
     @AllArgsConstructor
     private static class Node {
 
-        @Builder.Default
-        private Comparator<String> comparator = new AlphanumericComparator();
         private String type;
         private Long id;
         private String title;
