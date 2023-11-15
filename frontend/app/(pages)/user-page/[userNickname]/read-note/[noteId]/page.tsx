@@ -14,14 +14,13 @@ import {
   addBookmark,
   deleteBookmark,
 } from '@api/bookmark/bookmark';
-import './page.css';
 import { showAlert } from '@src/util/alert';
 import SideDataContext from '../../SideDataContext';
 import { changeNotePublicStatusRequest } from '@api/note/editNote';
 import PublicPrivateToggle from '@components/userPage/PublicPrivateToggle';
 import { getQuoteData } from '@api/quote/quote';
 import { quotingQuotedNotes } from '@api/quote/types';
-import MDEditor from '@uiw/react-md-editor';
+import colors from '@src/design/color';
 export default function ReadNote() {
   const router = useRouter();
   const { theme, isLogin } = useAppSelector((state) => state.user);
@@ -88,7 +87,7 @@ export default function ReadNote() {
     };
 
     getNoteReadPage(parseInt(paramNoteId));
-  }, []);
+  }, [isPublic]);
 
   useEffect(() => {
     getIsBookmarked(parseInt(paramNoteId));
@@ -125,7 +124,6 @@ export default function ReadNote() {
   };
 
   // 공개/비공개 여부 수정하기
-
   const handlePublicPrivateButton = () => {
     const changePublicStatus = async (noteId: number, isPublic: boolean) => {
       const body = { isPublic: !isPublic };
@@ -141,11 +139,45 @@ export default function ReadNote() {
 
   const isMine = isLogin && userNickname === data.nickname;
 
+  const PostTime: Date = new Date(data.postTime!);
+  PostTime.setUTCHours(PostTime.getUTCHours() + 9);
+
+  const year: number = PostTime.getFullYear();
+  const month: number = PostTime.getMonth() + 1;
+  const day: number = PostTime.getDate();
+  const hour: number = PostTime.getHours();
+  const minute: number = PostTime.getMinutes();
+  const formattedDate =
+    hour >= 12
+      ? `${year}년 ${String(month).padStart(2, '0')}월 ${String(day).padStart(
+          2,
+          '0'
+        )}일 오후 ${String(hour - 12).padStart(2, '0')}:${String(
+          minute
+        ).padStart(2, '0')}`
+      : `${year}년 ${String(month).padStart(2, '0')}월 ${String(day).padStart(
+          2,
+          '0'
+        )}일 오전 ${String(hour).padStart(2, '0')}:${String(minute).padStart(
+          2,
+          '0'
+        )}`;
+
   return (
     hasAccess && (
       <div id="sidebar-scroll" className="overflow-y-auto h-full">
-        <div className="mx-40 my-12">
-          <div className="flex gap-2 items-center">
+        <div className="absolute mt-40 ml-10">
+          <BookmarkQuoteInfo
+            theme={theme}
+            bookmarkCount={data.bookmarkCount}
+            quotedCount={quotationInfo.quotedNotes.length}
+            isBookmarked={isBookmarked}
+            handleBookmarkChange={handleBookmarkChange}
+            isLogin={isLogin}
+          />
+        </div>
+        <div className="px-32 py-10">
+          <div className="flex gap-2 items-center mb-3 flex-wrap">
             <Text type="h1">{data.title}</Text>
             {isMine && (
               <PublicPrivateToggle
@@ -156,19 +188,22 @@ export default function ReadNote() {
             )}
           </div>
 
-          <div className="flex flex-row place-items-center my-4">
+          <div className="flex items-center mb-12">
             <span
-              className=" cursor-pointer font-bold"
+              className="cursor-pointer font-bold"
               onClick={handleNicknameClick}
             >
               {data.nickname}
             </span>
-            <Text className="ml-3" type="p">
-              {data.postTime && data.postTime.toLocaleString('ko-KR')}
-            </Text>
+
+            {data.postTime && (
+              <Text className="ml-3" type="p">
+                {formattedDate}
+              </Text>
+            )}
 
             {isMine ? (
-              <div className="flex flex-row">
+              <div className="flex">
                 <div className="ml-3">
                   <Button
                     onClick={() =>
@@ -190,43 +225,37 @@ export default function ReadNote() {
                   />
                 </div>
               </div>
-            ) : (
-              <div></div>
-            )}
+            ) : null}
           </div>
-        </div>
-        <div className="flex flex-row mx-16">
-          <div className="absolute">
-            <BookmarkQuoteInfo
-              theme={theme}
-              bookmarkCount={data.bookmarkCount}
-              quotedCount={quotationInfo.quotedNotes.length}
-              isBookmarked={isBookmarked}
-              handleBookmarkChange={handleBookmarkChange}
-              isLogin={isLogin}
+
+          <div className="w-full mb-5">
+            <MarkdownPreview
+              source={data.content}
+              style={{
+                backgroundColor:
+                  theme === 'light'
+                    ? colors.white
+                    : colors['dark-background-page'],
+                color: theme === 'light' ? colors.black : colors.white,
+              }}
             />
           </div>
 
-          <div data-color-mode={theme} className="mx-24">
-            <div className="wmde-markdown-var">
-              <MarkdownPreview source={data.content} />
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-row gap-3 mx-40 my-5">
-          <QuotationListBox
-            userNickname={paramsNickname}
-            label="이 글을 참조한 노트들"
-            theme={theme}
-            quotationList={quotationInfo.quotedNotes}
-          />
+          <div className="flex gap-3">
+            <QuotationListBox
+              userNickname={paramsNickname}
+              label="이 글을 참조한 노트들"
+              theme={theme}
+              quotationList={quotationInfo.quotedNotes}
+            />
 
-          <QuotationListBox
-            userNickname={paramsNickname}
-            label="이 글이 참조하는 노트들"
-            theme={theme}
-            quotationList={quotationInfo.quotingNotes}
-          />
+            <QuotationListBox
+              userNickname={paramsNickname}
+              label="이 글이 참조하는 노트들"
+              theme={theme}
+              quotationList={quotationInfo.quotingNotes}
+            />
+          </div>
         </div>
       </div>
     )

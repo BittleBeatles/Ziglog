@@ -276,12 +276,12 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         </div>
       </div>
       {isModalOpen && (
-        <div className="fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40">
           <ChangeUserInfoBox theme={theme} openModal={openModal} />
         </div>
       )}
       {loginModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40">
           <SocialLoginModal theme={theme} openLoginModal={setLoginModalOpne} />
         </div>
       )}
