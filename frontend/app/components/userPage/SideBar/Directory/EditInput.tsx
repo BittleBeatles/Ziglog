@@ -48,7 +48,7 @@ const EditInput = forwardRef<HTMLInputElement, EditInputProps>(
 
     const themeClass = getThemeVariant({ isFocused, theme });
     const { nickname, rootFolderId } = useAppSelector((state) => state.user);
-    const { getSideList, sideData } = useContext(SideDataContext);
+    const { getSideList, sideData, getGraphData } = useContext(SideDataContext);
     const isIdRoot = useMemo(() => {
       const res = isIdInRoot(sideData, editingFolderId);
       return res;
@@ -60,6 +60,7 @@ const EditInput = forwardRef<HTMLInputElement, EditInputProps>(
         setFolderEdit(false);
       }
       getSideList();
+      getGraphData();
     };
 
     const getFolderList = async () => {
