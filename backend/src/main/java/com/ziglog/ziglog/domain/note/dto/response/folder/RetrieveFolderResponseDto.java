@@ -25,6 +25,7 @@ public class RetrieveFolderResponseDto {
     @AllArgsConstructor
     private static class Node {
 
+        @Builder.Default
         private Comparator<String> comparator = new AlphanumericComparator();
         private String type;
         private Long id;
