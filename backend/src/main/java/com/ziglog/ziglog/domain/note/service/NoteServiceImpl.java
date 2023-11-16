@@ -30,7 +30,6 @@ import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.global.util.AlphanumericComparator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.engine.jdbc.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -121,6 +120,7 @@ public class NoteServiceImpl implements NoteService{
     }
 
     private void checkTitleLength(String title) throws SizeLimitExceededException {
+        if (title == null) throw new IllegalArgumentException("제목을 입력해주세요");
         if (title.length() > TITLE_LENGTH) throw new SizeLimitExceededException("제목의 길이는 최대 60자여야 합니다.");
     }
 
@@ -130,6 +130,7 @@ public class NoteServiceImpl implements NoteService{
     }
 
     private void checkContentLength(String content) throws SizeLimitExceededException {
+        if (content == null) return;
         if (content.length() > CONTENT_LENGTH) throw new SizeLimitExceededException("내용의 길이는 최대 20000자입니다.");
     }
 
@@ -191,14 +192,16 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Folder modifyFolder(Member member, ModifyFolderNameRequestDto requestDto) throws InconsistentFolderOwnerException, FolderNotFoundException {
+    public Folder modifyFolder(Member member, ModifyFolderNameRequestDto requestDto) throws InconsistentFolderOwnerException, FolderNotFoundException, SizeLimitExceededException {
         //JPA 영속성 컨테스트 내
         Folder origin = folderRepository.findById(requestDto.getFolderId()).orElseThrow(FolderNotFoundException::new);
         checkOwner(member,origin);
-
+        checkTitleLength(requestDto.getFolderName());
         origin.setTitle(requestDto.getFolderName());
         return origin;
     }
+
+
 
     @Override
     public void deleteFolder(Member member, Long folderId) throws FolderNotFoundException, UserNotFoundException,

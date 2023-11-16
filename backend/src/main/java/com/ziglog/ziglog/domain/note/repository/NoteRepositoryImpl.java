@@ -16,9 +16,7 @@ import org.springframework.data.domain.SliceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ziglog.ziglog.domain.bookmark.entity.QBookmark.bookmark;
 import static com.ziglog.ziglog.domain.note.entity.QNote.note;
-import static com.ziglog.ziglog.domain.note.entity.QQuotation.quotation;
 
 @RequiredArgsConstructor
 public class NoteRepositoryImpl implements NoteRepositoryCustom {

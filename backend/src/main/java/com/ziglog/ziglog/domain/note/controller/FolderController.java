@@ -19,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.SizeLimitExceededException;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -41,7 +43,7 @@ public class FolderController {
             description = "해당 폴더의 이름을 변경")
     @PutMapping("")
     public ResponseDto<Void> modifyFolder(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ModifyFolderNameRequestDto modifyFolderNameRequestDto)
-            throws InconsistentFolderOwnerException, FolderNotFoundException {
+            throws InconsistentFolderOwnerException, FolderNotFoundException, SizeLimitExceededException {
         noteService.modifyFolder(userDetails.member(), modifyFolderNameRequestDto);
         return ResponseDto.of(200, "success");
     }
