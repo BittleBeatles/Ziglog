@@ -20,7 +20,7 @@ export async function createFolder(parentId: number, title: string) {
       if (res.body.statusCode === 200) {
         return;
       } else {
-        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+        showAlert(res.body.message, 'error');
       }
     })
     .catch((err) => {
@@ -42,7 +42,7 @@ export async function getFolderList(
     if (res.body.statusCode === 200) {
       return res.body.data.folderList;
     } else {
-      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      showAlert(res.body.message, 'error');
       return res.body.data.folderList;
     }
   } catch (err) {
@@ -62,7 +62,7 @@ export async function deleteFolder(folderId: number) {
       if (res.body.statusCode === 200) {
         return;
       } else {
-        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+        showAlert(res.body.message, 'error');
       }
     })
     .catch((err) => {
@@ -83,7 +83,7 @@ export async function editFolder(folderId: number, folderName: string) {
       if (res.body.statusCode === 200) {
         return;
       } else {
-        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+        showAlert(res.body.message, 'error');
       }
     })
     .catch((err) => {
@@ -103,7 +103,7 @@ export async function getForFolderRouterFolderList(folderId: number) {
       if (res.body.statusCode === 200) {
         return res.body.data.folderList;
       } else {
-        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+        showAlert(res.body.message, 'error');
       }
     })
     .catch((err) => {
@@ -124,7 +124,7 @@ export async function changeFolderList(parentId: number, childId: number) {
       if (res.body.statusCode === 200) {
         return;
       } else {
-        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+        showAlert(res.body.message, 'error');
       }
     })
     .catch((err) => {

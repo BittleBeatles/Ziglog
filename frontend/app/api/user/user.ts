@@ -112,7 +112,7 @@ export async function modifyUserInfo(
     if ((await res).body.statusCode === 200) {
       return await Promise.resolve('[user info modified]');
     } else {
-      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      showAlert(res.body.message, 'error');
     }
   } catch (err) {
     showAlert('예상치 못한 오류가 발생했습니다', 'error');

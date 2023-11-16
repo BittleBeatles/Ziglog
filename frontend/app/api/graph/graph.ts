@@ -18,7 +18,7 @@ export async function getGraph(nickname: string) {
       if (res.body.statusCode === 200) {
         return res.body.data;
       } else {
-        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+        showAlert(res.body.message, 'error');
       }
     })
     .catch((err) => {
@@ -41,7 +41,7 @@ export async function getNoteGraph(nickname: string) {
       if (res.body.statusCode === 200) {
         return res.body.data;
       } else {
-        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+        showAlert(res.body.message, 'error');
       }
     })
     .catch((err) => {

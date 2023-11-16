@@ -140,7 +140,7 @@ export default function ReadNote() {
   const isMine = isLogin && userNickname === data.nickname;
 
   const PostTime: Date = new Date(data.postTime!);
-  PostTime.setUTCHours(PostTime.getUTCHours() + 9);
+  PostTime.setUTCHours(PostTime.getUTCHours());
 
   const year: number = PostTime.getFullYear();
   const month: number = PostTime.getMonth() + 1;
