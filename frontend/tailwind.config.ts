@@ -39,7 +39,7 @@ const config: Config = {
         '132': '33rem',
       },
       maxWidth: {
-        xxs: '5.2rem',
+        xxs: '4.3rem',
         noti: '10rem',
       },
       maxHeight: {
