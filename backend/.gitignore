@@ -38,3 +38,6 @@ out/
 
 ### QueryDSL ###
 /src/main/generated
+
+### .yml ###
+/src/main/resources/*.yml

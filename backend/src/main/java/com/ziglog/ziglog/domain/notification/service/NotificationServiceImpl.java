@@ -44,9 +44,8 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional
     public NotificationListDto getNotificationList(Member member){
-        return new NotificationListDto(getNotifications(member).stream().map(notification ->
-                new NotificationResponseDto(NotificationKafkaDto.toDto(notification)))
-                .toList());
+        return new NotificationListDto(getNotifications(member).stream()
+                .map(notification -> new NotificationResponseDto(NotificationKafkaDto.toDto(notification))).toList());
     }
 
     @Override
