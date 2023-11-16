@@ -2,8 +2,13 @@ import ModalLayout from '@components/common/ModalLayout';
 import Text from '@components/common/Text';
 import NotificationButton from '@components/userPage/Notification/NotificationButton';
 import SingleNotification from './SingleNotification';
-import { useState } from 'react';
-import IconButton from '@components/common/IconButton';
+import { useEffect, useState } from 'react';
+import {
+  getNotificationList,
+  putNotification,
+} from '@api/notification/notification';
+import { NotificationList } from '@api/notification/types';
+import { subscribe } from '@api/notification/subscribe';
 
 interface NotificationModalProps {
   theme: 'light' | 'dark';
@@ -15,22 +20,86 @@ export default function NotificationModal({
   openModal,
 }: NotificationModalProps) {
   const [selectedType, setSelectedType] = useState<
-    'all' | 'bookmark' | 'quotation'
+    'all' | 'BOOKMARK' | 'QUOTE'
   >('all');
-  const handleTypeChange = (newType: 'all' | 'bookmark' | 'quotation') => {
+  const handleTypeChange = (newType: 'all' | 'BOOKMARK' | 'QUOTE') => {
     setSelectedType(newType);
   };
+
+  //알림 목록 조회
+  const [notifications, setNotifications] = useState<NotificationList>({
+    nontificationList: [],
+  });
+  // 알림 읽기 핸들러
+  const handleNotificationRead = async (notificationId: string) => {
+    try {
+      await putNotification(notificationId);
+      // 여기에서 새로운 알림 목록을 가져옴.(보류)
+      const updatedNotifications: NotificationList =
+        await getNotificationList();
+      setNotifications(updatedNotifications);
+      console.log('읽기 잘되니?:', updatedNotifications);
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
+  };
+
+  useEffect(() => {
+    // 최초 마운트 시에 알림 목록을 가져옴
+    const fetchData = async () => {
+      try {
+        // 알림 목록 조회
+        const initialNotifications = await getNotificationList();
+        console.log('알림 목록:', initialNotifications);
+        setNotifications(initialNotifications);
+
+        // SSE 연결 설정
+        subscribe((newNotification) => {
+          // 새로운 알림이 도착하면 알림 목록 업데이트
+          setNotifications((prevNotifications) => ({
+            ...prevNotifications,
+            nontificationList: [
+              ...prevNotifications.nontificationList,
+              newNotification,
+            ],
+          }));
+        });
+      } catch (error) {
+        console.error('Error fetching initial data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // 버튼 필터 (북마크 / 인용)
+  const filteredNotifications = (notifications?.nontificationList || [])
+    .filter((notification) => {
+      if (selectedType === 'all') {
+        return true;
+      } else {
+        return notification.type === selectedType;
+      }
+    })
+    .sort((a, b) => {
+      // isRead 속성을 숫자로 변환 후 뺄셈 연산
+      const unreadComparison = Number(a.isRead) - Number(b.isRead);
+
+      if (unreadComparison !== 0) {
+        return unreadComparison;
+      }
+
+      // 읽은 상태가 같다면 dateTime으로 정렬
+      const dateA = new Date(a.dateTime).getTime();
+      const dateB = new Date(b.dateTime).getTime();
+
+      return dateB - dateA;
+    });
+
   return (
-    <ModalLayout classname={`${THEME_VARIANTS[theme]} px-10`}>
-      <div className="">
+    <ModalLayout classname={`${THEME_VARIANTS[theme]} px-6 py-8`}>
+      <div className="max-h-120">
         <Text type="h4">{'알림'}</Text>
-        <div className="absolute inset-y-0 right-0">
-          <IconButton
-            onClick={() => openModal(false)}
-            theme={theme}
-            name="Close"
-          />
-        </div>
         <div className={`${THEME_VARIANTS[theme]} border-t my-2`}></div>
         <div className="flex justify-satrt gap-2 mb-2">
           <NotificationButton
@@ -40,36 +109,46 @@ export default function NotificationModal({
           ></NotificationButton>
           <NotificationButton
             label="북마크"
-            isSelected={selectedType === 'bookmark'}
-            onClick={() => handleTypeChange('bookmark')}
+            isSelected={selectedType === 'BOOKMARK'}
+            onClick={() => handleTypeChange('BOOKMARK')}
           ></NotificationButton>
           <NotificationButton
-            label="인용"
-            isSelected={selectedType === 'quotation'}
-            onClick={() => handleTypeChange('quotation')}
+            label="참조"
+            isSelected={selectedType === 'QUOTE'}
+            onClick={() => handleTypeChange('QUOTE')}
           ></NotificationButton>
         </div>
         <div className="">
-          <div className="mb-2">
-            <SingleNotification
-              theme={theme}
-              isRead={false}
-              type="bookmark"
-              noteTitle="비타오백"
-              userNickname="리락쿠마"
-              date={new Date('2023-10-06 06:32:30.619203')}
-              targetNoteId={2}
-            />
-          </div>
-          <SingleNotification
-            theme={theme}
-            isRead={false}
-            type="quotation"
-            noteTitle="비타오백"
-            userNickname="리락쿠마"
-            date={new Date('2023-10-06 06:32:30.619203')}
-            targetNoteId={2}
-          />
+          {filteredNotifications.length === 0 ? (
+            <div className="w-108 p-3 h-20">
+              <p> 알림이 없습니다.</p>
+            </div>
+          ) : (
+            <div
+              id="sidebar-scroll"
+              className="max-h-100 overflow-y-auto scroll-bar"
+            >
+              {filteredNotifications.map((notification, index) => (
+                <div key={`${notification.id}_${index}`} className="mb-2">
+                  {notification.senderNickname !== undefined &&
+                    notification.noteId !== undefined && (
+                      <SingleNotification
+                        theme={theme}
+                        id={notification.id}
+                        senderNickname={notification.senderNickname}
+                        senderProfileUrl={notification.senderProfileUrl}
+                        noteId={notification.noteId}
+                        title={notification.title}
+                        isRead={notification.isRead}
+                        type={notification.type}
+                        dateTime={notification.dateTime}
+                        onClick={() => handleNotificationRead(notification.id)}
+                      />
+                    )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </ModalLayout>
@@ -78,5 +157,5 @@ export default function NotificationModal({
 
 const THEME_VARIANTS = {
   light: 'bg-modal',
-  dark: 'bg-dark-background-page text-white',
+  dark: 'bg-dark-background-layout text-white',
 };

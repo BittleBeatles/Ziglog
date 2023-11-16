@@ -39,8 +39,11 @@ const config: Config = {
         '132': '33rem',
       },
       maxWidth: {
-        xxs: '7rem',
+        xxs: '4.3rem',
         noti: '10rem',
+      },
+      maxHeight: {
+        '100': '26rem',
       },
       animation: {
         'draw-line': 'drawLine 3s forwards infinite',
