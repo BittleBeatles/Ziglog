@@ -21,7 +21,7 @@ export function getSearchInfo(
       if (res.body.statusCode === 200) {
         return Promise.resolve(res.body.data);
       } else {
-        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+        showAlert(res.body.message, 'error');
         return Promise.resolve(res.body.data);
       }
     })
