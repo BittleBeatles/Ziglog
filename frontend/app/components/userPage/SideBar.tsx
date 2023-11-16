@@ -74,8 +74,6 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   };
 
   // 알림 아이콘 빨간점 - sse
-  // const [showNotificationDot, setShowNotificationDot] = useState(false);
-  // console.log('빨간맛', showNotificationDot);/
   const sseNotification = () => {
     subscribe((data) => {
       console.log('SSE Data:', data);
@@ -91,6 +89,9 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   // 알림 모달 상태를 열림/닫힘으로 토글
   const toggleNotificationModal = () => {
     setNotificationModal(!notificationModal);
+    if (notificationModal == true) {
+      dispatch(setNotificationDot(false));
+    }
   };
   // 알림 모달 영역 밖 클릭 시 모달 닫힘
   useEffect(() => {

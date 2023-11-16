@@ -1,6 +1,6 @@
 // 종 모양 아이콘 입니다.
 import IconButton from '@components/common/IconButton';
-import { ButtonHTMLAttributes, useState } from 'react';
+import { ButtonHTMLAttributes } from 'react';
 
 interface NotificationIconButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -10,7 +10,7 @@ interface NotificationIconButtonProps
 
 export default function NotificationIconButton({
   theme,
-  showRedDot = false,
+  showRedDot,
   ...rest
 }: NotificationIconButtonProps) {
   return (
