@@ -11,7 +11,7 @@ public class ZiglogApplication {
 
 	@PostConstruct
 	public void init() {
-		TimeZone.setDefault(TimeZone.getTimeZone("KST"));
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
 	}
 	public static void main(String[] args) {
 		SpringApplication.run(ZiglogApplication.class, args);
