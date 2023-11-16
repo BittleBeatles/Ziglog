@@ -13,7 +13,7 @@ import ChangeUserInfoBox from './ChangeUserInfoBox';
 import { Logout, getUserInfo } from '@api/user/user';
 import { createNote } from '@api/note/note';
 import { useAppDispatch, useAppSelector } from '@store/store';
-import { setMyTheme } from '@store/modules/userSlice';
+import { setMyTheme, setNotificationDot } from '@store/modules/userSlice';
 import { Note } from '@api/bookmark/types';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import SocialLoginModal from '@components/common/SocialLoginModal';
@@ -28,9 +28,8 @@ interface SideBarProps {
 }
 
 export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
-  const { isLogin, nickname, rootFolderId } = useAppSelector(
-    (state) => state.user
-  );
+  const { isLogin, nickname, rootFolderId, showNotificationDot } =
+    useAppSelector((state) => state.user);
   //  모달
   const [loginModalOpen, setLoginModalOpne] = useState(false);
   const {
@@ -75,20 +74,20 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   };
 
   // 알림 아이콘 빨간점 - sse
-  const [showNotificationDot, setShowNotificationDot] = useState(false);
-  console.log('빨간맛', showNotificationDot);
+  // const [showNotificationDot, setShowNotificationDot] = useState(false);
+  // console.log('빨간맛', showNotificationDot);/
   const sseNotification = () => {
     subscribe((data) => {
       console.log('SSE Data:', data);
       if (data !== null) {
-        setShowNotificationDot(true);
+        dispatch(setNotificationDot(true));
       }
     });
   };
   useEffect(() => {
     sseNotification();
     return () => {};
-  }, []);
+  }, [dispatch]);
   // 알림 모달 상태를 열림/닫힘으로 토글
   const toggleNotificationModal = () => {
     setNotificationModal(!notificationModal);
@@ -99,7 +98,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       const modalElement = document.getElementById('notification-modal');
       if (modalElement && !modalElement.contains(event.target as Node)) {
         toggleNotificationModal();
-        setShowNotificationDot(false);
+        setNotificationDot(false);
       }
     }
 
