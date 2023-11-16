@@ -17,6 +17,7 @@ public class NotificationKafkaDto {
 
     private String id;
     private Long memberId;
+    private String receiverNickname;
     private String title;
     private String senderNickname;
     private String senderProfileUrl;
@@ -31,6 +32,7 @@ public class NotificationKafkaDto {
         return NotificationKafkaDto.builder()
                 .id(notification.getId())
                 .memberId(notification.getReceiver().getId())
+                .receiverNickname(notification.getReceiver().getNickname())
                 .senderNickname(notification.getSender().getNickname())
                 .senderProfileUrl(notification.getSender().getProfileUrl())
                 .noteId(notification.getNote().getId())
