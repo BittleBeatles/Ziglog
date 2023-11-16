@@ -64,7 +64,7 @@ export async function deleteNotification(notificationId: string) {
         showAlert('알림이 성공적으로 삭제되었습니다', 'success');
         return;
       } else {
-        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+        showAlert('알림 삭제 오류가 발생하였습니다', 'error');
       }
     })
     .catch((err) => {
