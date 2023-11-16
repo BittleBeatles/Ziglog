@@ -19,6 +19,7 @@ import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import SocialLoginModal from '@components/common/SocialLoginModal';
 import NotificationModal from './Notification/NotificationModal';
 import { showAlert } from '@src/util/alert';
+import NotificationIconButton from './Notification/NotificationIconButton';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -72,10 +73,26 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
     setModalOpen(open);
   };
 
-  // 알림 모달 열기
-  const openNotification = (open: boolean) => {
-    setNotificationModal(open);
+  // 알림 모달 상태를 열림/닫힘으로 토글
+  const toggleNotificationModal = () => {
+    setNotificationModal(!notificationModal);
   };
+  // 알림 모달 영역 밖 클릭 시 모달 닫힘
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      const modalElement = document.getElementById('notification-modal');
+      if (modalElement && !modalElement.contains(event.target as Node)) {
+        toggleNotificationModal();
+      }
+    }
+
+    // 클릭 이벤트를 document에 추가
+    document.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [notificationModal]);
 
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
@@ -138,14 +155,8 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       ref={sidebarRef}
     >
       <div className="profile flex justify-between items-center px-8">
-        <div className="relative">
-          <ProfileImage src={profileUrl} size={80} />
-          <IconButton
-            onClick={() => openModal(true)}
-            theme={theme}
-            name="Setting"
-            className="absolute bottom-2 right-2 transform translate-x-1/2 translate-y-1/2"
-          />
+        <div>
+          <ProfileImage src={profileUrl} />
         </div>
         <Text
           type="p"
@@ -249,7 +260,6 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
         {isLogin && isMine && (
           <Button onClick={() => Logout()} label="로그아웃" color="charcol" />
         )}
-
         {isLogin && !isMine && (
           <Button
             onClick={() => router.push(`/user-page/${nickname}`)}
@@ -257,24 +267,30 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
             color="charcol"
           />
         )}
-        <div className="flex justify-between relative">
+        {isLogin && isMine && (
           <IconButton
-            onClick={() => openNotification(true)}
+            onClick={() => openModal(true)}
             theme={theme}
-            name="Notification"
+            name="Setting"
           />
-          {notificationModal && (
-            <div className="fixed inset-20 flex items-center justify-center z-40">
-              <div className="absolute top-1/4 left-1/3 transform -translate-x-3/4 -translate-y-7/8">
-                <NotificationModal
-                  theme={theme}
-                  openModal={openNotification}
-                ></NotificationModal>
-              </div>
-            </div>
-          )}
-        </div>
+        )}
       </div>
+      {isLogin && isMine && (
+        <div className="fixed bottom-8 right-8 z-20">
+          <NotificationIconButton
+            theme={theme}
+            onClick={toggleNotificationModal}
+          ></NotificationIconButton>
+        </div>
+      )}
+      {notificationModal && (
+        <div id="notification-modal" className="fixed bottom-20 right-10 z-20">
+          <NotificationModal
+            theme={theme}
+            openModal={toggleNotificationModal}
+          ></NotificationModal>
+        </div>
+      )}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40">
           <ChangeUserInfoBox theme={theme} openModal={openModal} />

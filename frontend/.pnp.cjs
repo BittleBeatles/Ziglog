@@ -40,6 +40,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@svgr/webpack", "npm:8.1.0"],\
             ["@types/d3-force", "npm:3.0.9"],\
             ["@types/diff", "npm:5.0.7"],\
+            ["@types/event-source-polyfill", "npm:1.0.4"],\
             ["@types/gtag.js", "npm:0.0.18"],\
             ["@types/node", "npm:20.8.6"],\
             ["@types/react", "npm:18.2.28"],\
@@ -61,6 +62,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-cypress", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:2.15.1"],\
             ["eslint-plugin-prettier", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:5.0.1"],\
             ["eslint-plugin-storybook", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:0.6.15"],\
+            ["event-source-polyfill", "npm:1.0.31"],\
             ["fork-ts-checker-webpack-plugin", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:9.0.0"],\
             ["next", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:13.5.4"],\
             ["next-redux-wrapper", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:8.1.0"],\
@@ -6659,6 +6661,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/event-source-polyfill", [\
+        ["npm:1.0.4", {\
+          "packageLocation": "./.yarn/cache/@types-event-source-polyfill-npm-1.0.4-df5be1b19f-fbb2197cca.zip/node_modules/@types/event-source-polyfill/",\
+          "packageDependencies": [\
+            ["@types/event-source-polyfill", "npm:1.0.4"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/express", [\
         ["npm:4.17.19", {\
           "packageLocation": "./.yarn/cache/@types-express-npm-4.17.19-4471e6ee35-3d39d0655e.zip/node_modules/@types/express/",\
@@ -12126,6 +12137,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/etag-npm-1.8.1-54a3b989d9-571aeb3dbe.zip/node_modules/etag/",\
           "packageDependencies": [\
             ["etag", "npm:1.8.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["event-source-polyfill", [\
+        ["npm:1.0.31", {\
+          "packageLocation": "./.yarn/cache/event-source-polyfill-npm-1.0.31-25a5668f35-973f226404.zip/node_modules/event-source-polyfill/",\
+          "packageDependencies": [\
+            ["event-source-polyfill", "npm:1.0.31"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -22452,6 +22472,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@svgr/webpack", "npm:8.1.0"],\
             ["@types/d3-force", "npm:3.0.9"],\
             ["@types/diff", "npm:5.0.7"],\
+            ["@types/event-source-polyfill", "npm:1.0.4"],\
             ["@types/gtag.js", "npm:0.0.18"],\
             ["@types/node", "npm:20.8.6"],\
             ["@types/react", "npm:18.2.28"],\
@@ -22473,6 +22494,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-cypress", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:2.15.1"],\
             ["eslint-plugin-prettier", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:5.0.1"],\
             ["eslint-plugin-storybook", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:0.6.15"],\
+            ["event-source-polyfill", "npm:1.0.31"],\
             ["fork-ts-checker-webpack-plugin", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:9.0.0"],\
             ["next", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:13.5.4"],\
             ["next-redux-wrapper", "virtual:aa9a5651e30040bb40a80c83521febfedb2d0d42cff081e332b3a026a36c63410e1bbf163c0632e5aa052c2feb8815c54cf919c924111cc6fb970b60f66ce413#npm:8.1.0"],\
