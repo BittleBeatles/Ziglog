@@ -1,10 +1,18 @@
 import { deleteNotification } from '@api/notification/notification';
 import { NotificationList } from '@api/notification/types';
-import { getMyInfo } from '@api/user/user';
+import { putNotification } from '@api/notification/notification';
+import { getNotificationList } from '@api/notification/notification';
 import IconButton from '@components/common/IconButton';
 import ProfileImage from '@components/common/ProfileImage';
 import Link from 'next/link';
-import { HTMLAttributes, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import {
+  HTMLAttributes,
+  SetStateAction,
+  Dispatch,
+  useMemo,
+  useState,
+} from 'react';
 
 interface SingleNotificationProps extends HTMLAttributes<HTMLDivElement> {
   theme: 'light' | 'dark';
@@ -17,6 +25,8 @@ interface SingleNotificationProps extends HTMLAttributes<HTMLDivElement> {
   isRead: boolean;
   type: string;
   dateTime: string | Date;
+  handleNotificationRead: (notificationId: string) => void;
+  handleFilterList: (id: string) => void;
 }
 
 export default function SingleNotification({
@@ -30,32 +40,34 @@ export default function SingleNotification({
   dateTime,
   noteId,
   receiverNickname,
+  handleNotificationRead,
+  handleFilterList,
   ...rest
 }: SingleNotificationProps) {
+  const router = useRouter();
   const [isChecked, setIsClicked] = useState(isRead);
   const onClick = () => {
+    router.push(
+      `/user-page/${
+        type === 'bookmark' ? receiverNickname : senderNickname
+      }/read-note/${noteId}`
+    );
     setIsClicked(true);
+    handleNotificationRead(id);
   };
-  const [notifications, setNotifications] = useState<NotificationList>({
-    nontificationList: [],
-  });
 
   // 알림 삭제 함수
   const handleDeleteClick = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
+    // 상위 이번트 막음
+    event.stopPropagation();
     try {
-      event.preventDefault();
       // 알림 삭제 API 호출
       await deleteNotification(id);
 
-      // 성공적으로 삭제된 알림을 UI에서 갱신
-      setNotifications((prevNotifications) => ({
-        nontificationList: prevNotifications.nontificationList.filter(
-          (notification) => notification.id !== id
-        ),
-      }));
-
+      // 상위 모달에서 list 업데이트 시킴
+      handleFilterList(id);
       console.log('알림이 성공적으로 삭제되었습니다!');
     } catch (error) {
       console.error('알림 삭제 중 오류 발생:', error);
@@ -82,13 +94,7 @@ export default function SingleNotification({
     )}:${formatTwoDigit(koreanDate.getMinutes())}`;
   }, [dateTime]);
   return (
-    <Link
-      key={noteId}
-      href={`/user-page/${
-        type === 'bookmark' ? receiverNickname : senderNickname
-      }/read-note/${noteId}`}
-      onClick={onClick}
-    >
+    <div key={noteId} onClick={onClick}>
       <div
         {...rest}
         className={`shadow ${THEME_VARIANTS[theme]} ${
@@ -162,7 +168,7 @@ export default function SingleNotification({
           />
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
