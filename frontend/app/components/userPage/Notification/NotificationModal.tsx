@@ -50,7 +50,6 @@ export default function NotificationModal({
       try {
         // 알림 목록 조회
         const initialNotifications = await getNotificationList();
-        console.log('알림 목록:', initialNotifications);
         setNotifications(initialNotifications);
 
         // SSE 연결 설정

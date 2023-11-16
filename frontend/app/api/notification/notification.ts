@@ -61,7 +61,7 @@ export async function deleteNotification(notificationId: string) {
     .then((res) => {
       console.log('삭제처리코드:', res.body.statusCode);
       if (res.body.statusCode === 200) {
-        // showAlert('성공적으로 삭제되었습니다', 'success');
+        showAlert('알림이 성공적으로 삭제되었습니다', 'success');
         return;
       } else {
         showAlert('예상치 못한 오류가 발생했습니다', 'error');
