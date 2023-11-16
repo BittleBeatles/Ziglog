@@ -30,6 +30,16 @@ export default function NotificationModal({
   const [notifications, setNotifications] = useState<NotificationList>({
     nontificationList: [],
   });
+
+  // 삭제된 알림 업데이트 함수
+  const handleFilterList = (id: string) => {
+    setNotifications((prevNotifications) => ({
+      nontificationList: prevNotifications.nontificationList.filter(
+        (notification) => notification.id !== id
+      ),
+    }));
+  };
+
   // 알림 읽기 핸들러
   const handleNotificationRead = async (notificationId: string) => {
     try {
@@ -136,12 +146,15 @@ export default function NotificationModal({
                         id={notification.id}
                         senderNickname={notification.senderNickname}
                         senderProfileUrl={notification.senderProfileUrl}
+                        receiverNickname={notification.receiverNickname}
                         noteId={notification.noteId}
                         title={notification.title}
                         isRead={notification.isRead}
                         type={notification.type}
                         dateTime={notification.dateTime}
-                        onClick={() => handleNotificationRead(notification.id)}
+                        handleNotificationRead={handleNotificationRead}
+                        handleFilterList={handleFilterList}
+                        // onClick={() => handleNotificationRead(notification.id)}
                       />
                     )}
                 </div>
