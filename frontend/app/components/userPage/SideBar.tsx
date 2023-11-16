@@ -73,23 +73,10 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
     setModalOpen(open);
   };
 
-  // 알림 아이콘 빨간점 - sse
-  const sseNotification = () => {
-    subscribe((data) => {
-      console.log('SSE Data:', data);
-      if (data !== null) {
-        dispatch(setNotificationDot(true));
-      }
-    });
-  };
-  useEffect(() => {
-    sseNotification();
-    return () => {};
-  }, [dispatch]);
   // 알림 모달 상태를 열림/닫힘으로 토글
   const toggleNotificationModal = () => {
     setNotificationModal(!notificationModal);
-    if (notificationModal == true) {
+    if (notificationModal) {
       dispatch(setNotificationDot(false));
     }
   };
@@ -99,7 +86,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       const modalElement = document.getElementById('notification-modal');
       if (modalElement && !modalElement.contains(event.target as Node)) {
         toggleNotificationModal();
-        setNotificationDot(false);
+        dispatch(setNotificationDot(false));
       }
     }
 
