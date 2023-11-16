@@ -121,6 +121,7 @@ public class NoteServiceImpl implements NoteService{
 
     private void checkTitleLength(String title) throws SizeLimitExceededException {
         if (title == null) throw new IllegalArgumentException("제목을 입력해주세요");
+        if (title.length() == 0) throw new IllegalArgumentException("제목을 입력해주세요");
         if (title.length() > TITLE_LENGTH) throw new SizeLimitExceededException("제목의 길이는 최대 60자여야 합니다.");
     }
 
@@ -130,7 +131,6 @@ public class NoteServiceImpl implements NoteService{
     }
 
     private void checkContentLength(String content) throws SizeLimitExceededException {
-        if (content == null) return;
         if (content.length() > CONTENT_LENGTH) throw new SizeLimitExceededException("내용의 길이는 최대 20000자입니다.");
     }
 
