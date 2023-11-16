@@ -3,9 +3,10 @@ package com.ziglog.ziglog.domain.note.exception;
 import com.ziglog.ziglog.domain.note.exception.exceptions.*;
 import com.ziglog.ziglog.global.util.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.naming.SizeLimitExceededException;
 
 @RequiredArgsConstructor
 @RestControllerAdvice("com.ziglog.ziglog")
