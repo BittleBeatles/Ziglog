@@ -20,6 +20,7 @@ import SocialLoginModal from '@components/common/SocialLoginModal';
 import NotificationModal from './Notification/NotificationModal';
 import { showAlert } from '@src/util/alert';
 import NotificationIconButton from './Notification/NotificationIconButton';
+import { subscribe } from '@api/notification/subscribe';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -73,6 +74,21 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
     setModalOpen(open);
   };
 
+  // 알림 아이콘 빨간점 - sse
+  const [showNotificationDot, setShowNotificationDot] = useState(false);
+  console.log('빨간맛', showNotificationDot);
+  const sseNotification = () => {
+    subscribe((data) => {
+      console.log('SSE Data:', data);
+      if (data !== null) {
+        setShowNotificationDot(true);
+      }
+    });
+  };
+  useEffect(() => {
+    sseNotification();
+    return () => {};
+  }, []);
   // 알림 모달 상태를 열림/닫힘으로 토글
   const toggleNotificationModal = () => {
     setNotificationModal(!notificationModal);
@@ -83,6 +99,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       const modalElement = document.getElementById('notification-modal');
       if (modalElement && !modalElement.contains(event.target as Node)) {
         toggleNotificationModal();
+        setShowNotificationDot(false);
       }
     }
 
@@ -280,6 +297,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
           <NotificationIconButton
             theme={theme}
             onClick={toggleNotificationModal}
+            showRedDot={showNotificationDot}
           ></NotificationIconButton>
         </div>
       )}

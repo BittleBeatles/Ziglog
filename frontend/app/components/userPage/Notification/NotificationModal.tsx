@@ -61,7 +61,6 @@ export default function NotificationModal({
         // 알림 목록 조회
         const initialNotifications = await getNotificationList();
         setNotifications(initialNotifications);
-
         // SSE 연결 설정
         subscribe((newNotification) => {
           // 새로운 알림이 도착하면 알림 목록 업데이트
@@ -82,7 +81,7 @@ export default function NotificationModal({
   }, []);
 
   // 버튼 필터 (북마크 / 인용)
-  const filteredNotifications = (notifications?.nontificationList || [])
+  const filteredNotifications = (notifications.nontificationList || [])
     .filter((notification) => {
       if (selectedType === 'all') {
         return true;
@@ -115,24 +114,20 @@ export default function NotificationModal({
             label="전체"
             isSelected={selectedType === 'all'}
             onClick={() => handleTypeChange('all')}
-          ></NotificationButton>
+          />
           <NotificationButton
             label="북마크"
             isSelected={selectedType === 'BOOKMARK'}
             onClick={() => handleTypeChange('BOOKMARK')}
-          ></NotificationButton>
+          />
           <NotificationButton
             label="참조"
             isSelected={selectedType === 'QUOTE'}
             onClick={() => handleTypeChange('QUOTE')}
-          ></NotificationButton>
+          />
         </div>
         <div className="">
-          {filteredNotifications.length === 0 ? (
-            <div className="w-108 p-3 h-20">
-              <p> 알림이 없습니다.</p>
-            </div>
-          ) : (
+          {filteredNotifications.length > 0 ? (
             <div
               id="sidebar-scroll"
               className="max-h-100 overflow-y-auto scroll-bar"
@@ -159,6 +154,10 @@ export default function NotificationModal({
                     )}
                 </div>
               ))}
+            </div>
+          ) : (
+            <div className="w-108 p-3 h-20">
+              <p>알림이 없습니다.</p>
             </div>
           )}
         </div>

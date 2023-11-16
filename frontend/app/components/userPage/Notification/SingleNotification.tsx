@@ -76,22 +76,15 @@ export default function SingleNotification({
 
   const formattedDateTime = useMemo(() => {
     const koreanDate = new Date(dateTime);
-    koreanDate.setHours(koreanDate.getHours() + 9);
     const formatTwoDigit = (value: number) => value.toString().padStart(2, '0');
-
-    let formattedHour = koreanDate.getHours();
-    const ampm = formattedHour >= 12 ? '오후' : '오전';
-
-    // 만약 formattedHour가 0이면 12로 설정
-    formattedHour = formattedHour % 12 || 12;
 
     return `${koreanDate.toLocaleString('ko-KR', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
-    })}, ${ampm} ${formatTwoDigit(
-      formattedHour === 12 ? 0 : formattedHour
-    )}:${formatTwoDigit(koreanDate.getMinutes())}`;
+    })}, ${formatTwoDigit(koreanDate.getHours())}:${formatTwoDigit(
+      koreanDate.getMinutes()
+    )}`;
   }, [dateTime]);
   return (
     <div key={noteId} onClick={onClick}>
