@@ -91,7 +91,7 @@ public class SecurityConfig {
                 )
                 .oauth2Login((oauth2login) ->
                         oauth2login
-                                .loginPage("/login")
+                                .loginPage(frontUrl)
                                 .successHandler(oAuth2LoginSuccessHandler)
                                 .failureHandler(oAuth2LoginFailureHandler)
                                 .authorizationEndpoint((endpoint) -> endpoint
