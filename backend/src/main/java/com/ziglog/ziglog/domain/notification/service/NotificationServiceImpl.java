@@ -11,7 +11,7 @@ import com.ziglog.ziglog.domain.notification.dto.NotificationResponseDto;
 import com.ziglog.ziglog.domain.notification.entity.Notification;
 import com.ziglog.ziglog.domain.notification.exception.exceptions.AlreadyRemovedNotificationException;
 import com.ziglog.ziglog.domain.notification.exception.exceptions.InconsistentNotificationOwnerException;
-import com.ziglog.ziglog.domain.notification.repository.EmitterRedisRepository;
+import com.ziglog.ziglog.domain.notification.repository.SseRepository;
 import com.ziglog.ziglog.domain.notification.repository.NotificationRdbRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -34,7 +35,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     //RDB에서의 알림 관리
     private final NotificationRdbRepository notificationRepository;
-    private final EmitterRedisRepository emitterRepository;
+    private final SseRepository emitterRepository;
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
 
@@ -49,11 +50,11 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public SseEmitter subscribe(Member member, String lastEventId) throws Exception {
+    public SseEmitter subscribe(Member member) throws Exception {
 
         SseEmitter emitter = createEmitter(member);
         sendMessage(member.getId(), "Event stream created");
-        log.info("member nickname : {} subscribed for sse", member.getNickname());
+
         return emitter;
     }
 
@@ -81,17 +82,15 @@ public class NotificationServiceImpl implements NotificationService {
         log.info("create new Emitter");
 
         Long memberId = member.getId();
+        SseEmitter prevEmitter = emitterRepository.findById(memberId).orElse(null);
+
+        if (prevEmitter != null) prevEmitter.complete();
+
 
         SseEmitter emitter = new SseEmitter(TIMEOUT);
-        emitter.onCompletion(() -> {
-            log.info("onCompletion callback");
-            emitterRepository.remove(memberId);    // 만료되면 리스트에서 삭제
-        });
 
-        emitter.onTimeout(() -> {
-            log.info("onTimeout callback");
-            emitter.complete();
-        });
+        emitter.onCompletion(() -> emitterRepository.remove(memberId));
+        emitter.onTimeout(() -> emitterRepository.remove(memberId));
 
         emitterRepository.save(memberId, emitter);
         log.info("put new Emitter");

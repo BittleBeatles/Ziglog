@@ -14,7 +14,7 @@ import java.util.List;
 public interface NotificationService {
 
     NotificationListDto getNotificationList(Member member);
-    SseEmitter subscribe(Member member, String lastEventId) throws Exception;
+    SseEmitter subscribe(Member member) throws Exception;
     void sendMessage(Long id, Object event) throws Exception;
     void delete(Member member, String notificationId) throws AlreadyRemovedNotificationException, InconsistentNotificationOwnerException;
     List<Notification> getNotifications(Member member);

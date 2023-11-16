@@ -26,14 +26,9 @@ public class NotificationController {
     @Operation(summary = "클라이언트에서 서버로의 SSE 구독 요청",
                 description = "클라이언트에서 서버로 SSE 연결을 요청. EventSource polyfill을 이용해서 헤더에 토큰을 담아보내야 함")
     @GetMapping(value = "/subscribe", produces = "text/event-stream")
-    public SseEmitter subscribe(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                @RequestHeader(value = "Last-Event-ID", required = false) String lastEventId,
-                                HttpServletResponse response) throws Exception {
-
+    public SseEmitter subscribe(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
         if (userDetails == null) throw new InvalidAccessTokenException();
-
-        response.setHeader("X-Accel-Buffering", "no");
-        return notificationService.subscribe(userDetails.member(), lastEventId);
+        return notificationService.subscribe(userDetails.member());
     }
     @Operation(summary = "전체 알림 목록을 조회",
             description = "로그인한 회원의 모든 알림 목록을 조회")

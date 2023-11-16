@@ -7,9 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 @Repository
-public class EmitterRedisRepository {
+public class SseRepository {
     private static final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
 
     public Optional<SseEmitter> findById(Long id){
@@ -23,4 +22,8 @@ public class EmitterRedisRepository {
     public void remove(Long id){
         emitters.remove(id);
     }
+
+
+
+
 }
