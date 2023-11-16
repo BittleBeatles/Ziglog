@@ -136,6 +136,7 @@ export default function NotificationModal({
                         id={notification.id}
                         senderNickname={notification.senderNickname}
                         senderProfileUrl={notification.senderProfileUrl}
+                        receiverNickname={notification.receiverNickname}
                         noteId={notification.noteId}
                         title={notification.title}
                         isRead={notification.isRead}
