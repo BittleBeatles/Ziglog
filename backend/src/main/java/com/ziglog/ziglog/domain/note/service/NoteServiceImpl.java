@@ -30,11 +30,13 @@ import com.ziglog.ziglog.domain.note.repository.NoteRepository;
 import com.ziglog.ziglog.global.util.AlphanumericComparator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.engine.jdbc.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.naming.SizeLimitExceededException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -49,6 +51,9 @@ public class NoteServiceImpl implements NoteService{
     private final MemberRepository memberRepository;
     private final FolderRepository folderRepository;
     private final NoteRepository noteRepository;
+
+    private static final Integer TITLE_LENGTH = 60;
+    private static final Integer CONTENT_LENGTH = 20000;
 
     @Override
     public void createNote(Member member, CreateNoteRequestDto requestDto)throws UserNotFoundException, FolderNotFoundException, InconsistentFolderOwnerException{
@@ -66,7 +71,7 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public void modifyNote(Member member, Long noteId, ModifyNoteRequestDto requestDto) throws NoteNotFoundException, InconsistentFolderOwnerException{
+    public void modifyNote(Member member, Long noteId, ModifyNoteRequestDto requestDto) throws NoteNotFoundException, InconsistentFolderOwnerException, SizeLimitExceededException{
         modifyNote(member, requestDto.toEntity(noteId));
     }
 
@@ -95,19 +100,40 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Note modifyNote(Member member, Note note) throws NoteNotFoundException, InconsistentFolderOwnerException {
+    public Note modifyNote(Member member, Note note) throws NoteNotFoundException, InconsistentFolderOwnerException, SizeLimitExceededException {
         Note notePersist = noteRepository.findNoteById(note.getId()).orElseThrow(NoteNotFoundException::new);
         checkOwner(member, notePersist);
 
-        notePersist.setTitle(note.getTitle());//타이틀
-        notePersist.setContent(note.getContent());//컨텐츠
+        setTitle(notePersist, note.getTitle());
+        setContent(notePersist, note.getContent());
+
         String preview = makePreview(note.getContent());
         notePersist.setPreview(preview);//목록 프리뷰
-        log.info("preview : {}", preview);
+
         notePersist.setEditDatetime(LocalDateTime.now());//수정일
 
         return notePersist;
     }
+
+    private void setTitle(Note note, String title) throws SizeLimitExceededException {
+        checkTitleLength(title);
+        note.setTitle(title);
+    }
+
+    private void checkTitleLength(String title) throws SizeLimitExceededException {
+        if (title.length() > TITLE_LENGTH) throw new SizeLimitExceededException("제목의 길이는 최대 60자여야 합니다.");
+    }
+
+    private void setContent(Note note, String content) throws SizeLimitExceededException {
+        checkContentLength(content);
+        note.setContent(content);
+    }
+
+    private void checkContentLength(String content) throws SizeLimitExceededException {
+        if (content.length() > CONTENT_LENGTH) throw new SizeLimitExceededException("내용의 길이는 최대 20000자입니다.");
+    }
+
+
 
     @Override
     public Note setPublic(Member member, Long noteId, Boolean isPublic) throws InconsistentFolderOwnerException, NoteNotFoundException{

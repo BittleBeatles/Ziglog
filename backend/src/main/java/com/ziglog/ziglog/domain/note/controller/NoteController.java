@@ -20,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.SizeLimitExceededException;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -60,7 +62,7 @@ public class NoteController {
             description = "해당 노트의 내용(제목, 내용, 이 글이 인용하고 있는 글 목록)을 수정")
     @PutMapping("/{noteId}")
     public ResponseDto<Void> modifyNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("noteId") Long noteId, @RequestBody ModifyNoteRequestDto modifyNoteRequestDto)
-            throws NoteNotFoundException, InconsistentFolderOwnerException {
+            throws NoteNotFoundException, InconsistentFolderOwnerException, SizeLimitExceededException {
         noteService.modifyNote(userDetails.member(), noteId, modifyNoteRequestDto);
         return ResponseDto.of(200, "success");
     }
