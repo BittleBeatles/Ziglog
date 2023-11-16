@@ -649,3 +649,12 @@ ubuntu@aws1:~$ tree
 - 제품 설정-카카오 로그인-보안-Client Secret-코드를 spring.security.oauth2.client.registration.kakao.client-secret에 추가
 - 제품 설정-카카오 로그인-동의 항목에서 필요한 정보들을 체크
 - 제품 설정-카카오 로그인에서 Redirect URI를 지정
+
+
+
+## 시연 시나리오
+
+https://www.youtube.com/watch?v=VuCEGz8ChjA
+
+
+
