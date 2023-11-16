@@ -3,6 +3,7 @@ export interface SseNotification {
   id: string;
   senderNickname: string;
   senderProfileUrl: string;
+  receiverNickname: string;
   noteId: number;
   title: string;
   isRead: boolean;
@@ -19,6 +20,7 @@ export interface NotificationResult {
   id: string;
   senderNickname: string;
   senderProfileUrl: string;
+  receiverNickname: string;
   noteId: number;
   title: string;
   isRead: boolean;

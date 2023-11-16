@@ -11,6 +11,7 @@ interface SingleNotificationProps extends HTMLAttributes<HTMLDivElement> {
   id: string;
   senderNickname: string;
   senderProfileUrl: string;
+  receiverNickname: string;
   noteId: number;
   title: string;
   isRead: boolean;
@@ -28,23 +29,13 @@ export default function SingleNotification({
   senderProfileUrl,
   dateTime,
   noteId,
+  receiverNickname,
   ...rest
 }: SingleNotificationProps) {
   const [isChecked, setIsClicked] = useState(isRead);
   const onClick = () => {
     setIsClicked(true);
   };
-  const [nickname, setNickname] = useState('');
-  useEffect(() => {
-    const getMyInformation = async () => {
-      const result = await getMyInfo();
-      if (result) {
-        setNickname(result.nickname);
-      }
-    };
-    getMyInformation();
-  });
-
   const [notifications, setNotifications] = useState<NotificationList>({
     nontificationList: [],
   });
@@ -94,7 +85,7 @@ export default function SingleNotification({
     <Link
       key={noteId}
       href={`/user-page/${
-        type === 'bookmark' ? nickname : senderNickname
+        type === 'bookmark' ? receiverNickname : senderNickname
       }/read-note/${noteId}`}
       onClick={onClick}
     >
