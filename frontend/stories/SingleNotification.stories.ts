@@ -12,11 +12,15 @@ type Story = StoryObj<typeof meta>;
 
 export const SingleNotificationExample = {
   args: {
+    id: '19_abcd',
+    noteId: 256,
     theme: 'light',
     isRead: false,
     type: 'bookmark',
-    noteTitle: '리락쿠마가 짱이다.',
-    userNickname: '탈퇴한회원',
-    date: new Date('2023.11.08 14:29'),
+    title: '리락쿠마가 짱이다.',
+    senderNickname: '탈퇴한회원',
+    senderProfileUrl:
+      'https://ziglog.s3-ap-northeast-2.amazonaws.com/profile/짱구.jpg',
+    dateTime: new Date('2023.11.08 14:29'),
   },
 } satisfies Story;
