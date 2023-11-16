@@ -19,7 +19,7 @@ export async function getNotificationList(): Promise<NotificationList> {
     if (res.body.statusCode === 200) {
       return await Promise.resolve(res.body.data);
     } else {
-      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      showAlert(res.body.message, 'error');
       return res.body.data;
     }
   } catch (err) {
@@ -40,7 +40,7 @@ export async function putNotification(notificationId: string): Promise<[]> {
       if (res.body.statusCode === 200) {
         return Promise.resolve(res.body.data);
       } else {
-        showAlert('예상치 못한 오류가 발생했습니다', 'error');
+        showAlert(res.body.message, 'error');
         return Promise.resolve(res.body.data);
       }
     })
@@ -61,7 +61,7 @@ export async function deleteNotification(notificationId: string) {
     .then((res) => {
       console.log('삭제처리코드:', res.body.statusCode);
       if (res.body.statusCode === 200) {
-        showAlert('성공적으로 삭제되었습니다. ', 'success');
+        showAlert(res.body.message, 'success');
         return;
       } else {
         showAlert('예상치 못한 오류가 발생했습니다', 'error');
