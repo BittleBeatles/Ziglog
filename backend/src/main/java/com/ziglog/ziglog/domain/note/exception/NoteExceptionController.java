@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.naming.SizeLimitExceededException;
+
 @RequiredArgsConstructor
 @RestControllerAdvice("com.ziglog.ziglog")
 public class NoteExceptionController {
@@ -38,6 +40,11 @@ public class NoteExceptionController {
     @ExceptionHandler(NoAuthorizationToReadException.class)
     public ResponseDto<String> handleNoAuthorizationToReadException (NoAuthorizationToReadException err){
         return toResponseDto(NoteExceptionCode.NO_AUTHORIZATION_TO_READ_EXCEPTION);
+    }
+
+    @ExceptionHandler(SizeLimitExceededException.class)
+    public ResponseDto<String> handleSizeLimitExceededException (SizeLimitExceededException err){
+        return toResponseDto(NoteExceptionCode.SIZE_LIMIT_EXCEEDED_EXCEPTION);
     }
 
     public static ResponseDto<String> toResponseDto(NoteExceptionCode exceptionCode){

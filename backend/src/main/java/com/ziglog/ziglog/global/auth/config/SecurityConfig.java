@@ -72,8 +72,22 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/auth/oauth2/authorization")).requiresSecure()
                 )
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers(new AntPathRequestMatcher("/user/info")).authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/user/test", "GET")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/user/{nickname}", "GET")).permitAll()//regex mathcer로
+                        .requestMatchers(new AntPathRequestMatcher("/quote/quoting/{noteId}", "GET")).permitAll()//regex mathcer로. get
+                        .requestMatchers(new AntPathRequestMatcher("/quote/list/{noteId}", "GET")).permitAll()//regex mathcer로. get
+                        .requestMatchers(new AntPathRequestMatcher("/note/{noteId}", "GET")).permitAll()//regex mathcer로. get
+                        .requestMatchers(new AntPathRequestMatcher("/note", "GET")).permitAll()//get
+                        .requestMatchers(new AntPathRequestMatcher("/search", "GET")).permitAll()//get
+                        .requestMatchers(new AntPathRequestMatcher("/graph/note", "GET")).permitAll()//get
+                        .requestMatchers(new AntPathRequestMatcher("/graph/folder", "GET")).permitAll()//get
+                        .requestMatchers(new AntPathRequestMatcher("/auth/refresh", "GET")).permitAll()//get
+                        .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/swagger-resources/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/logout")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .oauth2Login((oauth2login) ->
                         oauth2login

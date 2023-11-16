@@ -31,7 +31,7 @@ public class SearchController {
             @RequestParam(name = "nickname", required = false) String nickname,
             @RequestParam("page") Integer page, @RequestParam("perPage") Integer perPage) throws Exception{
         //최근 글부터 보여줌
-        PageRequest pageRequest = PageRequest.of(page, perPage, Sort.by("postDatetime").descending());
+        PageRequest pageRequest = PageRequest.of(page, perPage);
         Member member = (userDetails == null ? null : userDetails.member());
         return ResponseDto.of(searchService.searchNotes(member, keyword, nickname, pageRequest));
     }
