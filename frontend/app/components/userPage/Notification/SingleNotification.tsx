@@ -1,18 +1,8 @@
 import { deleteNotification } from '@api/notification/notification';
-import { NotificationList } from '@api/notification/types';
-import { putNotification } from '@api/notification/notification';
-import { getNotificationList } from '@api/notification/notification';
 import IconButton from '@components/common/IconButton';
 import ProfileImage from '@components/common/ProfileImage';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import {
-  HTMLAttributes,
-  SetStateAction,
-  Dispatch,
-  useMemo,
-  useState,
-} from 'react';
+import { HTMLAttributes, useMemo, useState } from 'react';
 
 interface SingleNotificationProps extends HTMLAttributes<HTMLDivElement> {
   theme: 'light' | 'dark';
@@ -49,7 +39,7 @@ export default function SingleNotification({
   const onClick = () => {
     router.push(
       `/user-page/${
-        type === 'bookmark' ? receiverNickname : senderNickname
+        type === 'BOOKMARK' ? receiverNickname : senderNickname
       }/read-note/${noteId}`
     );
     setIsClicked(true);
@@ -87,7 +77,7 @@ export default function SingleNotification({
     )}`;
   }, [dateTime]);
   return (
-    <div key={noteId} onClick={onClick}>
+    <div key={noteId} onClick={onClick} className="cursor-pointer">
       <div
         {...rest}
         className={`shadow ${THEME_VARIANTS[theme]} ${
@@ -96,9 +86,7 @@ export default function SingleNotification({
       >
         <div className="flex flex-row">
           <div className="grid place-content-center">
-            {/* <Link href={`/user-page/${senderNickname}`}> */}
             <ProfileImage size={55} src={senderProfileUrl} />
-            {/* </Link> */}
           </div>
           <div className="flex flex-row">
             <div
