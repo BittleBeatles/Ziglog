@@ -1,0 +1,27 @@
+# docker-compose-release.yml
+networks:
+  net-release:
+    external: true
+
+services:
+  redis-release:
+    image: redis
+    container_name: redis-release
+    ports:
+      - 6385:6379
+    networks:
+      - net-release
+
+  backend:
+    build: .
+    ports:
+      - 8088:8080
+    depends_on:
+      - redis-release
+    networks:
+      - net-release
+    entrypoint:
+      - "java"
+      - "-Dspring.profiles.active=release"
+      - "-jar"
+      - "/app.jar"

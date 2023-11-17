@@ -1,0 +1,70 @@
+# 로컬 프론트 & 배포 백엔드
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  # DB & JPA Configuration
+  datasource:
+    url: jdbc:mysql://mysql-dev:3306/zigzagdb
+    username: root
+    password: rootpwd
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect : org.hibernate.dialect.MySQLDialect
+        show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  #OAuth2 Configuration
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 574121728411-si5ub2jih5ua9h8jtt0jatf72qsrt00p.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - profile
+              - email
+            redirect-uri: ${base-url.backend}/api/login/oauth2/code/google
+
+          kakao:
+            client-id: 25a90390f82ceae3bbfe9bbf7174c2c6
+            client-secret: hhsmxlcxDPWNJMDPI6JrhF2SUoWR8AKW
+            redirect-uri: ${base-url.backend}/api/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            client-name: Kakao
+            scope:
+              - profile_image
+              - account_email
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+  # Redis Configuration
+  data:
+    redis:
+      host: redis-dev
+      password:
+      port: 6379
+
+kafka:
+  bootstrap: ziglog.site:9083 #single
+
+server:
+  port: 8080
+  servlet:
+    context-path: /dev/api
+
+base-url:
+  frontend: http://localhost:3000
+  backend: http://ziglog.site:8080/dev

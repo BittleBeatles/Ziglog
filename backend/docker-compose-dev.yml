@@ -1,0 +1,27 @@
+# docker-compose-dev.yml
+networks:
+  net-pub:
+    external: true
+
+services:
+  redis-dev:
+    image: redis
+    container_name: redis-dev
+    ports:
+      - 6379:6379
+    networks:
+      - net-pub
+
+  spring-dev:
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - redis-dev
+    networks:
+      - net-pub
+    entrypoint:
+      - "java"
+      - "-Dspring.profiles.active=dev"
+      - "-jar"
+      - "/app.jar"

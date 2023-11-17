@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    default:
+      - local
+
+kafka:
+  topic:
+    name: sse
+    partition-count: 2
+    replicas: 1
+
+  consumer:
+    group:
+      send: sendNotification
+      save: saveInRdb
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+# Jwt Configuration => 분리 필요
+jwt:
+  secret-key: asd19i23hj909sfua9s0fdusd90fua9023fjnh
+  access:
+    expiration: 3600000
+    header: Authorization
+  refresh:
+    expiration: 1209600
+    header: Set-Cookie
