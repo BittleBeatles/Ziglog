@@ -83,7 +83,8 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     public Boolean isBookmarked(Member member, Long noteId) throws UserNotFoundException {
-        Member memberPersist = memberRepository.findById(member.getId()).orElseThrow(UserNotFoundException::new);
+        if (member == null) return false;
+        Member memberPersist = memberRepository.findById(member.getId()).orElse(null);
         List<Bookmark> bookmarks = memberPersist.getBookmarks();
 
         for (Bookmark bookmark : bookmarks) {

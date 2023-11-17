@@ -73,15 +73,16 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(new AntPathRequestMatcher("/user/test", "GET")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/user/{nickname}", "GET")).permitAll()//regex mathcer로
-                        .requestMatchers(new AntPathRequestMatcher("/quote/quoting/{noteId}", "GET")).permitAll()//regex mathcer로. get
-                        .requestMatchers(new AntPathRequestMatcher("/quote/list/{noteId}", "GET")).permitAll()//regex mathcer로. get
-                        .requestMatchers(new AntPathRequestMatcher("/note/{noteId}", "GET")).permitAll()//regex mathcer로. get
+                        .requestMatchers(new AntPathRequestMatcher("/user/{nickname}", "GET")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/quote/quoting/{noteId}", "GET")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/quote/list/{noteId}", "GET")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/note/{noteId}", "GET")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/note", "GET")).permitAll()//get
                         .requestMatchers(new AntPathRequestMatcher("/search", "GET")).permitAll()//get
                         .requestMatchers(new AntPathRequestMatcher("/graph/note", "GET")).permitAll()//get
                         .requestMatchers(new AntPathRequestMatcher("/graph/folder", "GET")).permitAll()//get
                         .requestMatchers(new AntPathRequestMatcher("/auth/refresh", "GET")).permitAll()//get
+                        .requestMatchers(new AntPathRequestMatcher("/bookmark/{noteId}", "GET")).permitAll()//get
                         .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/swagger-resources/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
@@ -109,6 +110,7 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(handling -> handling
                         .authenticationEntryPoint((request, response, authException) -> {
+                            log.info("no auth : 401");
                             response.setStatus(401);
                         })
                 );
