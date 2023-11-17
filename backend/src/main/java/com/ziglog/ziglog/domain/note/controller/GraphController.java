@@ -35,4 +35,11 @@ public class GraphController {
     public ResponseDto<GraphResponseDto> retrieveFolderOf(@RequestParam("nickname") String nickname) throws Exception {
         return ResponseDto.of(graphService.retrieveParentChildOnly(noteService.getRootFolder(nickname)));
     }
+
+    @Operation(summary = "모든 사용자의 노트-참조 그래프 조회",
+                description = "존재하는 모든 노트의 그래프를 조회")
+    @GetMapping("/note/all")
+    public ResponseDto<GraphResponseDto> retrieveAllNotes() throws Exception {
+        return ResponseDto.of(graphService.retrieveAllNotes());
+    }
 }

@@ -6,7 +6,7 @@ import com.ziglog.ziglog.domain.note.entity.Folder;
 public interface GraphService {
 
     GraphResponseDto retrieveParentChildOnly(Folder folder);
-
     GraphResponseDto retrieveNotesOf(String nickname);
+    GraphResponseDto retrieveAllNotes();
 
 }
