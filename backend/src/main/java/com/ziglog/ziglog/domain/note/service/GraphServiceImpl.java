@@ -12,11 +12,13 @@ import com.ziglog.ziglog.domain.note.entity.Quotation;
 import com.ziglog.ziglog.domain.note.exception.exceptions.FolderNotFoundException;
 import com.ziglog.ziglog.domain.note.repository.FolderRepository;
 import com.ziglog.ziglog.domain.note.repository.NoteRepository;
+import com.ziglog.ziglog.domain.note.repository.QuotationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Transactional
@@ -26,6 +28,7 @@ public class GraphServiceImpl implements GraphService {
 
     private final FolderRepository folderRepository;
     private final NoteRepository noteRepository;
+    private final QuotationRepository quotationRepository;
     private final MemberRepository memberRepository;
 
     @Override
@@ -99,4 +102,16 @@ public class GraphServiceImpl implements GraphService {
         });
         return new GraphResponseDto(nodeSet, linkSet);
     }
+
+    @Override
+    public GraphResponseDto retrieveAllNotes(){
+        List<Note> allNotes = noteRepository.findAll();
+        List<Quotation> allQuotations = quotationRepository.findAll();
+
+        Set<Node> nodeSet = allNotes.stream().map(note -> new Node(note.getId(), note)).collect(Collectors.toSet());
+        Set<Link> linkSet = allQuotations.stream().map(quotation-> new Link(quotation.getStartNote().getId(), quotation.getEndNote().getId(), "quotation"))
+                .collect(Collectors.toSet());
+
+        return new GraphResponseDto(nodeSet, linkSet);
+   }
 }
