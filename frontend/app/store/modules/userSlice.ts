@@ -6,6 +6,7 @@ type userSliceInfo = TokenInfo &
     isLogin: boolean;
     theme: 'dark' | 'light';
     rootFolderId: number;
+    showNotificationDot: boolean;
   };
 
 const initialState: userSliceInfo = {
@@ -16,6 +17,7 @@ const initialState: userSliceInfo = {
   profileUrl: '',
   theme: 'light',
   rootFolderId: 0,
+  showNotificationDot: false,
 };
 
 export const user = createSlice({
@@ -50,6 +52,9 @@ export const user = createSlice({
     setMyProfileImage: (state, action: PayloadAction<string>) => {
       state.profileUrl = action.payload;
     },
+    setNotificationDot: (state, action: PayloadAction<boolean>) => {
+      state.showNotificationDot = action.payload;
+    },
   },
 });
 
@@ -60,5 +65,6 @@ export const {
   setMyTheme,
   setMyNickname,
   setMyProfileImage,
+  setNotificationDot,
 } = user.actions;
 export default user.reducer;

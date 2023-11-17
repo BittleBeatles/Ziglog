@@ -2,6 +2,7 @@ import { API_URL } from '@api/constants';
 import { store } from '@store/store';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { SseNotification } from './types';
+import { setNotificationDot } from '@store/modules/userSlice';
 
 export async function subscribe(callback: (data: SseNotification) => void) {
   try {
@@ -20,9 +21,13 @@ export async function subscribe(callback: (data: SseNotification) => void) {
     );
 
     eventSource.addEventListener('sse', (e) => {
-      const sseData: SseNotification = JSON.parse((e as MessageEvent).data);
-      callback(sseData);
-      console.log('sse데이터를 보자:', sseData);
+      // 'Event stream created' 넘기지 않기
+      if (!(typeof JSON.parse((e as MessageEvent).data) === 'string')) {
+        const sseData: SseNotification = JSON.parse((e as MessageEvent).data);
+        callback(sseData);
+        console.log('sse데이터를 보자:', sseData);
+        store.dispatch(setNotificationDot(true));
+      }
     });
     eventSource.addEventListener('error', (error) => {
       console.warn('EventSource error:', error);

@@ -20,7 +20,9 @@ export default function OauthPage() {
       if (result) {
         dispatch(setMyInfo(result));
         // SSE 연결 설정
-        subscribe((newNotification) => {});
+        subscribe((newNotification) => {
+          console.log('New notification received:', newNotification);
+        });
         router.push(`/user-page/${result.nickname}`);
       } else {
         window.location.replace('/');

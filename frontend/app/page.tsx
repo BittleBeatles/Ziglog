@@ -3,12 +3,16 @@ import NavBar from '@components/common/NavBar';
 import Text from '@components/common/Text';
 import Image from 'next/image';
 import titleImg from '@public/images/main/titleImg.png';
-import readNotePage from '@public/images/main/readNotePage.png';
-import graphPage from '@public/images/main/graphPage.png';
 import pointerLeftGirl from '@public/images/main/pointerLeftGirl.webp';
 import pointerGirl from '@public/images/main/pointerGirl.webp';
 import pointerBoy from '@public/images/main/pointerBoy.webp';
 import Description from '@components/main/Description';
+import readNoteLight from '@public/images/main/read-note-light.webp';
+import readNoteDark from '@public/images/main/read-note-dark.webp';
+import noteGraphLight from '@public/images/main/note-graph-light.webp';
+import noteGraphDark from '@public/images/main/note-graph-dark.webp';
+import folderGraphLight from '@public/images/main/folder-graph-light.webp';
+import folderGraphDark from '@public/images/main/folder-graph-dark.webp';
 import searchLight from '@public/images/main/search_light.webp';
 import searchDark from '@public/images/main/search_dark.webp';
 import { useAppSelector } from '@store/store';
@@ -71,7 +75,7 @@ export default function Home() {
           <Image
             priority
             className="rounded-lg border border-solid shadow-xl"
-            src={readNotePage}
+            src={theme === 'light' ? readNoteLight : readNoteDark}
             alt={'글읽기 페이지'}
             width={1067}
             height={690}
@@ -88,7 +92,7 @@ export default function Home() {
             '노트 그래프를 통해 노트들 간 관계를 한 눈에 파악할 수 있어요.\n\n글 작성 시, 다른 노트를 참조하면 그래프에서 두 노트가 간선으로 연결됩니다.'
           }
           pointer={pointerGirl}
-          page={graphPage}
+          page={theme === 'light' ? noteGraphLight : noteGraphDark}
           drawLocation={'top-1/4 left-2'}
           direction="left"
         />
@@ -98,7 +102,7 @@ export default function Home() {
             '폴더 그래프를 통해 내 폴더와 노트 구조를 한 눈에 파악할 수 있어요.\n\n 중첩되고 복잡한 폴더 구조를 2d, 3d 그래프로 관리해보세요. '
           }
           pointer={pointerLeftGirl}
-          page={graphPage}
+          page={theme === 'light' ? folderGraphLight : folderGraphDark}
           drawLocation={'top-1/4 left-2'}
           direction="right"
         />

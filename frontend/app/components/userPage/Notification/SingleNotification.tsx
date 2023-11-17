@@ -1,21 +1,22 @@
 import { deleteNotification } from '@api/notification/notification';
-import { NotificationList } from '@api/notification/types';
-import { getMyInfo } from '@api/user/user';
 import IconButton from '@components/common/IconButton';
 import ProfileImage from '@components/common/ProfileImage';
-import Link from 'next/link';
-import { HTMLAttributes, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { HTMLAttributes, useMemo, useState } from 'react';
 
 interface SingleNotificationProps extends HTMLAttributes<HTMLDivElement> {
   theme: 'light' | 'dark';
   id: string;
   senderNickname: string;
   senderProfileUrl: string;
+  receiverNickname: string;
   noteId: number;
   title: string;
   isRead: boolean;
   type: string;
   dateTime: string | Date;
+  handleNotificationRead: (notificationId: string) => void;
+  handleFilterList: (id: string) => void;
 }
 
 export default function SingleNotification({
@@ -28,43 +29,35 @@ export default function SingleNotification({
   senderProfileUrl,
   dateTime,
   noteId,
+  receiverNickname,
+  handleNotificationRead,
+  handleFilterList,
   ...rest
 }: SingleNotificationProps) {
+  const router = useRouter();
   const [isChecked, setIsClicked] = useState(isRead);
   const onClick = () => {
+    router.push(
+      `/user-page/${
+        type === 'BOOKMARK' ? receiverNickname : senderNickname
+      }/read-note/${noteId}`
+    );
     setIsClicked(true);
+    handleNotificationRead(id);
   };
-  const [nickname, setNickname] = useState('');
-  useEffect(() => {
-    const getMyInformation = async () => {
-      const result = await getMyInfo();
-      if (result) {
-        setNickname(result.nickname);
-      }
-    };
-    getMyInformation();
-  });
-
-  const [notifications, setNotifications] = useState<NotificationList>({
-    nontificationList: [],
-  });
 
   // 알림 삭제 함수
   const handleDeleteClick = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
+    // 상위 이번트 막음
+    event.stopPropagation();
     try {
-      event.preventDefault();
       // 알림 삭제 API 호출
       await deleteNotification(id);
 
-      // 성공적으로 삭제된 알림을 UI에서 갱신
-      setNotifications((prevNotifications) => ({
-        nontificationList: prevNotifications.nontificationList.filter(
-          (notification) => notification.id !== id
-        ),
-      }));
-
+      // 상위 모달에서 list 업데이트 시킴
+      handleFilterList(id);
       console.log('알림이 성공적으로 삭제되었습니다!');
     } catch (error) {
       console.error('알림 삭제 중 오류 발생:', error);
@@ -73,31 +66,18 @@ export default function SingleNotification({
 
   const formattedDateTime = useMemo(() => {
     const koreanDate = new Date(dateTime);
-    koreanDate.setHours(koreanDate.getHours() + 9);
     const formatTwoDigit = (value: number) => value.toString().padStart(2, '0');
-
-    let formattedHour = koreanDate.getHours();
-    const ampm = formattedHour >= 12 ? '오후' : '오전';
-
-    // 만약 formattedHour가 0이면 12로 설정
-    formattedHour = formattedHour % 12 || 12;
 
     return `${koreanDate.toLocaleString('ko-KR', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
-    })}, ${ampm} ${formatTwoDigit(
-      formattedHour === 12 ? 0 : formattedHour
-    )}:${formatTwoDigit(koreanDate.getMinutes())}`;
+    })}, ${formatTwoDigit(koreanDate.getHours())}:${formatTwoDigit(
+      koreanDate.getMinutes()
+    )}`;
   }, [dateTime]);
   return (
-    <Link
-      key={noteId}
-      href={`/user-page/${
-        type === 'bookmark' ? nickname : senderNickname
-      }/read-note/${noteId}`}
-      onClick={onClick}
-    >
+    <div key={noteId} onClick={onClick} className="cursor-pointer">
       <div
         {...rest}
         className={`shadow ${THEME_VARIANTS[theme]} ${
@@ -106,9 +86,7 @@ export default function SingleNotification({
       >
         <div className="flex flex-row">
           <div className="grid place-content-center">
-            {/* <Link href={`/user-page/${senderNickname}`}> */}
             <ProfileImage size={55} src={senderProfileUrl} />
-            {/* </Link> */}
           </div>
           <div className="flex flex-row">
             <div
@@ -171,7 +149,7 @@ export default function SingleNotification({
           />
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
