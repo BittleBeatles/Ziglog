@@ -334,7 +334,7 @@
 <details>
 <summary>WIREFRAME</summary>
 <div markdown="1">       
-    <!-- <img src="./readme-asset/wireFrame.png" alt="전체 문서 페이지"/> -->
+  <!-- <img src="./readme-asset/wireFrame.png" alt="전체 문서 페이지"/> -->
 </div>
 </details>
 
