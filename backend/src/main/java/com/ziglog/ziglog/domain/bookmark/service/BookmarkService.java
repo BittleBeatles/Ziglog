@@ -15,7 +15,7 @@ public interface BookmarkService {
     //북마크 가져오기
     BookmarkListDto getBookmarkedNotes(Member member) throws UserNotFoundException;
     //북마크 추가
-    void addBookmark(Member member, AddBookmarkRequestDto addBookmarkRequestDto) throws UserNotFoundException, NoteNotFoundException, BookmarkAlreadyExistsException, Exception;
+    void addBookmark(Member member, AddBookmarkRequestDto addBookmarkRequestDto) throws UserNotFoundException, NoteNotFoundException, BookmarkAlreadyExistsException;
     //북마크 삭제
     void deleteBookmark(Member member, Long noteId) throws NoteNotFoundException, UserNotFoundException, BookmarkNotFoundException;
     //이 글이 북마크 된 글인지 확인
