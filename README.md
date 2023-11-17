@@ -1,6 +1,6 @@
 # Ziglog
 
-<img src="./asset/image/ziglog.png" width="100%" height="400px"/>
+<img src="./asset/image/ziglog.png" width="300px" height="200px"/>
 
 ## 📖목차
 
@@ -134,26 +134,37 @@
 
 <summary>메인 페이지</summary>
 <div markdown="1">
-<!-- <img src="./readme-asset/image/gif/휴대폰인증.gif" width="200px" /> -->
+<!-- <img alt="메인페이지" src="./asset/image/아키텍처.png" /> -->
+
 </div>
 
-<summary>개인 페이지-그래프</summary>
+<summary>개인 페이지- 노트 그래프</summary>
 <div markdown="1">
+<img alt="그래프" src="./asset/gif/note-graph.gif" />
+
+</div>
+
+<summary>개인 페이지-폴더 그래프</summary>
+<div markdown="1">
+<img alt="그래프" src="./asset/gif/folder-graph.gif" />
 
 </div>
 
 <summary>개인 페이지-노트 읽기</summary>
 <div markdown="1">
+<!-- <img alt="메인페이지" src="./asset/image/아키텍처.png" /> -->
 
 </div>
 
 <summary>개인 페이지-노트 수정, 참조</summary>
 <div markdown="1">
+<img alt="메인페이지" src="./asset/gif/edit-note.gif" />
 
 </div>
 
 <summary>검색 페이지</summary>
 <div markdown="1">
+<img alt="검색페이지" src="./asset/gif/search.gif" />
 
 </div>
 
@@ -161,7 +172,7 @@
 
 ## 🏗️ 아키텍쳐
 
-<!-- <img alt="Group 8" src="./readme-asset/image/아키텍쳐.png" /> -->
+<img alt="Group 8" src="./asset/image/아키텍처.png" />
 
 ---
 
@@ -276,44 +287,7 @@
 <div>
 
 ```
-📦benepick
- ┣ 📂domain
- ┃ ┣ 📂card
- ┃ ┃ ┣ 📂controller
- ┃ ┃ ┣ 📂dto
- ┃ ┃ ┃ ┣ 📂request
- ┃ ┃ ┃ ┗ 📂response
- ┃ ┃ ┣ 📂repository
- ┃ ┃ ┗ 📂service
- ┃ ┣ 📂mydata
- ┃ ┃ ┣ 📂controller
- ┃ ┃ ┣ 📂dto
- ┃ ┃ ┃ ┣ 📂request
- ┃ ┃ ┃ ┗ 📂response
- ┃ ┃ ┗ 📂service
- ┃ ┗ 📂user
- ┃ ┃ ┣ 📂controller
- ┃ ┃ ┣ 📂dto
- ┃ ┃ ┃ ┣ 📂request
- ┃ ┃ ┃ ┗ 📂response
- ┃ ┃ ┣ 📂entity
- ┃ ┃ ┣ 📂repository
- ┃ ┃ ┗ 📂service
- ┣ 📂global
- ┃ ┣ 📂api
- ┃ ┃ ┣ 📂dto
- ┃ ┃ ┃ ┣ 📂request
- ┃ ┃ ┃ ┗ 📂response
- ┃ ┃ ┗ 📂service
- ┃ ┣ 📂config
- ┃ ┣ 📂exception
- ┃ ┣ 📂interceptor
- ┃ ┣ 📂log
- ┃ ┃ ┣ 📂annotation
- ┃ ┃ ┣ 📂logTrace
- ┃ ┣ 📂response
- ┃ ┗ 📂util
- ┗ 📜BenepickApplication.java
+
 ```
 
 </div>
@@ -328,7 +302,7 @@
 <details>
 <summary>ERD</summary>
 <div markdown="1">       
-    <img src="./readme-asset/image/erd.png" alt="ERD 페이지"/>
+   
 </div>
 </details>
 
@@ -337,21 +311,21 @@
 <details>
 <summary>전체 문서</summary>
 <div markdown="1">       
-    <img src="./readme-asset/api명세서.png" alt="전체 문서 페이지"/>
+    
 </div>
 </details>
 
 <details>
 <summary>Request</summary>
 <div markdown="1">       
-    <img src="./readme-asset/requestImg.png" alt="전체 문서 페이지"/>
+    
 </div>
 </details>
 
 <details>
 <summary>Response</summary>
 <div markdown="1">       
-    <img src="./readme-asset/responseImge.png" alt="전체 문서 페이지"/>
+    
 </div>
 </details>
 
@@ -360,7 +334,7 @@
 <details>
 <summary>WIREFRAME</summary>
 <div markdown="1">       
-    <img src="./readme-asset/wireFrame.png" alt="전체 문서 페이지"/>
+    <!-- <img src="./readme-asset/wireFrame.png" alt="전체 문서 페이지"/> -->
 </div>
 </details>
 
@@ -476,12 +450,12 @@
 
 1. 매주 월요일 오전 스크럼 회의 이후 각자의 이슈 티켓을 생성한다.
 2. 이슈 생성 시 확인해야 할 부분
-   - **\*\*\*\***\*\*\*\***\*\*\*\***\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\***\*\*\*\***\*\*\*\***\*\*\*\***담당자가 본인**\*\*\*\***\*\*\*\***\*\*\*\***\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\***\*\*\*\***\*\*\*\***\*\*\*\***으로 설정되어 있는지
+   - 담당자가 본인으로 설정되어 있는지
    - **컴포넌트**가 지정되어 있는지 (FE, BE, 공통 중 택1)
    - **Epic Link**가 지정되어 있는지 (설계, FE개발, BE개발, 회의, 학습…)
    - 스프린트의 **총 Story Points가 40 이상**인지
-3. 이슈 티켓 이름은 **\*\***\*\***\*\***[말머리] 구체적인 기능**\*\***\*\***\*\*** 으로 적는다.
-   - \***\*\*\*\*\*\*\***\*\*\*\*\***\*\*\*\*\*\*\***기능 관련 이슈일 경우 **\*\***\*\***\*\***[말머리]**\*\***\*\***\*\***는 기능 명세서의 대분류를 따른다.
+3. 이슈 티켓 이름은 [말머리] 구체적인 기능으로 적는다.
+   - 기능 관련 이슈일 경우 [말머리]는 기능 명세서의 대분류를 따른다.
 4. 매일 오전 스크럼 회의 이후 그 날 처리할 이슈 티켓을 **진행 중**으로 이동시킨다.
    - 실시간으로 이슈를 처리할 때마다 **완료** 처리한다.
 
@@ -489,7 +463,7 @@
 
 ## 💻 구동 방법
 
-[포팅메뉴얼 참조](./exec/포팅매뉴얼_A610.pdf)
+[포팅메뉴얼 참조](./exec/Porting_Manual.md)
 
 ---
 
@@ -497,8 +471,8 @@
 
 ### UCC
 
-https://youtu.be/ohmziXA1uHU
+https://youtu.be/tOWOvG0jEx8
 
 ### 시연 영상
 
-https://youtu.be/KMJX3GOS7eo
+https://youtu.be/VuCEGz8ChjA
