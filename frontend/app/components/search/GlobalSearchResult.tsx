@@ -31,7 +31,7 @@ export default function GlobalSearchResult({
     return null;
   }
   const PostTime: Date = new Date(editTime || postTime);
-  PostTime.setUTCHours(PostTime.getUTCHours() + 9);
+  PostTime.setUTCHours(PostTime.getUTCHours());
 
   const year: number = PostTime.getFullYear();
   const month: number = PostTime.getMonth() + 1;
