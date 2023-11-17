@@ -32,7 +32,7 @@ public class BookmarkController {
     @PostMapping("")
     public ResponseDto<Void> addBookmark(@AuthenticationPrincipal CustomUserDetails userDetails,
                                          @RequestBody AddBookmarkRequestDto addBookmarkRequestDto)
-            throws UserNotFoundException, NoteNotFoundException, BookmarkAlreadyExistsException, Exception {
+            throws UserNotFoundException, NoteNotFoundException, BookmarkAlreadyExistsException {
         bookmarkService.addBookmark(userDetails.member(), addBookmarkRequestDto);
         return ResponseDto.of(200, "success");
     }
@@ -58,6 +58,7 @@ public class BookmarkController {
     @GetMapping("/{noteId}")
     public ResponseDto<IsBookmarkedDto> checkIsBookmarked(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                           @PathVariable("noteId") Long noteId) throws UserNotFoundException {
+        if (userDetails == null) return ResponseDto.of(bookmarkService.checkIsBookmarked(null, noteId));
         return ResponseDto.of(bookmarkService.checkIsBookmarked(userDetails.member(), noteId));
     }
 }
