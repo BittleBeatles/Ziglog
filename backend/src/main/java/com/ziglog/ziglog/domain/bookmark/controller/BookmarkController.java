@@ -58,6 +58,7 @@ public class BookmarkController {
     @GetMapping("/{noteId}")
     public ResponseDto<IsBookmarkedDto> checkIsBookmarked(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                           @PathVariable("noteId") Long noteId) throws UserNotFoundException {
+        if (userDetails == null) return ResponseDto.of(bookmarkService.checkIsBookmarked(null, noteId));
         return ResponseDto.of(bookmarkService.checkIsBookmarked(userDetails.member(), noteId));
     }
 }

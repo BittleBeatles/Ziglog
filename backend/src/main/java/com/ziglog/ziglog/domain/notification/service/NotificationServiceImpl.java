@@ -39,8 +39,8 @@ public class NotificationServiceImpl implements NotificationService {
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
 
-    @Value("${jwt.access.expiration}")
-    private Long TIMEOUT;// 30분 => 따로 yml 파일에 넣기
+//    @Value("${jwt.access.expiration}")
+    private Long TIMEOUT = 1000L * 60 & 30;// 30분 => 따로 yml 파일에 넣기
 
     @Override
     @Transactional

@@ -33,8 +33,8 @@ public class CommonExceptionController {
     public ResponseDto<String> handleIoException (IOException err){
         return toResponseDto(CommonExceptionCode.IO_EXCEPTION);
     }
-    @ExceptionHandler(Exception.class)
-    public ResponseDto<String> handleUnknownException (Exception err){
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseDto<String> handleUnknownException (RuntimeException err){
         return toResponseDto(CommonExceptionCode.UNKNOWN_EXCEPTION);
     }
 
