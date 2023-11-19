@@ -18,6 +18,7 @@ public class Node {
     private final String type;
     private final String nickname;
     private final Long realId;
+    private final Boolean isPublic;
 
     public Node(Long id, Folder folder) {
         this.id = id;
@@ -25,6 +26,7 @@ public class Node {
         this.type = "folder";
         this.nickname = folder.getOwner().getNickname();
         this.realId = folder.getId();
+        this.isPublic = true;
     }
 
     public Node(Long id, Note note){
@@ -33,6 +35,7 @@ public class Node {
         this.type = "note";
         this.nickname = note.getAuthor().getNickname();
         this.realId = note.getId();
+        this.isPublic = note.isPublic();
     }
 
     public Node(Long id, Note note, String type){
@@ -41,15 +44,15 @@ public class Node {
         this.type = type;
         this.nickname = note.getAuthor().getNickname();
         this.realId = note.getId();
+        this.isPublic = note.isPublic();
     }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Node node = (Node) o;
-        return Objects.equals(getId(), node.getId()) && Objects.equals(getName(), node.getName()) && Objects.equals(getType(), node.getType()) && Objects.equals(getNickname(), node.getNickname()) && Objects.equals(getRealId(), node.getRealId());
+        return Objects.equals(getId(), node.getId()) && Objects.equals(getName(), node.getName()) && Objects.equals(getType(), node.getType()) && Objects.equals(getNickname(), node.getNickname()) && Objects.equals(getRealId(), node.getRealId()) && Objects.equals(getIsPublic(), node.getIsPublic());
     }
 
     @Override
