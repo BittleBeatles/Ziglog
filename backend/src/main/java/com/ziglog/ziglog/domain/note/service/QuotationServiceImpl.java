@@ -99,7 +99,7 @@ public class QuotationServiceImpl implements QuotationService {
                         .type(NotificationType.QUOTE)
                         .receiver(note.getAuthor())
                         .sender(sender)
-                        .note(quoted)
+                        .noteId(quoted.getId())
                         .title(quoted.getTitle())
                         .isRead(false)
                         .build();
