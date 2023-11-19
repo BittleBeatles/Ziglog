@@ -46,7 +46,7 @@ export async function subscribe() {
           // 이전 알림 목록
           const prevNotifications: NotificationList =
             store.getState().user.notifications;
-
+          console.log('prevNotifications:', prevNotifications);
           // 새로운 알림을 기존 알림 목록에 추가
           const updatedNotifications: NotificationList = {
             nontificationList: [
@@ -54,7 +54,7 @@ export async function subscribe() {
               newNotification,
             ],
           };
-
+          console.log('updatedNotifications:', updatedNotifications);
           // 알림 목록 업데이트
           store.dispatch(setNotifications(updatedNotifications));
         }
@@ -63,16 +63,14 @@ export async function subscribe() {
       eventSource.addEventListener('error', (error) => {
         console.warn('EventSource error:', error);
         eventSource.close();
-      });
 
-      // SSE 연결이 닫힐 때마다 재연결 시도
-      eventSource.addEventListener('close', () => {
+        // SSE 연결이 닫힐 때마다 재연결 시도
         console.log('SSE 연결이 닫혔습니다. 재연결 시도 중...');
-        eventSource.close();
         setTimeout(connect, 500);
       });
     } catch (error) {
       console.error('Subscription 도중 에러 발생:', error);
+      setTimeout(connect, 500);
       throw error;
     }
   };
