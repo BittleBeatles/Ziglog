@@ -113,7 +113,7 @@ export default function Home() {
           }
           pointer={pointerBoy}
           page={theme === 'light' ? searchLight : searchDark}
-          drawLocation={'top-1/4 left-1/5'}
+          drawLocation={'top-2/4 left-2/4'}
           direction="left"
         />
       </div>
