@@ -49,3 +49,22 @@ export async function getNoteGraph(nickname: string) {
       throw err;
     });
 }
+
+// 모든 그래프 요청
+
+export async function getAllGraph() {
+  return publicFetch<NoteGraphApiResponse>(`${API_URL}/graph/note/all`, {
+    method: 'GET',
+  })
+    .then((res) => {
+      if (res.body.statusCode === 200) {
+        return res.body.data;
+      } else {
+        showAlert(res.body.message, 'error');
+      }
+    })
+    .catch((err) => {
+      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      throw err;
+    });
+}

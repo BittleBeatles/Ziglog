@@ -38,13 +38,8 @@ export default function GraphView({ theme }: GraphViewProps) {
   const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
 
   // 그래프 변수
-  const {
-    graphData,
-    getGraphData,
-    noteGraphData,
-    getNoteGraphData,
-    getSideList,
-  } = useContext(SideDataContext);
+  const { graphData, getGraphData, noteGraphData, getNoteGraphData } =
+    useContext(SideDataContext);
 
   const fg2dref = useRef<Force2DGraphMehods>();
   const fg3dref = useRef<Force3DGraphMehods>();

@@ -8,6 +8,7 @@ export interface Node extends Node2DObject {
   realId?: number;
   neighbors?: Node[];
   links?: Link[];
+  isPublic?: boolean;
 }
 
 export interface Link extends LinkObject {

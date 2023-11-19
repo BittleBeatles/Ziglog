@@ -8,7 +8,7 @@ import SpriteText from 'three-spritetext';
 export const useGraph = () => {
   const [highlightLinks, setHighlightLinks] = useState(new Set());
   const [hoverNode, setHoverNode] = useState<Node | null>(null);
-  const { theme } = useAppSelector((state) => state.user);
+  const { theme, nickname } = useAppSelector((state) => state.user);
 
   const addNeighborsAndLinks = (data: GraphData) => {
     data.links.forEach((link) => {
@@ -87,7 +87,7 @@ export const useGraph = () => {
               break;
             case 'note':
               drawCircle(
-                node.name,
+                node.name + `${node.isPublic ? '' : '🔒'}`,
                 5,
                 node.x,
                 node.y,
@@ -108,6 +108,55 @@ export const useGraph = () => {
       }
     },
     [theme]
+  );
+
+  // 2d 버전 모든 그래프 페인팅
+  const nodeAllPaint = useCallback(
+    (node: Node, ctx: CanvasRenderingContext2D) => {
+      const drawCircle = (
+        name: string,
+        textDistance: number,
+        x: number,
+        y: number,
+        size: number,
+        color: string
+      ) => {
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, 2 * Math.PI, false);
+        ctx.fillStyle = color;
+        ctx.fill();
+
+        ctx.font = '3px Pretendard';
+        ctx.textAlign = 'center';
+        ctx.fillText(name, x, y + textDistance);
+      };
+
+      if (node.x && node.y && node.name && node.nickname) {
+        const nodeColor =
+          node.nickname === nickname
+            ? colors['root-node']
+            : theme === 'light'
+            ? colors.charcol
+            : colors['light-background-layout'];
+
+        switch (node.type) {
+          case 'note':
+            drawCircle(
+              node.name + `${node.isPublic ? '' : '🔒'}`,
+              5,
+              node.x,
+              node.y,
+              2,
+              nodeColor
+            );
+            break;
+          default:
+            console.error('Unknown node type:', node.type);
+            break;
+        }
+      }
+    },
+    [theme, nickname]
   );
 
   // 3d 버전 페인팅
@@ -149,7 +198,7 @@ export const useGraph = () => {
       if (node.name === 'root') {
         sprite = new SpriteText(node.nickname);
       } else {
-        sprite = new SpriteText(node.name);
+        sprite = new SpriteText(node.name + `${node.isPublic ? '' : '🔒'}`);
       }
       sprite.color =
         theme === 'light' ? colors.charcol : colors['light-background-layout'];
@@ -176,5 +225,6 @@ export const useGraph = () => {
     nodePaint,
     node3dPaint,
     addNeighborsAndLinks,
+    nodeAllPaint,
   };
 };
