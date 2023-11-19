@@ -22,6 +22,8 @@ public class SearchServiceImpl implements SearchService {
 
     // 검색
     public SearchResponseDto searchNotes(Member member, String keyword, String nickname, Pageable pageable) throws Exception{
-        return SearchResponseDto.toDto(noteRepository.searchByKeyword(keyword, member, nickname, pageable));
+        return SearchResponseDto.toDto(noteRepository.searchByKeyword(keyword, member, nickname, pageable),
+                noteRepository.searchAllNoteIdByKeyword(keyword)
+        );
     }
 }
