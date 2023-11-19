@@ -8,7 +8,9 @@ import {
   putNotification,
 } from '@api/notification/notification';
 import { NotificationList } from '@api/notification/types';
-import { subscribe } from '@api/notification/subscribe';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@store/store';
+import { setNotifications } from '@store/modules/userSlice';
 
 interface NotificationModalProps {
   theme: 'light' | 'dark';
@@ -26,29 +28,43 @@ export default function NotificationModal({
     setSelectedType(newType);
   };
 
+  const dispatch = useDispatch();
+  const notifications = useSelector(
+    (state: RootState) => state.user.notifications
+  );
+
   //알림 목록 조회
-  const [notifications, setNotifications] = useState<NotificationList>({
-    nontificationList: [],
-  });
+  // const [notifications, setNotifications] = useState<NotificationList>({
+  //   nontificationList: [],
+  // });
 
   // 삭제된 알림 업데이트 함수
   const handleFilterList = (id: string) => {
-    setNotifications((prevNotifications) => ({
-      nontificationList: prevNotifications.nontificationList.filter(
-        (notification) => notification.id !== id
-      ),
-    }));
+    dispatch(
+      setNotifications({
+        nontificationList: notifications.nontificationList.filter(
+          (notification) => notification.id !== id
+        ),
+      })
+    );
   };
-
   // 알림 읽기 핸들러
   const handleNotificationRead = async (notificationId: string) => {
     try {
+      // 알림을 읽기 처리
       await putNotification(notificationId);
-      // 여기에서 새로운 알림 목록을 가져옴.(보류)
-      const updatedNotifications: NotificationList =
-        await getNotificationList();
-      setNotifications(updatedNotifications);
-      console.log('읽기 잘되니?:', updatedNotifications);
+
+      // 기존 알림 목록에서 해당 알림을 찾아 isRead 상태를 업데이트
+      dispatch(
+        setNotifications({
+          nontificationList: notifications.nontificationList.map(
+            (notification) =>
+              notification.id === notificationId
+                ? { ...notification, isRead: true }
+                : notification
+          ),
+        })
+      );
     } catch (error) {
       console.error('Error marking notification as read:', error);
     }
@@ -60,25 +76,14 @@ export default function NotificationModal({
       try {
         // 알림 목록 조회
         const initialNotifications = await getNotificationList();
-        setNotifications(initialNotifications);
-        // SSE 연결 설정
-        subscribe((newNotification) => {
-          // 새로운 알림이 도착하면 알림 목록 업데이트
-          setNotifications((prevNotifications) => ({
-            ...prevNotifications,
-            nontificationList: [
-              ...prevNotifications.nontificationList,
-              newNotification,
-            ],
-          }));
-        });
+        dispatch(setNotifications(initialNotifications));
       } catch (error) {
         console.error('Error fetching initial data:', error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   // 버튼 필터 (북마크 / 인용)
   const filteredNotifications = (notifications.nontificationList || [])
@@ -170,3 +175,6 @@ const THEME_VARIANTS = {
   light: 'bg-modal',
   dark: 'bg-dark-background-layout text-white',
 };
+function dispatch(arg0: void) {
+  throw new Error('Function not implemented.');
+}
