@@ -1,9 +1,20 @@
-import { useEffect } from 'react';
+import { useEffect, RefObject } from 'react';
 
-export const useScrollObserver = (onScroll: () => void, threshold = 0.8) => {
+export const useScrollObserver = (
+  ref: RefObject<HTMLElement> | null,
+  onScroll: () => void,
+  threshold = 0.8
+) => {
   useEffect(() => {
     const scrollHandler = () => {
-      const scrollableElement = document.documentElement;
+      let scrollableElement;
+
+      if (ref && ref.current) {
+        scrollableElement = ref.current;
+      } else {
+        scrollableElement = document.documentElement;
+      }
+
       const scrollHeight = scrollableElement.scrollHeight;
       const scrollTop = scrollableElement.scrollTop;
       const clientHeight = scrollableElement.clientHeight;
@@ -14,10 +25,11 @@ export const useScrollObserver = (onScroll: () => void, threshold = 0.8) => {
       }
     };
 
-    window.addEventListener('scroll', scrollHandler);
+    const target = ref?.current || window;
+    target.addEventListener('scroll', scrollHandler);
 
     return () => {
-      window.removeEventListener('scroll', scrollHandler);
+      target.removeEventListener('scroll', scrollHandler);
     };
-  }, [onScroll, threshold]);
+  }, [ref, onScroll, threshold]);
 };

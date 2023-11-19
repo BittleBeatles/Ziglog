@@ -41,7 +41,7 @@ export default function GlobalSearchResult({
   ).padStart(2, '0')}일`;
 
   return (
-    <div {...rest} className={`${THEME_VARIANTS[theme]} p-5 mt-3`}>
+    <div {...rest} className={`${THEME_VARIANTS[theme]} mt-3`}>
       <div className="flex flex-row items-center">
         <ProfileImage src={`${profileUrl}`} size={40} />
         <Text className="ml-4">{`${nickname}`}</Text>

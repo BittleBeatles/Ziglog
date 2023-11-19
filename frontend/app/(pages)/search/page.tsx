@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import GlobalSearchInput from '@components/search/GlobalSearchInput';
 import GlobalSearchResult from '@components/search/GlobalSearchResult';
 import useDebounce from '@src/hooks/useDebounce';
@@ -11,6 +11,7 @@ import { useScrollObserver } from '@src/hooks/useScrollObserve';
 import { useAppSelector } from '@store/store';
 import NavBar from '@components/common/NavBar';
 import { useRouter } from 'next/navigation';
+import SearchGraphWrapper from '@components/search/SearchGraphWrapper';
 
 export default function Search() {
   const { theme, isLogin } = useAppSelector((state) => state.user);
@@ -53,7 +54,8 @@ export default function Search() {
   };
 
   //스크롤 감지 훅
-  useScrollObserver(handleScroll);
+  const divRef = useRef<HTMLDivElement>(null);
+  useScrollObserver(divRef, handleScroll);
 
   // 검색어 바뀔 때마다 초기화 (디바운싱 된 값으로)
   useEffect(() => {
@@ -110,20 +112,28 @@ export default function Search() {
   }, []);
 
   return (
-    <div className={`${THEME_VARIANTS[theme]}`}>
+    <div className={`${THEME_VARIANTS[theme]} h-screen`}>
       <NavBar theme={theme} isLogin={isLogin} />
-      <div className="flex flex-col justify-cneter items-center">
-        <div className="w-2/3">
-          <GlobalSearchInput
-            theme={theme}
-            defaultValue={keyword}
-            placeholder="검색어를 입력하세요"
-            onChange={(e) => setKeyword(e.target.value)}
-          />
-          <div className="min-h-screen overflow-y-auto">
+      <div className="px-52 flex flex-col items-center justify-center">
+        <GlobalSearchInput
+          theme={theme}
+          defaultValue={keyword}
+          placeholder="검색어를 입력하세요"
+          onChange={(e) => setKeyword(e.target.value)}
+        />
+
+        <div className="mt-10 w-full flex">
+          <div className="w-1/2 h-full rounded-lg border border-border-grey">
+            <SearchGraphWrapper theme={theme} />
+          </div>
+
+          <div
+            id="sidebar-scroll"
+            className="w-1/2 h-168 ml-5 overflow-y-auto"
+            ref={divRef}
+          >
             {searchData && searchData.notes.length > 0 ? (
               <div>
-                {/* <p>총 {searchData.notes.length}개의 검색 결과가 있습니다.</p> */}
                 {searchData.notes.map((result, index) => (
                   <Link
                     key={index}
@@ -132,21 +142,19 @@ export default function Search() {
                       query: { keyword: debouncedKeyword },
                     }}
                   >
-                    <div>
-                      <GlobalSearchResult
-                        key={index}
-                        noteId={result.noteId}
-                        title={result.title}
-                        preview={result.preview !== null ? result.preview : ''}
-                        nickname={result.nickname}
-                        profileUrl={result.profileUrl}
-                        isPublic={result.isPublic}
-                        bookmarkCount={result.bookmarkCount}
-                        postTime={result.postTime}
-                        editTime={result.editTime}
-                        theme={theme}
-                      />
-                    </div>
+                    <GlobalSearchResult
+                      key={index}
+                      noteId={result.noteId}
+                      title={result.title}
+                      preview={result.preview !== null ? result.preview : ''}
+                      nickname={result.nickname}
+                      profileUrl={result.profileUrl}
+                      isPublic={result.isPublic}
+                      bookmarkCount={result.bookmarkCount}
+                      postTime={result.postTime}
+                      editTime={result.editTime}
+                      theme={theme}
+                    />
                   </Link>
                 ))}
               </div>
