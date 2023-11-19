@@ -27,6 +27,7 @@ export default function PersonalSearchModal({
   const [page, setPage] = useState(0); // 페이지 번호
   const [hasMore, setHasMore] = useState(true); // 더 많은 페이지가 있는지 여부
   const perPage = 8;
+  const [isLoading, setIsLoading] = useState(true);
 
   // 스크롤 이벤트 핸들러
   const handleScroll = () => {
@@ -48,6 +49,7 @@ export default function PersonalSearchModal({
           perPage
         );
         const newData = response;
+        setIsLoading(false);
 
         if (newData && newData.notes.length > 0) {
           setSearchData((prevData) => ({
@@ -72,7 +74,18 @@ export default function PersonalSearchModal({
     <div
       className={`${THEME_VARIANTS[theme]} w-132 shadow-md border text-center rounded-md justify-center px-3`}
     >
-      {searchData && searchData.notes.length > 0 ? (
+      {isLoading ? (
+        <div className="h-96 my-3">
+          <div className="grid justify-items-end">
+            <IconButton
+              onClick={() => openModal(false)}
+              theme={theme}
+              name="Close"
+            />
+          </div>
+          <p>로딩중...</p>
+        </div>
+      ) : searchData && searchData.notes.length > 0 ? (
         <div>
           <div className="grid justify-items-end mt-3">
             <IconButton

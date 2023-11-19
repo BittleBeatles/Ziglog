@@ -25,7 +25,7 @@ export default function NavBar({ isLogin, theme }: NavBarProps) {
   const { nickname } = useAppSelector((state) => state.user);
   return (
     <div
-      className={`${THEME_VARIANTS[theme]} w-full h-full p-5 flex items-center justify-between`}
+      className={`${THEME_VARIANTS[theme]} w-full p-5 flex items-center justify-between`}
     >
       <Link href={'/'}>
         {theme == 'light' ? (

@@ -22,7 +22,7 @@ export async function sendEditNoteInfoRequest(
     if (res.body.statusCode === 200) {
       return await Promise.resolve('[note edit succeeded]');
     } else {
-      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      showAlert(res.body.message, 'error');
     }
   } catch (err) {
     showAlert('예상치 못한 오류가 발생했습니다', 'error');
@@ -45,7 +45,7 @@ export async function changeNotePublicStatusRequest(
     if (res.body.statusCode === 200) {
       return await Promise.resolve(res.body.data);
     } else {
-      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      showAlert(res.body.message, 'error');
       return await Promise.resolve(res.body.data);
     }
   } catch (error) {

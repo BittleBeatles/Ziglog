@@ -51,7 +51,7 @@ export async function getBookmark(): Promise<{ notes: Note[] }> {
     if (res.body.statusCode === 200) {
       return res.body.data;
     } else {
-      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      showAlert(res.body.message, 'error');
       return res.body.data;
     }
   } catch (err) {
@@ -71,7 +71,7 @@ export async function isNoteBookmarked(noteId: number): Promise<IsBookmarked> {
     if (res.body.statusCode === 200) {
       return res.body.data;
     } else {
-      showAlert('예상치 못한 오류가 발생했습니다', 'error');
+      showAlert(res.body.message, 'error');
       return res.body.data;
     }
   } catch (error) {

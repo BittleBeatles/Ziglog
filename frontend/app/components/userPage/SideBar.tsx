@@ -13,13 +13,14 @@ import ChangeUserInfoBox from './ChangeUserInfoBox';
 import { Logout, getUserInfo } from '@api/user/user';
 import { createNote } from '@api/note/note';
 import { useAppDispatch, useAppSelector } from '@store/store';
-import { setMyTheme } from '@store/modules/userSlice';
+import { setMyTheme, setNotificationDot } from '@store/modules/userSlice';
 import { Note } from '@api/bookmark/types';
 import SideDataContext from '@(pages)/user-page/[userNickname]/SideDataContext';
 import SocialLoginModal from '@components/common/SocialLoginModal';
 import NotificationModal from './Notification/NotificationModal';
 import { showAlert } from '@src/util/alert';
 import NotificationIconButton from './Notification/NotificationIconButton';
+import { subscribe } from '@api/notification/subscribe';
 
 interface SideBarProps {
   theme: 'light' | 'dark';
@@ -27,9 +28,8 @@ interface SideBarProps {
 }
 
 export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
-  const { isLogin, nickname, rootFolderId } = useAppSelector(
-    (state) => state.user
-  );
+  const { isLogin, nickname, rootFolderId, showNotificationDot } =
+    useAppSelector((state) => state.user);
   //  모달
   const [loginModalOpen, setLoginModalOpne] = useState(false);
   const {
@@ -76,6 +76,9 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
   // 알림 모달 상태를 열림/닫힘으로 토글
   const toggleNotificationModal = () => {
     setNotificationModal(!notificationModal);
+    if (notificationModal) {
+      dispatch(setNotificationDot(false));
+    }
   };
   // 알림 모달 영역 밖 클릭 시 모달 닫힘
   useEffect(() => {
@@ -83,6 +86,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
       const modalElement = document.getElementById('notification-modal');
       if (modalElement && !modalElement.contains(event.target as Node)) {
         toggleNotificationModal();
+        dispatch(setNotificationDot(false));
       }
     }
 
@@ -280,6 +284,7 @@ export default function SideBar({ theme, sideBarToggle }: SideBarProps) {
           <NotificationIconButton
             theme={theme}
             onClick={toggleNotificationModal}
+            showRedDot={showNotificationDot}
           ></NotificationIconButton>
         </div>
       )}

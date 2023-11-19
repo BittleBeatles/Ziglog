@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TokenInfo, MyInfo } from '@api/user/types';
+import { NotificationList } from '@api/notification/types';
 
 type userSliceInfo = TokenInfo &
   MyInfo & {
     isLogin: boolean;
     theme: 'dark' | 'light';
     rootFolderId: number;
+    showNotificationDot: boolean;
+    notifications: NotificationList;
   };
 
 const initialState: userSliceInfo = {
@@ -16,6 +19,8 @@ const initialState: userSliceInfo = {
   profileUrl: '',
   theme: 'light',
   rootFolderId: 0,
+  showNotificationDot: false,
+  notifications: { nontificationList: [] },
 };
 
 export const user = createSlice({
@@ -50,6 +55,12 @@ export const user = createSlice({
     setMyProfileImage: (state, action: PayloadAction<string>) => {
       state.profileUrl = action.payload;
     },
+    setNotificationDot: (state, action: PayloadAction<boolean>) => {
+      state.showNotificationDot = action.payload;
+    },
+    setNotifications: (state, action: PayloadAction<NotificationList>) => {
+      state.notifications = action.payload;
+    },
   },
 });
 
@@ -60,5 +71,7 @@ export const {
   setMyTheme,
   setMyNickname,
   setMyProfileImage,
+  setNotificationDot,
+  setNotifications,
 } = user.actions;
 export default user.reducer;
