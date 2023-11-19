@@ -106,7 +106,7 @@ public class BookmarkServiceImpl implements BookmarkService {
                 .type(NotificationType.BOOKMARK)
                 .receiver(note.getAuthor())
                 .sender(sender)
-                .note(note)
+                .noteId(note.getId())
                 .title(note.getTitle())
                 .isRead(false)
                 .build();

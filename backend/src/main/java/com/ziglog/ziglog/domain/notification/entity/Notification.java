@@ -33,9 +33,7 @@ public class Notification {
     @JoinColumn(name = "sender_id", nullable = false)
     private Member sender;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "note_id")
-    private Note note;
+    private Long noteId;
 
     @Column (name = "type")
     @Enumerated(EnumType.STRING)
