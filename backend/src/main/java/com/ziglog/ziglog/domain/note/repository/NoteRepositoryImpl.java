@@ -31,7 +31,7 @@ public class NoteRepositoryImpl implements NoteRepositoryCustom {
         List<Note> result = queryFactory
                 .selectFrom(note)
                 .where(isOwner(member, nickname), matches(keywordWithNoWhiteSpace))
-                .orderBy(getOrderSpecifiers().stream().toArray(OrderSpecifier[]::new))
+                .orderBy(getOrderSpecifiers().toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
@@ -44,6 +44,21 @@ public class NoteRepositoryImpl implements NoteRepositoryCustom {
 
         return new SliceImpl<>(result, pageable, hasNext);
     }
+
+    @Override
+    public List<Long> searchAllNoteIdByKeyword(String keyword) {
+
+        String keywordWithNoWhiteSpace = keyword.replace(" ", "");
+        List<Long> result = queryFactory
+                .select(note.id)
+                .from(note)
+                .where(matches(keywordWithNoWhiteSpace))
+                .orderBy(getOrderSpecifiers().toArray(OrderSpecifier[]::new))
+                .fetch();
+
+       return result;
+    }
+
 
     private BooleanExpression isOwner(Member member, String nickname){
         //공개만 가져온다

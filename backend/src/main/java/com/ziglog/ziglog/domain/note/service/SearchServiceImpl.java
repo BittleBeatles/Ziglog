@@ -18,10 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class SearchServiceImpl implements SearchService {
 
     private final NoteRepository noteRepository;
-    private final MemberRepository memberRepository;
 
     // 검색
     public SearchResponseDto searchNotes(Member member, String keyword, String nickname, Pageable pageable) throws Exception{
-        return SearchResponseDto.toDto(noteRepository.searchByKeyword(keyword, member, nickname, pageable));
+        return SearchResponseDto.toDto(noteRepository.searchByKeyword(keyword, member, nickname, pageable),
+                noteRepository.searchAllNoteIdByKeyword(keyword)
+        );
     }
 }

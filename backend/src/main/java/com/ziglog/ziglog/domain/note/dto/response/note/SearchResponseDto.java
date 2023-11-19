@@ -12,9 +12,11 @@ import java.util.List;
 @Getter
 public class SearchResponseDto {
     private final List<BriefNoteDto> notes;
+    private final List<Long> allNoteIds;
 
-    private SearchResponseDto(Slice<BriefNoteDto> notes){
+    private SearchResponseDto(Slice<BriefNoteDto> notes, List<Long> allNoteIds){
         this.notes = notes.getContent();
+        this.allNoteIds = allNoteIds;
     }
 
     @Getter
@@ -49,9 +51,10 @@ public class SearchResponseDto {
         }
     }
 
-    public static SearchResponseDto toDto(Slice<Note> notes){
+    public static SearchResponseDto toDto(Slice<Note> notes, List<Long> allNoteIds){
         return new SearchResponseDto(
-                notes.map(BriefNoteDto::toDto)
+                notes.map(BriefNoteDto::toDto),
+                allNoteIds
         );
     }
 }

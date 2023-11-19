@@ -88,6 +88,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/logout")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/graph/note/all", "GET")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login((oauth2login) ->
