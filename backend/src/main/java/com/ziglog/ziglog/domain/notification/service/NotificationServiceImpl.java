@@ -120,7 +120,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .title(notification.getTitle())
                 .type(notification.getType())
                 .isRead(notification.getIsRead())
-                .note(noteRepository.findNoteById(notification.getNoteId()).orElse(null))
+                .noteId(notification.getNoteId())
                 .dateTime(notification.getDateTime())
                 .build();
 

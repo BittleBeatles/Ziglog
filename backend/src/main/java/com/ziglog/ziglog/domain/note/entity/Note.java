@@ -3,6 +3,7 @@ package com.ziglog.ziglog.domain.note.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ziglog.ziglog.domain.bookmark.entity.Bookmark;
 import com.ziglog.ziglog.domain.member.entity.Member;
+import com.ziglog.ziglog.domain.notification.entity.Notification;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

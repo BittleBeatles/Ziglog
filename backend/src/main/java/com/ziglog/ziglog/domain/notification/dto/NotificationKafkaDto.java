@@ -35,7 +35,7 @@ public class NotificationKafkaDto {
                 .receiverNickname(notification.getReceiver().getNickname())
                 .senderNickname(notification.getSender().getNickname())
                 .senderProfileUrl(notification.getSender().getProfileUrl())
-                .noteId(notification.getNote().getId())
+                .noteId(notification.getNoteId())
                 .title(notification.getTitle())
                 .isRead(notification.getIsRead())
                 .type(notification.getType())
