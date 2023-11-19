@@ -24,6 +24,7 @@ export async function subscribe() {
       );
 
       eventSource.addEventListener('sse', (e) => {
+        // console.log('sse 연결 잘됨', JSON.parse((e as MessageEvent).data));
         if (!(typeof JSON.parse((e as MessageEvent).data) === 'string')) {
           const sseData: SseNotification = JSON.parse((e as MessageEvent).data);
 
@@ -69,7 +70,7 @@ export async function subscribe() {
         setTimeout(connect, 500);
       });
     } catch (error) {
-      console.error('Subscription 도중 에러 발생:', error);
+      console.warn('Subscription 도중 에러 발생:', error);
       setTimeout(connect, 500);
       throw error;
     }
