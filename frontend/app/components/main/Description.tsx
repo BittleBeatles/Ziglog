@@ -1,6 +1,5 @@
 import Text from '@components/common/Text';
 import Image, { StaticImageData } from 'next/image';
-import scratch from '@public/images/main/scratch.png';
 import Drawing from './Drawing';
 
 interface DescriptionProps {
