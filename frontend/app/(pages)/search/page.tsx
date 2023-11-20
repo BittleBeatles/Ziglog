@@ -112,7 +112,7 @@ export default function Search() {
   }, []);
 
   return (
-    <div className={`${THEME_VARIANTS[theme]} h-screen`}>
+    <div className={`${THEME_VARIANTS[theme]} h-screen overflow-y-auto`}>
       <NavBar theme={theme} isLogin={isLogin} />
       <div className="px-52 flex flex-col items-center justify-center">
         <GlobalSearchInput
@@ -122,14 +122,14 @@ export default function Search() {
           onChange={(e) => setKeyword(e.target.value)}
         />
 
-        <div className="mt-10 w-full flex">
+        <div className="mt-10 w-full flex h-full mb-10">
           <div className="w-1/2 h-full rounded-lg border border-border-grey">
             <SearchGraphWrapper theme={theme} />
           </div>
 
           <div
             id="sidebar-scroll"
-            className="w-1/2 h-168 ml-5 overflow-y-auto"
+            className="w-1/2 h-144 ml-5 overflow-y-auto"
             ref={divRef}
           >
             {searchData && searchData.notes.length > 0 ? (
