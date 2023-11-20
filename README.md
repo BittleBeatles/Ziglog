@@ -134,7 +134,7 @@
 
 <summary>메인 페이지</summary>
 <div markdown="1">
-<!-- <img alt="메인페이지" src="./asset/image/아키텍처.png" /> -->
+<img alt="메인페이지" src="./asset/gif/main.gif" />
 
 </div>
 
@@ -152,13 +152,13 @@
 
 <summary>개인 페이지-노트 읽기</summary>
 <div markdown="1">
-<!-- <img alt="메인페이지" src="./asset/image/아키텍처.png" /> -->
+<img alt="메인페이지" src="./asset/gif/read-note.gif" />
 
 </div>
 
 <summary>개인 페이지-노트 수정, 참조</summary>
 <div markdown="1">
-<img alt="메인페이지" src="./asset/gif/edit-note.gif" />
+<img alt="메인페이지" src="./asset/gif/edit-note2.gif" />
 
 </div>
 
@@ -204,30 +204,38 @@
 
 ### 🧷 백엔드
 
-<img src="https://img.shields.io/badge/Spring-6DB33F?style=flat&logo=Spring&logoColor=white"/> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=SpringBoot&logoColor=white"/> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat&logo=Spring&logoColor=white"/> <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white"/> <img src="https://img.shields.io/badge/gradle-02303A?style=flat&logo=gradle&logoColor=white"/> <img src="https://img.shields.io/badge/redis-DC382D?style=flat&logo=redis&logoColor=white"/>
+<img src="https://img.shields.io/badge/Spring-6DB33F?style=flat&logo=Spring&logoColor=white"/> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=SpringBoot&logoColor=white"/> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat&logo=Spring&logoColor=white"/> <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white"/> <img src="https://img.shields.io/badge/gradle-02303A?style=flat&logo=gradle&logoColor=white"/> <img src="https://img.shields.io/badge/redis-DC382D?style=flat&logo=redis&logoColor=white"/> <img src="https://img.shields.io/badge/kafka-231F20?style=flat&logo=apachekafka&logoColor=white"/>
 
 **Language |** Java 17
 
-**Framework |** Spring Boot 2.7
+**Framework |** Spring Boot 3.1.4, 
 
-**Data(RDBMS) |** Spring-Data-JPA 2.7.14, MySQL 8.0, Query DSL 5.0
+**Spring Security |** 6.1.4
 
-**Cache |** Redis 2.7.14
+**Data |** Spring Data JPA 3.1.4, Query DSL 5.0.0, Spring for Apache Kafka 3.0.11, Apache Kafka 3.4.1
+
+**Cache |** Spring Data Redis 7.2.3
 
 **Build Tool |** Gradle 8.3
 
-**Test |** Junit 5.8.2, Mockito 4.5.1, JaCoCo 0.8.10
+**Test |** Junit 5.10.0
+
+**API Documentation |** SpringDoc OpenAPI 2.1.0
 <br><br>
 
 ### 🧷 인프라
 
 <img src="https://img.shields.io/badge/ubuntu-E95420?style=flat&logo=ubuntu&logoColor=white"/> <img src="https://img.shields.io/badge/Jenkins-D24939?style=flat&logo=jenkins&logoColor=white"/> <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=flat&logo=amazonec2&logoColor=white"/> <img src="https://img.shields.io/badge/nginx-009639?style=flat&logo=nginx&logoColor=white"/> <img src="https://img.shields.io/badge/amazons3-569A31?style=flat&logo=amazons3&logoColor=white"/> <img src="https://img.shields.io/badge/docker-2496ED?style=flat&logo=docker&logoColor=white"/> <img src="https://img.shields.io/badge/sonarqube-4E9BCD?style=flat&logo=sonarqube&logoColor=white"/>
 
-**Infra |** AWS EC2, Nginx, Sonarqube
+**Server |** AWS EC2 t2.xlarge, Oracle Cloud Instance A1 Ampere
 
-**DB |** H2, MySQL 8
+**Infra |** Nginx, Sonarqube, MobaXterm, Docker 24.0.7, Docker Compose V2 2.21.0, net-tools, iftop, openssh 
 
-**CI/CD |** Git, Jenkins
+**DB |** H2, MySQL 8.2.0, DBeaver
+
+**CI/CD |** Git, Jenkins 2.426
+
+
 
 <br><br>
 
@@ -287,7 +295,51 @@
 <div>
 
 ```
-
+📦domain
+┣ 📂bookmark
+┃ ┣ 📂controller
+┃ ┣ 📂dto
+┃ ┃ ┣ 📂request
+┃ ┃ ┗ 📂response
+┃ ┣ 📂entity
+┃ ┣ 📂exception
+┃ ┃ ┗ 📂exceptions
+┃ ┣ 📂repository
+┃ ┗ 📂service
+┣ 📂member
+┃ ┣ 📂controller
+┃ ┣ 📂dto
+┃ ┃ ┣ 📂request
+┃ ┃ ┗ 📂response
+┃ ┣ 📂entity
+┃ ┣ 📂exception
+┃ ┃ ┗ 📂exceptions
+┃ ┣ 📂repository
+┃ ┗ 📂service
+┣ 📂note
+┃ ┣ 📂controller
+┃ ┣ 📂dto
+┃ ┃ ┣ 📂request
+┃ ┃ ┃ ┣ 📂folder
+┃ ┃ ┃ ┗ 📂note
+┃ ┃ ┃ ┃ ┣ 📂quotation
+┃ ┃ ┗ 📂response
+┃ ┃ ┃ ┣ 📂folder
+┃ ┃ ┃ ┣ 📂graph
+┃ ┃ ┃ ┗ 📂note
+┃ ┣ 📂entity
+┃ ┣ 📂exception
+┃ ┃ ┗ 📂exceptions
+┃ ┣ 📂repository
+┃ ┗ 📂service
+┗ 📂notification
+┃ ┣ 📂controller
+┃ ┣ 📂dto
+┃ ┣ 📂entity
+┃ ┣ 📂exception
+┃ ┃ ┗ 📂exceptions
+┃ ┣ 📂repository
+┃ ┗ 📂service
 ```
 
 </div>
@@ -302,7 +354,7 @@
 <details>
 <summary>ERD</summary>
 <div markdown="1">       
-   
+   <img src="./asset/image/erd.png">
 </div>
 </details>
 
@@ -311,30 +363,17 @@
 <details>
 <summary>전체 문서</summary>
 <div markdown="1">       
-    
+    <img src="./asset/image/swagger.png">
 </div>
 </details>
 
-<details>
-<summary>Request</summary>
-<div markdown="1">       
-    
-</div>
-</details>
-
-<details>
-<summary>Response</summary>
-<div markdown="1">       
-    
-</div>
-</details>
 
 ### FIGMA
 
 <details>
 <summary>WIREFRAME</summary>
-<div markdown="1">       
-  <!-- <img src="./readme-asset/wireFrame.png" alt="전체 문서 페이지"/> -->
+<div markdown="1">      
+  <img src="./asset/image/figma.png" alt="전체 문서 페이지"/>
 </div>
 </details>
 
@@ -346,8 +385,6 @@
 
 <details>
   <summary>클릭하여 내용 표시/숨기기</summary>
-
-> GROUND RULE
 
 ## 🥇 프로젝트 수칙
 
@@ -386,20 +423,35 @@
 
 <details>
   <summary>클릭하여 내용 표시/숨기기</summary>
-    
-> COMMIT CONVENTION
+
+
+## 📌 Git Commit Convention
+
+> type: [commit message] ex) feat: 로그인 기능 구현
 >
+> - 전부 소문자로 작성합니다.
 
-- **Commit 메세지 구조**
-  - ex) ✨ feat : Add sign in page #S09P11A308-52
+| Type      | 설명                                                                               |
+| --------- | ---------------------------------------------------------------------------------- |
+| feat:     | 새로운 기능 추가                                                                   |
+| fix:      | 버그 수정 또는 타입 수정                                                           |
+| refactor: | 리팩토링                                                                           |
+| design:   | CSS 등 사용자 UI 디자인 변경                                                       |
+| comment:  | 필요한 주석 추가 및 변경                                                           |
+| style:    | 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우                                  |
+| test:     | 테스트(테스트 코드 추가, 수정, 삭제, 비즈니스 로직에 변경이 없는 경우)             |
+| chore:    | 위에 걸리지 않는 기타 변경사항(빌드 스크립트 수정, assets image, 패키지 매니저 등) |
+| init:     | 프로젝트 초기 생성                                                                 |
+| rename:   | 파일 혹은 폴더명 수정하거나 옮기는 경우                                            |
+| remove:   | 파일을 삭제하는 작업만 수행하는 경우                                               |
+| infra:    | ci/cd 및 시스템 또는 외부 종속성에 영향을 미치는 변경사항 (npm, gulp, yarn 레벨)   |
+| docs:     | 문서 작업                                                                          |
 
+```bash
+git commit -m "feat: 회원가입 기능 추가"
 ```
-<emoji> <type> : <subject> <Jira ticket number> // 필수
-// 빈 행으로 구분
-<body>      // 생략가능
-// 빈 행으로 구분
-<footer>    // 생략가능
-```
+
+## 📌 Git pull Convention - rebase
 
 </details>
 
@@ -408,18 +460,44 @@
 <details>
   <summary>클릭하여 내용 표시/숨기기</summary>
 
-# 브랜치 명명 컨벤션
+## GIT-FLOW
 
-> BRANCH NAMING CONVENTION
+바로 [여기](https://techblog.woowahan.com/2553/)를 참고
 
-## Git flow
+## WORKFLOW
 
-- ex) **feat/{이슈 키}-{BE/FE}-{이슈 요약}**
+Jira로 이슈 생성, 티켓 발급
 
-- **master** / **main** - 제품으로 출시 및 배포가 가능한 상태인 브랜치 → 최종 결과물 제출 용도
-- **develop** - 다음 출시 버전을 개발하는 브랜치 → 기능 완성 후 중간에 취합하는 용도
-- **feature** - 각종 기능을 개발하는 브랜치 → feat/login, feat/join 등으로 기능 분류 후 작업
-- **hotfix** - 출시 버전에서 발생한 버그를 수정하는 브랜치
+→ 이슈의 경우 최대한 잘게 나누어서 되도록이면 **한 번의 커밋**으로 구현할 수 있게 해주세요
+
+(여러 번 커밋해야 하는 거대 기능 하나를 두기보다는 여러 개로 쪼게 주세요)
+
+→ 이슈를 기반으로 브랜치를 생성함
+
+### 출처 브랜치/이니셜/브랜치종류/내용-지라 코드
+
+- master
+  - dev/be
+    - `dev/shc/feat/register-user-S09P21A204-9`
+      출처 브랜치/본인 이니셜/브랜치 종류/내용-지라코드
+  - dev/fe 브랜치에서 새로운 브랜치 생성하기
+    - `dev/khn/feat/register-user-S09P21A204-9`
+
+| Type      | 설명                                                                               |
+| --------- | ---------------------------------------------------------------------------------- |
+| feat:     | 새로운 기능 추가                                                                   |
+| fix:      | 버그 수정 또는 타입 수정                                                           |
+| refactor: | 리팩토링                                                                           |
+| design:   | CSS 등 사용자 UI 디자인 변경                                                       |
+| comment:  | 필요한 주석 추가 및 변경                                                           |
+| style:    | 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우                                  |
+| test:     | 테스트(테스트 코드 추가, 수정, 삭제, 비즈니스 로직에 변경이 없는 경우)             |
+| chore:    | 위에 걸리지 않는 기타 변경사항(빌드 스크립트 수정, assets image, 패키지 매니저 등) |
+| init:     | 프로젝트 초기 생성                                                                 |
+| rename:   | 파일 혹은 폴더명 수정하거나 옮기는 경우                                            |
+| remove:   | 파일을 삭제하는 작업만 수행하는 경우                                               |
+| infra:    | ci/cd 및 시스템 또는 외부 종속성에 영향을 미치는 변경사항 (npm, gulp, yarn 레벨)   |
+| docs:     | 문서 작업                                                                          |
 
 </details>
 
@@ -471,7 +549,7 @@
 
 ### UCC
 
-https://youtu.be/tOWOvG0jEx8
+https://youtu.be/eKsTlDHm3hM
 
 ### 시연 영상
 
