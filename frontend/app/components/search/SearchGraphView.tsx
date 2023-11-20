@@ -21,7 +21,7 @@ export default function SearchGraphView({ theme }: SearchGraphViewProps) {
   const { nickname } = useAppSelector((state) => state.user);
 
   // 크기 조절 변수
-  const [dimensions, setDimensions] = useState({ width: 528, height: 672 });
+  const [dimensions, setDimensions] = useState({ width: 528, height: 576 });
 
   useEffect(() => {
     function updateSize() {
@@ -99,7 +99,7 @@ export default function SearchGraphView({ theme }: SearchGraphViewProps) {
   addNeighborsAndLinks(graphData);
 
   return (
-    <div className="w-full" ref={containerRef}>
+    <div className="w-full h-full" ref={containerRef}>
       <ForchGraph2D
         ref={fg2dref}
         graphData={graphData}
