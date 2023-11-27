@@ -55,14 +55,14 @@
 
 ### 팀명
 
-> 📢 안녕하세요! 지식그래프
+> 📢 안녕하세요! 비틀비틀즈입니다.
 
 ### 팀원 소개
 
 |                           Backend                            |                           Backend                            |                           Frontend                           |                          Frontend                           |                          Frontend                           |                          Frontend                           |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: |
 | <img src="./asset/image/임수형.png" style="width:200px; height:200px;" alt="수형"/> | <img src="./asset/image/박영서.png" style="width:200px; height:200px;" alt="영서"/> | <img src="./asset/image/김성용.gif" style="width:200px; height:200px;" alt="성용"/> | <img src="./asset/image/김하늘.jpg" style="width:200px; height:200px;" alt="하늘"> | <img src="./asset/image/이정민.jpg" style="width:200px; height:200px;" alt="정민"> | <img src="./asset/image/정현아.jpg" style="width:200px; height:200px;" alt="현아"> |
-|          [임수형(팀장)](https://github.com/sulogc)           |           [박영서](https://github.com/Frog-Slayer)           |           [김성용](https://github.com/yongseong2)            |           [김하늘](https://github.com/hanulkimm)            |            [이정민](https://github.com/hyuna333)            |            [정현아](https://github.com/hhyeona)             |
+|          [임수형(팀장)](https://github.com/sulogc)           |           [박영서](https://github.com/Frog-Slayer)           |           [김성용](https://github.com/yongseong2)            |           [김하늘](https://github.com/hanulkimm)            |            [이정민](https://github.com/JisforJelly)            |            [정현아](https://github.com/hhyeona)             |
 
 
 ---
@@ -75,7 +75,7 @@
 
 **기대효과**:
 
-- 쉬운 마크다운 문법을 이용한 지식 정리
+- 마크다운 문법을 이용한 지식 정리
 - 참조 관계를 활용한 효율적인 지식 관리
 - 폴더 관계를 활용한 효율적인 노트 관리
 
